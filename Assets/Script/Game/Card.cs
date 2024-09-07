@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+[System.Serializable] //unity 인스펙터 창에서 수정할 수 있도록 설정
 
 
 public class Card : MonoBehaviour 
 {
+
+    CardDtatBase carddatabase;
+    List<carddatabase> CardList = new List<carddatabase>(); //카드 넣어놓기
     void Start()
     {
         

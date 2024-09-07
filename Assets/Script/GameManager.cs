@@ -4,14 +4,6 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance
-    {
-        get
-        {
-            return _instance;
-        }
-    }
-    private static GameManager _instance;
 
     public bool IsGameOver;
     public GameObject GameOverUI;
