@@ -4,10 +4,23 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance; // 싱글톤을 할당할 전역 변수
+    public static GameManager Instance
+    {
+        get
+        {
+            return _instance;
+        }
+    }
+    private static GameManager _instance;
+
     public bool IsGameOver;
     public GameObject GameOverUI;
-    public Score;
+    public int Score;
+
+    void Init()
+    {
+
+    }
 
     // Start is called before the first frame update
     void Start()
