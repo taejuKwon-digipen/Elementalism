@@ -8,7 +8,13 @@ public class Card : MonoBehaviour
 {
 
     CardDtatBase carddatabase;
-    List<carddatabase> CardList = new List<carddatabase>(); //카드 넣어놓기
+    List<CardDtatBase> CardList = new List<CardDtatBase>(); //카드 넣어놓기
+
+    void Init()
+    {
+
+    }
+
     void Start()
     {
         

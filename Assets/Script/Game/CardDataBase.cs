@@ -5,16 +5,7 @@ using UnityEngine;
 
 public class CardDtatBase : MonoBehaviour
 {
-    public static CardDtatBase Instance
-    {
-        get
-        {
-            return _instance;
-        }
-    }
-    private static CardDtatBase _instance;
 
-    GoogleSheetLoader datasheet;
 
     public int ID;
     public int Attack;
