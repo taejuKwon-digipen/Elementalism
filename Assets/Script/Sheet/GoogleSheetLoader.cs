@@ -39,7 +39,7 @@ public class ReadSheet : MonoBehaviour
     private static ReadSheet _instance;
 
     public readonly string ADDRESS = "https://docs.google.com/spreadsheets/d/1ZySJiU_PCwQQ7e3l9tEEGYl9v9jpqNMdCZAlhuB5q9g";
-    public readonly string RANGE = "A2:E17";
+    public readonly string RANGE = "A2:E19";
     public readonly long SHEET_ID = 0;
 
     private void Start()
@@ -53,6 +53,31 @@ public class ReadSheet : MonoBehaviour
         yield return www.SendWebRequest();
 
         Debug.Log(www.downloadHandler.text);
+    }
+}
+
+public class GetSheet : MonoBehaviour
+{
+    public int ID;
+    public int Attack;
+    public int Health;
+    public double Percent; //등장 확률 
+    public string CardDescription;
+
+    public static GetSheet Instance
+    {
+        get
+        {
+            return _instance;
+        }
+    }
+
+    private static GetSheet _instance;
+
+    void AddCard(int ID)
+    {
+       //CardDtatBase.Instance.cardList.Add(ID,) 여기서 카드 추가 로그나올수 있게 하면 어케든 되겠는데
+
     }
 }
 

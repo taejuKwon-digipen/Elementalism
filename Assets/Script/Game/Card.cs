@@ -6,23 +6,25 @@ using UnityEngine;
 
 public class Card : MonoBehaviour 
 {
+    public int ID;
+    public int Attack;
+    public int Health;
+    //public float Percent; //등장 확률 
+    public string CardDescription;
+    //public Sprite sprite;
+    //필요시 추가
 
-    CardDtatBase carddatabase;
-    List<CardDtatBase> CardList = new List<CardDtatBase>(); //카드 넣어놓기
-
-    void Init()
+    public Card()
     {
 
     }
 
-    void Start()
+    public Card(int id , int attack, int health, string carddescription)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        //여기서 카드 꺼내기
+        ID = id;
+        Attack = attack;
+        Health = health;
+        //Percent = percent; 
+        CardDescription = carddescription;  
     }
 }
