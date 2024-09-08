@@ -17,13 +17,17 @@ public class GameManager : MonoBehaviour
    private static GameManager _instance;
 
     public bool IsGameOver;
-    public GameObject GameOverUI;
     private bool _LoadComplete = false;
     private float _LoadProgress = 0f; //로딩화면 만들때
 
     void Init()
     {
 
+    }
+
+    private void Start()
+    {
+        
     }
 
     private void Awake()

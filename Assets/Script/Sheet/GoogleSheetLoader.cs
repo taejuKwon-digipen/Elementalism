@@ -11,28 +11,48 @@ using System;
 
 public class GoogleSheetLoader : MonoBehaviour
 {
-    string DataSheet;
-    public Text displayText;
-    const string googleSheetURL = "https://docs.google.com/spreadsheets/d/1ZySJiU_PCwQQ7e3l9tEEGYl9v9jpqNMdCZAlhuB5q9g/edit?usp=sharing";
-
-    IEnumerator Start()
+  /*  public static GoogleSheetLoader Instance
     {
-        using (UnityWebRequest www = UnityWebRequest.Get(googleSheetURL))
+        get
         {
-            yield return www.SendWebRequest();
-            if(www.isDone)
-            {
-                DataSheet = www.downloadHandler.text;
-                Console.Write(DataSheet);
-            }
-
-            //DisplayText();
+            return _instance;
         }
     }
 
-    void DisplayText()
+    private static GoogleSheetLoader _instance;*/
+
+    public static string GetTSVAddress(string address, string range, long sheetID)
     {
-       // conole 에 표시할 수 있게 후에 제작
-       
+        return $"{address}/export?format=tsv&range={range}&gid={sheetID}";
     }
 }
+
+public class ReadSheet : MonoBehaviour
+{
+    public static ReadSheet Instance
+    {
+        get
+        {
+            return _instance;
+        }
+    }
+    private static ReadSheet _instance;
+
+    public readonly string ADDRESS = "https://docs.google.com/spreadsheets/d/1ZySJiU_PCwQQ7e3l9tEEGYl9v9jpqNMdCZAlhuB5q9g";
+    public readonly string RANGE = "A2:E17";
+    public readonly long SHEET_ID = 0;
+
+    private void Start()
+    {
+        StartCoroutine(LoadData());
+    }
+
+    private IEnumerator LoadData()
+    {
+        UnityWebRequest www = UnityWebRequest.Get(GoogleSheetLoader.GetTSVAddress(ADDRESS, RANGE, SHEET_ID));
+        yield return www.SendWebRequest();
+
+        Debug.Log(www.downloadHandler.text);
+    }
+}
+
