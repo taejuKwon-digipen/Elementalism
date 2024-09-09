@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
 
     public bool IsGameOver;
     private bool _LoadComplete = false;
-    private float _LoadProgress = 0f; //로딩화면 만들때
+    private float _LoadProgress = 0f; //로딩화면 만들때 사용
 
     void Init()
     {

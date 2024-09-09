@@ -21,9 +21,14 @@ public class CardDtatBase : MonoBehaviour
         CardList.Add(new Card(0, 1, 1, "Å×½ºÆ®"));
     }
 
-    void AddCard()
+    void AddCard(int id, int attack, int health, string description)    
     {
-        
+        CardList.Add(new Card(id, attack, health, description));
+    }
+
+    void RemoveCard(int id)
+    {
+        CardList.Remove(CardList[id]);
     }
 }
 
