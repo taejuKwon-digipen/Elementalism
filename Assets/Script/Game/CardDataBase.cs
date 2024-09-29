@@ -6,30 +6,19 @@ using UnityEngine;
 
 public class CardDtatBase : MonoBehaviour
 {
-    public static CardDtatBase Instance
-    {
-        get
-        {
-            return _instance;
-        }
-    }
-    private static CardDtatBase _instance;
-    public List<Card> CardList = new List<Card>();
-   
+    public List<Card> CardForBlock = new List<Card>();
+    public List<Card> CardForPlay = new List<Card>();
+
     void Awake()
     {
-        CardList.Add(new Card(0, 1, 1, "Å×½ºÆ®"));
+        CardForPlay.Add(new Card(0, 10, "", false));
+        CardForPlay.Add(new Card(1, 10, "", false));
+
+        CardForBlock.Add(new Card(0, 10, "", true));
+        CardForBlock.Add(new Card(1, 10, "",true));
+
     }
 
-    void AddCard(int id, int attack, int health, string description)    
-    {
-        CardList.Add(new Card(id, attack, health, description));
-    }
-
-    void RemoveCard(int id)
-    {
-        CardList.Remove(CardList[id]);
-    }
 }
 
 

@@ -8,23 +8,23 @@ public class Card : MonoBehaviour
 {
     public int ID;
     public int Attack;
-    public int Health;
     //public float Percent; //등장 확률 
     public string CardDescription;
+    public bool UseMagic = false;
     //public Sprite sprite;
-    //필요시 추가
+
 
     public Card()
     {
 
     }
 
-    public Card(int id , int attack, int health, string carddescription)
+    public Card(int id , int attack, string carddescription, bool usemagic)
     {
         ID = id;
         Attack = attack;
-        Health = health;
         //Percent = percent; 
         CardDescription = carddescription;  
+        UseMagic = usemagic;
     }
 }
