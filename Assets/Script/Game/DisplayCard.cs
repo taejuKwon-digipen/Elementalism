@@ -25,15 +25,12 @@ public class DisplayCard : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        DisplayCardList[0] = carddatabase.CardForPlay[displayID];
+        DisplayCardList = carddatabase.CardForPlay;
     }
 
     // Update is called once per frame
     void Update()
     {
-        id = DisplayCardList[0].ID;
-        description = DisplayCardList[0].CardDescription;
-        attack = DisplayCardList[0].Attack;
-        usemagic = DisplayCardList[0].UseMagic;
+ 
     }
 }
