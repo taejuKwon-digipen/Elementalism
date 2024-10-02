@@ -15,6 +15,16 @@ public int columns = 0;
     private Vector2 _offset = new Vector2 (0, 0);
     private List<GameObject> _elementals = new List<GameObject>();
 
+
+    private void OnEnable()
+    {
+        GameEvents.CheckIfShapeCanBePlaced += CheckIfShapeCanBePlaced;
+    }
+    private void OnDisable()
+    {
+        GameEvents.CheckIfShapeCanBePlaced -= CheckIfShapeCanBePlaced;
+    }
+
     void Start()
     {
         CreateGrid();
@@ -91,6 +101,19 @@ public int columns = 0;
             square.GetComponent<RectTransform>().localPosition = new Vector3(startPosition.x + pos_x_offset,
                 startPosition.y - pos_y_offset, 0.0f);
             column_number++;
+        }
+    }
+
+    private void CheckIfShapeCanBePlaced()
+    {
+        foreach (var square in _elementals)
+        {
+            var elemental = square.GetComponent<Elemental>();
+
+            if (elemental.CanWeUseThisSquare() == true)
+            {
+                elemental.ActivateSquare();
+            }
         }
     }
 }
