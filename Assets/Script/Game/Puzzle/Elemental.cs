@@ -10,6 +10,7 @@ using UnityEngine.UI;
 // 원소 타입을 정의하는 열거형 Enum
 public enum ElementType
 {
+    None,
     Fire,   // 불
     Water,  // 물
     Air,    // 공기
@@ -71,6 +72,9 @@ public class Elemental : MonoBehaviour
                 break;
             case ElementType.Earth:
                 nomalImage.sprite = earthSprite;    // 흙 스프라이트로 설정
+                break;
+            default:
+                nomalImage.sprite = null;
                 break;
         }
     }

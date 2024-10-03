@@ -137,6 +137,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   occupiedImage: {fileID: 5337027351447688228}
+  elementType: 0
+  fireSprite: {fileID: 21300000, guid: 457a3991c97820543a72809558fdda18, type: 3}
+  waterSprite: {fileID: 21300000, guid: 1b257293bd5ab0c4bae0beac28953873, type: 3}
+  airSprite: {fileID: 21300000, guid: cae4eabbaed64fd4eae936068719b4ad, type: 3}
+  earthSprite: {fileID: 21300000, guid: 2d34d213e5f54e843b510d72c30d44f0, type: 3}
 --- !u!114 &4567846357018699143
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -14,7 +14,7 @@ public class ShapeData : ScriptableObject
     [System.Serializable]
     public class Row
     {
-        public bool[] colum; // 각 열의 활성화 여부를 저장하는 배열
+        public ElementType[] colum; // 각 열의 타입을 저장하는 배열
         private int _size = 0; // 행의 열 수를 저장하는 변수
 
         public Row() { } // 기본 생성자
@@ -28,7 +28,7 @@ public class ShapeData : ScriptableObject
         public void CreateRow(int size)
         {
             _size = size;
-            colum = new bool[size]; // 열 배열을 초기화
+            colum = new ElementType[size]; // 열 배열을 초기화
             ClearRow(); // 행의 모든 열을 비활성화
         }
 
@@ -37,7 +37,7 @@ public class ShapeData : ScriptableObject
         {
             for (int i = 0; i < _size; i++)
             {
-                colum[i] = false; // 각 열을 비활성화
+                colum[i] = ElementType.None; // None으로 설정
             }
         }
     }

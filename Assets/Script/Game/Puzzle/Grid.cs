@@ -56,7 +56,7 @@ public class Grid : MonoBehaviour
                 newElemental.transform.localScale = new Vector3(squareScale, squareScale, squareScale); // 스케일 설정
 
                 // 랜덤으로 원소 타입을 선택하여 이미지 설정
-                ElementType randomElement = (ElementType)Random.Range(0, 4);
+                ElementType randomElement = (ElementType)Random.Range(1, 5);
                 newElemental.GetComponent<Elemental>().SetRandomElementImage(randomElement);
 
                 // 생성된 원소 블록을 리스트에 추가합니다.

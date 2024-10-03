@@ -10,11 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 19fc472c27d643f4db5c010430b08879, type: 3}
-  m_Name: Shape5
+  m_Name: L_Shape_Air
   m_EditorClassIdentifier: 
-  columns: 2
-  rows: 3
+  columns: 3
+  rows: 2
   board:
-  - colum: 0100
-  - colum: 0101
-  - colum: 0001
+  - colum: 000000000000000003000000
+  - colum: 030000000300000003000000

@@ -99,9 +99,10 @@ public class ShapeDataDrawer : Editor
             for (var column = 0; column < ShapeDataInstance.columns; column++)
             {
                 EditorGUILayout.BeginHorizontal(rowStyle); // 열 시작
-                // 토글 버튼을 생성하여 셀의 활성화 여부를 표시하고 변경할 수 있게 합니다.
-                var data = EditorGUILayout.Toggle(ShapeDataInstance.board[row].colum[column], dataFieldStyle);
-                ShapeDataInstance.board[row].colum[column] = data; // 변경된 값을 보드 데이터에 적용
+                                                           // EnumPopup을 사용하여 원소 타입 선택
+                var elementType = (ElementType)EditorGUILayout.EnumPopup(ShapeDataInstance.board[row].colum[column]);
+                ShapeDataInstance.board[row].colum[column] = elementType;
+
                 EditorGUILayout.EndHorizontal(); // 열 종료
             }
             EditorGUILayout.EndHorizontal(); // 행 종료

@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 19fc472c27d643f4db5c010430b08879, type: 3}
-  m_Name: Shape9
+  m_Name: Z_Shape
   m_EditorClassIdentifier: 
   columns: 3
-  rows: 1
+  rows: 2
   board:
-  - colum: 010101
+  - colum: 010000000200000000000000
+  - colum: 000000000300000004000000

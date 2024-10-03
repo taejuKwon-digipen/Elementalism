@@ -72,14 +72,19 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
         {
             for (var column = 0; column < shapeData.columns; column++)
             {
-                if (shapeData.board[row].colum[column])
+                ElementType elementType = shapeData.board[row].colum[column];
+                if (elementType != ElementType.None)
                 {
                     _currentShape[currentIndexInList].SetActive(true);
                     _currentShape[currentIndexInList].GetComponent<RectTransform>().localPosition =
                         new Vector2(GetXPositionForShapeSquare(shapeData, column, moveDistance),
                         GetYPositionForShapeSquare(shapeData, row, moveDistance));
 
+                    var shapeSquare = _currentShape[currentIndexInList].GetComponent<ShapeSquare>();
+                    shapeSquare.SetElementType(elementType);
+
                     currentIndexInList++;
+                    
                 }
             }
         }
@@ -138,9 +143,9 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
         int number = 0;
         foreach (var rowData in shapeData.board)
         {
-            foreach (var active in rowData.colum)
+            foreach (var elementType in rowData.colum)
             {
-                if (active)
+                if (elementType != ElementType.None)
                     number++;
             }
         }
