@@ -1,3 +1,7 @@
+// 이 스크립트는 게임에서 사용되는 퍼즐 조각(Shape)의 동작을 관리합니다.
+// 마우스 입력과 드래그 이벤트를 처리하여 퍼즐 조각을 생성, 이동, 배치할 수 있게 합니다.
+// ShapeData를 기반으로 퍼즐 조각의 모양과 위치를 설정합니다.
+
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -7,58 +11,63 @@ using UnityEngine.EventSystems;
 public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBeginDragHandler, IDragHandler, IEndDragHandler,
     IPointerDownHandler
 {
-    public GameObject squareShapeImage;
-    public Vector3 shapeSelectedScale;
-    public Vector2 offset = new Vector2(0f, 700f);
+    public GameObject squareShapeImage;      // 퍼즐 조각의 개별 블록 이미지
+    public Vector3 shapeSelectedScale;       // 선택된 상태의 스케일
+    public Vector2 offset = new Vector2(0f, 700f);  // 드래그 시 위치 보정용 오프셋
 
     [HideInInspector]
-    public ShapeData CurrentShapeData;
+    public ShapeData CurrentShapeData;       // 현재 Shape의 데이터
 
-    private List<GameObject> _currentShape = new List<GameObject>();
-    private Vector3 _shapeStartScale;
-    private RectTransform _transform;
-    private bool _shapeDraggable = true;
-    private Canvas _canvas;
+    private List<GameObject> _currentShape = new List<GameObject>();  // 현재 Shape를 구성하는 블록들의 리스트
+    private Vector3 _shapeStartScale;        // 초기 스케일 값
+    private RectTransform _transform;        // RectTransform 컴포넌트
+    private bool _shapeDraggable = true;     // 드래그 가능 여부
+    private Canvas _canvas;                  // 부모 캔버스
 
     public void Awake()
     {
-        _shapeStartScale = this.GetComponent<RectTransform>().localScale;
-        _transform = this.GetComponent<RectTransform>();
-        _canvas = GetComponentInParent<Canvas>();
-        _shapeDraggable = true;
+        _shapeStartScale = this.GetComponent<RectTransform>().localScale; // 초기 스케일 저장
+        _transform = this.GetComponent<RectTransform>();                  // RectTransform 가져오기
+        _canvas = GetComponentInParent<Canvas>();                         // 부모 캔버스 가져오기
+        _shapeDraggable = true;                                           // 드래그 가능 설정
     }
 
-    // Start is called before the first frame update
     void Start()
     {
-
+        // 초기화가 필요한 내용이 있으면 여기에 작성
     }
 
+    // 새로운 Shape 요청을 처리하는 메서드
     public void RequestNewShape(ShapeData shapeData)
     {
-        CreateShape(shapeData);
+        CreateShape(shapeData); // 새로운 Shape 생성
     }
 
+    // Shape를 생성하는 메서드
     public void CreateShape(ShapeData shapeData)
     {
-        CurrentShapeData = shapeData;
-        var totalSquareNumber = GetNumberOfSquares(shapeData);
+        CurrentShapeData = shapeData;  // 현재 ShapeData 설정
+        var totalSquareNumber = GetNumberOfSquares(shapeData); // 필요한 블록 수 계산
 
+        // 필요한 블록 수만큼 리스트에 추가
         while (_currentShape.Count <= totalSquareNumber)
         {
             _currentShape.Add(Instantiate(squareShapeImage, transform) as GameObject);
         }
 
+        // 블록 초기화
         foreach (var square in _currentShape)
         {
-            square.gameObject.transform.position = Vector3.zero;
+            square.gameObject.transform.localPosition = Vector3.zero;
             square.gameObject.SetActive(false);
         }
+
         var squareRect = squareShapeImage.GetComponent<RectTransform>();
         var moveDistance = new Vector2(squareRect.rect.width * squareRect.localScale.x,
             squareRect.rect.height * squareRect.localScale.y);
         int currentIndexInList = 0;
 
+        // ShapeData를 기반으로 블록들의 위치 설정
         for (var row = 0; row < shapeData.rows; row++)
         {
             for (var column = 0; column < shapeData.columns; column++)
@@ -76,105 +85,54 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
         }
 
     }
+
+    // Shape의 블록들의 Y 위치를 계산하는 메서드
     private float GetYPositionForShapeSquare(ShapeData shapeData, int row, Vector2 moveDistance)
     {
         float shiftOnY = 0f;
 
         if (shapeData.rows > 1)
         {
-            if (shapeData.rows % 2 != 0)
+            if (shapeData.rows % 2 != 0) // 행의 수가 홀수인 경우
             {
-                var middleSqaureIndex = (shapeData.rows - 1) / 2;
-                var multiplier = (shapeData.rows - 1) / 2;
-
-                if (row < middleSqaureIndex)
-                {
-                    shiftOnY = moveDistance.y * 1;
-                    shiftOnY *= multiplier;
-                }
-                else if (row > middleSqaureIndex)
-                {
-                    shiftOnY = moveDistance.y * -1;
-                    shiftOnY *= multiplier;
-                }
+                var middleSquareIndex = (shapeData.rows - 1) / 2;
+                var multiplier = row - middleSquareIndex;
+                shiftOnY = -moveDistance.y * multiplier;
             }
-            else
+            else // 행의 수가 짝수인 경우
             {
-                var middleSquareIndex2 = (shapeData.rows == 2) ? 1 : (shapeData.rows / 2);
-                var middleSquareIndex1 = (shapeData.rows == 2) ? 0 : shapeData.rows - 2;
-                var multiplier = shapeData.rows / 2;
-
-                if (row == middleSquareIndex1 || row == middleSquareIndex2)
-                {
-                    if (row == middleSquareIndex2)
-                        shiftOnY = (moveDistance.y / 2) * -1;
-                    if (row == middleSquareIndex1)
-                        shiftOnY = (moveDistance.y / 2);
-                }
-
-                if (row < middleSquareIndex1 && row < middleSquareIndex2)
-                {
-                    shiftOnY = moveDistance.y * 1;
-                    shiftOnY *= multiplier;
-                }
-                else if (row > middleSquareIndex1 && row > middleSquareIndex2)
-                {
-                    shiftOnY = moveDistance.y * -1;
-                    shiftOnY *= multiplier;
-                }
+                var middleSquareIndex = shapeData.rows / 2;
+                var multiplier = row - (middleSquareIndex - 0.5f);
+                shiftOnY = -moveDistance.y * multiplier;
             }
         }
         return shiftOnY;
     }
+
+    // Shape의 블록들의 X 위치를 계산하는 메서드
     private float GetXPositionForShapeSquare(ShapeData shapeData, int column, Vector2 moveDistance)
     {
         float shiftOnX = 0f;
 
         if (shapeData.columns > 1)
         {
-            if (shapeData.columns % 2 != 0)
+            if (shapeData.columns % 2 != 0) // 열의 수가 홀수인 경우
             {
                 var middleSquareIndex = (shapeData.columns - 1) / 2;
-                var multiplier = (shapeData.columns - 1) / 2;
-                if (column < middleSquareIndex)
-                {
-                    shiftOnX = moveDistance.x * -1;
-                    shiftOnX *= multiplier;
-                }
-                else if (column > middleSquareIndex)
-                {
-                    shiftOnX = moveDistance.x * 1;
-                    shiftOnX *= multiplier;
-                }
+                var multiplier = column - middleSquareIndex;
+                shiftOnX = moveDistance.x * multiplier;
             }
-            else
+            else // 열의 수가 짝수인 경우
             {
-                var middleSqaureIndex2 = (shapeData.columns == 2) ? 1 : (shapeData.columns / 2);
-                var middleSqaureIndex1 = (shapeData.columns == 2) ? 0 : shapeData.columns - 1;
-                var multiplier = shapeData.columns / 2;
-
-                if (column == middleSqaureIndex1 || column == middleSqaureIndex2)
-                {
-                    if (column == middleSqaureIndex2)
-                        shiftOnX = moveDistance.x / 2;
-                    if (column == middleSqaureIndex1)
-                        shiftOnX = (moveDistance.x / 2) * -1;
-                }
-
-                if (column < middleSqaureIndex1 && column < middleSqaureIndex2)
-                {
-                    shiftOnX = moveDistance.x * -1;
-                    shiftOnX *= multiplier;
-                }
-                else if (column > middleSqaureIndex1 && column > middleSqaureIndex2)
-                {
-                    shiftOnX = moveDistance.x * 1;
-                    shiftOnX *= multiplier;
-                }
+                var middleSquareIndex = shapeData.columns / 2;
+                var multiplier = column - (middleSquareIndex - 0.5f);
+                shiftOnX = moveDistance.x * multiplier;
             }
         }
         return shiftOnX;
     }
+
+    // ShapeData에서 활성화된 블록의 수를 계산하는 메서드
     private int GetNumberOfSquares(ShapeData shapeData)
     {
         int number = 0;
@@ -189,21 +147,25 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
         return number;
     }
 
+    // 마우스 클릭 이벤트 처리 (필요 시 구현)
     public void OnPointerClick(PointerEventData eventData)
     {
 
     }
 
+    // 마우스 버튼을 놓을 때 이벤트 처리 (필요 시 구현)
     public void OnPointerUp(PointerEventData eventData)
     {
 
     }
 
+    // 드래그 시작 시 호출되는 메서드
     public void OnBeginDrag(PointerEventData eventData)
     {
-        this.GetComponent<RectTransform>().localScale = shapeSelectedScale;
+        this.GetComponent<RectTransform>().localScale = shapeSelectedScale; // 선택된 상태로 스케일 변경
     }
 
+    // 드래그 중에 호출되는 메서드
     public void OnDrag(PointerEventData eventData)
     {
         _transform.anchorMin = new Vector2(0, 0);
@@ -211,18 +173,21 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
         _transform.pivot = new Vector2(0, 0);
 
         Vector2 pos;
+        // 화면 좌표를 캔버스의 로컬 좌표로 변환하여 위치 설정
         RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvas.transform as RectTransform,
             eventData.position, Camera.main, out pos);
         _transform.localPosition = pos + offset;
 
     }
 
+    // 드래그 종료 시 호출되는 메서드
     public void OnEndDrag(PointerEventData eventData)
     {
-        this.GetComponent<RectTransform>().localScale = _shapeStartScale;
-        GameEvents.CheckIfShapeCanBePlaced();
+        this.GetComponent<RectTransform>().localScale = _shapeStartScale; // 스케일을 원래대로 변경
+        GameEvents.CheckIfShapeCanBePlaced(); // Shape를 배치할 수 있는지 체크하는 이벤트 호출
     }
 
+    // 마우스 버튼을 눌렀을 때 이벤트 처리 (필요 시 구현)
     public void OnPointerDown(PointerEventData eventData)
     {
 
