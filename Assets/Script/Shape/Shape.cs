@@ -161,7 +161,19 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     // 마우스 버튼을 놓을 때 이벤트 처리 (필요 시 구현)
     public void OnPointerUp(PointerEventData eventData)
     {
+        foreach (var square in _currentShape)
+        {
+            Elemental elemental = square.GetComponent<Elemental>();
 
+            if (elemental != null && elemental.currentCollidedElement != ElementType.None)
+            {
+                // 충돌된 원소 타입으로 이미지 변경
+                elemental.SetRandomElementImage(elemental.currentCollidedElement);
+            }
+        }
+
+        this.GetComponent<RectTransform>().localScale = _shapeStartScale; // 스케일을 원래대로 변경
+        GameEvents.CheckIfShapeCanBePlaced(); // Shape를 배치할 수 있는지 체크하는 이벤트 호출
     }
 
     // 드래그 시작 시 호출되는 메서드

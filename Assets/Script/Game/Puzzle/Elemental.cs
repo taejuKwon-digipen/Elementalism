@@ -30,10 +30,24 @@ public class Elemental : MonoBehaviour
     public Sprite airSprite;     // 공기 스프라이트
     public Sprite earthSprite;   // 흙 스프라이트
 
+    public ElementType elementType = ElementType.None; // 원소 타입을 저장하는 변수 (초기화)
+    public ElementType currentCollidedElement = ElementType.None;
+    private bool isColliding = false;
+
     // 프로퍼티들
     public bool Selected { get; set; }          // 선택되었는지 여부
     public int ElementalIndex { get; set; }     // 원소의 인덱스
     public bool SqareOccupied { get; set; }     // 해당 칸이 점유되었는지 여부
+
+    private void Start()
+    {
+        Selected = false;       // 선택 상태 초기화
+        SqareOccupied = false;  // 점유 상태 초기화
+
+        // 초기화 시 랜덤 원소 타입으로 설정
+        elementType = (ElementType)Random.Range(1, 5);
+        SetRandomElementImage(elementType);
+    }
 
     // 이 칸을 사용할 수 있는지 확인하는 메서드
     public bool CanWeUseThisSquare()
@@ -42,23 +56,40 @@ public class Elemental : MonoBehaviour
     }
 
     // 칸을 활성화하는 메서드
+    // 칸을 활성화하는 메서드
     public void ActivateSquare()
     {
         hooverImage.gameObject.SetActive(false);    // hooverImage 비활성화
         activeImage.gameObject.SetActive(true);     // activeImage 활성화
+
+        // 활성화된 이미지의 스프라이트를 원소 타입에 맞게 설정
+        switch (currentCollidedElement)
+        {
+            case ElementType.Fire:
+                activeImage.sprite = fireSprite;     // 불 스프라이트로 설정
+                break;
+            case ElementType.Water:
+                activeImage.sprite = waterSprite;    // 물 스프라이트로 설정
+                break;
+            case ElementType.Air:
+                activeImage.sprite = airSprite;      // 공기 스프라이트로 설정
+                break;
+            case ElementType.Earth:
+                activeImage.sprite = earthSprite;    // 흙 스프라이트로 설정
+                break;
+            default:
+                activeImage.sprite = null;
+                break;
+        }
+
         Selected = true;                            // 선택됨으로 설정
         SqareOccupied = true;                       // 점유됨으로 설정
-    }
-
-    private void Start()
-    {
-        Selected = false;       // 선택 상태 초기화
-        SqareOccupied = false;  // 점유 상태 초기화
     }
 
     // 원소 타입에 따라 이미지 설정하는 메서드
     public void SetRandomElementImage(ElementType elementType)
     {
+        this.elementType = elementType; // 원소 타입 설정
         switch (elementType)
         {
             case ElementType.Fire:
@@ -78,6 +109,21 @@ public class Elemental : MonoBehaviour
                 break;
         }
     }
+    // 충돌 시작 시 호출되는 메서드
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        hooverImage.gameObject.SetActive(true); // hooverImage 활성화
+
+        ShapeSquare collidedSquare = collision.GetComponent<ShapeSquare>();
+
+        if (collidedSquare != null)
+        {
+            currentCollidedElement = collidedSquare.elementType; // 충돌된 원소 타입 저장
+            isColliding = true; // 충돌 상태 설정
+            Debug.Log("충돌된 원소 타입: " + currentCollidedElement);
+        }
+    }
+
 
     // 충돌 중일 때 호출되는 메서드
     private void OnTriggerStay2D(Collider2D collision)
@@ -88,12 +134,17 @@ public class Elemental : MonoBehaviour
     // 충돌이 종료되었을 때 호출되는 메서드
     private void OnTriggerExit2D(Collider2D collision)
     {
-        hooverImage.gameObject.SetActive(false);    // hooverImage 비활성화
+        ShapeSquare collidedSquare = collision.GetComponent<ShapeSquare>();
+
+        if (collidedSquare != null && currentCollidedElement == collidedSquare.elementType)
+        {
+            hooverImage.gameObject.SetActive(false);
+            currentCollidedElement = ElementType.None; // 조건에 따라 초기화
+            isColliding = false; // 충돌 상태 해제
+            Debug.Log("충돌 종료: 원소 타입 초기화됨");
+        }
     }
 
-    // 충돌이 시작될 때 호출되는 메서드
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        hooverImage.gameObject.SetActive(true);     // hooverImage 활성화
-    }
+
+
 }
