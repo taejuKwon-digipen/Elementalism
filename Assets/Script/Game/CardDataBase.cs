@@ -11,11 +11,11 @@ public class CardDtatBase : MonoBehaviour
 
     void Awake()
     {
-        CardForPlay.Add(new Card(0, 10, "Booldy hell1", false));
-        CardForPlay.Add(new Card(1, 10, "Booldy hell2", false));
+        CardForPlay.Add(new Card("one", 0, 10, "Booldy hell1", false));
+        CardForPlay.Add(new Card("two",1, 10, "Booldy hell2", false));
 
-        CardForBlock.Add(new Card(0, 10, "Booldy hell3", true));
-        CardForBlock.Add(new Card(1, 10, "Booldy hell4",true));
+        CardForBlock.Add(new Card("three", 0, 10, "Booldy hell3", true));
+        CardForBlock.Add(new Card("four",1, 10, "Booldy hell4",true));
 
     }
 

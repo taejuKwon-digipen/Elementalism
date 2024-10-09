@@ -6,8 +6,9 @@ using UnityEngine;
 
 public class Card : MonoBehaviour 
 {
+    public string CardName;
     public int ID;
-    public int Attack;
+    public int  Attack;
     //public float Percent; //µîÀå È®·ü 
     public string CardDescription;
     public bool UseMagic = false;
@@ -19,8 +20,9 @@ public class Card : MonoBehaviour
 
     }
 
-    public Card(int id , int attack, string carddescription, bool usemagic)
+    public Card(string cardname, int id , int attack, string carddescription, bool usemagic)
     {
+        CardName = cardname;
         ID = id;
         Attack = attack;
         //Percent = percent; 
