@@ -1,0 +1,4206 @@
+fileFormatVersion: 2
+guid: ccef3261a9601794bb9912d155dc7072
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 16384
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_0
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 1824
+        width: 165
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9e0ec89a450cb3c4494d32e678181e43
+      internalID: -1182899902
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_1
+      rect:
+        serializedVersion: 2
+        x: 199
+        y: 1787
+        width: 113
+        height: 85
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 28e33cee568a40f469ff22c1b2b44014
+      internalID: -420797686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_2
+      rect:
+        serializedVersion: 2
+        x: 391
+        y: 1839
+        width: 98
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2312b04550b3dcb469d2709bb326e1dc
+      internalID: -810894102
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_3
+      rect:
+        serializedVersion: 2
+        x: 495
+        y: 1855
+        width: 50
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 860c3ce0b6099fa4bad6be7ac4b9065f
+      internalID: 892659888
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_4
+      rect:
+        serializedVersion: 2
+        x: 559
+        y: 1855
+        width: 50
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e5e2ec3be56ca7c4380378f03ce51d32
+      internalID: 1194802620
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_5
+      rect:
+        serializedVersion: 2
+        x: 627
+        y: 1851
+        width: 58
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0034782eb1cceee498a4a0f3f467994a
+      internalID: 39819537
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_6
+      rect:
+        serializedVersion: 2
+        x: 704
+        y: 1851
+        width: 57
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c497d6ba55c5e8f42996601e2593c300
+      internalID: -2034742167
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_7
+      rect:
+        serializedVersion: 2
+        x: 779
+        y: 1851
+        width: 37
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e1476872010f88543aa87d50170464df
+      internalID: 1096836840
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_8
+      rect:
+        serializedVersion: 2
+        x: 847
+        y: 1787
+        width: 102
+        height: 102
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a821b2687e7f23443a97b018057db9c4
+      internalID: -2056920118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_9
+      rect:
+        serializedVersion: 2
+        x: 1051
+        y: 1871
+        width: 34
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1f4524b3a94c9b849b8bf8734337d1f8
+      internalID: 1292830446
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_10
+      rect:
+        serializedVersion: 2
+        x: 1104
+        y: 1871
+        width: 32
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2da6e595033d368419e39c17989e14fb
+      internalID: -1744926098
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_11
+      rect:
+        serializedVersion: 2
+        x: 1147
+        y: 1791
+        width: 265
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: da2013bc44052c74ab5dee139867997c
+      internalID: -1862530946
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_12
+      rect:
+        serializedVersion: 2
+        x: 1819
+        y: 1847
+        width: 150
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e5fbfb0e4d081b74097c6403c674b70f
+      internalID: -1042144674
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_13
+      rect:
+        serializedVersion: 2
+        x: 1975
+        y: 1847
+        width: 150
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 71a5aafdc9fad8b46a3e878f7120c3e1
+      internalID: 619110814
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_14
+      rect:
+        serializedVersion: 2
+        x: 2184
+        y: 1827
+        width: 68
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 91e9e634ae2b61b428c2e7d22688531f
+      internalID: -1403185137
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_15
+      rect:
+        serializedVersion: 2
+        x: 2275
+        y: 1811
+        width: 261
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bda1e03ee267beb49a1470c189b7addd
+      internalID: -777598116
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_16
+      rect:
+        serializedVersion: 2
+        x: 1051
+        y: 1824
+        width: 34
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0d5a0667487bea043befa13ffd21cae4
+      internalID: 821511700
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_17
+      rect:
+        serializedVersion: 2
+        x: 1127
+        y: 1851
+        width: 9
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 226924477e6ecd442a14196f06d3e2d2
+      internalID: -2065015745
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_18
+      rect:
+        serializedVersion: 2
+        x: 1419
+        y: 1799
+        width: 386
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b373ac1a416a88548a3973a1aa59590e
+      internalID: 566081969
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_19
+      rect:
+        serializedVersion: 2
+        x: 495
+        y: 1791
+        width: 50
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0b2bb7e08c2c2714e9dbb72df3ebe10e
+      internalID: -124125775
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_20
+      rect:
+        serializedVersion: 2
+        x: 559
+        y: 1791
+        width: 50
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6236c42685758ae49ab8cb8209a94b30
+      internalID: -60646469
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_21
+      rect:
+        serializedVersion: 2
+        x: 627
+        y: 1787
+        width: 58
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 87db6524118439c41a2148ae1f86bab7
+      internalID: 1721532597
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_22
+      rect:
+        serializedVersion: 2
+        x: 704
+        y: 1787
+        width: 57
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 14ea194f4a149b54e89890940b2a481f
+      internalID: -347277393
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_23
+      rect:
+        serializedVersion: 2
+        x: 779
+        y: 1787
+        width: 37
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d48f511fd618ee344b3388f8304db565
+      internalID: -1411129981
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_24
+      rect:
+        serializedVersion: 2
+        x: 1104
+        y: 1824
+        width: 32
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 28a7603f9617e32459b676b35bb09c64
+      internalID: -1611347729
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_25
+      rect:
+        serializedVersion: 2
+        x: 1819
+        y: 1804
+        width: 150
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 49762a764dcc5d54a8647e7c9ff7ee18
+      internalID: 733932331
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_26
+      rect:
+        serializedVersion: 2
+        x: 1975
+        y: 1804
+        width: 150
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 09fcb47d5c7599c46b18855cdb53189a
+      internalID: -1845169594
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_27
+      rect:
+        serializedVersion: 2
+        x: 2131
+        y: 1775
+        width: 54
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dcad18f6486b4f849b51b1504d9d3a14
+      internalID: 367949348
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_28
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 1764
+        width: 98
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cc2c20914590e0645b85181888eaff1c
+      internalID: -102899919
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_29
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 1755
+        width: 54
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a93a5080cfba31f4083fd5aa65685ac4
+      internalID: -1641613432
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_30
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 1719
+        width: 97
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 052562e296a8292479b3bf66d9e023ae
+      internalID: 556443415
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_31
+      rect:
+        serializedVersion: 2
+        x: 1219
+        y: 1667
+        width: 217
+        height: 109
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6e450158ffb56ad4b8e77dfbf64c43ad
+      internalID: -1972469647
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_32
+      rect:
+        serializedVersion: 2
+        x: 1479
+        y: 1667
+        width: 213
+        height: 109
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8e9a7a705d9fac440b5d24ef0a06f707
+      internalID: 2000595349
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_33
+      rect:
+        serializedVersion: 2
+        x: 1819
+        y: 1759
+        width: 90
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 71201e867d66fbb49b70547a5f7a69ff
+      internalID: -1783114748
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_34
+      rect:
+        serializedVersion: 2
+        x: 1987
+        y: 1704
+        width: 69
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7644b6ea916cbd84688fa2eb89d76654
+      internalID: -1753400812
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_35
+      rect:
+        serializedVersion: 2
+        x: 2079
+        y: 1724
+        width: 53
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5d04044791a87ba4e8d0f6ae141f4b8d
+      internalID: 962905519
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_36
+      rect:
+        serializedVersion: 2
+        x: 2144
+        y: 1735
+        width: 32
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7cc77b79e96f7ab4ca500eb181de0ff8
+      internalID: 1279149073
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_37
+      rect:
+        serializedVersion: 2
+        x: 2184
+        y: 1724
+        width: 52
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4fbc67fb9a83cf84491cc34f3c02a7b3
+      internalID: -1144594406
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_38
+      rect:
+        serializedVersion: 2
+        x: 2275
+        y: 1744
+        width: 261
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 271c14ba14b5a6948b9b80a28aec18a8
+      internalID: 1343942627
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_39
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 1667
+        width: 97
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4bcd2a5430f35564eb2bc59bb836ffe0
+      internalID: 464207882
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_40
+      rect:
+        serializedVersion: 2
+        x: 107
+        y: 1667
+        width: 105
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 58588c866766c0e4fb0ece5aa5e35289
+      internalID: -1093303746
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_41
+      rect:
+        serializedVersion: 2
+        x: 591
+        y: 1711
+        width: 170
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0d845c21ba63ae7478100a92ed5eeefc
+      internalID: 62630726
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_42
+      rect:
+        serializedVersion: 2
+        x: 1147
+        y: 1699
+        width: 54
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 78dd03b7947e4fb4db999bbe08b2e05d
+      internalID: 314881131
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_43
+      rect:
+        serializedVersion: 2
+        x: 1731
+        y: 1687
+        width: 70
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a356a6d50ea20c24cba321eab0a37135
+      internalID: 50616405
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_44
+      rect:
+        serializedVersion: 2
+        x: 1844
+        y: 1679
+        width: 52
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aa661afaf177992468e92c44200bd479
+      internalID: 348279697
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_45
+      rect:
+        serializedVersion: 2
+        x: 1899
+        y: 1711
+        width: 82
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d811a6324d8c3be45a103bfe4a22b51a
+      internalID: 1519703016
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_46
+      rect:
+        serializedVersion: 2
+        x: 2131
+        y: 1671
+        width: 54
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 949ca741e37e2f94fafe558db76fd71f
+      internalID: 321684315
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_47
+      rect:
+        serializedVersion: 2
+        x: 2275
+        y: 1675
+        width: 261
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6f8ca56a4a24a1d44ad9e2d978e9b549
+      internalID: -749570887
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_48
+      rect:
+        serializedVersion: 2
+        x: 587
+        y: 1464
+        width: 449
+        height: 241
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c17d99bfdcfc90d48b31c808072b9634
+      internalID: -310830111
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_49
+      rect:
+        serializedVersion: 2
+        x: 1935
+        y: 1647
+        width: 54
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 30985bffac9730d418c39078c80f0398
+      internalID: 498209636
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_50
+      rect:
+        serializedVersion: 2
+        x: 2204
+        y: 1699
+        width: 5
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 493349ac5161eb04a8adb04fb9e3fdfc
+      internalID: 1841791088
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_51
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 1567
+        width: 74
+        height: 94
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 68f23872dce91fb499d841f111440cff
+      internalID: 2113867063
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_52
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 1567
+        width: 61
+        height: 94
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b4d505c3046d10e4592845efb1a932e8
+      internalID: 1846875589
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_53
+      rect:
+        serializedVersion: 2
+        x: 339
+        y: 1631
+        width: 70
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 592de61721d43614696e533e2a40440f
+      internalID: 790703455
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_54
+      rect:
+        serializedVersion: 2
+        x: 419
+        y: 1631
+        width: 70
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 158a21dc757aa284b95fde935529cb30
+      internalID: 429755600
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_55
+      rect:
+        serializedVersion: 2
+        x: 499
+        y: 1631
+        width: 70
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cbdb5a44adea1d240a90629d74cb6e48
+      internalID: -655193183
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_56
+      rect:
+        serializedVersion: 2
+        x: 1071
+        y: 1619
+        width: 58
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2850e75b8831ed446b3e21cded35c9d1
+      internalID: 1733486194
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_57
+      rect:
+        serializedVersion: 2
+        x: 1147
+        y: 1624
+        width: 54
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 47f235e0e40f1504094a0db134277d1b
+      internalID: -385197879
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_58
+      rect:
+        serializedVersion: 2
+        x: 1235
+        y: 1559
+        width: 201
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 77b3d71931e36fa428e4a5dc493d0400
+      internalID: 1404173414
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_59
+      rect:
+        serializedVersion: 2
+        x: 1715
+        y: 1544
+        width: 117
+        height: 121
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 715102d2436d53f40a71b6547b0c9905
+      internalID: -143045984
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_60
+      rect:
+        serializedVersion: 2
+        x: 1884
+        y: 1595
+        width: 52
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 64bf7f7e6141e404dbe971344806936b
+      internalID: -270014651
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_61
+      rect:
+        serializedVersion: 2
+        x: 1987
+        y: 1595
+        width: 54
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4e7b556de8be8a440ba980133e502c9a
+      internalID: 839870105
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_62
+      rect:
+        serializedVersion: 2
+        x: 2071
+        y: 1615
+        width: 174
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d7a550f3076bdec4db9a7c652ed13cf0
+      internalID: -1660475542
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_63
+      rect:
+        serializedVersion: 2
+        x: 2275
+        y: 1571
+        width: 70
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fa5300be48782c343aa59fd4b6c2603f
+      internalID: -780785965
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_64
+      rect:
+        serializedVersion: 2
+        x: 2367
+        y: 1575
+        width: 65
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7038309f8d1298c458d02c6d89890abf
+      internalID: 1925259554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_65
+      rect:
+        serializedVersion: 2
+        x: 2444
+        y: 1624
+        width: 45
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4fcf1adeec3427040b4280617fb72d46
+      internalID: 1288662045
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_66
+      rect:
+        serializedVersion: 2
+        x: 2495
+        y: 1624
+        width: 46
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 72dc020be8c0e3e4ead3f58a41984afa
+      internalID: -762784441
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_67
+      rect:
+        serializedVersion: 2
+        x: 271
+        y: 1504
+        width: 274
+        height: 121
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 914ff9e6e06b0d546971cf80cafa00c3
+      internalID: -17987415
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_68
+      rect:
+        serializedVersion: 2
+        x: 1071
+        y: 1524
+        width: 54
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f9b254bb71e069d41a52d2db3f650704
+      internalID: 36581474
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_69
+      rect:
+        serializedVersion: 2
+        x: 1147
+        y: 1544
+        width: 54
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a272c6ca1b153774ea3be21afc4352b7
+      internalID: -476943926
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_70
+      rect:
+        serializedVersion: 2
+        x: 1471
+        y: 1547
+        width: 201
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d5fc6d405f11a9240bffc0731b6672e7
+      internalID: -432315315
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_71
+      rect:
+        serializedVersion: 2
+        x: 1935
+        y: 1544
+        width: 54
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 56dba63cdc139444d91c621ed7e1ded0
+      internalID: -1619251056
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_72
+      rect:
+        serializedVersion: 2
+        x: 2011
+        y: 1531
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 152da020ad3db4a4c8cc7c11d680d186
+      internalID: -549423034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_73
+      rect:
+        serializedVersion: 2
+        x: 2071
+        y: 1564
+        width: 174
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b05a3c87cb6971f4283bfb7cb1c62d69
+      internalID: -1177641334
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_74
+      rect:
+        serializedVersion: 2
+        x: 2444
+        y: 1571
+        width: 45
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eb946e656ee0de24a8a1611e5415e8f7
+      internalID: 512351751
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_75
+      rect:
+        serializedVersion: 2
+        x: 2495
+        y: 1571
+        width: 46
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2e12fc092f352dc4eb6e6491e8e54001
+      internalID: -1744396336
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_76
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 1479
+        width: 52
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 213bbf8a3e221b54892c392ebf1d1c60
+      internalID: -2026902030
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_77
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 1475
+        width: 61
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5add15e15330e4c448a2a2f2af924573
+      internalID: -511162950
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_78
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 1467
+        width: 68
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3aa31f030ebd9694c98fd0d124e9b6a5
+      internalID: -1024267911
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_79
+      rect:
+        serializedVersion: 2
+        x: 1215
+        y: 1459
+        width: 70
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3b57d5bd72b5cf049aba2b2e2f019ae0
+      internalID: -1991404297
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_80
+      rect:
+        serializedVersion: 2
+        x: 1347
+        y: 1499
+        width: 114
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 14d131ea86b9c374095e4ee052f14c10
+      internalID: -1844156392
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_81
+      rect:
+        serializedVersion: 2
+        x: 1655
+        y: 1447
+        width: 386
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 23b1a7995e6b28e4eb3522faa0640489
+      internalID: 1840380531
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_82
+      rect:
+        serializedVersion: 2
+        x: 2095
+        y: 1419
+        width: 134
+        height: 133
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1b7297f5a90c7104c929a5580832f3a6
+      internalID: 815208571
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_83
+      rect:
+        serializedVersion: 2
+        x: 2275
+        y: 1499
+        width: 70
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6124f47127965e34dba25e668ed2bec3
+      internalID: 1249786021
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_84
+      rect:
+        serializedVersion: 2
+        x: 2367
+        y: 1504
+        width: 65
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d18a5b7daf2bc3943b2eec1b11d7187c
+      internalID: 1770025493
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_85
+      rect:
+        serializedVersion: 2
+        x: 2444
+        y: 1519
+        width: 45
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0affc3b39ec1ef24d99cfaad734361c5
+      internalID: -2102429377
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_86
+      rect:
+        serializedVersion: 2
+        x: 2495
+        y: 1519
+        width: 46
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4a1611843eb88a145861007398e7b232
+      internalID: -1371865217
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_87
+      rect:
+        serializedVersion: 2
+        x: 1155
+        y: 1487
+        width: 37
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 879c630910102784cb5aa097b44d5047
+      internalID: 107893998
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_88
+      rect:
+        serializedVersion: 2
+        x: 1351
+        y: 1455
+        width: 98
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 070b8c3bac64fc34d8c10df5e618bff3
+      internalID: 612755805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_89
+      rect:
+        serializedVersion: 2
+        x: 1495
+        y: 1464
+        width: 121
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c887277844a1d674cb9bf046f09a11d6
+      internalID: -1780380421
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_90
+      rect:
+        serializedVersion: 2
+        x: 2275
+        y: 1424
+        width: 70
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e8fe6b85af878cc49b7509e390db4e3f
+      internalID: -797630936
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_91
+      rect:
+        serializedVersion: 2
+        x: 2367
+        y: 1427
+        width: 65
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ea9f6f7d83cacd04584c8e7fcb688332
+      internalID: 101317707
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_92
+      rect:
+        serializedVersion: 2
+        x: 2444
+        y: 1467
+        width: 45
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ac0529a78c4abb24697ce72b8b4f9a73
+      internalID: 1934584124
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_93
+      rect:
+        serializedVersion: 2
+        x: 2495
+        y: 1467
+        width: 46
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fdc34b09fcb846243a85ac50dc7a499a
+      internalID: -1913806386
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_94
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 1399
+        width: 52
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e5ccac507d55b374eaa40d05f1b6a330
+      internalID: -990626872
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_95
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 1399
+        width: 61
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 49103662ba21eec439f015f2148fb0d1
+      internalID: 1556205809
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_96
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 1391
+        width: 68
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 49c48103afefb7f4ca025ddbfa44c33a
+      internalID: 680055789
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_97
+      rect:
+        serializedVersion: 2
+        x: 339
+        y: 1435
+        width: 213
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4f8927be270d7334789a7e8e37db5731
+      internalID: -707943626
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_98
+      rect:
+        serializedVersion: 2
+        x: 591
+        y: 1415
+        width: 174
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7c3862e44a12a7b4c8165b168bfcdab3
+      internalID: -349019125
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_99
+      rect:
+        serializedVersion: 2
+        x: 787
+        y: 1415
+        width: 174
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bc1ee021133b0fe47ab5bf0da0c4e302
+      internalID: -667185465
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_100
+      rect:
+        serializedVersion: 2
+        x: 979
+        y: 1415
+        width: 133
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ba18bffccf7600242b105364c992f883
+      internalID: 538388189
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_101
+      rect:
+        serializedVersion: 2
+        x: 1339
+        y: 1411
+        width: 102
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5aa5ce93c8a0b8f44946db799eb7b404
+      internalID: 675419280
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_102
+      rect:
+        serializedVersion: 2
+        x: 1484
+        y: 1407
+        width: 145
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8345fb5543ee9c74ca32b056178bacaa
+      internalID: -2131100063
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_103
+      rect:
+        serializedVersion: 2
+        x: 1924
+        y: 1404
+        width: 45
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4b69b06952f3d3b4aa106cdbb32134fd
+      internalID: 1084441664
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_104
+      rect:
+        serializedVersion: 2
+        x: 1971
+        y: 1404
+        width: 45
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f072a64a50f3f584e9101c49ce8d9192
+      internalID: -36248516
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_105
+      rect:
+        serializedVersion: 2
+        x: 2444
+        y: 1415
+        width: 45
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 08bdf7110d2e95a4e81af289146358c4
+      internalID: -364198585
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_106
+      rect:
+        serializedVersion: 2
+        x: 2495
+        y: 1415
+        width: 46
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 61c933898da25ef47813140618dc3c68
+      internalID: -1879351308
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_107
+      rect:
+        serializedVersion: 2
+        x: 19
+        y: 1344
+        width: 37
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 67a3b1bd547bf1449b8cc7f69cb8d43b
+      internalID: -1723616441
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_108
+      rect:
+        serializedVersion: 2
+        x: 59
+        y: 1344
+        width: 33
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3e6cb50114fcb2a449708f33c033f8e5
+      internalID: -643850914
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_109
+      rect:
+        serializedVersion: 2
+        x: 79
+        y: 1251
+        width: 162
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 912f75d0f3ec320438269dfb75829aaa
+      internalID: 387560106
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_110
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 1344
+        width: 26
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 41339dd11a2aa374f8ef9d5c57076c3c
+      internalID: 2011558883
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_111
+      rect:
+        serializedVersion: 2
+        x: 195
+        y: 1311
+        width: 57
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 01b466b39779c1d4d98cd735af3576a9
+      internalID: 350219026
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_112
+      rect:
+        serializedVersion: 2
+        x: 611
+        y: 795
+        width: 1638
+        height: 606
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2021e5c79029d2c4c9faec748429285a
+      internalID: 156110119
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_113
+      rect:
+        serializedVersion: 2
+        x: 2259
+        y: 1331
+        width: 70
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: df7d91284984eb74fa13ab785fffef2f
+      internalID: -234067333
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_114
+      rect:
+        serializedVersion: 2
+        x: 2335
+        y: 1331
+        width: 70
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2473d80c08faaf845bafcda1439b04b7
+      internalID: -1322777137
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_115
+      rect:
+        serializedVersion: 2
+        x: 2407
+        y: 1331
+        width: 69
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c36cde8541265844bbf7571769db6e97
+      internalID: -754069071
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_116
+      rect:
+        serializedVersion: 2
+        x: 2479
+        y: 1331
+        width: 70
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b8705ae339d36c244b3eda88f45ff236
+      internalID: 1082039
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_117
+      rect:
+        serializedVersion: 2
+        x: 2264
+        y: 1267
+        width: 68
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1a5a9c2c45a83254fa374b4d7a997629
+      internalID: -2102961499
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_118
+      rect:
+        serializedVersion: 2
+        x: 2335
+        y: 1267
+        width: 70
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a18c9127a4a4ce54e9df40699ee09f89
+      internalID: -205845113
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_119
+      rect:
+        serializedVersion: 2
+        x: 2407
+        y: 1267
+        width: 69
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 65472c4f48e725243ae28f85c99bcf12
+      internalID: -399707935
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_120
+      rect:
+        serializedVersion: 2
+        x: 2479
+        y: 1267
+        width: 70
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 83872aaadec40544d8588e1c1657b02a
+      internalID: 1397353965
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_121
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 1099
+        width: 161
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3acda23018a552b41888156ff034a3f3
+      internalID: 270532172
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_122
+      rect:
+        serializedVersion: 2
+        x: 215
+        y: 1104
+        width: 170
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: acf4f40978edab4408b8e5451d1e30f9
+      internalID: 2058141788
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_123
+      rect:
+        serializedVersion: 2
+        x: 415
+        y: 1104
+        width: 170
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6d6c8fd432fcd9a4d9c30b2debb09d35
+      internalID: 1655540298
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_124
+      rect:
+        serializedVersion: 2
+        x: 2259
+        y: 1204
+        width: 70
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f413aad240768be43b5f7d2b694c5ddc
+      internalID: -1871286434
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_125
+      rect:
+        serializedVersion: 2
+        x: 2335
+        y: 1204
+        width: 70
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 55dae51f819517b48988286329123fbc
+      internalID: -369089445
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_126
+      rect:
+        serializedVersion: 2
+        x: 2407
+        y: 1204
+        width: 69
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 098e098b5c8f74f488daf16e0698fb65
+      internalID: -1248030427
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_127
+      rect:
+        serializedVersion: 2
+        x: 2479
+        y: 1204
+        width: 70
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 20702b514ccc40844b3a49dad28b1587
+      internalID: 559078503
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_128
+      rect:
+        serializedVersion: 2
+        x: 2264
+        y: 1139
+        width: 68
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: db6bf1257ec69994abb0a5295e333af1
+      internalID: 1421417033
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_129
+      rect:
+        serializedVersion: 2
+        x: 2335
+        y: 1139
+        width: 70
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f9ac642d0932e154d98db9dc7b94f308
+      internalID: 1903726917
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_130
+      rect:
+        serializedVersion: 2
+        x: 2407
+        y: 1139
+        width: 69
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2e1b4cc3f45a2ac438c5495cfce773e9
+      internalID: 2112214725
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_131
+      rect:
+        serializedVersion: 2
+        x: 2479
+        y: 1139
+        width: 70
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 90dcbe81f0f660e41ac3cc38c831d63d
+      internalID: 659264251
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_132
+      rect:
+        serializedVersion: 2
+        x: 2275
+        y: 1087
+        width: 57
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: be57b4e546bffca47859820fadf49fe2
+      internalID: 2115009330
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_133
+      rect:
+        serializedVersion: 2
+        x: 2335
+        y: 1087
+        width: 57
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b7ec0658df5829a41ae47523dee5cf5f
+      internalID: -190803758
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_134
+      rect:
+        serializedVersion: 2
+        x: 2407
+        y: 1075
+        width: 69
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 436f3c4f24d11b84181ce8c4bbab2db4
+      internalID: 2036621400
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_135
+      rect:
+        serializedVersion: 2
+        x: 2479
+        y: 1075
+        width: 70
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 66c8a89081969eb44bfc068a7b708996
+      internalID: 695211829
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_136
+      rect:
+        serializedVersion: 2
+        x: 199
+        y: 795
+        width: 397
+        height: 286
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dab2be48b9cca4444a895eadbe980271
+      internalID: -1917635491
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_137
+      rect:
+        serializedVersion: 2
+        x: 2275
+        y: 1047
+        width: 57
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a538b823316448945b8d3f16758b1ca6
+      internalID: 1321482511
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_138
+      rect:
+        serializedVersion: 2
+        x: 2335
+        y: 1047
+        width: 57
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6490cc84dad138a41a3baaff2cb84764
+      internalID: 502590060
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_139
+      rect:
+        serializedVersion: 2
+        x: 2364
+        y: 955
+        width: 68
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 68d4c41fd2ba13a4aa7e902c5489a326
+      internalID: 1022256140
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_140
+      rect:
+        serializedVersion: 2
+        x: 2439
+        y: 947
+        width: 97
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0627058566287864f951791e614a76c3
+      internalID: 1865561995
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_141
+      rect:
+        serializedVersion: 2
+        x: 2344
+        y: 855
+        width: 97
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 79049493154294446bf70999157846a5
+      internalID: -558501915
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_142
+      rect:
+        serializedVersion: 2
+        x: 2444
+        y: 855
+        width: 97
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8fb90c4367e51bf4ebd5ce7dda72edbf
+      internalID: -1337562075
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_143
+      rect:
+        serializedVersion: 2
+        x: 531
+        y: 535
+        width: 285
+        height: 257
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c09d67cdf5715d24a88afa48f47ee20b
+      internalID: -1018078522
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_144
+      rect:
+        serializedVersion: 2
+        x: 2444
+        y: 764
+        width: 97
+        height: 88
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6e09107d224519e4c849074e211864f4
+      internalID: 2009311554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_145
+      rect:
+        serializedVersion: 2
+        x: 364
+        y: 611
+        width: 128
+        height: 130
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2cc861dd564f3d641b7f147ca1bcbd0d
+      internalID: 1896446848
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_146
+      rect:
+        serializedVersion: 2
+        x: 839
+        y: 31
+        width: 797
+        height: 730
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 284a093fc49a55546988b2cb37230eed
+      internalID: -1210869541
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_147
+      rect:
+        serializedVersion: 2
+        x: 1979
+        y: 647
+        width: 70
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9db88b3e511711042bdd9d8b5f4ab96c
+      internalID: -1366883697
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_148
+      rect:
+        serializedVersion: 2
+        x: 2055
+        y: 639
+        width: 97
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cbc09c668a0b7114ea3c5d429791730d
+      internalID: -2014987445
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_149
+      rect:
+        serializedVersion: 2
+        x: 2159
+        y: 407
+        width: 206
+        height: 349
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a2b495b1c79787e49a2895f8f4c9b8f1
+      internalID: 1182096492
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_150
+      rect:
+        serializedVersion: 2
+        x: 2371
+        y: 664
+        width: 70
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1bdad573fbc23e24c9aec34838762145
+      internalID: -806567411
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_151
+      rect:
+        serializedVersion: 2
+        x: 2055
+        y: 547
+        width: 97
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aeeab80e222b63d44b09e6c5c887c4d9
+      internalID: -944061848
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_152
+      rect:
+        serializedVersion: 2
+        x: 2371
+        y: 595
+        width: 70
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 255e461a3db4d2d4e825cee1744a9ba8
+      internalID: -288525208
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_153
+      rect:
+        serializedVersion: 2
+        x: 1727
+        y: 527
+        width: 174
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a8c4228241a22642930fb79b6202fb4
+      internalID: 716716730
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_154
+      rect:
+        serializedVersion: 2
+        x: 2055
+        y: 455
+        width: 97
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c55fe9b7b0f09f140bdbae4bf0912bec
+      internalID: 851488320
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_155
+      rect:
+        serializedVersion: 2
+        x: 2371
+        y: 527
+        width: 70
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 12f70c33618f9924497fe7217b6409a7
+      internalID: 392727768
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_156
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 411
+        width: 70
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e6de015f7e296e14ab69561247f686b4
+      internalID: 2097904687
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_157
+      rect:
+        serializedVersion: 2
+        x: 359
+        y: 411
+        width: 53
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: af420927b4443264a890358e512fc658
+      internalID: -1174352522
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_158
+      rect:
+        serializedVersion: 2
+        x: 1671
+        y: 455
+        width: 70
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 62583ca2598f8fc459aceb9453cb0f34
+      internalID: 909875223
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_159
+      rect:
+        serializedVersion: 2
+        x: 1744
+        y: 455
+        width: 68
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aa45ee6251a1b78439e7fd768027044a
+      internalID: 2012144752
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_160
+      rect:
+        serializedVersion: 2
+        x: 1815
+        y: 455
+        width: 70
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0adc4a3b7a7649d4ab048dad85f8cfa1
+      internalID: -1852464971
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_161
+      rect:
+        serializedVersion: 2
+        x: 1887
+        y: 455
+        width: 69
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 255a978ad5ea66a4dbe03f9bf5e96a68
+      internalID: -1462538783
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_162
+      rect:
+        serializedVersion: 2
+        x: 2371
+        y: 451
+        width: 70
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f4080de66efcf544bb4a3c19c2964f1b
+      internalID: 1520604286
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_163
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 304
+        width: 129
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6e68960e98557594a8ba628bd2da0bcd
+      internalID: -512586608
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_164
+      rect:
+        serializedVersion: 2
+        x: 175
+        y: 267
+        width: 117
+        height: 122
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 663e2f0d1089b5644a62f6b575ee81e9
+      internalID: -1644042420
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_165
+      rect:
+        serializedVersion: 2
+        x: 307
+        y: 359
+        width: 54
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 08b0134b5b0f0fc45a8dad6c19a4d7a9
+      internalID: -665149931
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_166
+      rect:
+        serializedVersion: 2
+        x: 411
+        y: 359
+        width: 54
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f8cb147fa55562c40b7b2fbb59ce145b
+      internalID: 1630379364
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_167
+      rect:
+        serializedVersion: 2
+        x: 495
+        y: 379
+        width: 174
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c007178fb9b625c4fab926b8b103b65a
+      internalID: 1857181695
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_168
+      rect:
+        serializedVersion: 2
+        x: 679
+        y: 304
+        width: 130
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ad86e4e5df9bd724da6fb312e0da1dcd
+      internalID: 1339045304
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_169
+      rect:
+        serializedVersion: 2
+        x: 1739
+        y: 384
+        width: 146
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a2c8ccbd8496c7c42964fb27c032d05f
+      internalID: 443615548
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_170
+      rect:
+        serializedVersion: 2
+        x: 359
+        y: 307
+        width: 53
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 45181d7e9c3698141b1ccccbac2e317d
+      internalID: -771607822
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_171
+      rect:
+        serializedVersion: 2
+        x: 435
+        y: 295
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fd3c227b38ee07b4c97f1eca8cdb0323
+      internalID: -881621036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_172
+      rect:
+        serializedVersion: 2
+        x: 495
+        y: 327
+        width: 174
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d1e07bb959a35f447a592fbfd682814f
+      internalID: 1407385074
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_173
+      rect:
+        serializedVersion: 2
+        x: 1664
+        y: 39
+        width: 865
+        height: 326
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 644e090d080c1a14dbd8fa491a1dd6e5
+      internalID: -2069473106
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_174
+      rect:
+        serializedVersion: 2
+        x: 527
+        y: 259
+        width: 58
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0920725fdd9576443afad0c597355155
+      internalID: 1684452347
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_175
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 84
+        width: 132
+        height: 132
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c54bd7174d1ae144895629e55d30536f
+      internalID: -1580988075
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_176
+      rect:
+        serializedVersion: 2
+        x: 187
+        y: 187
+        width: 69
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fb5a74adcb7999645903e2e27e5d4b10
+      internalID: -1681167943
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_177
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 151
+        width: 54
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 599adcca8a5b5aa43956a096ac6eaa7c
+      internalID: 634425908
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_178
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 44
+        width: 118
+        height: 121
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2a83544693baf7c478cc227a5f8b850a
+      internalID: 1538619733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_179
+      rect:
+        serializedVersion: 2
+        x: 299
+        y: 99
+        width: 53
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6c7f7c48f98dfb246ab7e5f94d6f432c
+      internalID: 1568889195
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_180
+      rect:
+        serializedVersion: 2
+        x: 404
+        y: 99
+        width: 52
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9e43b7f98d2eab84a844c03133149ae2
+      internalID: -1081615756
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_181
+      rect:
+        serializedVersion: 2
+        x: 487
+        y: 119
+        width: 174
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 16ea2f4ad4d021c409110590483c83a8
+      internalID: 897502964
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_182
+      rect:
+        serializedVersion: 2
+        x: 675
+        y: 51
+        width: 130
+        height: 130
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b142540c672ba4e4bb82b7b9174a8dea
+      internalID: -1191698777
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_183
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 47
+        width: 54
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2306b53dcd5b94842a7149882be76fee
+      internalID: -475408770
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_184
+      rect:
+        serializedVersion: 2
+        x: 427
+        y: 35
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: daf98b87a9fc35743831488ba7c7a21a
+      internalID: -1738934434
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Assets 2(Scale x2)-No-BG_185
+      rect:
+        serializedVersion: 2
+        x: 487
+        y: 67
+        width: 174
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cc6b33f5806038f4ca47abd0577ebcf1
+      internalID: -206094659
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Assets 2(Scale x2)-No-BG_0: -1182899902
+      Assets 2(Scale x2)-No-BG_1: -420797686
+      Assets 2(Scale x2)-No-BG_10: -1744926098
+      Assets 2(Scale x2)-No-BG_100: 538388189
+      Assets 2(Scale x2)-No-BG_101: 675419280
+      Assets 2(Scale x2)-No-BG_102: -2131100063
+      Assets 2(Scale x2)-No-BG_103: 1084441664
+      Assets 2(Scale x2)-No-BG_104: -36248516
+      Assets 2(Scale x2)-No-BG_105: -364198585
+      Assets 2(Scale x2)-No-BG_106: -1879351308
+      Assets 2(Scale x2)-No-BG_107: -1723616441
+      Assets 2(Scale x2)-No-BG_108: -643850914
+      Assets 2(Scale x2)-No-BG_109: 387560106
+      Assets 2(Scale x2)-No-BG_11: -1862530946
+      Assets 2(Scale x2)-No-BG_110: 2011558883
+      Assets 2(Scale x2)-No-BG_111: 350219026
+      Assets 2(Scale x2)-No-BG_112: 156110119
+      Assets 2(Scale x2)-No-BG_113: -234067333
+      Assets 2(Scale x2)-No-BG_114: -1322777137
+      Assets 2(Scale x2)-No-BG_115: -754069071
+      Assets 2(Scale x2)-No-BG_116: 1082039
+      Assets 2(Scale x2)-No-BG_117: -2102961499
+      Assets 2(Scale x2)-No-BG_118: -205845113
+      Assets 2(Scale x2)-No-BG_119: -399707935
+      Assets 2(Scale x2)-No-BG_12: -1042144674
+      Assets 2(Scale x2)-No-BG_120: 1397353965
+      Assets 2(Scale x2)-No-BG_121: 270532172
+      Assets 2(Scale x2)-No-BG_122: 2058141788
+      Assets 2(Scale x2)-No-BG_123: 1655540298
+      Assets 2(Scale x2)-No-BG_124: -1871286434
+      Assets 2(Scale x2)-No-BG_125: -369089445
+      Assets 2(Scale x2)-No-BG_126: -1248030427
+      Assets 2(Scale x2)-No-BG_127: 559078503
+      Assets 2(Scale x2)-No-BG_128: 1421417033
+      Assets 2(Scale x2)-No-BG_129: 1903726917
+      Assets 2(Scale x2)-No-BG_13: 619110814
+      Assets 2(Scale x2)-No-BG_130: 2112214725
+      Assets 2(Scale x2)-No-BG_131: 659264251
+      Assets 2(Scale x2)-No-BG_132: 2115009330
+      Assets 2(Scale x2)-No-BG_133: -190803758
+      Assets 2(Scale x2)-No-BG_134: 2036621400
+      Assets 2(Scale x2)-No-BG_135: 695211829
+      Assets 2(Scale x2)-No-BG_136: -1917635491
+      Assets 2(Scale x2)-No-BG_137: 1321482511
+      Assets 2(Scale x2)-No-BG_138: 502590060
+      Assets 2(Scale x2)-No-BG_139: 1022256140
+      Assets 2(Scale x2)-No-BG_14: -1403185137
+      Assets 2(Scale x2)-No-BG_140: 1865561995
+      Assets 2(Scale x2)-No-BG_141: -558501915
+      Assets 2(Scale x2)-No-BG_142: -1337562075
+      Assets 2(Scale x2)-No-BG_143: -1018078522
+      Assets 2(Scale x2)-No-BG_144: 2009311554
+      Assets 2(Scale x2)-No-BG_145: 1896446848
+      Assets 2(Scale x2)-No-BG_146: -1210869541
+      Assets 2(Scale x2)-No-BG_147: -1366883697
+      Assets 2(Scale x2)-No-BG_148: -2014987445
+      Assets 2(Scale x2)-No-BG_149: 1182096492
+      Assets 2(Scale x2)-No-BG_15: -777598116
+      Assets 2(Scale x2)-No-BG_150: -806567411
+      Assets 2(Scale x2)-No-BG_151: -944061848
+      Assets 2(Scale x2)-No-BG_152: -288525208
+      Assets 2(Scale x2)-No-BG_153: 716716730
+      Assets 2(Scale x2)-No-BG_154: 851488320
+      Assets 2(Scale x2)-No-BG_155: 392727768
+      Assets 2(Scale x2)-No-BG_156: 2097904687
+      Assets 2(Scale x2)-No-BG_157: -1174352522
+      Assets 2(Scale x2)-No-BG_158: 909875223
+      Assets 2(Scale x2)-No-BG_159: 2012144752
+      Assets 2(Scale x2)-No-BG_16: 821511700
+      Assets 2(Scale x2)-No-BG_160: -1852464971
+      Assets 2(Scale x2)-No-BG_161: -1462538783
+      Assets 2(Scale x2)-No-BG_162: 1520604286
+      Assets 2(Scale x2)-No-BG_163: -512586608
+      Assets 2(Scale x2)-No-BG_164: -1644042420
+      Assets 2(Scale x2)-No-BG_165: -665149931
+      Assets 2(Scale x2)-No-BG_166: 1630379364
+      Assets 2(Scale x2)-No-BG_167: 1857181695
+      Assets 2(Scale x2)-No-BG_168: 1339045304
+      Assets 2(Scale x2)-No-BG_169: 443615548
+      Assets 2(Scale x2)-No-BG_17: -2065015745
+      Assets 2(Scale x2)-No-BG_170: -771607822
+      Assets 2(Scale x2)-No-BG_171: -881621036
+      Assets 2(Scale x2)-No-BG_172: 1407385074
+      Assets 2(Scale x2)-No-BG_173: -2069473106
+      Assets 2(Scale x2)-No-BG_174: 1684452347
+      Assets 2(Scale x2)-No-BG_175: -1580988075
+      Assets 2(Scale x2)-No-BG_176: -1681167943
+      Assets 2(Scale x2)-No-BG_177: 634425908
+      Assets 2(Scale x2)-No-BG_178: 1538619733
+      Assets 2(Scale x2)-No-BG_179: 1568889195
+      Assets 2(Scale x2)-No-BG_18: 566081969
+      Assets 2(Scale x2)-No-BG_180: -1081615756
+      Assets 2(Scale x2)-No-BG_181: 897502964
+      Assets 2(Scale x2)-No-BG_182: -1191698777
+      Assets 2(Scale x2)-No-BG_183: -475408770
+      Assets 2(Scale x2)-No-BG_184: -1738934434
+      Assets 2(Scale x2)-No-BG_185: -206094659
+      Assets 2(Scale x2)-No-BG_19: -124125775
+      Assets 2(Scale x2)-No-BG_2: -810894102
+      Assets 2(Scale x2)-No-BG_20: -60646469
+      Assets 2(Scale x2)-No-BG_21: 1721532597
+      Assets 2(Scale x2)-No-BG_22: -347277393
+      Assets 2(Scale x2)-No-BG_23: -1411129981
+      Assets 2(Scale x2)-No-BG_24: -1611347729
+      Assets 2(Scale x2)-No-BG_25: 733932331
+      Assets 2(Scale x2)-No-BG_26: -1845169594
+      Assets 2(Scale x2)-No-BG_27: 367949348
+      Assets 2(Scale x2)-No-BG_28: -102899919
+      Assets 2(Scale x2)-No-BG_29: -1641613432
+      Assets 2(Scale x2)-No-BG_3: 892659888
+      Assets 2(Scale x2)-No-BG_30: 556443415
+      Assets 2(Scale x2)-No-BG_31: -1972469647
+      Assets 2(Scale x2)-No-BG_32: 2000595349
+      Assets 2(Scale x2)-No-BG_33: -1783114748
+      Assets 2(Scale x2)-No-BG_34: -1753400812
+      Assets 2(Scale x2)-No-BG_35: 962905519
+      Assets 2(Scale x2)-No-BG_36: 1279149073
+      Assets 2(Scale x2)-No-BG_37: -1144594406
+      Assets 2(Scale x2)-No-BG_38: 1343942627
+      Assets 2(Scale x2)-No-BG_39: 464207882
+      Assets 2(Scale x2)-No-BG_4: 1194802620
+      Assets 2(Scale x2)-No-BG_40: -1093303746
+      Assets 2(Scale x2)-No-BG_41: 62630726
+      Assets 2(Scale x2)-No-BG_42: 314881131
+      Assets 2(Scale x2)-No-BG_43: 50616405
+      Assets 2(Scale x2)-No-BG_44: 348279697
+      Assets 2(Scale x2)-No-BG_45: 1519703016
+      Assets 2(Scale x2)-No-BG_46: 321684315
+      Assets 2(Scale x2)-No-BG_47: -749570887
+      Assets 2(Scale x2)-No-BG_48: -310830111
+      Assets 2(Scale x2)-No-BG_49: 498209636
+      Assets 2(Scale x2)-No-BG_5: 39819537
+      Assets 2(Scale x2)-No-BG_50: 1841791088
+      Assets 2(Scale x2)-No-BG_51: 2113867063
+      Assets 2(Scale x2)-No-BG_52: 1846875589
+      Assets 2(Scale x2)-No-BG_53: 790703455
+      Assets 2(Scale x2)-No-BG_54: 429755600
+      Assets 2(Scale x2)-No-BG_55: -655193183
+      Assets 2(Scale x2)-No-BG_56: 1733486194
+      Assets 2(Scale x2)-No-BG_57: -385197879
+      Assets 2(Scale x2)-No-BG_58: 1404173414
+      Assets 2(Scale x2)-No-BG_59: -143045984
+      Assets 2(Scale x2)-No-BG_6: -2034742167
+      Assets 2(Scale x2)-No-BG_60: -270014651
+      Assets 2(Scale x2)-No-BG_61: 839870105
+      Assets 2(Scale x2)-No-BG_62: -1660475542
+      Assets 2(Scale x2)-No-BG_63: -780785965
+      Assets 2(Scale x2)-No-BG_64: 1925259554
+      Assets 2(Scale x2)-No-BG_65: 1288662045
+      Assets 2(Scale x2)-No-BG_66: -762784441
+      Assets 2(Scale x2)-No-BG_67: -17987415
+      Assets 2(Scale x2)-No-BG_68: 36581474
+      Assets 2(Scale x2)-No-BG_69: -476943926
+      Assets 2(Scale x2)-No-BG_7: 1096836840
+      Assets 2(Scale x2)-No-BG_70: -432315315
+      Assets 2(Scale x2)-No-BG_71: -1619251056
+      Assets 2(Scale x2)-No-BG_72: -549423034
+      Assets 2(Scale x2)-No-BG_73: -1177641334
+      Assets 2(Scale x2)-No-BG_74: 512351751
+      Assets 2(Scale x2)-No-BG_75: -1744396336
+      Assets 2(Scale x2)-No-BG_76: -2026902030
+      Assets 2(Scale x2)-No-BG_77: -511162950
+      Assets 2(Scale x2)-No-BG_78: -1024267911
+      Assets 2(Scale x2)-No-BG_79: -1991404297
+      Assets 2(Scale x2)-No-BG_8: -2056920118
+      Assets 2(Scale x2)-No-BG_80: -1844156392
+      Assets 2(Scale x2)-No-BG_81: 1840380531
+      Assets 2(Scale x2)-No-BG_82: 815208571
+      Assets 2(Scale x2)-No-BG_83: 1249786021
+      Assets 2(Scale x2)-No-BG_84: 1770025493
+      Assets 2(Scale x2)-No-BG_85: -2102429377
+      Assets 2(Scale x2)-No-BG_86: -1371865217
+      Assets 2(Scale x2)-No-BG_87: 107893998
+      Assets 2(Scale x2)-No-BG_88: 612755805
+      Assets 2(Scale x2)-No-BG_89: -1780380421
+      Assets 2(Scale x2)-No-BG_9: 1292830446
+      Assets 2(Scale x2)-No-BG_90: -797630936
+      Assets 2(Scale x2)-No-BG_91: 101317707
+      Assets 2(Scale x2)-No-BG_92: 1934584124
+      Assets 2(Scale x2)-No-BG_93: -1913806386
+      Assets 2(Scale x2)-No-BG_94: -990626872
+      Assets 2(Scale x2)-No-BG_95: 1556205809
+      Assets 2(Scale x2)-No-BG_96: 680055789
+      Assets 2(Scale x2)-No-BG_97: -707943626
+      Assets 2(Scale x2)-No-BG_98: -349019125
+      Assets 2(Scale x2)-No-BG_99: -667185465
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
