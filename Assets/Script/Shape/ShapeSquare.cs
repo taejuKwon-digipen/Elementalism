@@ -21,16 +21,16 @@ public class ShapeSquare : MonoBehaviour
     void Start()
     {
         occupiedImage.gameObject.SetActive(false);
-        SetElementImage();
+        SetBlockImage();
     }
 
     public void SetElementType(ElementType type)
     {
         elementType = type;
-        SetElementImage();
+        SetBlockImage();
     }
 
-    private void SetElementImage()
+    private void SetBlockImage()
     {
         var image = GetComponent<Image>();
         switch (elementType)

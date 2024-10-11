@@ -17,7 +17,7 @@ public enum ElementType
     Earth   // 흙
 }
 
-public class Elemental : MonoBehaviour
+public class Block : MonoBehaviour
 {
     // 이미지 컴포넌트들
     public Image hooverImage;    // 마우스 오버 시 나타나는 이미지
@@ -31,12 +31,12 @@ public class Elemental : MonoBehaviour
     public Sprite earthSprite;   // 흙 스프라이트
 
     public ElementType elementType = ElementType.None; // 원소 타입을 저장하는 변수 (초기화)
-    public ElementType currentCollidedElement = ElementType.None;
+    public ElementType currentCollidedBlock = ElementType.None;
     private bool isColliding = false;
 
     // 프로퍼티들
     public bool Selected { get; set; }          // 선택되었는지 여부
-    public int ElementalIndex { get; set; }     // 원소의 인덱스
+    public int BlockIndex { get; set; }     // 원소의 인덱스
     public bool SqareOccupied { get; set; }     // 해당 칸이 점유되었는지 여부
 
     private void Start()
@@ -46,7 +46,7 @@ public class Elemental : MonoBehaviour
 
         // 초기화 시 랜덤 원소 타입으로 설정
         elementType = (ElementType)Random.Range(1, 5);
-        SetRandomElementImage(elementType);
+        SetRandomBlockImage(elementType);
     }
 
     // 이 칸을 사용할 수 있는지 확인하는 메서드
@@ -63,7 +63,7 @@ public class Elemental : MonoBehaviour
         activeImage.gameObject.SetActive(true);     // activeImage 활성화
 
         // 활성화된 이미지의 스프라이트를 원소 타입에 맞게 설정
-        switch (currentCollidedElement)
+        switch (currentCollidedBlock)
         {
             case ElementType.Fire:
                 activeImage.sprite = fireSprite;     // 불 스프라이트로 설정
@@ -87,7 +87,7 @@ public class Elemental : MonoBehaviour
     }
 
     // 원소 타입에 따라 이미지 설정하는 메서드
-    public void SetRandomElementImage(ElementType elementType)
+    public void SetRandomBlockImage(ElementType elementType)
     {
         this.elementType = elementType; // 원소 타입 설정
         switch (elementType)
@@ -118,9 +118,9 @@ public class Elemental : MonoBehaviour
 
         if (collidedSquare != null)
         {
-            currentCollidedElement = collidedSquare.elementType; // 충돌된 원소 타입 저장
+            currentCollidedBlock = collidedSquare.elementType; // 충돌된 원소 타입 저장
             isColliding = true; // 충돌 상태 설정
-            Debug.Log("충돌된 원소 타입: " + currentCollidedElement);
+            Debug.Log("충돌된 원소 타입: " + currentCollidedBlock);
         }
     }
 
@@ -136,10 +136,10 @@ public class Elemental : MonoBehaviour
     {
         ShapeSquare collidedSquare = collision.GetComponent<ShapeSquare>();
 
-        if (collidedSquare != null && currentCollidedElement == collidedSquare.elementType)
+        if (collidedSquare != null && currentCollidedBlock == collidedSquare.elementType)
         {
             hooverImage.gameObject.SetActive(false);
-            currentCollidedElement = ElementType.None; // 조건에 따라 초기화
+            currentCollidedBlock = ElementType.None; // 조건에 따라 초기화
             isColliding = false; // 충돌 상태 해제
             Debug.Log("충돌 종료: 원소 타입 초기화됨");
         }

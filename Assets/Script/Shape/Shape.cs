@@ -181,12 +181,12 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     {
         foreach (var square in _currentShape)
         {
-            Elemental elemental = square.GetComponent<Elemental>();
+            Block block = square.GetComponent<Block>();
 
-            if (elemental != null && elemental.currentCollidedElement != ElementType.None)
+            if (block != null && block.currentCollidedBlock != ElementType.None)
             {
                 // 충돌된 원소 타입으로 이미지 변경
-                elemental.SetRandomElementImage(elemental.currentCollidedElement);
+                block.SetRandomBlockImage(block.currentCollidedBlock);
             }
         }
 
