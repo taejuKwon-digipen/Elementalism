@@ -22,6 +22,7 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     private Vector3 _shapeStartScale;        // 초기 스케일 값
     private RectTransform _transform;        // RectTransform 컴포넌트
     private bool _shapeDraggable = true;     // 드래그 가능 여부
+    private bool _isDragging = false;        // 현재 드래그 중인지 여부
     private Canvas _canvas;                  // 부모 캔버스
 
     public void Awake()
@@ -35,6 +36,23 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     void Start()
     {
         // 초기화가 필요한 내용이 있으면 여기에 작성
+    }
+    void Update()
+    {
+        // 현재 드래그 중일 때만 회전
+        if (_isDragging)
+        {
+            // Q 키가 눌리면 왼쪽으로 회전
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                RotateShape(-90); // 왼쪽으로 90도 회전
+            }
+            // E 키가 눌리면 오른쪽으로 회전
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                RotateShape(90);  // 오른쪽으로 90도 회전
+            }
+        }
     }
 
     // 새로운 Shape 요청을 처리하는 메서드
@@ -180,6 +198,7 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     public void OnBeginDrag(PointerEventData eventData)
     {
         this.GetComponent<RectTransform>().localScale = shapeSelectedScale; // 선택된 상태로 스케일 변경
+        _isDragging = true; // 드래그 중 상태 설정
     }
 
     // 드래그 중에 호출되는 메서드
@@ -194,14 +213,20 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
         RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvas.transform as RectTransform,
             eventData.position, Camera.main, out pos);
         _transform.localPosition = pos + offset;
-
     }
 
     // 드래그 종료 시 호출되는 메서드
     public void OnEndDrag(PointerEventData eventData)
     {
         this.GetComponent<RectTransform>().localScale = _shapeStartScale; // 스케일을 원래대로 변경
+        _isDragging = false; // 드래그 중 상태 해제
         GameEvents.CheckIfShapeCanBePlaced(); // Shape를 배치할 수 있는지 체크하는 이벤트 호출
+    }
+    
+    // 모양을 회전시키는 메서드
+    private void RotateShape(float angle)
+    {
+        _transform.Rotate(0, 0, angle); // RectTransform을 기준으로 Z축 회전
     }
 
     // 마우스 버튼을 눌렀을 때 이벤트 처리 (필요 시 구현)
