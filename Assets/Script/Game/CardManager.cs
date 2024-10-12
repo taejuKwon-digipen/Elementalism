@@ -7,41 +7,41 @@ public class CardManager : MonoBehaviour
     public static CardManager Inst { get; private set; }
     void Awake() => Inst = this;
 
-    [SerializeField] CardStat cardstat;
+    [SerializeField] CardItemSO carditemso;
 
-    List<Card> CardBuffer;
+    List<CardItem> ItemBuffer;
 
-    public Card PopCard()
+    public CardItem PopCard()
     {
-        if(CardBuffer.Count == 0)
+        if(ItemBuffer.Count == 0)
         {
             SetCardBuffer();
         }
 
-        Card card = CardBuffer[0];
-        CardBuffer.RemoveAt(0);
+        CardItem card = ItemBuffer[0];
+        ItemBuffer.RemoveAt(0);
         return card;
     }
 
     void SetCardBuffer()
     {
-        CardBuffer = new List<Card>();
+        ItemBuffer = new List<CardItem>();
 
-        for(int i =0; i< cardstat.cards.Length; i++)
+        for(int i = 0; i < carditemso.items.Length; i++)
         {
-            Card card = cardstat.cards[i]; ;
-            for (int j = 0; j < card.Percent; j++)
+            CardItem cardditem = carditemso.items[i]; ;
+            for (int j = 0; j < cardditem.Percent; j++)
             {
-                CardBuffer.Add(card);
+                ItemBuffer.Add(cardditem);
             }
         }
 
-        for(int i = 0; i <CardBuffer.Count; i++)
+        for(int i = 0; i <ItemBuffer.Count; i++)
         {
-            int rand = Random.Range(i, CardBuffer.Count);
-            Card temp = CardBuffer[i];
-            CardBuffer[i] = CardBuffer[rand];
-            CardBuffer[rand] = temp;
+            int rand = Random.Range(i, ItemBuffer.Count);
+            CardItem temp = ItemBuffer[i];
+            ItemBuffer[i] = ItemBuffer[rand];
+            ItemBuffer[rand] = temp;
         }
     }
     void Start()

@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: CardStat
-  m_EditorClassIdentifier: Assembly-CSharp::CardStat
-  cards: []
+  m_Script: {fileID: 11500000, guid: 798abf76c0051bf449355995e0d18857, type: 3}
+  m_Name: ItemSO
+  m_EditorClassIdentifier: 
+  items: []
