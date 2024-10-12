@@ -27,7 +27,7 @@ public class CardManager : MonoBehaviour
     {
         ItemBuffer = new List<CardItem>();
 
-        for(int i = 0; i < carditemso.items.Length; i++)
+        for(int i = 0; i < carditemso.items.Length; i++) //근데 이줄에서 에러뜸
         {
             CardItem cardditem = carditemso.items[i]; ;
             for (int j = 0; j < cardditem.Percent; j++)
@@ -44,12 +44,20 @@ public class CardManager : MonoBehaviour
             ItemBuffer[rand] = temp;
         }
     }
-    void Start()
+    public void Start()
     {
-        SetCardBuffer();
+      /*  if (ItemBuffer != null)
+        { */
+            SetCardBuffer(); //이거까진 됨 -> 혹ㄱ시 다 들어갔다가 지워지는 걸까?
+        //}
+       /* else
+        {
+            string result = "fuckyou"; //왜 널일까 카드매니저엔 잘 들어가는데 말이죠
+            print(result);
+        }*/
     }
 
-    void Update()
+    public void Update()
     {
         if(Input.GetKeyDown(KeyCode.Keypad1))
         {
