@@ -12,25 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: CardStat
   m_EditorClassIdentifier: Assembly-CSharp::CardStat
-  cards:
-  - CardName: Test1
-    ID: 0
-    PowerLeft: 10
-    PowerRight: 20
-    CardDescription: For Test
-    UseMagic: 0
-    Percent: 33
-  - CardName: Test2
-    ID: 0
-    PowerLeft: 10
-    PowerRight: 20
-    CardDescription: For Test
-    UseMagic: 0
-    Percent: 33
-  - CardName: Test3
-    ID: 0
-    PowerLeft: 10
-    PowerRight: 20
-    CardDescription: For Test
-    UseMagic: 0
-    Percent: 33
+  cards: []
