@@ -19,25 +19,18 @@ MonoBehaviour:
     PowerRight: 1
     CardDescription: 1
     UseMagic: 0
-    Percent: 25
+    Percent: 33
   - CardName: 2
     ID: 2
     PowerLeft: 2
     PowerRight: 2
     CardDescription: 2
     UseMagic: 0
-    Percent: 25
+    Percent: 33
   - CardName: 3
     ID: 3
     PowerLeft: 3
     PowerRight: 3
     CardDescription: 3
     UseMagic: 0
-    Percent: 25
-  - CardName: 4
-    ID: 4
-    PowerLeft: 4
-    PowerRight: 4
-    CardDescription: 4
-    UseMagic: 0
-    Percent: 25
+    Percent: 33

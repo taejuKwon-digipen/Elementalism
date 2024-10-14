@@ -15,7 +15,7 @@ public class CardItem
     public float Percent;
 }
 
-[CreateAssetMenu(fileName = "ItemSO", menuName = "Scriptable Objtect/ItemSO")]
+[CreateAssetMenu(fileName = "ItemSO", menuName = "Scriptable Object/ItemSO")]
 public class CardItemSO: ScriptableObject
 {
     public CardItem[] items;
