@@ -2,8 +2,6 @@
 // 원소의 타입에 따른 이미지 설정, 블록의 선택 및 활성화 상태,
 // 그리고 충돌 시의 반응 등을 제어하여 퍼즐 게임의 인터랙션을 구현합니다.
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -46,7 +44,12 @@ public class Block : MonoBehaviour
 
         // 초기화 시 랜덤 원소 타입으로 설정
         elementType = (ElementType)Random.Range(1, 5);
-        SetRandomBlockImage(elementType);
+        SetBlockImage(elementType);
+    }
+
+    private void Update()
+    {
+        SetBlockImage(elementType);
     }
 
     // 이 칸을 사용할 수 있는지 확인하는 메서드
@@ -59,35 +62,26 @@ public class Block : MonoBehaviour
     // 칸을 활성화하는 메서드
     public void ActivateSquare()
     {
-        hooverImage.gameObject.SetActive(false);    // hooverImage 비활성화
-        activeImage.gameObject.SetActive(true);     // activeImage 활성화
-
-        // 활성화된 이미지의 스프라이트를 원소 타입에 맞게 설정
-        switch (currentCollidedBlock)
+        if (currentCollidedBlock != ElementType.None)
         {
-            case ElementType.Fire:
-                activeImage.sprite = fireSprite;     // 불 스프라이트로 설정
-                break;
-            case ElementType.Water:
-                activeImage.sprite = waterSprite;    // 물 스프라이트로 설정
-                break;
-            case ElementType.Air:
-                activeImage.sprite = airSprite;      // 공기 스프라이트로 설정
-                break;
-            case ElementType.Earth:
-                activeImage.sprite = earthSprite;    // 흙 스프라이트로 설정
-                break;
-            default:
-                activeImage.sprite = null;
-                break;
-        }
+            hooverImage.gameObject.SetActive(false);    // hooverImage 비활성화
+            activeImage.gameObject.SetActive(true);     // activeImage 활성화
 
-        Selected = true;                            // 선택됨으로 설정
-        SqareOccupied = true;                       // 점유됨으로 설정
+
+            elementType = currentCollidedBlock;
+
+            Selected = true;                            // 선택됨으로 설정
+            SqareOccupied = true;                       // 점유됨으로 설정
+        }
+    }
+
+    public void SetElementType(ElementType newType)
+    {
+        elementType = newType;
     }
 
     // 원소 타입에 따라 이미지 설정하는 메서드
-    public void SetRandomBlockImage(ElementType elementType)
+    public void SetBlockImage(ElementType elementType)
     {
         this.elementType = elementType; // 원소 타입 설정
         switch (elementType)
@@ -144,7 +138,5 @@ public class Block : MonoBehaviour
             Debug.Log("충돌 종료: 원소 타입 초기화됨");
         }
     }
-
-
 
 }

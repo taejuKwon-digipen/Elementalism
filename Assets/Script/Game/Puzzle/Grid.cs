@@ -57,12 +57,28 @@ public class Grid : MonoBehaviour
 
                 // 랜덤으로 원소 타입을 선택하여 이미지 설정
                 ElementType randomElement = (ElementType)Random.Range(1, 5);
-                newBlock.GetComponent<Block>().SetRandomBlockImage(randomElement);
+                //newBlock.GetComponent<Block>().SetBlockImage(randomElement);
+                newBlock.GetComponent<Block>().SetElementType(randomElement);
 
                 // 생성된 원소 블록을 리스트에 추가합니다.
                 _blocks.Add(newBlock);
             }
         }
+    }
+
+    public ElementType GetElementTypeAt(int row, int column)
+    {
+        // 그리드의 해당 위치에 있는 블록을 찾고, 그 블록의 ElementType을 반환합니다.
+        int index = row * columns + column; // 1차원 리스트 인덱스 계산
+        if (index >= 0 && index < _blocks.Count)
+        {
+            Block block = _blocks[index].GetComponent<Block>();
+            if (block != null)
+            {
+                return block.elementType;
+            }
+        }
+        return ElementType.None; // 유효하지 않은 위치인 경우 None 반환
     }
 
     // 생성된 원소 블록들의 위치를 설정하는 메서드
@@ -122,6 +138,20 @@ public class Grid : MonoBehaviour
         }
     }
 
+    public void UpdateGridState(int row, int column, ElementType elementType)
+    {
+        int index = row * columns + column; // 인덱스 계산
+        if (index >= 0 && index < _blocks.Count)
+        {
+            Block block = _blocks[index].GetComponent<Block>();
+            if (block != null)
+            {
+                block.elementType = elementType; // 새로운 ElementType으로 업데이트
+                block.SetBlockImage(elementType); // 이미지 업데이트
+            }
+        }
+    }
+
     // 게임 이벤트에 따라 블록을 활성화하는 메서드
     private void CheckIfShapeCanBePlaced()
     {
@@ -136,4 +166,5 @@ public class Grid : MonoBehaviour
             }
         }
     }
+
 }

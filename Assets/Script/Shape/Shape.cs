@@ -186,7 +186,8 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
             if (block != null && block.currentCollidedBlock != ElementType.None)
             {
                 // 충돌된 원소 타입으로 이미지 변경
-                block.SetRandomBlockImage(block.currentCollidedBlock);
+                //block.SetBlockImage(block.currentCollidedBlock);
+                block.SetElementType(block.currentCollidedBlock);
             }
         }
 

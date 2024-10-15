@@ -35,7 +35,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 117, y: 117}
+  m_SizeDelta: {x: 120, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5027419528790078661
 CanvasRenderer:
@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 1195dd74d6d9bab4888c5a3204cf57fa, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 29e40768f81f76b41ba39b510c357f25, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -286,7 +286,7 @@ MonoBehaviour:
   airSprite: {fileID: 21300000, guid: cae4eabbaed64fd4eae936068719b4ad, type: 3}
   earthSprite: {fileID: 21300000, guid: 2d34d213e5f54e843b510d72c30d44f0, type: 3}
   elementType: 0
-  currentCollidedElement: 0
+  currentCollidedBlock: 0
 --- !u!61 &491398234596518186
 BoxCollider2D:
   m_ObjectHideFlags: 0
