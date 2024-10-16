@@ -671,6 +671,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1201617792}
   - component: {fileID: 1201617794}
+  - component: {fileID: 1201617795}
   - component: {fileID: 1201617793}
   m_Layer: 0
   m_Name: Card
@@ -699,7 +700,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 550.8, y: 131.2}
+  m_AnchoredPosition: {x: 643, y: -81}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1201617793
@@ -740,6 +741,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1201617791}
   m_CullTransparentMesh: 1
+--- !u!114 &1201617795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1201617791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0026aa88e0b4a7429737f6d97d35bfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nameTMP: {fileID: 0}
+  PowerLeftTMP: {fileID: 0}
+  PowerRightTMP: {fileID: 0}
+  CardDescriptionTMP: {fileID: 0}
+  IDTMP: {fileID: 0}
+  carditem:
+    CardName: 
+    ID: 0
+    PowerLeft: 0
+    PowerRight: 0
+    CardDescription: 
+    UseMagic: 0
+    Percent: 0
+  isFront: 0
 --- !u!1 &1315117021
 GameObject:
   m_ObjectHideFlags: 0
