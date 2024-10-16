@@ -1,68 +1,68 @@
-// ÀÌ ½ºÅ©¸³Æ®´Â ÆÛÁñ Á¶°¢ÀÇ ¸ğ¾ç°ú ±¸Á¶¸¦ Á¤ÀÇÇÏ´Â ShapeData Å¬·¡½ºÀÔ´Ï´Ù.
-// ÆÛÁñ Á¶°¢À» ±¸¼ºÇÏ´Â Çà(Row)°ú ¿­(Column)ÀÇ µ¥ÀÌÅÍ¸¦ °ü¸®ÇÏ¸ç,
-// »õ·Î¿î º¸µå¸¦ »ı¼ºÇÏ°Å³ª ÃÊ±âÈ­ÇÏ´Â ±â´ÉÀ» Á¦°øÇÕ´Ï´Ù.
+ï»¿// ì´ ìŠ¤í¬ë¦½íŠ¸ëŠ” í¼ì¦ ì¡°ê°ì˜ ëª¨ì–‘ê³¼ êµ¬ì¡°ë¥¼ ì •ì˜í•˜ëŠ” ShapeData í´ë˜ìŠ¤ì…ë‹ˆë‹¤.
+// í¼ì¦ ì¡°ê°ì„ êµ¬ì„±í•˜ëŠ” í–‰(Row)ê³¼ ì—´(Column)ì˜ ë°ì´í„°ë¥¼ ê´€ë¦¬í•˜ë©°,
+// ìƒˆë¡œìš´ ë³´ë“œë¥¼ ìƒì„±í•˜ê±°ë‚˜ ì´ˆê¸°í™”í•˜ëŠ” ê¸°ëŠ¥ì„ ì œê³µí•©ë‹ˆë‹¤.
 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu] // Unity ¿¡µğÅÍ¿¡¼­ ScriptableObject¸¦ »ı¼ºÇÒ ¼ö ÀÖ°Ô ÇØÁÖ´Â ¾îÆ®¸®ºäÆ®
+[CreateAssetMenu] // Unity ì—ë””í„°ì—ì„œ ScriptableObjectë¥¼ ìƒì„±í•  ìˆ˜ ìˆê²Œ í•´ì£¼ëŠ” ì–´íŠ¸ë¦¬ë·°íŠ¸
 [System.Serializable]
 public class ShapeData : ScriptableObject
 {
-    // ÆÛÁñ Á¶°¢ÀÇ ÇÑ ÇàÀ» ³ªÅ¸³»´Â Å¬·¡½º
+    // í¼ì¦ ì¡°ê°ì˜ í•œ í–‰ì„ ë‚˜íƒ€ë‚´ëŠ” í´ë˜ìŠ¤
     [System.Serializable]
     public class Row
     {
-        public ElementType[] colum; // °¢ ¿­ÀÇ Å¸ÀÔÀ» ÀúÀåÇÏ´Â ¹è¿­
-        private int _size = 0; // ÇàÀÇ ¿­ ¼ö¸¦ ÀúÀåÇÏ´Â º¯¼ö
+        public ElementType[] colum; // ê° ì—´ì˜ íƒ€ì…ì„ ì €ì¥í•˜ëŠ” ë°°ì—´
+        private int _size = 0; // í–‰ì˜ ì—´ ìˆ˜ë¥¼ ì €ì¥í•˜ëŠ” ë³€ìˆ˜
 
-        public Row() { } // ±âº» »ı¼ºÀÚ
+        public Row() { } // ê¸°ë³¸ ìƒì„±ì
 
         public Row(int size)
         {
-            CreateRow(size); // ÁÖ¾îÁø Å©±â·Î ÇàÀ» »ı¼º
+            CreateRow(size); // ì£¼ì–´ì§„ í¬ê¸°ë¡œ í–‰ì„ ìƒì„±
         }
 
-        // ÇàÀ» »ı¼ºÇÏ°í ÃÊ±âÈ­ÇÏ´Â ¸Ş¼­µå
+        // í–‰ì„ ìƒì„±í•˜ê³  ì´ˆê¸°í™”í•˜ëŠ” ë©”ì„œë“œ
         public void CreateRow(int size)
         {
             _size = size;
-            colum = new ElementType[size]; // ¿­ ¹è¿­À» ÃÊ±âÈ­
-            ClearRow(); // ÇàÀÇ ¸ğµç ¿­À» ºñÈ°¼ºÈ­
+            colum = new ElementType[size]; // ì—´ ë°°ì—´ì„ ì´ˆê¸°í™”
+            ClearRow(); // í–‰ì˜ ëª¨ë“  ì—´ì„ ë¹„í™œì„±í™”
         }
 
-        // ÇàÀÇ ¸ğµç ¿­À» ºñÈ°¼ºÈ­ÇÏ´Â ¸Ş¼­µå
+        // í–‰ì˜ ëª¨ë“  ì—´ì„ ë¹„í™œì„±í™”í•˜ëŠ” ë©”ì„œë“œ
         public void ClearRow()
         {
             for (int i = 0; i < _size; i++)
             {
-                colum[i] = ElementType.None; // NoneÀ¸·Î ¼³Á¤
+                colum[i] = ElementType.None; // Noneìœ¼ë¡œ ì„¤ì •
             }
         }
     }
 
-    public int columns = 0; // ÆÛÁñ Á¶°¢ÀÇ ¿­ ¼ö
-    public int rows = 0;    // ÆÛÁñ Á¶°¢ÀÇ Çà ¼ö
-    public Row[] board;     // ÆÛÁñ Á¶°¢ÀÇ ÀüÃ¼ º¸µå µ¥ÀÌÅÍ¸¦ ÀúÀåÇÏ´Â ¹è¿­
+    public int columns = 0; // í¼ì¦ ì¡°ê°ì˜ ì—´ ìˆ˜
+    public int rows = 0;    // í¼ì¦ ì¡°ê°ì˜ í–‰ ìˆ˜
+    public Row[] board;     // í¼ì¦ ì¡°ê°ì˜ ì „ì²´ ë³´ë“œ ë°ì´í„°ë¥¼ ì €ì¥í•˜ëŠ” ë°°ì—´
 
-    // º¸µåÀÇ ¸ğµç ÇàÀ» ÃÊ±âÈ­ÇÏ¿© ÆÛÁñ Á¶°¢À» ºñÈ°¼ºÈ­ÇÏ´Â ¸Ş¼­µå
+    // ë³´ë“œì˜ ëª¨ë“  í–‰ì„ ì´ˆê¸°í™”í•˜ì—¬ í¼ì¦ ì¡°ê°ì„ ë¹„í™œì„±í™”í•˜ëŠ” ë©”ì„œë“œ
     public void Clear()
     {
         for (var i = 0; i < rows; i++)
         {
-            board[i].ClearRow(); // °¢ ÇàÀÇ ¿­À» ÃÊ±âÈ­
+            board[i].ClearRow(); // ê° í–‰ì˜ ì—´ì„ ì´ˆê¸°í™”
         }
     }
 
-    // ÇöÀç ¼³Á¤µÈ Çà°ú ¿­ ¼ö¿¡ µû¶ó »õ·Î¿î º¸µå¸¦ »ı¼ºÇÏ´Â ¸Ş¼­µå
+    // í˜„ì¬ ì„¤ì •ëœ í–‰ê³¼ ì—´ ìˆ˜ì— ë”°ë¼ ìƒˆë¡œìš´ ë³´ë“œë¥¼ ìƒì„±í•˜ëŠ” ë©”ì„œë“œ
     public void CreateNewBoard()
     {
-        board = new Row[rows]; // Çà ¹è¿­À» ÃÊ±âÈ­
+        board = new Row[rows]; // í–‰ ë°°ì—´ì„ ì´ˆê¸°í™”
 
         for (var i = 0; i < rows; i++)
         {
-            board[i] = new Row(columns); // °¢ Çà¿¡ ¿­ ¼ö¸¦ ¼³Á¤ÇÏ¿© »ı¼º
+            board[i] = new Row(columns); // ê° í–‰ì— ì—´ ìˆ˜ë¥¼ ì„¤ì •í•˜ì—¬ ìƒì„±
         }
     }
 }

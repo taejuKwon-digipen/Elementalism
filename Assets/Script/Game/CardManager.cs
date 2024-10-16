@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -62,8 +62,8 @@ public class CardManager : MonoBehaviour
     void AddCard(bool isMine) 
     {
         var cadObject = Instantiate(cardPrefab, Vector3.zero, Quaternion.identity);
-       // Instantiate =ÀÎ½ºÅÏ½º È­-> °ÔÀÓ Áß ÀÎ½ºÅÏ½º »ý¼º °¡´É
-       // (»ý¼ºÇÏ°íÀÚ ÇÏ´Â °ÔÀÓ¿ÀºêÁ§Æ®¸í,À§Ä¡, È¸Àü°ª -> Áö±ÝÀº ±âº» )
+       // Instantiate =ì¸ìŠ¤í„´ìŠ¤ í™”-> ê²Œìž„ ì¤‘ ì¸ìŠ¤í„´ìŠ¤ ìƒì„± ê°€ëŠ¥
+       // (ìƒì„±í•˜ê³ ìž í•˜ëŠ” ê²Œìž„ì˜¤ë¸Œì íŠ¸ëª…,ìœ„ì¹˜, íšŒì „ê°’ -> ì§€ê¸ˆì€ ê¸°ë³¸ )
 
     }
 }

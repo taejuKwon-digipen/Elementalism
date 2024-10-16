@@ -1,6 +1,6 @@
-// ÀÌ ½ºÅ©¸³Æ®´Â °ÔÀÓ¿¡¼­ »ç¿ëÇÒ Shape(ÆÛÁñ Á¶°¢)µéÀ» ÀúÀåÇÏ°í °ü¸®ÇÕ´Ï´Ù.
-// ShapeStorage Å¬·¡½º´Â ShapeData¿Í Shape ÀÎ½ºÅÏ½ºµéÀÇ ¸®½ºÆ®¸¦ °¡Áö°í ÀÖÀ¸¸ç,
-// °ÔÀÓ ½ÃÀÛ ½Ã °¢ Shape¿¡ ·£´ıÇÑ ShapeData¸¦ ÇÒ´çÇÏ¿© ÆÛÁñ Á¶°¢À» »ı¼ºÇÕ´Ï´Ù.
+ï»¿// ì´ ìŠ¤í¬ë¦½íŠ¸ëŠ” ê²Œì„ì—ì„œ ì‚¬ìš©í•  Shape(í¼ì¦ ì¡°ê°)ë“¤ì„ ì €ì¥í•˜ê³  ê´€ë¦¬í•©ë‹ˆë‹¤.
+// ShapeStorage í´ë˜ìŠ¤ëŠ” ShapeDataì™€ Shape ì¸ìŠ¤í„´ìŠ¤ë“¤ì˜ ë¦¬ìŠ¤íŠ¸ë¥¼ ê°€ì§€ê³  ìˆìœ¼ë©°,
+// ê²Œì„ ì‹œì‘ ì‹œ ê° Shapeì— ëœë¤í•œ ShapeDataë¥¼ í• ë‹¹í•˜ì—¬ í¼ì¦ ì¡°ê°ì„ ìƒì„±í•©ë‹ˆë‹¤.
 
 using System.Collections;
 using System.Collections.Generic;
@@ -8,17 +8,17 @@ using UnityEngine;
 
 public class ShapeStorage : MonoBehaviour
 {
-    public List<ShapeData> shapeData; // »ı¼º °¡´ÉÇÑ ShapeDataÀÇ ¸®½ºÆ®
-    public List<Shape> shapeList;     // °ÔÀÓ ³»¿¡ ¹èÄ¡µÉ Shape ÀÎ½ºÅÏ½ºµéÀÇ ¸®½ºÆ®
+    public List<ShapeData> shapeData; // ìƒì„± ê°€ëŠ¥í•œ ShapeDataì˜ ë¦¬ìŠ¤íŠ¸
+    public List<Shape> shapeList;     // ê²Œì„ ë‚´ì— ë°°ì¹˜ë  Shape ì¸ìŠ¤í„´ìŠ¤ë“¤ì˜ ë¦¬ìŠ¤íŠ¸
 
     void Start()
     {
-        // °ÔÀÓÀÌ ½ÃÀÛµÉ ¶§ °¢ Shape¿¡ ·£´ıÇÑ ShapeData¸¦ ÇÒ´çÇÏ¿© »ı¼ºÇÕ´Ï´Ù.
+        // ê²Œì„ì´ ì‹œì‘ë  ë•Œ ê° Shapeì— ëœë¤í•œ ShapeDataë¥¼ í• ë‹¹í•˜ì—¬ ìƒì„±í•©ë‹ˆë‹¤.
         foreach (var shape in shapeList)
         {
-            // shapeData ¸®½ºÆ®¿¡¼­ ·£´ıÇÑ ÀÎµ¦½º¸¦ ¼±ÅÃÇÕ´Ï´Ù.
+            // shapeData ë¦¬ìŠ¤íŠ¸ì—ì„œ ëœë¤í•œ ì¸ë±ìŠ¤ë¥¼ ì„ íƒí•©ë‹ˆë‹¤.
             var shapeIndex = UnityEngine.Random.Range(0, shapeData.Count);
-            // ¼±ÅÃµÈ ShapeData¸¦ »ç¿ëÇÏ¿© Shape¸¦ »ı¼ºÇÕ´Ï´Ù.
+            // ì„ íƒëœ ShapeDataë¥¼ ì‚¬ìš©í•˜ì—¬ Shapeë¥¼ ìƒì„±í•©ë‹ˆë‹¤.
             shape.CreateShape(shapeData[shapeIndex]);
         }
     }

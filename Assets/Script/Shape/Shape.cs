@@ -1,6 +1,6 @@
-// ÀÌ ½ºÅ©¸³Æ®´Â °ÔÀÓ¿¡¼­ »ç¿ëµÇ´Â ÆÛÁñ Á¶°¢(Shape)ÀÇ µ¿ÀÛÀ» °ü¸®ÇÕ´Ï´Ù.
-// ¸¶¿ì½º ÀÔ·Â°ú µå·¡±× ÀÌº¥Æ®¸¦ Ã³¸®ÇÏ¿© ÆÛÁñ Á¶°¢À» »ı¼º, ÀÌµ¿, ¹èÄ¡ÇÒ ¼ö ÀÖ°Ô ÇÕ´Ï´Ù.
-// ShapeData¸¦ ±â¹İÀ¸·Î ÆÛÁñ Á¶°¢ÀÇ ¸ğ¾ç°ú À§Ä¡¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+ï»¿// ì´ ìŠ¤í¬ë¦½íŠ¸ëŠ” ê²Œì„ì—ì„œ ì‚¬ìš©ë˜ëŠ” í¼ì¦ ì¡°ê°(Shape)ì˜ ë™ì‘ì„ ê´€ë¦¬í•©ë‹ˆë‹¤.
+// ë§ˆìš°ìŠ¤ ì…ë ¥ê³¼ ë“œë˜ê·¸ ì´ë²¤íŠ¸ë¥¼ ì²˜ë¦¬í•˜ì—¬ í¼ì¦ ì¡°ê°ì„ ìƒì„±, ì´ë™, ë°°ì¹˜í•  ìˆ˜ ìˆê²Œ í•©ë‹ˆë‹¤.
+// ShapeDataë¥¼ ê¸°ë°˜ìœ¼ë¡œ í¼ì¦ ì¡°ê°ì˜ ëª¨ì–‘ê³¼ ìœ„ì¹˜ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 
 using System.Collections;
 using System.Collections.Generic;
@@ -11,69 +11,69 @@ using UnityEngine.EventSystems;
 public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBeginDragHandler, IDragHandler, IEndDragHandler,
     IPointerDownHandler
 {
-    public GameObject squareShapeImage;      // ÆÛÁñ Á¶°¢ÀÇ °³º° ºí·Ï ÀÌ¹ÌÁö
-    public Vector3 shapeSelectedScale;       // ¼±ÅÃµÈ »óÅÂÀÇ ½ºÄÉÀÏ
-    public Vector2 offset = new Vector2(0f, 700f);  // µå·¡±× ½Ã À§Ä¡ º¸Á¤¿ë ¿ÀÇÁ¼Â
+    public GameObject squareShapeImage;      // í¼ì¦ ì¡°ê°ì˜ ê°œë³„ ë¸”ë¡ ì´ë¯¸ì§€
+    public Vector3 shapeSelectedScale;       // ì„ íƒëœ ìƒíƒœì˜ ìŠ¤ì¼€ì¼
+    public Vector2 offset = new Vector2(0f, 700f);  // ë“œë˜ê·¸ ì‹œ ìœ„ì¹˜ ë³´ì •ìš© ì˜¤í”„ì…‹
 
     [HideInInspector]
-    public ShapeData CurrentShapeData;       // ÇöÀç ShapeÀÇ µ¥ÀÌÅÍ
+    public ShapeData CurrentShapeData;       // í˜„ì¬ Shapeì˜ ë°ì´í„°
 
-    private List<GameObject> _currentShape = new List<GameObject>();  // ÇöÀç Shape¸¦ ±¸¼ºÇÏ´Â ºí·ÏµéÀÇ ¸®½ºÆ®
-    private Vector3 _shapeStartScale;        // ÃÊ±â ½ºÄÉÀÏ °ª
-    private RectTransform _transform;        // RectTransform ÄÄÆ÷³ÍÆ®
-    private bool _shapeDraggable = true;     // µå·¡±× °¡´É ¿©ºÎ
-    private bool _isDragging = false;        // ÇöÀç µå·¡±× ÁßÀÎÁö ¿©ºÎ
-    private Canvas _canvas;                  // ºÎ¸ğ Äµ¹ö½º
+    private List<GameObject> _currentShape = new List<GameObject>();  // í˜„ì¬ Shapeë¥¼ êµ¬ì„±í•˜ëŠ” ë¸”ë¡ë“¤ì˜ ë¦¬ìŠ¤íŠ¸
+    private Vector3 _shapeStartScale;        // ì´ˆê¸° ìŠ¤ì¼€ì¼ ê°’
+    private RectTransform _transform;        // RectTransform ì»´í¬ë„ŒíŠ¸
+    private bool _shapeDraggable = true;     // ë“œë˜ê·¸ ê°€ëŠ¥ ì—¬ë¶€
+    private bool _isDragging = false;        // í˜„ì¬ ë“œë˜ê·¸ ì¤‘ì¸ì§€ ì—¬ë¶€
+    private Canvas _canvas;                  // ë¶€ëª¨ ìº”ë²„ìŠ¤
 
     public void Awake()
     {
-        _shapeStartScale = this.GetComponent<RectTransform>().localScale; // ÃÊ±â ½ºÄÉÀÏ ÀúÀå
-        _transform = this.GetComponent<RectTransform>();                  // RectTransform °¡Á®¿À±â
-        _canvas = GetComponentInParent<Canvas>();                         // ºÎ¸ğ Äµ¹ö½º °¡Á®¿À±â
-        _shapeDraggable = true;                                           // µå·¡±× °¡´É ¼³Á¤
+        _shapeStartScale = this.GetComponent<RectTransform>().localScale; // ì´ˆê¸° ìŠ¤ì¼€ì¼ ì €ì¥
+        _transform = this.GetComponent<RectTransform>();                  // RectTransform ê°€ì ¸ì˜¤ê¸°
+        _canvas = GetComponentInParent<Canvas>();                         // ë¶€ëª¨ ìº”ë²„ìŠ¤ ê°€ì ¸ì˜¤ê¸°
+        _shapeDraggable = true;                                           // ë“œë˜ê·¸ ê°€ëŠ¥ ì„¤ì •
     }
 
     void Start()
     {
-        // ÃÊ±âÈ­°¡ ÇÊ¿äÇÑ ³»¿ëÀÌ ÀÖÀ¸¸é ¿©±â¿¡ ÀÛ¼º
+        // ì´ˆê¸°í™”ê°€ í•„ìš”í•œ ë‚´ìš©ì´ ìˆìœ¼ë©´ ì—¬ê¸°ì— ì‘ì„±
     }
     void Update()
     {
-        // ÇöÀç µå·¡±× ÁßÀÏ ¶§¸¸ È¸Àü
+        // í˜„ì¬ ë“œë˜ê·¸ ì¤‘ì¼ ë•Œë§Œ íšŒì „
         if (_isDragging)
         {
-            // Q Å°°¡ ´­¸®¸é ¿ŞÂÊÀ¸·Î È¸Àü
+            // Q í‚¤ê°€ ëˆŒë¦¬ë©´ ì™¼ìª½ìœ¼ë¡œ íšŒì „
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                RotateShape(-90); // ¿ŞÂÊÀ¸·Î 90µµ È¸Àü
+                RotateShape(-90); // ì™¼ìª½ìœ¼ë¡œ 90ë„ íšŒì „
             }
-            // E Å°°¡ ´­¸®¸é ¿À¸¥ÂÊÀ¸·Î È¸Àü
+            // E í‚¤ê°€ ëˆŒë¦¬ë©´ ì˜¤ë¥¸ìª½ìœ¼ë¡œ íšŒì „
             if (Input.GetKeyDown(KeyCode.E))
             {
-                RotateShape(90);  // ¿À¸¥ÂÊÀ¸·Î 90µµ È¸Àü
+                RotateShape(90);  // ì˜¤ë¥¸ìª½ìœ¼ë¡œ 90ë„ íšŒì „
             }
         }
     }
 
-    // »õ·Î¿î Shape ¿äÃ»À» Ã³¸®ÇÏ´Â ¸Ş¼­µå
+    // ìƒˆë¡œìš´ Shape ìš”ì²­ì„ ì²˜ë¦¬í•˜ëŠ” ë©”ì„œë“œ
     public void RequestNewShape(ShapeData shapeData)
     {
-        CreateShape(shapeData); // »õ·Î¿î Shape »ı¼º
+        CreateShape(shapeData); // ìƒˆë¡œìš´ Shape ìƒì„±
     }
 
-    // Shape¸¦ »ı¼ºÇÏ´Â ¸Ş¼­µå
+    // Shapeë¥¼ ìƒì„±í•˜ëŠ” ë©”ì„œë“œ
     public void CreateShape(ShapeData shapeData)
     {
-        CurrentShapeData = shapeData;  // ÇöÀç ShapeData ¼³Á¤
-        var totalSquareNumber = GetNumberOfSquares(shapeData); // ÇÊ¿äÇÑ ºí·Ï ¼ö °è»ê
+        CurrentShapeData = shapeData;  // í˜„ì¬ ShapeData ì„¤ì •
+        var totalSquareNumber = GetNumberOfSquares(shapeData); // í•„ìš”í•œ ë¸”ë¡ ìˆ˜ ê³„ì‚°
 
-        // ÇÊ¿äÇÑ ºí·Ï ¼ö¸¸Å­ ¸®½ºÆ®¿¡ Ãß°¡
+        // í•„ìš”í•œ ë¸”ë¡ ìˆ˜ë§Œí¼ ë¦¬ìŠ¤íŠ¸ì— ì¶”ê°€
         while (_currentShape.Count <= totalSquareNumber)
         {
             _currentShape.Add(Instantiate(squareShapeImage, transform) as GameObject);
         }
 
-        // ºí·Ï ÃÊ±âÈ­
+        // ë¸”ë¡ ì´ˆê¸°í™”
         foreach (var square in _currentShape)
         {
             square.gameObject.transform.localPosition = Vector3.zero;
@@ -85,7 +85,7 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
             squareRect.rect.height * squareRect.localScale.y);
         int currentIndexInList = 0;
 
-        // ShapeData¸¦ ±â¹İÀ¸·Î ºí·ÏµéÀÇ À§Ä¡ ¼³Á¤
+        // ShapeDataë¥¼ ê¸°ë°˜ìœ¼ë¡œ ë¸”ë¡ë“¤ì˜ ìœ„ì¹˜ ì„¤ì •
         for (var row = 0; row < shapeData.rows; row++)
         {
             for (var column = 0; column < shapeData.columns; column++)
@@ -109,20 +109,20 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
 
     }
 
-    // ShapeÀÇ ºí·ÏµéÀÇ Y À§Ä¡¸¦ °è»êÇÏ´Â ¸Ş¼­µå
+    // Shapeì˜ ë¸”ë¡ë“¤ì˜ Y ìœ„ì¹˜ë¥¼ ê³„ì‚°í•˜ëŠ” ë©”ì„œë“œ
     private float GetYPositionForShapeSquare(ShapeData shapeData, int row, Vector2 moveDistance)
     {
         float shiftOnY = 0f;
 
         if (shapeData.rows > 1)
         {
-            if (shapeData.rows % 2 != 0) // ÇàÀÇ ¼ö°¡ È¦¼öÀÎ °æ¿ì
+            if (shapeData.rows % 2 != 0) // í–‰ì˜ ìˆ˜ê°€ í™€ìˆ˜ì¸ ê²½ìš°
             {
                 var middleSquareIndex = (shapeData.rows - 1) / 2;
                 var multiplier = row - middleSquareIndex;
                 shiftOnY = -moveDistance.y * multiplier;
             }
-            else // ÇàÀÇ ¼ö°¡ Â¦¼öÀÎ °æ¿ì
+            else // í–‰ì˜ ìˆ˜ê°€ ì§ìˆ˜ì¸ ê²½ìš°
             {
                 var middleSquareIndex = shapeData.rows / 2;
                 var multiplier = row - (middleSquareIndex - 0.5f);
@@ -132,20 +132,20 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
         return shiftOnY;
     }
 
-    // ShapeÀÇ ºí·ÏµéÀÇ X À§Ä¡¸¦ °è»êÇÏ´Â ¸Ş¼­µå
+    // Shapeì˜ ë¸”ë¡ë“¤ì˜ X ìœ„ì¹˜ë¥¼ ê³„ì‚°í•˜ëŠ” ë©”ì„œë“œ
     private float GetXPositionForShapeSquare(ShapeData shapeData, int column, Vector2 moveDistance)
     {
         float shiftOnX = 0f;
 
         if (shapeData.columns > 1)
         {
-            if (shapeData.columns % 2 != 0) // ¿­ÀÇ ¼ö°¡ È¦¼öÀÎ °æ¿ì
+            if (shapeData.columns % 2 != 0) // ì—´ì˜ ìˆ˜ê°€ í™€ìˆ˜ì¸ ê²½ìš°
             {
                 var middleSquareIndex = (shapeData.columns - 1) / 2;
                 var multiplier = column - middleSquareIndex;
                 shiftOnX = moveDistance.x * multiplier;
             }
-            else // ¿­ÀÇ ¼ö°¡ Â¦¼öÀÎ °æ¿ì
+            else // ì—´ì˜ ìˆ˜ê°€ ì§ìˆ˜ì¸ ê²½ìš°
             {
                 var middleSquareIndex = shapeData.columns / 2;
                 var multiplier = column - (middleSquareIndex - 0.5f);
@@ -155,7 +155,7 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
         return shiftOnX;
     }
 
-    // ShapeData¿¡¼­ È°¼ºÈ­µÈ ºí·ÏÀÇ ¼ö¸¦ °è»êÇÏ´Â ¸Ş¼­µå
+    // ShapeDataì—ì„œ í™œì„±í™”ëœ ë¸”ë¡ì˜ ìˆ˜ë¥¼ ê³„ì‚°í•˜ëŠ” ë©”ì„œë“œ
     private int GetNumberOfSquares(ShapeData shapeData)
     {
         int number = 0;
@@ -170,13 +170,13 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
         return number;
     }
 
-    // ¸¶¿ì½º Å¬¸¯ ÀÌº¥Æ® Ã³¸® (ÇÊ¿ä ½Ã ±¸Çö)
+    // ë§ˆìš°ìŠ¤ í´ë¦­ ì´ë²¤íŠ¸ ì²˜ë¦¬ (í•„ìš” ì‹œ êµ¬í˜„)
     public void OnPointerClick(PointerEventData eventData)
     {
 
     }
 
-    // ¸¶¿ì½º ¹öÆ°À» ³õÀ» ¶§ ÀÌº¥Æ® Ã³¸® (ÇÊ¿ä ½Ã ±¸Çö)
+    // ë§ˆìš°ìŠ¤ ë²„íŠ¼ì„ ë†“ì„ ë•Œ ì´ë²¤íŠ¸ ì²˜ë¦¬ (í•„ìš” ì‹œ êµ¬í˜„)
     public void OnPointerUp(PointerEventData eventData)
     {
         foreach (var square in _currentShape)
@@ -185,24 +185,24 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
 
             if (block != null && block.currentCollidedBlock != ElementType.None)
             {
-                // Ãæµ¹µÈ ¿ø¼Ò Å¸ÀÔÀ¸·Î ÀÌ¹ÌÁö º¯°æ
+                // ì¶©ëŒëœ ì›ì†Œ íƒ€ì…ìœ¼ë¡œ ì´ë¯¸ì§€ ë³€ê²½
                 //block.SetBlockImage(block.currentCollidedBlock);
                 block.SetElementType(block.currentCollidedBlock);
             }
         }
 
-        this.GetComponent<RectTransform>().localScale = _shapeStartScale; // ½ºÄÉÀÏÀ» ¿ø·¡´ë·Î º¯°æ
-        GameEvents.CheckIfShapeCanBePlaced(); // Shape¸¦ ¹èÄ¡ÇÒ ¼ö ÀÖ´ÂÁö Ã¼Å©ÇÏ´Â ÀÌº¥Æ® È£Ãâ
+        this.GetComponent<RectTransform>().localScale = _shapeStartScale; // ìŠ¤ì¼€ì¼ì„ ì›ë˜ëŒ€ë¡œ ë³€ê²½
+        GameEvents.CheckIfShapeCanBePlaced(); // Shapeë¥¼ ë°°ì¹˜í•  ìˆ˜ ìˆëŠ”ì§€ ì²´í¬í•˜ëŠ” ì´ë²¤íŠ¸ í˜¸ì¶œ
     }
 
-    // µå·¡±× ½ÃÀÛ ½Ã È£ÃâµÇ´Â ¸Ş¼­µå
+    // ë“œë˜ê·¸ ì‹œì‘ ì‹œ í˜¸ì¶œë˜ëŠ” ë©”ì„œë“œ
     public void OnBeginDrag(PointerEventData eventData)
     {
-        this.GetComponent<RectTransform>().localScale = shapeSelectedScale; // ¼±ÅÃµÈ »óÅÂ·Î ½ºÄÉÀÏ º¯°æ
-        _isDragging = true; // µå·¡±× Áß »óÅÂ ¼³Á¤
+        this.GetComponent<RectTransform>().localScale = shapeSelectedScale; // ì„ íƒëœ ìƒíƒœë¡œ ìŠ¤ì¼€ì¼ ë³€ê²½
+        _isDragging = true; // ë“œë˜ê·¸ ì¤‘ ìƒíƒœ ì„¤ì •
     }
 
-    // µå·¡±× Áß¿¡ È£ÃâµÇ´Â ¸Ş¼­µå
+    // ë“œë˜ê·¸ ì¤‘ì— í˜¸ì¶œë˜ëŠ” ë©”ì„œë“œ
     public void OnDrag(PointerEventData eventData)
     {
         _transform.anchorMin = new Vector2(0, 0);
@@ -210,27 +210,27 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
         _transform.pivot = new Vector2(0, 0);
 
         Vector2 pos;
-        // È­¸é ÁÂÇ¥¸¦ Äµ¹ö½ºÀÇ ·ÎÄÃ ÁÂÇ¥·Î º¯È¯ÇÏ¿© À§Ä¡ ¼³Á¤
+        // í™”ë©´ ì¢Œí‘œë¥¼ ìº”ë²„ìŠ¤ì˜ ë¡œì»¬ ì¢Œí‘œë¡œ ë³€í™˜í•˜ì—¬ ìœ„ì¹˜ ì„¤ì •
         RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvas.transform as RectTransform,
             eventData.position, Camera.main, out pos);
         _transform.localPosition = pos + offset;
     }
 
-    // µå·¡±× Á¾·á ½Ã È£ÃâµÇ´Â ¸Ş¼­µå
+    // ë“œë˜ê·¸ ì¢…ë£Œ ì‹œ í˜¸ì¶œë˜ëŠ” ë©”ì„œë“œ
     public void OnEndDrag(PointerEventData eventData)
     {
-        this.GetComponent<RectTransform>().localScale = _shapeStartScale; // ½ºÄÉÀÏÀ» ¿ø·¡´ë·Î º¯°æ
-        _isDragging = false; // µå·¡±× Áß »óÅÂ ÇØÁ¦
-        GameEvents.CheckIfShapeCanBePlaced(); // Shape¸¦ ¹èÄ¡ÇÒ ¼ö ÀÖ´ÂÁö Ã¼Å©ÇÏ´Â ÀÌº¥Æ® È£Ãâ
+        this.GetComponent<RectTransform>().localScale = _shapeStartScale; // ìŠ¤ì¼€ì¼ì„ ì›ë˜ëŒ€ë¡œ ë³€ê²½
+        _isDragging = false; // ë“œë˜ê·¸ ì¤‘ ìƒíƒœ í•´ì œ
+        GameEvents.CheckIfShapeCanBePlaced(); // Shapeë¥¼ ë°°ì¹˜í•  ìˆ˜ ìˆëŠ”ì§€ ì²´í¬í•˜ëŠ” ì´ë²¤íŠ¸ í˜¸ì¶œ
     }
     
-    // ¸ğ¾çÀ» È¸Àü½ÃÅ°´Â ¸Ş¼­µå
+    // ëª¨ì–‘ì„ íšŒì „ì‹œí‚¤ëŠ” ë©”ì„œë“œ
     private void RotateShape(float angle)
     {
-        _transform.Rotate(0, 0, angle); // RectTransformÀ» ±âÁØÀ¸·Î ZÃà È¸Àü
+        _transform.Rotate(0, 0, angle); // RectTransformì„ ê¸°ì¤€ìœ¼ë¡œ Zì¶• íšŒì „
     }
 
-    // ¸¶¿ì½º ¹öÆ°À» ´­·¶À» ¶§ ÀÌº¥Æ® Ã³¸® (ÇÊ¿ä ½Ã ±¸Çö)
+    // ë§ˆìš°ìŠ¤ ë²„íŠ¼ì„ ëˆŒë €ì„ ë•Œ ì´ë²¤íŠ¸ ì²˜ë¦¬ (í•„ìš” ì‹œ êµ¬í˜„)
     public void OnPointerDown(PointerEventData eventData)
     {
 
