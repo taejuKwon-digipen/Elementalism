@@ -8,6 +8,7 @@ public class CardManager : MonoBehaviour
     void Awake() => Inst = this;
 
     [SerializeField] CardItemSO carditemso;
+    [SerializeField] GameObject cardPrefab;
 
     List<CardItem> ItemBuffer;
 
@@ -46,15 +47,7 @@ public class CardManager : MonoBehaviour
     }
     public void Start()
     {
-       /* if (ItemBuffer != null)
-        {*/
-            SetCardBuffer(); //이거까진 됨 -> 혹ㄱ시 다 들어갔다가 지워지는 걸까?
-       /* }
-        else
-        {
-            string result = "fuckyou"; //왜 널일까 카드매니저엔 잘 들어가는데 말이죠
-            print(result);
-        }*/
+        SetCardBuffer(); 
     }
 
     public void Update()
@@ -62,6 +55,15 @@ public class CardManager : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.A))
         {
             print(PopCard().CardName);
+            AddCard(true);
         }
+    }
+
+    void AddCard(bool isMine) 
+    {
+        var cadObject = Instantiate(cardPrefab, Vector3.zero, Quaternion.identity);
+       // Instantiate =인스턴스 화-> 게임 중 인스턴스 생성 가능
+       // (생성하고자 하는 게임오브젝트명,위치, 회전값 -> 지금은 기본 )
+
     }
 }

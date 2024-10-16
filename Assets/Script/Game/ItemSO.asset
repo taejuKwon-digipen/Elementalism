@@ -27,3 +27,10 @@ MonoBehaviour:
     CardDescription: 2
     UseMagic: 0
     Percent: 20
+  - CardName: 3
+    ID: 3
+    PowerLeft: 3
+    PowerRight: 3
+    CardDescription: 3
+    UseMagic: 0
+    Percent: 20

@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/Script/GameEvents.cs.meta
 guid: 589d6fad8ffeca646be4e21d0506a9c0
-========
-guid: c7c909eb411f3ff4e967d2a4cfe9e2c5
->>>>>>>> origin/CardSystem:Assets/Script/Game/DisplayCard.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
