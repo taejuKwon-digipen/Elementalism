@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -6,7 +6,7 @@ using TMPro;
 public class Card : MonoBehaviour
 {
     //[SerializeField] SpriteRenderer card;
-    //[SerializeField] SpriteRenderer character; //½ºÇÁ¶óÀÌÆ®´Â ³ªÁß¿¡ ³Ö´Â°É·Î ÇÏ±¸¿ä
+    //[SerializeField] SpriteRenderer character; //ìŠ¤í”„ë¼ì´íŠ¸ëŠ” ë‚˜ì¤‘ì— ë„£ëŠ”ê±¸ë¡œ í•˜êµ¬ìš”
     [SerializeField] TMP_Text nameTMP;
     [SerializeField] TMP_Text PowerLeftTMP;
     [SerializeField] TMP_Text PowerRightTMP;

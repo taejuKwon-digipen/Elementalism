@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -63,9 +63,10 @@ public class CardManager : MonoBehaviour
     {
         Transform canvasTransform = GameObject.Find("Canvas").transform;
         var cardObject = Instantiate(cardPrefab, new Vector3(1746,540,0), Quaternion.identity,canvasTransform);
-       // Instantiate =ÀÎ½ºÅÏ½º È­-> °ÔÀÓ Áß ÀÎ½ºÅÏ½º »ý¼º °¡´É
-       // (»ý¼ºÇÏ°íÀÚ ÇÏ´Â °ÔÀÓ¿ÀºêÁ§Æ®¸í,À§Ä¡, È¸Àü°ª -> Áö±ÝÀº ±âº» )
+       // Instantiate =ï¿½Î½ï¿½ï¿½Ï½ï¿½ È­-> ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Î½ï¿½ï¿½Ï½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+       // (ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ï¿½ï¿½ ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½Ó¿ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½,ï¿½ï¿½Ä¡, È¸ï¿½ï¿½ï¿½ï¿½ -> ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½âº» )
        var card = cardObject.GetComponent<Card>();
         card.Setup(PopCard(), isMine);
     }
+
 }

@@ -1,6 +1,6 @@
-// ÀÌ ½ºÅ©¸³Æ®´Â °ÔÀÓ¿¡¼­ »ç¿ëµÇ´Â ShapeSquare Å¬·¡½ºÀÇ µ¿ÀÛÀ» Á¤ÀÇÇÕ´Ï´Ù.
-// ÆÛÁñ Á¶°¢ÀÇ °³º° ºí·Ï(square)¿¡ ´ëÇÑ »óÅÂ¸¦ °ü¸®ÇÏ¸ç,
-// ºí·ÏÀÌ Á¡À¯µÇ¾úÀ» ¶§ Ç¥½ÃÇÒ ÀÌ¹ÌÁö¸¦ Á¦¾îÇÕ´Ï´Ù.
+ï»¿// ì´ ìŠ¤í¬ë¦½íŠ¸ëŠ” ê²Œì„ì—ì„œ ì‚¬ìš©ë˜ëŠ” ShapeSquare í´ë˜ìŠ¤ì˜ ë™ì‘ì„ ì •ì˜í•©ë‹ˆë‹¤.
+// í¼ì¦ ì¡°ê°ì˜ ê°œë³„ ë¸”ë¡(square)ì— ëŒ€í•œ ìƒíƒœë¥¼ ê´€ë¦¬í•˜ë©°,
+// ë¸”ë¡ì´ ì ìœ ë˜ì—ˆì„ ë•Œ í‘œì‹œí•  ì´ë¯¸ì§€ë¥¼ ì œì–´í•©ë‹ˆë‹¤.
 
 using System.Collections;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ public class ShapeSquare : MonoBehaviour
     public Image occupiedImage;
     public ElementType elementType;
 
-    // °¢ ¿ø¼Ò¿¡ ÇØ´çÇÏ´Â ½ºÇÁ¶óÀÌÆ®
+    // ê° ì›ì†Œì— í•´ë‹¹í•˜ëŠ” ìŠ¤í”„ë¼ì´íŠ¸
     public Sprite fireSprite;
     public Sprite waterSprite;
     public Sprite airSprite;

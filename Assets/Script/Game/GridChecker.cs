@@ -1,42 +1,42 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GridChecker : MonoBehaviour
 {
-    public Grid grid; // ±×¸®µå ½ºÅ©¸³Æ® ÀÎ½ºÅÏ½º
-    public ShapeData cardShape; // Ä«µå ¸ğ¾ç (ShapeData »ç¿ë)
+    public Grid grid; // ê·¸ë¦¬ë“œ ìŠ¤í¬ë¦½íŠ¸ ì¸ìŠ¤í„´ìŠ¤
+    public ShapeData cardShape; // ì¹´ë“œ ëª¨ì–‘ (ShapeData ì‚¬ìš©)
 
-    // ¹öÆ° Å¬¸¯ ½Ã È£ÃâÇÒ °Ë»ç ¸Ş¼­µå
+    // ë²„íŠ¼ í´ë¦­ ì‹œ í˜¸ì¶œí•  ê²€ì‚¬ ë©”ì„œë“œ
     public void OnCheckButtonPressed()
     {
         int totalBlockCount = 0;
 
-        // ±×¸®µåÀÇ Å©±â¿Í Ä«µåÀÇ Å©±â¸¦ °¡Á®¿É´Ï´Ù.
+        // ê·¸ë¦¬ë“œì˜ í¬ê¸°ì™€ ì¹´ë“œì˜ í¬ê¸°ë¥¼ ê°€ì ¸ì˜µë‹ˆë‹¤.
         int gridRows = grid.rows;
         int gridColumns = grid.columns;
         int cardRows = cardShape.rows;
         int cardColumns = cardShape.columns;
 
-        // ½½¶óÀÌµù À©µµ¿ì ¹æ½ÄÀ¸·Î ±×¸®µå¸¦ ¼øÈ¸ÇÕ´Ï´Ù.
+        // ìŠ¬ë¼ì´ë”© ìœˆë„ìš° ë°©ì‹ìœ¼ë¡œ ê·¸ë¦¬ë“œë¥¼ ìˆœíšŒí•©ë‹ˆë‹¤.
         for (int row = 0; row <= gridRows - cardRows; row++)
         {
             for (int col = 0; col <= gridColumns - cardColumns; col++)
             {
-                // Ä«µå ¸ğ¾çÀÌ ±×¸®µåÀÇ ÇöÀç ¼­ºê ±×¸®µå¿¡ ¸Â´ÂÁö °Ë»çÇÕ´Ï´Ù.
+                // ì¹´ë“œ ëª¨ì–‘ì´ ê·¸ë¦¬ë“œì˜ í˜„ì¬ ì„œë¸Œ ê·¸ë¦¬ë“œì— ë§ëŠ”ì§€ ê²€ì‚¬í•©ë‹ˆë‹¤.
                 if (IsMatching(grid, cardShape, row, col))
                 {
-                    // ÀÏÄ¡ÇÏ´Â °æ¿ì ÇØ´ç ºí·Ï ¼ö¸¦ ´©ÀûÇÕ´Ï´Ù.
+                    // ì¼ì¹˜í•˜ëŠ” ê²½ìš° í•´ë‹¹ ë¸”ë¡ ìˆ˜ë¥¼ ëˆ„ì í•©ë‹ˆë‹¤.
                     totalBlockCount += CountBlocksInShape(cardShape);
                 }
             }
         }
 
-        // °Ë»ç °á°ú¸¦ Ãâ·ÂÇÕ´Ï´Ù.
-        Debug.Log("Ä«µå¿Í ÀÏÄ¡ÇÏ´Â ºí·ÏÀÇ ÃÑ °³¼ö: " + totalBlockCount);
+        // ê²€ì‚¬ ê²°ê³¼ë¥¼ ì¶œë ¥í•©ë‹ˆë‹¤.
+        Debug.Log("ì¹´ë“œì™€ ì¼ì¹˜í•˜ëŠ” ë¸”ë¡ì˜ ì´ ê°œìˆ˜: " + totalBlockCount);
     }
 
-    // ±×¸®µå¿Í Ä«µå ¸ğ¾çÀÌ ÀÏÄ¡ÇÏ´ÂÁö È®ÀÎÇÏ´Â ¸Ş¼­µå
+    // ê·¸ë¦¬ë“œì™€ ì¹´ë“œ ëª¨ì–‘ì´ ì¼ì¹˜í•˜ëŠ”ì§€ í™•ì¸í•˜ëŠ” ë©”ì„œë“œ
     private bool IsMatching(Grid grid, ShapeData cardShape, int startRow, int startCol)
     {
         for (int row = 0; row < cardShape.rows; row++)
@@ -55,7 +55,7 @@ public class GridChecker : MonoBehaviour
         return true;
     }
 
-    // Ä«µå ¸ğ¾çÀÇ ºí·Ï ¼ö¸¦ °è»êÇÏ´Â ¸Ş¼­µå
+    // ì¹´ë“œ ëª¨ì–‘ì˜ ë¸”ë¡ ìˆ˜ë¥¼ ê³„ì‚°í•˜ëŠ” ë©”ì„œë“œ
     private int CountBlocksInShape(ShapeData shape)
     {
         int count = 0;

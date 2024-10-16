@@ -1,6 +1,6 @@
-// ÀÌ ½ºÅ©¸³Æ®´Â °ÔÀÓ ³»ÀÇ ±×¸®µå(°İÀÚ)¸¦ »ı¼ºÇÏ°í °ü¸®ÇÕ´Ï´Ù.
-// ±×¸®µå ¾È¿¡ ¿ø¼Ò ºí·ÏµéÀ» »ı¼ºÇÏ°í ¹èÄ¡ÇÏ¸ç,
-// °ÔÀÓ ÀÌº¥Æ®¿¡ µû¶ó ¿ø¼ÒµéÀÇ »óÅÂ¸¦ ¾÷µ¥ÀÌÆ®ÇÕ´Ï´Ù.
+ï»¿// ì´ ìŠ¤í¬ë¦½íŠ¸ëŠ” ê²Œì„ ë‚´ì˜ ê·¸ë¦¬ë“œ(ê²©ì)ë¥¼ ìƒì„±í•˜ê³  ê´€ë¦¬í•©ë‹ˆë‹¤.
+// ê·¸ë¦¬ë“œ ì•ˆì— ì›ì†Œ ë¸”ë¡ë“¤ì„ ìƒì„±í•˜ê³  ë°°ì¹˜í•˜ë©°,
+// ê²Œì„ ì´ë²¤íŠ¸ì— ë”°ë¼ ì›ì†Œë“¤ì˜ ìƒíƒœë¥¼ ì—…ë°ì´íŠ¸í•©ë‹ˆë‹¤.
 
 using System.Collections;
 using System.Collections.Generic;
@@ -8,24 +8,24 @@ using UnityEngine;
 
 public class Grid : MonoBehaviour
 {
-    // ±×¸®µåÀÇ ¿­°ú Çà ¼ö¸¦ Á¤ÀÇÇÕ´Ï´Ù.
-    public int columns = 0;                       // ¿­ÀÇ ¼ö
-    public int rows = 0;                          // ÇàÀÇ ¼ö
-    public float squaresGap = 0.1f;               // ºí·Ï »çÀÌÀÇ °£°İ
-    public GameObject block;                  // ¿ø¼Ò ºí·Ï ÇÁ¸®ÆÕ
-    public Vector2 startPosition = new Vector2(0, 0); // ±×¸®µå ½ÃÀÛ À§Ä¡
-    public float squareScale = 0.5f;              // ºí·ÏÀÇ Å©±â ½ºÄÉÀÏ
-    public float everySquareOffset = 0.0f;        // °¢ ºí·ÏÀÇ ¿ÀÇÁ¼Â
+    // ê·¸ë¦¬ë“œì˜ ì—´ê³¼ í–‰ ìˆ˜ë¥¼ ì •ì˜í•©ë‹ˆë‹¤.
+    public int columns = 0;                       // ì—´ì˜ ìˆ˜
+    public int rows = 0;                          // í–‰ì˜ ìˆ˜
+    public float squaresGap = 0.1f;               // ë¸”ë¡ ì‚¬ì´ì˜ ê°„ê²©
+    public GameObject block;                  // ì›ì†Œ ë¸”ë¡ í”„ë¦¬íŒ¹
+    public Vector2 startPosition = new Vector2(0, 0); // ê·¸ë¦¬ë“œ ì‹œì‘ ìœ„ì¹˜
+    public float squareScale = 0.5f;              // ë¸”ë¡ì˜ í¬ê¸° ìŠ¤ì¼€ì¼
+    public float everySquareOffset = 0.0f;        // ê° ë¸”ë¡ì˜ ì˜¤í”„ì…‹
 
-    private Vector2 _offset = new Vector2(0, 0);  // ºí·Ï °£ÀÇ À§Ä¡ ¿ÀÇÁ¼Â °è»ê¿ë º¯¼ö
-    private List<GameObject> _blocks = new List<GameObject>(); // »ı¼ºµÈ ¿ø¼Ò ºí·ÏµéÀÇ ¸®½ºÆ®
+    private Vector2 _offset = new Vector2(0, 0);  // ë¸”ë¡ ê°„ì˜ ìœ„ì¹˜ ì˜¤í”„ì…‹ ê³„ì‚°ìš© ë³€ìˆ˜
+    private List<GameObject> _blocks = new List<GameObject>(); // ìƒì„±ëœ ì›ì†Œ ë¸”ë¡ë“¤ì˜ ë¦¬ìŠ¤íŠ¸
 
-    // °ÔÀÓ ÀÌº¥Æ®¿¡ ¸Ş¼­µå¸¦ µî·ÏÇÕ´Ï´Ù.
+    // ê²Œì„ ì´ë²¤íŠ¸ì— ë©”ì„œë“œë¥¼ ë“±ë¡í•©ë‹ˆë‹¤.
     private void OnEnable()
     {
         GameEvents.CheckIfShapeCanBePlaced += CheckIfShapeCanBePlaced;
     }
-    // °ÔÀÓ ÀÌº¥Æ®¿¡¼­ ¸Ş¼­µå¸¦ ÇØÁ¦ÇÕ´Ï´Ù.
+    // ê²Œì„ ì´ë²¤íŠ¸ì—ì„œ ë©”ì„œë“œë¥¼ í•´ì œí•©ë‹ˆë‹¤.
     private void OnDisable()
     {
         GameEvents.CheckIfShapeCanBePlaced -= CheckIfShapeCanBePlaced;
@@ -33,34 +33,34 @@ public class Grid : MonoBehaviour
 
     void Start()
     {
-        CreateGrid(); // ±×¸®µå¸¦ »ı¼ºÇÕ´Ï´Ù.
+        CreateGrid(); // ê·¸ë¦¬ë“œë¥¼ ìƒì„±í•©ë‹ˆë‹¤.
     }
 
-    // ±×¸®µå¸¦ »ı¼ºÇÏ´Â ¸Ş¼­µå
+    // ê·¸ë¦¬ë“œë¥¼ ìƒì„±í•˜ëŠ” ë©”ì„œë“œ
     private void CreateGrid()
     {
-        SpawnBlocks();        // ¿ø¼Ò ºí·ÏµéÀ» »ı¼ºÇÕ´Ï´Ù.
-        SetBlocksPositions(); // »ı¼ºµÈ ºí·ÏµéÀÇ À§Ä¡¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+        SpawnBlocks();        // ì›ì†Œ ë¸”ë¡ë“¤ì„ ìƒì„±í•©ë‹ˆë‹¤.
+        SetBlocksPositions(); // ìƒì„±ëœ ë¸”ë¡ë“¤ì˜ ìœ„ì¹˜ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
     }
 
-    // ¿ø¼Ò ºí·ÏµéÀ» »ı¼ºÇÏ´Â ¸Ş¼­µå
+    // ì›ì†Œ ë¸”ë¡ë“¤ì„ ìƒì„±í•˜ëŠ” ë©”ì„œë“œ
     private void SpawnBlocks()
     {
         for (var row = 0; row < rows; row++)
         {
             for (var column = 0; column < columns; column++)
             {
-                // ¿ø¼Ò ºí·Ï ÇÁ¸®ÆÕÀ» ÀÎ½ºÅÏ½ºÈ­ÇÏ¿© »ı¼ºÇÕ´Ï´Ù.
+                // ì›ì†Œ ë¸”ë¡ í”„ë¦¬íŒ¹ì„ ì¸ìŠ¤í„´ìŠ¤í™”í•˜ì—¬ ìƒì„±í•©ë‹ˆë‹¤.
                 GameObject newBlock = Instantiate(block) as GameObject;
-                newBlock.transform.SetParent(this.transform); // ±×¸®µå ¿ÀºêÁ§Æ®¸¦ ºÎ¸ğ·Î ¼³Á¤
-                newBlock.transform.localScale = new Vector3(squareScale, squareScale, squareScale); // ½ºÄÉÀÏ ¼³Á¤
+                newBlock.transform.SetParent(this.transform); // ê·¸ë¦¬ë“œ ì˜¤ë¸Œì íŠ¸ë¥¼ ë¶€ëª¨ë¡œ ì„¤ì •
+                newBlock.transform.localScale = new Vector3(squareScale, squareScale, squareScale); // ìŠ¤ì¼€ì¼ ì„¤ì •
 
-                // ·£´ıÀ¸·Î ¿ø¼Ò Å¸ÀÔÀ» ¼±ÅÃÇÏ¿© ÀÌ¹ÌÁö ¼³Á¤
+                // ëœë¤ìœ¼ë¡œ ì›ì†Œ íƒ€ì…ì„ ì„ íƒí•˜ì—¬ ì´ë¯¸ì§€ ì„¤ì •
                 ElementType randomElement = (ElementType)Random.Range(1, 5);
                 //newBlock.GetComponent<Block>().SetBlockImage(randomElement);
                 newBlock.GetComponent<Block>().SetElementType(randomElement);
 
-                // »ı¼ºµÈ ¿ø¼Ò ºí·ÏÀ» ¸®½ºÆ®¿¡ Ãß°¡ÇÕ´Ï´Ù.
+                // ìƒì„±ëœ ì›ì†Œ ë¸”ë¡ì„ ë¦¬ìŠ¤íŠ¸ì— ì¶”ê°€í•©ë‹ˆë‹¤.
                 _blocks.Add(newBlock);
             }
         }
@@ -68,8 +68,8 @@ public class Grid : MonoBehaviour
 
     public ElementType GetElementTypeAt(int row, int column)
     {
-        // ±×¸®µåÀÇ ÇØ´ç À§Ä¡¿¡ ÀÖ´Â ºí·ÏÀ» Ã£°í, ±× ºí·ÏÀÇ ElementTypeÀ» ¹İÈ¯ÇÕ´Ï´Ù.
-        int index = row * columns + column; // 1Â÷¿ø ¸®½ºÆ® ÀÎµ¦½º °è»ê
+        // ê·¸ë¦¬ë“œì˜ í•´ë‹¹ ìœ„ì¹˜ì— ìˆëŠ” ë¸”ë¡ì„ ì°¾ê³ , ê·¸ ë¸”ë¡ì˜ ElementTypeì„ ë°˜í™˜í•©ë‹ˆë‹¤.
+        int index = row * columns + column; // 1ì°¨ì› ë¦¬ìŠ¤íŠ¸ ì¸ë±ìŠ¤ ê³„ì‚°
         if (index >= 0 && index < _blocks.Count)
         {
             Block block = _blocks[index].GetComponent<Block>();
@@ -78,26 +78,26 @@ public class Grid : MonoBehaviour
                 return block.elementType;
             }
         }
-        return ElementType.None; // À¯È¿ÇÏÁö ¾ÊÀº À§Ä¡ÀÎ °æ¿ì None ¹İÈ¯
+        return ElementType.None; // ìœ íš¨í•˜ì§€ ì•Šì€ ìœ„ì¹˜ì¸ ê²½ìš° None ë°˜í™˜
     }
 
-    // »ı¼ºµÈ ¿ø¼Ò ºí·ÏµéÀÇ À§Ä¡¸¦ ¼³Á¤ÇÏ´Â ¸Ş¼­µå
+    // ìƒì„±ëœ ì›ì†Œ ë¸”ë¡ë“¤ì˜ ìœ„ì¹˜ë¥¼ ì„¤ì •í•˜ëŠ” ë©”ì„œë“œ
     private void SetBlocksPositions()
     {
-        int column_number = 0;    // ÇöÀç ¿­ ¹øÈ£
-        int row_number = 0;       // ÇöÀç Çà ¹øÈ£
-        Vector2 square_gap_number = new Vector2(0.0f, 0.0f); // ºí·Ï °£ÀÇ Ãß°¡ °£°İ °è»ê¿ë º¯¼ö
-        bool row_moved = false;   // ÇàÀÌ ÀÌµ¿Çß´ÂÁö ¿©ºÎ
+        int column_number = 0;    // í˜„ì¬ ì—´ ë²ˆí˜¸
+        int row_number = 0;       // í˜„ì¬ í–‰ ë²ˆí˜¸
+        Vector2 square_gap_number = new Vector2(0.0f, 0.0f); // ë¸”ë¡ ê°„ì˜ ì¶”ê°€ ê°„ê²© ê³„ì‚°ìš© ë³€ìˆ˜
+        bool row_moved = false;   // í–‰ì´ ì´ë™í–ˆëŠ”ì§€ ì—¬ë¶€
 
-        var square_rect = _blocks[0].GetComponent<RectTransform>(); // ºí·ÏÀÇ RectTransform °¡Á®¿À±â
+        var square_rect = _blocks[0].GetComponent<RectTransform>(); // ë¸”ë¡ì˜ RectTransform ê°€ì ¸ì˜¤ê¸°
 
-        // ºí·Ï °£ÀÇ ¿ÀÇÁ¼Â °è»ê
+        // ë¸”ë¡ ê°„ì˜ ì˜¤í”„ì…‹ ê³„ì‚°
         _offset.x = square_rect.rect.width * square_rect.transform.localScale.x + everySquareOffset;
         _offset.y = square_rect.rect.height * square_rect.transform.localScale.y + everySquareOffset;
 
         foreach (GameObject square in _blocks)
         {
-            // ¿­ ¹øÈ£°¡ ÃÖ´ë ¿­ ¼ö¸¦ ³ÑÀ¸¸é ÇàÀ» Áõ°¡½ÃÅ°°í ¿­ ¹øÈ£¸¦ ÃÊ±âÈ­ÇÕ´Ï´Ù.
+            // ì—´ ë²ˆí˜¸ê°€ ìµœëŒ€ ì—´ ìˆ˜ë¥¼ ë„˜ìœ¼ë©´ í–‰ì„ ì¦ê°€ì‹œí‚¤ê³  ì—´ ë²ˆí˜¸ë¥¼ ì´ˆê¸°í™”í•©ë‹ˆë‹¤.
             if (column_number + 1 > columns)
             {
                 square_gap_number.x = 0;
@@ -106,18 +106,18 @@ public class Grid : MonoBehaviour
                 row_moved = false;
             }
 
-            // ºí·ÏÀÇ X, Y À§Ä¡ ¿ÀÇÁ¼ÂÀ» °è»êÇÕ´Ï´Ù.
+            // ë¸”ë¡ì˜ X, Y ìœ„ì¹˜ ì˜¤í”„ì…‹ì„ ê³„ì‚°í•©ë‹ˆë‹¤.
             var pos_x_offset = _offset.x * column_number + (square_gap_number.x * squaresGap);
             var pos_y_offset = _offset.y * row_number + (square_gap_number.y * squaresGap);
 
-            // Æ¯Á¤ ¿­¸¶´Ù Ãß°¡ °£°İÀ» Ãß°¡ÇÏ¿© ºí·ÏµéÀ» ±×·ìÈ­ÇÕ´Ï´Ù.
+            // íŠ¹ì • ì—´ë§ˆë‹¤ ì¶”ê°€ ê°„ê²©ì„ ì¶”ê°€í•˜ì—¬ ë¸”ë¡ë“¤ì„ ê·¸ë£¹í™”í•©ë‹ˆë‹¤.
             if (column_number > 0 && column_number % 3 == 0)
             {
                 square_gap_number.x++;
                 pos_x_offset += squaresGap;
             }
 
-            // Æ¯Á¤ Çà¸¶´Ù Ãß°¡ °£°İÀ» Ãß°¡ÇÏ¿© ºí·ÏµéÀ» ±×·ìÈ­ÇÕ´Ï´Ù.
+            // íŠ¹ì • í–‰ë§ˆë‹¤ ì¶”ê°€ ê°„ê²©ì„ ì¶”ê°€í•˜ì—¬ ë¸”ë¡ë“¤ì„ ê·¸ë£¹í™”í•©ë‹ˆë‹¤.
             if (row_number > 0 && row_number % 3 == 0 && row_moved == false)
             {
                 row_moved = true;
@@ -125,7 +125,7 @@ public class Grid : MonoBehaviour
                 pos_y_offset += squaresGap;
             }
 
-            // ºí·ÏÀÇ À§Ä¡¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+            // ë¸”ë¡ì˜ ìœ„ì¹˜ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
             square.GetComponent<RectTransform>().anchoredPosition = new Vector2(
                 startPosition.x + pos_x_offset,
                 startPosition.y - pos_y_offset);
@@ -134,32 +134,32 @@ public class Grid : MonoBehaviour
                 startPosition.x + pos_x_offset,
                 startPosition.y - pos_y_offset, 0.0f);
 
-            column_number++; // ¿­ ¹øÈ£¸¦ Áõ°¡½ÃÅµ´Ï´Ù.
+            column_number++; // ì—´ ë²ˆí˜¸ë¥¼ ì¦ê°€ì‹œí‚µë‹ˆë‹¤.
         }
     }
 
     public void UpdateGridState(int row, int column, ElementType elementType)
     {
-        int index = row * columns + column; // ÀÎµ¦½º °è»ê
+        int index = row * columns + column; // ì¸ë±ìŠ¤ ê³„ì‚°
         if (index >= 0 && index < _blocks.Count)
         {
             Block block = _blocks[index].GetComponent<Block>();
             if (block != null)
             {
-                block.elementType = elementType; // »õ·Î¿î ElementTypeÀ¸·Î ¾÷µ¥ÀÌÆ®
-                block.SetBlockImage(elementType); // ÀÌ¹ÌÁö ¾÷µ¥ÀÌÆ®
+                block.elementType = elementType; // ìƒˆë¡œìš´ ElementTypeìœ¼ë¡œ ì—…ë°ì´íŠ¸
+                block.SetBlockImage(elementType); // ì´ë¯¸ì§€ ì—…ë°ì´íŠ¸
             }
         }
     }
 
-    // °ÔÀÓ ÀÌº¥Æ®¿¡ µû¶ó ºí·ÏÀ» È°¼ºÈ­ÇÏ´Â ¸Ş¼­µå
+    // ê²Œì„ ì´ë²¤íŠ¸ì— ë”°ë¼ ë¸”ë¡ì„ í™œì„±í™”í•˜ëŠ” ë©”ì„œë“œ
     private void CheckIfShapeCanBePlaced()
     {
         foreach (var square in _blocks)
         {
             var block = square.GetComponent<Block>();
 
-            // »ç¿ë °¡´ÉÇÑ ºí·ÏÀÌ¸é È°¼ºÈ­ÇÕ´Ï´Ù.
+            // ì‚¬ìš© ê°€ëŠ¥í•œ ë¸”ë¡ì´ë©´ í™œì„±í™”í•©ë‹ˆë‹¤.
             if (block.CanWeUseThisSquare() == true)
             {
                 block.ActivateSquare();
