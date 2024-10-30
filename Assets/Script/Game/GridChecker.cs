@@ -52,6 +52,19 @@ public class GridChecker : MonoBehaviour
                 }
             }
         }
+
+        // 카드와 일치하는 블록을 찾았으면, 그 위치의 블록을 None으로 설정
+
+        for (int row = 0; row < cardShape.rows; row++)
+        {
+            for (int col = 0; col < cardShape.columns; col++)
+            {
+                if (cardShape.board[row].colum[col] != ElementType.None)
+                {
+                    grid.SetElementTypeAt(startRow + row, startCol + col, ElementType.None);
+                }
+            }
+        }
         return true;
     }
 

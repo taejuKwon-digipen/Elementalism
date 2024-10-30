@@ -655,7 +655,7 @@ GameObject:
   - component: {fileID: 1413097660}
   - component: {fileID: 1413097659}
   m_Layer: 5
-  m_Name: Button
+  m_Name: TurnEndButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -694,7 +694,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grid: {fileID: 888368976}
-  cardShape: {fileID: 11400000, guid: 009803ddf1fecca4480a640fc6a288b9, type: 2}
+  cardShape: {fileID: 11400000, guid: 8cc56711ae925be43ba82e98a9928c20, type: 2}
 --- !u!114 &1413097660
 MonoBehaviour:
   m_ObjectHideFlags: 0

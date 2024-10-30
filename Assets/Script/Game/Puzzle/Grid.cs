@@ -81,6 +81,19 @@ public class Grid : MonoBehaviour
         return ElementType.None; // 유효하지 않은 위치인 경우 None 반환
     }
 
+    public void SetElementTypeAt(int row, int column, ElementType newType)
+    {
+        int index = row * columns + column; // 1차원 리스트 인덱스 계산
+        if (index >= 0 && index < _blocks.Count)
+        {
+            Block block = _blocks[index].GetComponent<Block>();
+            if (block != null)
+            {
+                block.SetElementType(newType);
+            }
+        }
+    }
+
     // 생성된 원소 블록들의 위치를 설정하는 메서드
     private void SetBlocksPositions()
     {
