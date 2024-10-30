@@ -61,9 +61,12 @@ public class CardManager : MonoBehaviour
 
     void AddCard(bool isMine) 
     {
-        var cadObject = Instantiate(cardPrefab, Vector3.zero, Quaternion.identity);
-       // Instantiate =인스턴스 화-> 게임 중 인스턴스 생성 가능
-       // (생성하고자 하는 게임오브젝트명,위치, 회전값 -> 지금은 기본 )
-
+        Transform canvasTransform = GameObject.Find("Canvas").transform;
+        var cardObject = Instantiate(cardPrefab, new Vector3(1746,540,0), Quaternion.identity,canvasTransform);
+       // Instantiate =�ν��Ͻ� ȭ-> ���� �� �ν��Ͻ� ���� ����
+       // (�����ϰ��� �ϴ� ���ӿ�����Ʈ��,��ġ, ȸ���� -> ������ �⺻ )
+       var card = cardObject.GetComponent<Card>();
+        card.Setup(PopCard(), isMine);
     }
+
 }
