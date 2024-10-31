@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48a3fec75489f47468b3415fe76eb587, type: 3}
+  m_Name: Player
+  m_EditorClassIdentifier: 
+  Name: Player
+  Description: It's you, beautiful isn't it ?
+  Sprite: {fileID: -1044599969, guid: f7eee59aca8d4af4eab98d569288d9dc, type: 3}
+  Animator: {fileID: 9100000, guid: 3b34c0c0316423642887738d151d1a9f, type: 2}
+  Type: 4
+  MaxHP: 250
+  MaxMP: 50
+  Attack: 20
+  Defense: 5
+  Agility: 0
+  Luck: 0

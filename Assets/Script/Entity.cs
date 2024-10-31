@@ -1,60 +1,34 @@
 using System;
+using UnityEditor.Animations;
 using UnityEngine;
-
-public enum EntityType
-{
-    Fire,
-    Water,
-    Wind,
-    Earth,
-    Neutral,
-}
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class Entity : MonoBehaviour
 {
-    // Statistics
-    [field: SerializeField]
-    public int MaxHP { get; set; }
+    public EntityBase baseEntity;
+    public int HP;
+    public int MP;
 
-    [field: SerializeField]
-    public int HP { get; set; }
+    protected virtual void Start() {
+        var animator = this.GetComponent<Animator>();
+        var image = this.GetComponent<Image>();
 
-    [field: SerializeField]
-    public int MaxMP { get; set; }
-
-    [field: SerializeField]
-    public int MP { get; set; }
-
-    [field: SerializeField]
-    public int Attack { get; set; }
-
-    [field: SerializeField]
-    public int Defense { get; set; }
-
-    [field: SerializeField]
-    public int Agility { get; set; }
-    
-    [field: SerializeField]
-    public int Luck { get; set; }
-
-    public EntityType Type { get; set; }
+        HP = baseEntity.MaxHP;
+        MP = baseEntity.MaxMP;
+        animator.runtimeAnimatorController = baseEntity.Animator ? baseEntity.Animator : null;
+        image.sprite = baseEntity.Sprite ? baseEntity.Sprite : null;
+    }
 
     /** <summary>
       * Allows to deal damages to the entity with the statistic calculation
       * </summary>
       * <param name="attack">Attack statistic of the other entity </param>
       */
-    public int Hit(Entity attacker)
+    public virtual int Hit(Entity attacker, EntityType attackType)
     {
-        int attack = attacker.Attack;
-        attack += (int)Math.Round(attacker.Attack * (UnityEngine.Random.Range(-2.0f, 2.0f) / 10));
-        attack -= this.Defense;
-        this.HP -= attack;
-        if (attack <= 0)
-            return attack;
-
-        if (this.HP <= 0)
-            Destroy(this.transform.parent.gameObject);
-        return attack;
+        int damages = DamageManager.ComputeDamages(attacker, this, attackType);
+        this.HP -=  damages;
+        return damages;
     }
 }
