@@ -128,15 +128,7 @@ public class Block : MonoBehaviour
     // 충돌이 종료되었을 때 호출되는 메서드
     private void OnTriggerExit2D(Collider2D collision)
     {
-        ShapeSquare collidedSquare = collision.GetComponent<ShapeSquare>();
-
-        if (collidedSquare != null && currentCollidedBlock == collidedSquare.elementType)
-        {
-            hooverImage.gameObject.SetActive(false);
-            currentCollidedBlock = ElementType.None; // 조건에 따라 초기화
-            isColliding = false; // 충돌 상태 해제
-            Debug.Log("충돌 종료: 원소 타입 초기화됨");
-        }
+        hooverImage.gameObject.SetActive(false);
+        isColliding = false; // 충돌 상태 해제
     }
-
 }

@@ -6,6 +6,7 @@ public class GridChecker : MonoBehaviour
 {
     public Grid grid; // 그리드 스크립트 인스턴스
     public ShapeData cardShape; // 카드 모양 (ShapeData 사용)
+    public ElementType CreatedElementType;
 
     // 버튼 클릭 시 호출할 검사 메서드
     public void OnCheckButtonPressed()
@@ -24,7 +25,7 @@ public class GridChecker : MonoBehaviour
             for (int col = 0; col <= gridColumns - cardColumns; col++)
             {
                 // 카드 모양이 그리드의 현재 서브 그리드에 맞는지 검사합니다.
-                if (IsMatching(grid, cardShape, row, col))
+                if (IsMatching(grid, cardShape, row, col, CreatedElementType))
                 {
                     // 일치하는 경우 해당 블록 수를 누적합니다.
                     totalBlockCount += CountBlocksInShape(cardShape);
@@ -37,7 +38,7 @@ public class GridChecker : MonoBehaviour
     }
 
     // 그리드와 카드 모양이 일치하는지 확인하는 메서드
-    private bool IsMatching(Grid grid, ShapeData cardShape, int startRow, int startCol)
+    private bool IsMatching(Grid grid, ShapeData cardShape, int startRow, int startCol, ElementType createdType)
     {
         for (int row = 0; row < cardShape.rows; row++)
         {
@@ -61,7 +62,14 @@ public class GridChecker : MonoBehaviour
             {
                 if (cardShape.board[row].colum[col] != ElementType.None)
                 {
-                    grid.SetElementTypeAt(startRow + row, startCol + col, ElementType.None);
+                    if(createdType != ElementType.None)
+                    { 
+                        grid.SetElementTypeAt(startRow + row, startCol + col, createdType);
+                    }
+                    else
+                    {
+                        grid.SetElementTypeAt(startRow + row, startCol + col, (ElementType)Random.Range(1, 5));
+                    }
                 }
             }
         }

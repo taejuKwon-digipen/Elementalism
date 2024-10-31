@@ -741,6 +741,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grid: {fileID: 888368976}
   cardShape: {fileID: 11400000, guid: 8cc56711ae925be43ba82e98a9928c20, type: 2}
+  CreatedElementType: 1
 --- !u!114 &1413097660
 MonoBehaviour:
   m_ObjectHideFlags: 0
