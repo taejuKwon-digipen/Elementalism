@@ -69,7 +69,7 @@ public class CardManager : MonoBehaviour
        // Instantiate =�ν��Ͻ� ȭ-> ���� �� �ν��Ͻ� ���� ����
        // (�����ϰ��� �ϴ� ���ӿ�����Ʈ��,��ġ, ȸ���� -> ������ �⺻ )
        var card = cardObject.GetComponent<Card>();
-        card.Setup(PopCard(), isMine);
+        //card.Setup(PopCard(), isMine);
     }
 
     void DrawCard()
