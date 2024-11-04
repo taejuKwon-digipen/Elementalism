@@ -10,7 +10,7 @@ public class CardManager : MonoBehaviour
     [SerializeField] CardItemSO carditemso;
     [SerializeField] GameObject cardPrefab;
 
-    List<CardItem> ItemBuffer;
+     List<CardItem> ItemBuffer;
 
     public CardItem PopCard()
     {
@@ -54,8 +54,9 @@ public class CardManager : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.A))
         {
+            print(PopCard().CardName);
             AddCard(true);
-            print(cardname);
+            //print(PopCard().CardName);
 
         }
     }
@@ -67,7 +68,7 @@ public class CardManager : MonoBehaviour
        // Instantiate =�ν��Ͻ� ȭ-> ���� �� �ν��Ͻ� ���� ����
        // (�����ϰ��� �ϴ� ���ӿ�����Ʈ��,��ġ, ȸ���� -> ������ �⺻ )
        var card = cardObject.GetComponent<Card>();
-        //card.Setup(PopCard(), isMine);
+       card.Setup(PopCard(), isMine);
     }
 
     void DrawCard()

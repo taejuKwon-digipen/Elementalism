@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-
+/*
 [System.Serializable] //unity �ν����� â���� ������ �� �ֵ��� ����
 
 public class Prop
@@ -13,7 +13,9 @@ public class Prop
     public bool Ground;
     public bool Wind;
 
-}
+}*/
+
+[System.Serializable]
 public class CardItem
 {
     public string CardName;
