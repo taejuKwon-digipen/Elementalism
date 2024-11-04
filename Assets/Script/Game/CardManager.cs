@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class CardManager : MonoBehaviour
 {
-    public string cardname;
     public static CardManager Inst { get; private set; }
     void Awake() => Inst = this;
 
@@ -21,7 +20,6 @@ public class CardManager : MonoBehaviour
         }
 
         CardItem card = ItemBuffer[0];
-        cardname = card.CardName;
         ItemBuffer.RemoveAt(0);
         return card;
     }

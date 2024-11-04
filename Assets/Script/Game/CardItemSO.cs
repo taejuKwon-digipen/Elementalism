@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 
-[System.Serializable] //unity ÀÎ½ºÆåÅÍ Ã¢¿¡¼­ ¼öÁ¤ÇÒ ¼ö ÀÖµµ·Ï ¼³Á¤
+[System.Serializable] //unity ï¿½Î½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã¢ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Öµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 public class Prop
 {
@@ -41,7 +41,6 @@ public class CardItem
     }*/
 
 }
-
 
 
 [CreateAssetMenu(fileName = "ItemSO", menuName = "Scriptable Object/ItemSO")]

@@ -1,30 +1,46 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[System.Serializable] //unity 인스펙터 창에서 수정할 수 있도록 설정
+using TMPro;
 
-
-public class Card : MonoBehaviour 
+public class Card : MonoBehaviour
 {
-    public int ID;
-    public int Attack;
-    public int Health;
-    //public float Percent; //등장 확률 
-    public string CardDescription;
-    //public Sprite sprite;
-    //필요시 추가
+    //[SerializeField] SpriteRenderer card;
+    //[SerializeField] SpriteRenderer character; //스프라이트는 나중에 넣는걸로 하구요
+    [SerializeField] TMP_Text nameTMP;
+    [SerializeField] TMP_Text PowerLeftTMP;
+    [SerializeField] TMP_Text PowerRightTMP;
+    [SerializeField] TMP_Text CardDescriptionTMP;
+    [SerializeField] TMP_Text IDTMP;
 
-    public Card()
+    public CardItem carditem;
+    public bool isFront = true;
+  
+
+    public void Setup(CardItem carditem_, bool isFront_)
     {
+        carditem = carditem_;
+        isFront = isFront_;
+
+        if(isFront)
+        {
+            nameTMP.text = carditem.CardName;
+            PowerLeftTMP.text = carditem.PowerLeft.ToString();
+            PowerRightTMP.text = carditem.PowerRight.ToString();
+            CardDescriptionTMP.text = carditem.CardDescription;
+            IDTMP.text = carditem.ID.ToString();
+        }
+    
 
     }
-
-    public Card(int id , int attack, int health, string carddescription)
+    void Start()
     {
-        ID = id;
-        Attack = attack;
-        Health = health;
-        //Percent = percent; 
-        CardDescription = carddescription;  
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
     }
 }
