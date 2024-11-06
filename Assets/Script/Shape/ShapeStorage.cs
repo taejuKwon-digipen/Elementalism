@@ -22,4 +22,16 @@ public class ShapeStorage : MonoBehaviour
             shape.CreateShape(shapeData[shapeIndex]);
         }
     }
+
+    public Shape GetCurrentSelectedShape()
+    {
+        foreach(var shape in shapeList) 
+        {
+            if(shape.IsOnStartPosition() == false && shape.IsAnyOfShapeSquareActive())
+                return shape;
+        }
+
+        Debug.LogError("There is no shape selected!");
+        return null;
+    }
 }

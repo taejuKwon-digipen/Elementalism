@@ -8,6 +8,7 @@ using UnityEngine;
 
 public class Grid : MonoBehaviour
 {
+    public ShapeStorage shapeStorage;
     // 그리드의 열과 행 수를 정의합니다.
     public int columns = 0;                       // 열의 수
     public int rows = 0;                          // 행의 수
@@ -178,6 +179,6 @@ public class Grid : MonoBehaviour
                 block.ActivateSquare();
             }
         }
+        shapeStorage.GetCurrentSelectedShape().DeactivateShape();
     }
-
 }
