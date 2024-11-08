@@ -25,12 +25,16 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     private bool _isDragging = false;        // 현재 드래그 중인지 여부
     private Canvas _canvas;                  // 부모 캔버스
 
+    private Vector3 _startPoint;
+    private bool _shapeActive = true;
     public void Awake()
     {
         _shapeStartScale = this.GetComponent<RectTransform>().localScale; // 초기 스케일 저장
         _transform = this.GetComponent<RectTransform>();                  // RectTransform 가져오기
         _canvas = GetComponentInParent<Canvas>();                         // 부모 캔버스 가져오기
         _shapeDraggable = true;                                           // 드래그 가능 설정
+        _startPoint = _transform.localPosition;
+        _shapeActive = true;
     }
 
     void Start()
@@ -54,10 +58,50 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
             }
         }
     }
+    
+    public bool IsOnStartPosition()
+    {
+        return _transform.localPosition == _startPoint;
+    }
 
+    public bool IsAnyOfShapeSquareActive()
+    {
+        foreach(var shape in _currentShape) 
+        {
+            if(shape.gameObject.activeSelf)
+                return true;
+        }
+
+        return false;
+    }
+
+    public void DeactivateShape()
+    {
+        if(_shapeActive)
+        {
+            foreach(var shape in _currentShape)
+            {
+                shape?.GetComponent<ShapeSquare>().DeactivateShape();
+            }
+        }
+        _shapeActive=false;
+    }
+
+    public void ActivateShape()
+    {
+        if(!_shapeActive) 
+        {
+            foreach(var shape in _currentShape)
+            {  
+                shape?.GetComponent<ShapeSquare>().ActivateShape();
+            }
+        }
+        _shapeActive = true;
+    }
     // 새로운 Shape 요청을 처리하는 메서드
     public void RequestNewShape(ShapeData shapeData)
     {
+        _transform.localPosition = _startPoint;
         CreateShape(shapeData); // 새로운 Shape 생성
     }
 
