@@ -7,6 +7,8 @@ public class CardManager : MonoBehaviour
     public static CardManager Inst { get; private set; }
     void Awake() => Inst = this;
 
+    public int currentCardIndex = 0;
+
     [SerializeField] CardItemSO carditemso;
     [SerializeField] GameObject cardPrefab;
 
@@ -15,6 +17,13 @@ public class CardManager : MonoBehaviour
 
 
     List<CardItem> ItemBuffer;
+
+    private List<Vector3> cardposition = new List<Vector3>
+    {
+        new Vector3(1746,850,0),
+        new Vector3(1746,540,0),
+        new Vector3(1746,230,0),
+    };
 
     public CardItem PopCard()
     {
@@ -56,28 +65,30 @@ public class CardManager : MonoBehaviour
 
     public void Update()
     {
-        if(Input.GetKeyDown(KeyCode.A))
+        if(Input.GetKeyDown(KeyCode.A) && currentCardIndex < cardposition.Count)
         {
             print(PopCard().CardName + " - Using Card");
             AddCard(true);
+            currentCardIndex++;
             //print(PopCard().CardName);
         }
         if (Input.GetKeyDown(KeyCode.B))
         {
             print(PopCard().CardName + " - Waiting Card");
-            AddCard(false);
+            //AddCard(false);
             //print(PopCard().CardName);
         }
     }
 
+
     void AddCard(bool isUse) 
     {
+
         Transform canvasTransform = GameObject.Find("Canvas").transform;
-        var cardObject = Instantiate(cardPrefab, new Vector3(1746,540,0), Quaternion.identity,canvasTransform);
-  
+        GameObject cardObject = Instantiate(cardPrefab, cardposition[currentCardIndex], Quaternion.identity, canvasTransform);
         var card = cardObject.GetComponent<Card>();
-        card.Setup(PopCard(), isUse);
-        (isUse ? UsingCard : WaitingCard).Add(card);
+        card.Setup(PopCard(), true); // 필요에 따라 `isUse` 값을 조정
+        UsingCard.Add(card); // 생성된 카드를 리스트에 추가
     }
 
     void SetOriginOrder(bool isuse)
