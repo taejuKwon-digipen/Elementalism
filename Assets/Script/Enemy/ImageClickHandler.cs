@@ -6,25 +6,30 @@ public class ImageClickHandler : MonoBehaviour, IPointerClickHandler
 {
     public GameObject Object;
     public GameObject Canva;
-    private Entity entity;
+    private Enemy enemy;
+    private Player player;
 
     private void Start()
     {
-        entity = this.GetComponent<Entity>();
+        enemy = this.GetComponent<Enemy>();
+        player = GameObject.FindWithTag("Player").GetComponentInChildren<Player>();
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        int damage = entity.Hit(entity);
+        if (enemy.HP <= 0)
+            return;
+        int damage = enemy.Hit(player, EntityType.Water);
 
         GameObject obj = Instantiate(
             Object,
-            entity.transform.position,
+            enemy.transform.position,
             Quaternion.identity,
             Canva.transform
         );
         Damage d = obj.GetComponent<Damage>();
 
         d.SetText('-' + damage.ToString());
+        enemy.NotifyClickToLockManager();
     }
 }

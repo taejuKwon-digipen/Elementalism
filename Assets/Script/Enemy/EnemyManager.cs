@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,8 +16,8 @@ public class EnemyManager : MonoBehaviour
 
     [SerializeField]
     private List<GameObject> onFieldEntities;
-    private readonly int[] Numbers = { 1, 2, 2, 3, 3, 4 }; // Number of enemies to spawn at the next wave.
-    private List<SpawnAvailable> areSpawnPointsAvailable = new();
+    private readonly int[] numbers = { 1, 2, 2, 3, 3, 4 }; // Number of enemies to spawn at the next wave.
+    private readonly List<SpawnAvailable> areSpawnPointsAvailable = new();
 
     private void Awake() {
         foreach (var item in spawnPoints)
@@ -44,7 +45,7 @@ public class EnemyManager : MonoBehaviour
         if (onFieldEntities.Count != 0)
             return;
         ResetSpawnPoints();
-        int numberToSpawn = Numbers[Random.Range(0, Numbers.Length)];
+        int numberToSpawn = numbers[Random.Range(0, numbers.Length)];
         for (int i = 0; i < numberToSpawn; i += 1) {
             var entityToSpawn = spawnableEnemies[0];
             var spawn = GetNewSpawn();
@@ -98,5 +99,22 @@ public class EnemyManager : MonoBehaviour
     public List<GameObject> GetOnFieldEntities()
     {
         return onFieldEntities;
+    }
+
+    public void StartEnemyTurn()
+    {
+        StartCoroutine(EnemyTurn());
+    }
+
+    private IEnumerator EnemyTurn()
+    {
+        foreach (var obj in onFieldEntities)
+        {
+            Enemy entity = obj.GetComponentInChildren<Enemy>();
+            if (entity.HP <= 0)
+                continue;
+            yield return StartCoroutine(entity.Turn());
+            yield return new WaitForSecondsRealtime(1);
+        }
     }
 }
