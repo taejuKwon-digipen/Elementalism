@@ -10,6 +10,10 @@ public class CardManager : MonoBehaviour
     [SerializeField] CardItemSO carditemso;
     [SerializeField] GameObject cardPrefab;
 
+    [SerializeField] List<Card> UsingCard;
+    [SerializeField] List<Card> WaitingCard;
+
+
     List<CardItem> ItemBuffer;
 
     public CardItem PopCard()
@@ -54,19 +58,37 @@ public class CardManager : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.A))
         {
-            print(PopCard().CardName);
+            print(PopCard().CardName + " - Using Card");
             AddCard(true);
+            //print(PopCard().CardName);
+        }
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            print(PopCard().CardName + " - Waiting Card");
+            AddCard(false);
+            //print(PopCard().CardName);
         }
     }
 
-    void AddCard(bool isMine) 
+    void AddCard(bool isUse) 
     {
         Transform canvasTransform = GameObject.Find("Canvas").transform;
         var cardObject = Instantiate(cardPrefab, new Vector3(1746,540,0), Quaternion.identity,canvasTransform);
-       // Instantiate =�ν��Ͻ� ȭ-> ���� �� �ν��Ͻ� ���� ����
-       // (�����ϰ��� �ϴ� ���ӿ�����Ʈ��,��ġ, ȸ���� -> ������ �⺻ )
-       var card = cardObject.GetComponent<Card>();
-        card.Setup(PopCard(), isMine);
+  
+        var card = cardObject.GetComponent<Card>();
+        card.Setup(PopCard(), isUse);
+        (isUse ? UsingCard : WaitingCard).Add(card);
+    }
+
+    void SetOriginOrder(bool isuse)
+    {
+        int count = isuse ? UsingCard.Count : WaitingCard.Count; 
+
+        for (int i = 0; i < count; i++)
+        {
+            var targetcard = isuse? UsingCard[i] : WaitingCard[i];
+            targetcard?.GetComponent<OrderManager>().SetOriginOrder(i);
+        }
     }
 
 }

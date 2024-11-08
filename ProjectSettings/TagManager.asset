@@ -42,3 +42,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Backgroung
+    uniqueID: 1338833139
+    locked: 0
+  - name: Block
+    uniqueID: 2663394095
+    locked: 0
+  - name: Card
+    uniqueID: 3897980877
+    locked: 0

@@ -9,28 +9,55 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 588cad5559775884eb163ef5462d6b37, type: 3}
+  m_Script: {fileID: 11500000, guid: 798abf76c0051bf449355995e0d18857, type: 3}
   m_Name: ItemSO
   m_EditorClassIdentifier: 
   items:
   - CardName: 1
-    ID: 1
-    PowerLeft: 1
-    PowerRight: 1
-    CardDescription: 1
+    ID: 0
+    PowerLeft: 0
+    PowerRight: 0
+    CardDescription: 
     UseMagic: 0
-    Percent: 50
+    Percent: 25
+    UseProp: 0
+    UseBuff: 0
+    UseDraw: 0
+    Damage: 0
+    AddDamage: 0
   - CardName: 2
-    ID: 2
-    PowerLeft: 2
-    PowerRight: 2
-    CardDescription: 2
+    ID: 0
+    PowerLeft: 0
+    PowerRight: 0
+    CardDescription: 
     UseMagic: 0
-    Percent: 20
+    Percent: 25
+    UseProp: 0
+    UseBuff: 0
+    UseDraw: 0
+    Damage: 0
+    AddDamage: 0
   - CardName: 3
-    ID: 3
-    PowerLeft: 3
-    PowerRight: 3
-    CardDescription: 3
+    ID: 0
+    PowerLeft: 0
+    PowerRight: 0
+    CardDescription: 
     UseMagic: 0
-    Percent: 20
+    Percent: 25
+    UseProp: 0
+    UseBuff: 0
+    UseDraw: 0
+    Damage: 0
+    AddDamage: 0
+  - CardName: 4
+    ID: 0
+    PowerLeft: 0
+    PowerRight: 0
+    CardDescription: 
+    UseMagic: 0
+    Percent: 25
+    UseProp: 0
+    UseBuff: 0
+    UseDraw: 0
+    Damage: 0
+    AddDamage: 0
