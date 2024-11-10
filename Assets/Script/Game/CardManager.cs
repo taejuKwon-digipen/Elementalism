@@ -16,6 +16,10 @@ public class CardManager : MonoBehaviour
     [SerializeField] List<Card> UsingCard;
     [SerializeField] List<Card> WaitingCard;
 
+    [SerializeField] private Transform centerPosition; // 반원의 중심 위치
+    [SerializeField] private float radius = 3.0f; // 반원의 반지름
+    private List<GameObject> cards = new List<GameObject>();
+
     public Transform canvasTransform;
 
     private List<bool> positionOccupied = new List<bool> { true, true, true }; //true = empty, false = ocuppied
@@ -23,6 +27,7 @@ public class CardManager : MonoBehaviour
     List<CardItem> ItemBuffer;
 
     int currenttrueindex = 0;
+    bool isUse = false;
 
 
     private List<Vector3> cardPosition = new List<Vector3>
@@ -75,6 +80,7 @@ public class CardManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.A) && currentCardIndex < 3)
         {
+            
             for (int i= 0; i < 3; i++)
             {
                 if (positionOccupied[i] == true)
@@ -94,7 +100,7 @@ public class CardManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.B))
         {
             print(PopCard().CardName + " - Waiting Card");
-            //AddCard(false);
+            AddCard(false);
             //print(PopCard().CardName);
         }
     }
@@ -102,12 +108,23 @@ public class CardManager : MonoBehaviour
 
     void AddCard(bool isUse) 
     {
-
-        Transform canvasTransform = GameObject.Find("Canvas").transform;
-        GameObject cardObject = Instantiate(cardPrefab, cardPosition[currenttrueindex], Quaternion.identity, canvasTransform);
-        var card = cardObject.GetComponent<Card>();
-        card.Setup(PopCard(), true); // 필요에 따라 `isUse` 값을 조정
-        UsingCard.Add(card); // 생성된 카드를 리스트에 추가
+        if(isUse == true)
+        {
+            Transform canvasTransform = GameObject.Find("Canvas").transform;
+            GameObject cardObject = Instantiate(cardPrefab, cardPosition[currenttrueindex], Quaternion.identity, canvasTransform);
+            var card = cardObject.GetComponent<Card>();
+            card.Setup(PopCard(), true); // 필요에 따라 `isUse` 값을 조정
+            UsingCard.Add(card); // 생성된 카드를 리스트에 추가
+        }
+      /*  else
+        {
+            Transform canvasTransform = GameObject.Find("Canvas").transform;
+            GameObject cardObject = Instantiate(cardPrefab, *//*cardPosition[currenttrueindex]*//*, Quaternion.identity, canvasTransform);
+            var card = cardObject.GetComponent<Card>();
+            card.Setup(PopCard(), true); // 필요에 따라 `isUse` 값을 조정
+            DisplayCardInArc();
+            WaitingCard.Add(card);
+        }*/
     }
 
     
@@ -115,26 +132,35 @@ public class CardManager : MonoBehaviour
     {
         currentCardIndex--;
         // 삭제된 카드의 위치를 확인하여 해당 자리를 빈 상태로 설정
-        int index = cardPosition.FindIndex(pos => Vector3.Distance(pos, card.currentMousePosition) < 200f);
+        int index = cardPosition.FindIndex(pos => Vector3.Distance(pos, card.currentMousePosition) < 150f);
         if (index >= 0)
         {
             positionOccupied[index] = true; // 자리 비우기
         }
     }
 
-
-    /*void SpawnCardAtEmptyPosition()
+    private void DisplayCardInArc()
     {
-        // 빈 자리 찾기
-        for (int i = 0; i < positionOccupied.Count; i++)
+        int cardCount = cards.Count;
+        float angleStep = 120f / (cardCount - 1);
+        float startAngle = -90f;
+
+        for(int i = 0; i < cardCount; i++)
         {
-            if (!positionOccupied[i]) // 빈 자리가 있으면
-            {
-                GameObject cardObject = Instantiate(cardPrefab, cardPosition[i], Quaternion.identity, canvasTransform);
-                var card = cardObject.GetComponent<Card>();
-                positionOccupied[i] = true; // 새 카드로 자리 차지 설정
-                break; // 한 장 생성 후 반복 종료
-            }
+            float angle = startAngle + i * angleStep;
+            float radian = angle * Mathf.Deg2Rad; // 각도를 라디안으로 변환
+
+            // 삼각함수를 이용해 x, y 좌표 계산
+            float x = centerPosition.position.x + radius * Mathf.Cos(radian);
+            float y = centerPosition.position.y + radius * Mathf.Sin(radian);
+
+            Vector3 targetPosition = new Vector3(x, y, centerPosition.position.z);
+
+            // 카드 위치와 회전 설정
+            cards[i].transform.position = targetPosition;
+            cards[i].transform.rotation = Quaternion.Euler(0, 0, angle); // 카드가 반원을 따라 회전하도록 설정
+            cards[i].SetActive(true); // 카드 활성화
         }
-    }*/
+
+    }
 }
