@@ -18,9 +18,11 @@ public class CardManager : MonoBehaviour
 
     public Transform canvasTransform;
 
-    private List<bool> positionOccupied = new List<bool> { true, true, true };
+    private List<bool> positionOccupied = new List<bool> { true, true, true }; //true = empty, false = ocuppied
 
     List<CardItem> ItemBuffer;
+
+    int currenttrueindex = 0;
 
 
     private List<Vector3> cardPosition = new List<Vector3>
@@ -70,11 +72,23 @@ public class CardManager : MonoBehaviour
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A) && currentCardIndex < cardPosition.Count)
+
+        if (Input.GetKeyDown(KeyCode.A) && currentCardIndex < 3)
         {
+            for (int i= 0; i < 3; i++)
+            {
+                if (positionOccupied[i] == true)
+                {
+                    currenttrueindex = i;
+                    break;
+                }
+            }
             print(PopCard().CardName + " - Using Card");
             AddCard(true);
+            positionOccupied[currenttrueindex] = false;
             currentCardIndex++;
+            
+
             //print(PopCard().CardName);
         }
         if (Input.GetKeyDown(KeyCode.B))
@@ -90,7 +104,7 @@ public class CardManager : MonoBehaviour
     {
 
         Transform canvasTransform = GameObject.Find("Canvas").transform;
-        GameObject cardObject = Instantiate(cardPrefab, cardPosition[currentCardIndex], Quaternion.identity, canvasTransform);
+        GameObject cardObject = Instantiate(cardPrefab, cardPosition[currenttrueindex], Quaternion.identity, canvasTransform);
         var card = cardObject.GetComponent<Card>();
         card.Setup(PopCard(), true); // 필요에 따라 `isUse` 값을 조정
         UsingCard.Add(card); // 생성된 카드를 리스트에 추가
@@ -101,13 +115,15 @@ public class CardManager : MonoBehaviour
     {
         currentCardIndex--;
         // 삭제된 카드의 위치를 확인하여 해당 자리를 빈 상태로 설정
-        int index = cardPosition.FindIndex(pos => Vector3.Distance(pos, card.transform.position) < 0.1f);
+        int index = cardPosition.FindIndex(pos => Vector3.Distance(pos, card.currentMousePosition) < 200f);
         if (index >= 0)
         {
-            positionOccupied[index] = false; // 자리 비우기
+            positionOccupied[index] = true; // 자리 비우기
         }
     }
-    void SpawnCardAtEmptyPosition()
+
+
+    /*void SpawnCardAtEmptyPosition()
     {
         // 빈 자리 찾기
         for (int i = 0; i < positionOccupied.Count; i++)
@@ -120,5 +136,5 @@ public class CardManager : MonoBehaviour
                 break; // 한 장 생성 후 반복 종료
             }
         }
-    }
+    }*/
 }
