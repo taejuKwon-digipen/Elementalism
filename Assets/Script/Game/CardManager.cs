@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,10 +16,14 @@ public class CardManager : MonoBehaviour
     [SerializeField] List<Card> UsingCard;
     [SerializeField] List<Card> WaitingCard;
 
+    public Transform canvasTransform;
+
+    private List<bool> positionOccupied = new List<bool> { true, true, true };
 
     List<CardItem> ItemBuffer;
 
-    private List<Vector3> cardposition = new List<Vector3>
+
+    private List<Vector3> cardPosition = new List<Vector3>
     {
         new Vector3(1746,850,0),
         new Vector3(1746,540,0),
@@ -65,7 +70,7 @@ public class CardManager : MonoBehaviour
 
     public void Update()
     {
-        if(Input.GetKeyDown(KeyCode.A) && currentCardIndex < cardposition.Count)
+        if (Input.GetKeyDown(KeyCode.A) && currentCardIndex < cardPosition.Count)
         {
             print(PopCard().CardName + " - Using Card");
             AddCard(true);
@@ -85,21 +90,35 @@ public class CardManager : MonoBehaviour
     {
 
         Transform canvasTransform = GameObject.Find("Canvas").transform;
-        GameObject cardObject = Instantiate(cardPrefab, cardposition[currentCardIndex], Quaternion.identity, canvasTransform);
+        GameObject cardObject = Instantiate(cardPrefab, cardPosition[currentCardIndex], Quaternion.identity, canvasTransform);
         var card = cardObject.GetComponent<Card>();
         card.Setup(PopCard(), true); // 필요에 따라 `isUse` 값을 조정
         UsingCard.Add(card); // 생성된 카드를 리스트에 추가
     }
 
-    void SetOriginOrder(bool isuse)
+    
+    public void NotifyCardRemoved(Card card)
     {
-        int count = isuse ? UsingCard.Count : WaitingCard.Count; 
-
-        for (int i = 0; i < count; i++)
+        currentCardIndex--;
+        // 삭제된 카드의 위치를 확인하여 해당 자리를 빈 상태로 설정
+        int index = cardPosition.FindIndex(pos => Vector3.Distance(pos, card.transform.position) < 0.1f);
+        if (index >= 0)
         {
-            var targetcard = isuse? UsingCard[i] : WaitingCard[i];
-            targetcard?.GetComponent<OrderManager>().SetOriginOrder(i);
+            positionOccupied[index] = false; // 자리 비우기
         }
     }
-
+    void SpawnCardAtEmptyPosition()
+    {
+        // 빈 자리 찾기
+        for (int i = 0; i < positionOccupied.Count; i++)
+        {
+            if (!positionOccupied[i]) // 빈 자리가 있으면
+            {
+                GameObject cardObject = Instantiate(cardPrefab, cardPosition[i], Quaternion.identity, canvasTransform);
+                var card = cardObject.GetComponent<Card>();
+                positionOccupied[i] = true; // 새 카드로 자리 차지 설정
+                break; // 한 장 생성 후 반복 종료
+            }
+        }
+    }
 }
