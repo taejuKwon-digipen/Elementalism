@@ -21,9 +21,6 @@ public class CardManager : MonoBehaviour
     [SerializeField] private float radius = 3.0f; // 반원의 반지름*/
     private List<GameObject> cards = new List<GameObject>();
 
-    [SerializeField] private Button[] cardButtons;
-    [SerializeField] private GameObject cardSelectionPanel;
-
     public Transform canvasTransform;
 
     private List<bool> positionOccupied = new List<bool> { true, true, true }; //true = empty, false = ocuppied
@@ -32,6 +29,12 @@ public class CardManager : MonoBehaviour
 
     int currenttrueindex = 0;
     bool isUse = false;
+
+    [SerializeField] private GameObject cardSelectionPanel;
+    [SerializeField] private Transform selectionPanelContent; // 선택 패널의 콘텐츠 영역
+
+    private Card clickedCard; // 클릭된 카드 참조
+
 
 
     private List<Vector3> cardPosition = new List<Vector3>
@@ -47,8 +50,10 @@ public class CardManager : MonoBehaviour
         new Vector3(728, 540, 0),
         new Vector3(1092, 540, 0),
         new Vector3(1456, 540, 0),
-        new Vector3(1820, 540, 0)
+
     };
+
+    int countwaitcard = 0;
 
     public CardItem PopCard()
     {
@@ -86,7 +91,8 @@ public class CardManager : MonoBehaviour
     public void Start()
     {
         SetCardBuffer();
-        ShowCardSelectionPanel(false);
+
+        cardSelectionPanel.SetActive(false);
 
         for (int i = 0; i < 3; i++)
         {
@@ -101,13 +107,41 @@ public class CardManager : MonoBehaviour
             print(PopCard().CardName + " - Using Card");
             AddCard(true);
             positionOccupied[currenttrueindex] = false;
-            currentCardIndex++;
-        }
+        } //처음 3개 나오게
     }
 
-    public void ShowCardSelectionPanel(bool show)
+    public void OnCardClicked(Card card)
     {
-        //cardSelectionPanel.SetActive(show);
+        clickedCard = card; // 클릭된 카드 저장
+        OpenCardSelectionPanel();
+    }
+
+    private void OpenCardSelectionPanel()
+    {
+        // 패널 활성화
+        cardSelectionPanel.SetActive(true);
+
+        // 선택 가능한 카드 목록 생성
+        GenerateSelectionCards();
+    }
+
+    private void GenerateSelectionCards()
+    {
+        // 이전에 생성된 카드가 있다면 모두 삭제
+        foreach (Transform child in selectionPanelContent)
+        {
+            Destroy(child.gameObject);
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            print(PopCard().CardName + " - Waiting Card");
+            countwaitcard = i;
+            AddCard(false);
+            
+        } //처음 3개 나오게
+        countwaitcard = 0;
+
     }
 
     public void Update()
@@ -130,28 +164,20 @@ public class CardManager : MonoBehaviour
             card.Setup(PopCard(), true); // 필요에 따라 `isUse` 값을 조정
             UsingCard.Add(card); // 생성된 카드를 리스트에 추가
         }
+        else
+        {
+            Transform canvasTransform = GameObject.Find("CardSelectionPanel").transform;
+            GameObject cardObject = Instantiate(cardPrefab, WaitingCardPosition[countwaitcard], Quaternion.identity, canvasTransform);
+            var card = cardObject.GetComponent<Card>();
+            card.Setup(PopCard(), true); // 필요에 따라 `isUse` 값을 조정
+            WaitingCard.Add(card); // 생성된 카드를 리스트에 추가
+        }
        
     }
 
-    public void NotifyCardRemoved(Card card)
+    public void OnCardSelected(Card card)
     {
-        currentCardIndex--;
-        // 삭제된 카드의 위치를 확인하여 해당 자리를 빈 상태로 설정
-        int index = cardPosition.FindIndex(pos => Vector3.Distance(pos, card.currentMousePosition) < 150f);
-        if (index >= 0)
-        {
-            positionOccupied[index] = true; // 자리 비우기
-        }
-    }
-      
-    void SelectCard()
-    {
-
-    }
-
-    public void ViewWaitingCard(Card card)
-    {
-        ShowCardSelectionPanel(true);
+        
     }
 
     /*private void DisplayCardInArc()
