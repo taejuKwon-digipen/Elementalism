@@ -19,7 +19,6 @@ public class CardManager : MonoBehaviour
 /*
     [SerializeField] private Transform centerPosition; // 반원의 중심 위치
     [SerializeField] private float radius = 3.0f; // 반원의 반지름*/
-    private List<GameObject> cards = new List<GameObject>();
 
     public Transform canvasTransform;
 
@@ -29,13 +28,12 @@ public class CardManager : MonoBehaviour
 
     int currenttrueindex = 0;
     bool isUse = false;
+    Card Waitingcard_ = null;
 
     [SerializeField] private GameObject cardSelectionPanel;
     [SerializeField] private Transform selectionPanelContent; // 선택 패널의 콘텐츠 영역
 
     private Card clickedCard; // 클릭된 카드 참조
-
-
 
     private List<Vector3> cardPosition = new List<Vector3>
     {
@@ -43,6 +41,10 @@ public class CardManager : MonoBehaviour
         new Vector3(1746,540,0),
         new Vector3(1746,230,0),
     };
+
+    public int CurrCardIndexForSwitch = 0;
+
+
 
     private List<Vector3> WaitingCardPosition = new List<Vector3>
     {
@@ -112,8 +114,11 @@ public class CardManager : MonoBehaviour
 
     public void OnCardClicked(Card card)
     {
-        clickedCard = card; // 클릭된 카드 저장
-        OpenCardSelectionPanel();
+        if(card == UsingCard[0] || card == UsingCard[1] || card == UsingCard[2])
+        {
+            clickedCard = card; // 클릭된 카드 저장
+            OpenCardSelectionPanel();
+        }
     }
 
     private void OpenCardSelectionPanel()
@@ -146,12 +151,53 @@ public class CardManager : MonoBehaviour
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.B))
+       
+    }
+
+    public void NotifyCardSelection(Card card)
+    {
+        //if card == using card[0]---이면 GenerateSelectionCards() panel true
+        //아니고 waitingcard면 switch
+
+        if(card == UsingCard[0] || card == UsingCard[1] || card == UsingCard[2] )
         {
-            print(PopCard().CardName + " - Waiting Card");
-            AddCard(false);
-            //print(PopCard().CardName);
+            int index = cardPosition.FindIndex(pos => Vector3.Distance(pos, card.currentMousePosition) < 150f);
+            CurrCardIndexForSwitch = index;
+            cardSelectionPanel.SetActive(true);
+            GenerateSelectionCards();
         }
+        else
+        {
+            ToBeSwitchCard(card);
+            SwitchCard(card);
+        }
+    }
+
+    private Card ToBeSwitchCard(Card card)
+    {
+        int index = WaitingCardPosition.FindIndex(pos => Vector3.Distance(pos, card.currentMousePosition) < 150f);
+
+        if( index >=0)
+        {
+           return Waitingcard_ = WaitingCard[index];
+        }
+        else
+        {
+            Debug.Log("index error");
+            return null;
+        }
+    }
+
+    private void SwitchCard(Card card)
+    {
+        Destroy(UsingCard[CurrCardIndexForSwitch]); //UsingCard 삭제
+        currentCardIndex = CurrCardIndexForSwitch;
+        Transform canvasTransform = GameObject.Find("Canvas").transform;
+        GameObject cardObject = Instantiate(cardPrefab, cardPosition[currenttrueindex], Quaternion.identity, canvasTransform);
+        card = cardObject.GetComponent<Card>();
+        card.Setup(PopCard(), true); // 필요에 따라 `isUse` 값을 조정
+        UsingCard.Add(card); // 생성된 카드를 리스트에 추가
+
     }
 
     void AddCard(bool isUse)
@@ -175,10 +221,6 @@ public class CardManager : MonoBehaviour
        
     }
 
-    public void OnCardSelected(Card card)
-    {
-        
-    }
 
     /*private void DisplayCardInArc()
     {
