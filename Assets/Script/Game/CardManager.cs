@@ -107,7 +107,7 @@ public class CardManager : MonoBehaviour
 
     public void ShowCardSelectionPanel(bool show)
     {
-        cardSelectionPanel.SetActive(show);
+        //cardSelectionPanel.SetActive(show);
     }
 
     public void Update()
