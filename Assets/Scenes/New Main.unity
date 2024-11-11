@@ -1191,6 +1191,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9d7026970182d4a9b961d611833cd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shapeStorage: {fileID: 1407986775}
   columns: 10
   rows: 10
   squaresGap: 2
@@ -1288,8 +1289,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec316c2f27fb6934392c0ce9d3f24854, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentCardIndex: 0
   carditemso: {fileID: 11400000, guid: 015ed88d3a04d5e42a18bfb553c95c97, type: 2}
   cardPrefab: {fileID: 926199898147725727, guid: 6073ed0992870034581d285835408f02, type: 3}
+  UsingCard: []
+  WaitingCard: []
+  centerPosition: {fileID: 0}
+  radius: 3
+  canvasTransform: {fileID: 0}
 --- !u!4 &1096625284
 Transform:
   m_ObjectHideFlags: 0

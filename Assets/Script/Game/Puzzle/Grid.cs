@@ -53,6 +53,7 @@ public class Grid : MonoBehaviour
             {
                 // 원소 블록 프리팹을 인스턴스화하여 생성합니다.
                 GameObject newBlock = Instantiate(block) as GameObject;
+                newBlock.GetComponent<Block>().BlockIndex = _blocks.Count;
                 newBlock.transform.SetParent(this.transform); // 그리드 오브젝트를 부모로 설정
                 newBlock.transform.localScale = new Vector3(squareScale, squareScale, squareScale); // 스케일 설정
 
@@ -169,16 +170,33 @@ public class Grid : MonoBehaviour
     // 게임 이벤트에 따라 블록을 활성화하는 메서드
     private void CheckIfShapeCanBePlaced()
     {
+        var squareIndexes = new List<int>();
+
         foreach (var square in _blocks)
         {
             var block = square.GetComponent<Block>();
 
-            // 사용 가능한 블록이면 활성화합니다.
-            if (block.CanWeUseThisSquare() == true)
+            if(block.Selected) 
             {
-                block.ActivateSquare();
+                squareIndexes.Add(block.BlockIndex);
+                block.Selected = false;
             }
         }
-        shapeStorage.GetCurrentSelectedShape().DeactivateShape();
+        var currentSelectedShape = shapeStorage.GetCurrentSelectedShape();
+        if (currentSelectedShape == null) return;
+
+        if(currentSelectedShape.TotalSquareNumber == squareIndexes.Count) 
+        {
+            foreach (var squareIndex  in squareIndexes) 
+            {
+                _blocks[squareIndex].GetComponent<Block>().PlaceShapeOnBoard();
+            }
+            shapeStorage.GetCurrentSelectedShape().DeactivateShape();
+        }
+        else
+        {
+            GameEvents.MoveShapeToStartPosition();
+        }
+        
     }
 }

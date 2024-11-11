@@ -8,4 +8,6 @@ public class GameEvents : MonoBehaviour
     // Start is called before the first frame update
     public static Action CheckIfShapeCanBePlaced;
 
+    public static Action MoveShapeToStartPosition;
+
 }

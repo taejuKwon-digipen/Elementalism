@@ -18,6 +18,7 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     [HideInInspector]
     public ShapeData CurrentShapeData;       // 현재 Shape의 데이터
 
+    public int TotalSquareNumber {get; set;}
     private List<GameObject> _currentShape = new List<GameObject>();  // 현재 Shape를 구성하는 블록들의 리스트
     private Vector3 _shapeStartScale;        // 초기 스케일 값
     private RectTransform _transform;        // RectTransform 컴포넌트
@@ -25,7 +26,7 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     private bool _isDragging = false;        // 현재 드래그 중인지 여부
     private Canvas _canvas;                  // 부모 캔버스
 
-    private Vector3 _startPoint;
+    private Vector3 _startPosition;
     private bool _shapeActive = true;
     public void Awake()
     {
@@ -33,10 +34,18 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
         _transform = this.GetComponent<RectTransform>();                  // RectTransform 가져오기
         _canvas = GetComponentInParent<Canvas>();                         // 부모 캔버스 가져오기
         _shapeDraggable = true;                                           // 드래그 가능 설정
-        _startPoint = _transform.localPosition;
+        _startPosition = _transform.localPosition;
         _shapeActive = true;
     }
 
+    private void OnEnable()
+    {
+        GameEvents.MoveShapeToStartPosition += MoveShapeToStartPosition;
+    }
+    private void OnDisable()
+    {
+        GameEvents.MoveShapeToStartPosition -= MoveShapeToStartPosition;
+    }
     void Start()
     {
         // 초기화가 필요한 내용이 있으면 여기에 작성
@@ -61,7 +70,7 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     
     public bool IsOnStartPosition()
     {
-        return _transform.localPosition == _startPoint;
+        return _transform.localPosition == _startPosition;
     }
 
     public bool IsAnyOfShapeSquareActive()
@@ -84,7 +93,7 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
                 shape?.GetComponent<ShapeSquare>().DeactivateShape();
             }
         }
-        _shapeActive=false;
+        _shapeActive = false;
     }
 
     public void ActivateShape()
@@ -101,7 +110,7 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     // 새로운 Shape 요청을 처리하는 메서드
     public void RequestNewShape(ShapeData shapeData)
     {
-        _transform.localPosition = _startPoint;
+        _transform.localPosition = _startPosition;
         CreateShape(shapeData); // 새로운 Shape 생성
     }
 
@@ -109,10 +118,10 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     public void CreateShape(ShapeData shapeData)
     {
         CurrentShapeData = shapeData;  // 현재 ShapeData 설정
-        var totalSquareNumber = GetNumberOfSquares(shapeData); // 필요한 블록 수 계산
+        TotalSquareNumber = GetNumberOfSquares(shapeData); // 필요한 블록 수 계산
 
         // 필요한 블록 수만큼 리스트에 추가
-        while (_currentShape.Count <= totalSquareNumber)
+        while (_currentShape.Count <= TotalSquareNumber)
         {
             _currentShape.Add(Instantiate(squareShapeImage, transform) as GameObject);
         }
@@ -236,7 +245,7 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
         }
 
         this.GetComponent<RectTransform>().localScale = _shapeStartScale; // 스케일을 원래대로 변경
-        GameEvents.CheckIfShapeCanBePlaced(); // Shape를 배치할 수 있는지 체크하는 이벤트 호출
+        //GameEvents.CheckIfShapeCanBePlaced(); // Shape를 배치할 수 있는지 체크하는 이벤트 호출
     }
 
     // 드래그 시작 시 호출되는 메서드
@@ -278,5 +287,10 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     public void OnPointerDown(PointerEventData eventData)
     {
 
+    }
+
+    private void MoveShapeToStartPosition()
+    {
+        _transform.transform.localPosition = _startPosition;
     }
 }

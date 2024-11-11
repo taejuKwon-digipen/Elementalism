@@ -35,12 +35,12 @@ public class Block : MonoBehaviour
     // 프로퍼티들
     public bool Selected { get; set; }          // 선택되었는지 여부
     public int BlockIndex { get; set; }     // 원소의 인덱스
-    public bool SqareOccupied { get; set; }     // 해당 칸이 점유되었는지 여부
+    public bool SquareOccupied { get; set; }     // 해당 칸이 점유되었는지 여부
 
     private void Start()
     {
         Selected = false;       // 선택 상태 초기화
-        SqareOccupied = false;  // 점유 상태 초기화
+        SquareOccupied = false;  // 점유 상태 초기화
 
         // 초기화 시 랜덤 원소 타입으로 설정
         elementType = (ElementType)Random.Range(1, 5);
@@ -58,6 +58,11 @@ public class Block : MonoBehaviour
         return hooverImage.gameObject.activeSelf;   // hooverImage가 활성화되어 있으면 true 반환
     }
 
+    public void PlaceShapeOnBoard()
+    {
+        ActivateSquare();
+    }
+
     // 칸을 활성화하는 메서드
     // 칸을 활성화하는 메서드
     public void ActivateSquare()
@@ -71,7 +76,7 @@ public class Block : MonoBehaviour
             elementType = currentCollidedBlock;
 
             Selected = true;                            // 선택됨으로 설정
-            SqareOccupied = true;                       // 점유됨으로 설정
+            SquareOccupied = true;                       // 점유됨으로 설정
         }
     }
 
@@ -106,8 +111,10 @@ public class Block : MonoBehaviour
     // 충돌 시작 시 호출되는 메서드
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        hooverImage.gameObject.SetActive(true); // hooverImage 활성화
 
+        Selected = true;
+        hooverImage.gameObject.SetActive(true); // hooverImage 활성화
+        
         ShapeSquare collidedSquare = collision.GetComponent<ShapeSquare>();
 
         if (collidedSquare != null)
@@ -122,12 +129,14 @@ public class Block : MonoBehaviour
     // 충돌 중일 때 호출되는 메서드
     private void OnTriggerStay2D(Collider2D collision)
     {
+        Selected = true;
         hooverImage.gameObject.SetActive(true);     // hooverImage 활성화
     }
 
     // 충돌이 종료되었을 때 호출되는 메서드
     private void OnTriggerExit2D(Collider2D collision)
     {
+        Selected = false;
         hooverImage.gameObject.SetActive(false);
         isColliding = false; // 충돌 상태 해제
     }
