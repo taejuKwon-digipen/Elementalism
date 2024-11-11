@@ -44,9 +44,9 @@ public class Card : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public void OnPointerUp(PointerEventData eventData)
     {
         currentMousePosition = (Input.mousePosition);
-        Debug.Log("카드 삭제");
-        CardManager.Inst.NotifyCardRemoved(this); // CardManager에 카드가 삭제되었음을 알림a
-        Destroy(gameObject); // 카드 즉시 삭제
+        Debug.Log("카드 선택");
+        CardManager.Inst.ViewWaitingCard(this); // CardManager에 카드가 선택됨을 알림
+        //Destroy(gameObject); // 카드 즉시 삭제
     }
 
    

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CardManager : MonoBehaviour
 {
@@ -15,10 +16,13 @@ public class CardManager : MonoBehaviour
 
     [SerializeField] List<Card> UsingCard;
     [SerializeField] List<Card> WaitingCard;
-
+/*
     [SerializeField] private Transform centerPosition; // 반원의 중심 위치
-    [SerializeField] private float radius = 3.0f; // 반원의 반지름
+    [SerializeField] private float radius = 3.0f; // 반원의 반지름*/
     private List<GameObject> cards = new List<GameObject>();
+
+    [SerializeField] private Button[] cardButtons;
+    [SerializeField] private GameObject cardSelectionPanel;
 
     public Transform canvasTransform;
 
@@ -35,6 +39,15 @@ public class CardManager : MonoBehaviour
         new Vector3(1746,850,0),
         new Vector3(1746,540,0),
         new Vector3(1746,230,0),
+    };
+
+    private List<Vector3> WaitingCardPosition = new List<Vector3>
+    {
+        new Vector3(364,540,0),
+        new Vector3(728, 540, 0),
+        new Vector3(1092, 540, 0),
+        new Vector3(1456, 540, 0),
+        new Vector3(1820, 540, 0)
     };
 
     public CardItem PopCard()
@@ -72,20 +85,16 @@ public class CardManager : MonoBehaviour
     }
     public void Start()
     {
-        SetCardBuffer(); 
-    }
+        SetCardBuffer();
+        ShowCardSelectionPanel(false);
 
-    public void Update()
-    {
-
-        if (Input.GetKeyDown(KeyCode.A) && currentCardIndex < 3)
+        for (int i = 0; i < 3; i++)
         {
-            
-            for (int i= 0; i < 3; i++)
+            for(int j = 0; j < 3; j ++)
             {
-                if (positionOccupied[i] == true)
+                if (positionOccupied[j] == true)
                 {
-                    currenttrueindex = i;
+                    currenttrueindex = j;
                     break;
                 }
             }
@@ -93,10 +102,16 @@ public class CardManager : MonoBehaviour
             AddCard(true);
             positionOccupied[currenttrueindex] = false;
             currentCardIndex++;
-            
-
-            //print(PopCard().CardName);
         }
+    }
+
+    public void ShowCardSelectionPanel(bool show)
+    {
+        cardSelectionPanel.SetActive(show);
+    }
+
+    public void Update()
+    {
         if (Input.GetKeyDown(KeyCode.B))
         {
             print(PopCard().CardName + " - Waiting Card");
@@ -105,10 +120,9 @@ public class CardManager : MonoBehaviour
         }
     }
 
-
-    void AddCard(bool isUse) 
+    void AddCard(bool isUse)
     {
-        if(isUse == true)
+        if (isUse == true)
         {
             Transform canvasTransform = GameObject.Find("Canvas").transform;
             GameObject cardObject = Instantiate(cardPrefab, cardPosition[currenttrueindex], Quaternion.identity, canvasTransform);
@@ -116,18 +130,9 @@ public class CardManager : MonoBehaviour
             card.Setup(PopCard(), true); // 필요에 따라 `isUse` 값을 조정
             UsingCard.Add(card); // 생성된 카드를 리스트에 추가
         }
-      /*  else
-        {
-            Transform canvasTransform = GameObject.Find("Canvas").transform;
-            GameObject cardObject = Instantiate(cardPrefab, *//*cardPosition[currenttrueindex]*//*, Quaternion.identity, canvasTransform);
-            var card = cardObject.GetComponent<Card>();
-            card.Setup(PopCard(), true); // 필요에 따라 `isUse` 값을 조정
-            DisplayCardInArc();
-            WaitingCard.Add(card);
-        }*/
+       
     }
 
-    
     public void NotifyCardRemoved(Card card)
     {
         currentCardIndex--;
@@ -138,8 +143,18 @@ public class CardManager : MonoBehaviour
             positionOccupied[index] = true; // 자리 비우기
         }
     }
+      
+    void SelectCard()
+    {
 
-    private void DisplayCardInArc()
+    }
+
+    public void ViewWaitingCard(Card card)
+    {
+        ShowCardSelectionPanel(true);
+    }
+
+    /*private void DisplayCardInArc()
     {
         int cardCount = cards.Count;
         float angleStep = 120f / (cardCount - 1);
@@ -162,5 +177,5 @@ public class CardManager : MonoBehaviour
             cards[i].SetActive(true); // 카드 활성화
         }
 
-    }
+    }*/
 }
