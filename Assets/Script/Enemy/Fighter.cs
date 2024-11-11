@@ -13,8 +13,8 @@ public class Fighter : Enemy
         GameObject playerPoint = player.gameObject;
         float xDistance = Mathf.Abs(this.transform.position.x - playerPoint.transform.position.x);
 
-        if (xDistance > 200) {
-            yield return StartCoroutine(GoForward(100));
+        if (xDistance > 2) {
+            yield return StartCoroutine(GoForward(1));
             yield break;
         }
         player.Hit(this, baseEntity.Type);

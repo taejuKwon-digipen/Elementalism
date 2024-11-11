@@ -7,11 +7,10 @@ public class BallBehavior : MonoBehaviour
     public float speed = 10;
     public GameObject focusedEnemy;
     public Entity player;
-
     // Start is called before the first frame update
     void Start()
     {
-        
+        transform.position = player.transform.position;
     }
 
     // Update is called once per frame
@@ -21,7 +20,7 @@ public class BallBehavior : MonoBehaviour
     }
 
     private void FixedUpdate() {
-        var currentPosition = transform.position;
+        //var currentPosition = transform.position;
 
         if (focusedEnemy == null)
             return;
@@ -29,8 +28,11 @@ public class BallBehavior : MonoBehaviour
         var enemyPosition = focusedEnemy.GetComponent<RectTransform>().position;
         var entity = focusedEnemy.GetComponentInChildren<Entity>();
 
-        this.transform.position = new Vector3(currentPosition.x + speed, currentPosition.y, currentPosition.z);
-        if (enemyPosition.x <= currentPosition.x ) {
+        transform.position = Vector3.MoveTowards(transform.position, enemyPosition, speed * Time.fixedDeltaTime);
+
+        // 목표에 도착했는지 확인
+        if (Vector3.Distance(transform.position, enemyPosition) <= 0.1f)
+        {
             entity.Hit(player, player.baseEntity.Type);
             Destroy(this.gameObject);
         }
