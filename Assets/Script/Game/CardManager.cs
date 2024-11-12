@@ -31,6 +31,7 @@ public class CardManager : MonoBehaviour
     Card Waitingcard_ = null;
 
     [SerializeField] private GameObject cardSelectionPanel;
+    [SerializeField] private GameObject PanelBackground;
     [SerializeField] private Transform selectionPanelContent; // 선택 패널의 콘텐츠 영역
 
     private Card clickedCard; // 클릭된 카드 참조
@@ -95,6 +96,7 @@ public class CardManager : MonoBehaviour
         SetCardBuffer();
 
         cardSelectionPanel.SetActive(false);
+        PanelBackground.SetActive(false);
 
         for (int i = 0; i < 3; i++)
         {
@@ -125,6 +127,7 @@ public class CardManager : MonoBehaviour
     {
         // 패널 활성화
         cardSelectionPanel.SetActive(true);
+        PanelBackground.SetActive(true);
 
         // 선택 가능한 카드 목록 생성
         GenerateSelectionCards();
@@ -164,6 +167,7 @@ public class CardManager : MonoBehaviour
             int index = cardPosition.FindIndex(pos => Vector3.Distance(pos, card.currentMousePosition) < 150f);
             CurrCardIndexForSwitch = index;
             cardSelectionPanel.SetActive(true);
+            PanelBackground.SetActive(true);
             GenerateSelectionCards();
             Destroy(card.gameObject); //UsingCard 삭제
         }
