@@ -1261,6 +1261,7 @@ MonoBehaviour:
   PowerRightTMP: {fileID: 3537536931601953869}
   CardDescriptionTMP: {fileID: 6935239494404841551}
   IDTMP: {fileID: 9106517276624271954}
+  image: {fileID: 207339995285549995}
   carditem:
     CardName: 
     ID: 0
@@ -1274,7 +1275,10 @@ MonoBehaviour:
     UseDraw: 0
     Damage: 0
     AddDamage: 0
+    cardShape: {fileID: 0}
+    CreatedElementType: 0
   isFront: 1
+  currentMousePosition: {x: 0, y: 0, z: 0}
 --- !u!114 &1513322980812953350
 MonoBehaviour:
   m_ObjectHideFlags: 0
