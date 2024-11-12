@@ -11,6 +11,14 @@ public class ShapeStorage : MonoBehaviour
     public List<ShapeData> shapeData; // 생성 가능한 ShapeData의 리스트
     public List<Shape> shapeList;     // 게임 내에 배치될 Shape 인스턴스들의 리스트
 
+    private void OnEnable() 
+    {
+        GameEvents.RequestNewShapes += RequestNewShapes;
+    }
+    private void OnDisable() 
+    {
+        GameEvents.RequestNewShapes -= RequestNewShapes;
+    }
     void Start()
     {
         // 게임이 시작될 때 각 Shape에 랜덤한 ShapeData를 할당하여 생성합니다.
@@ -34,4 +42,14 @@ public class ShapeStorage : MonoBehaviour
         Debug.LogError("There is no shape selected!");
         return null;
     }
+
+    private void RequestNewShapes()
+    {
+        foreach (var shape in shapeList)
+        {
+            var shapeIndex = UnityEngine.Random.Range(0, shapeData.Count);
+            shape.RequestNewShape(shapeData[shapeIndex]);
+        }
+    }
+
 }

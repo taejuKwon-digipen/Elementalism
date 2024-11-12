@@ -953,6 +953,7 @@ MonoBehaviour:
   startPosition: {x: -320, y: 320}
   squareScale: 0.6
   everySquareOffset: 0.5
+  turnEndButton: 0
 --- !u!224 &894884651 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8052122634427833858, guid: 78527069f3b9eb04c8ace1e29a9ae4d6, type: 3}
@@ -1589,6 +1590,18 @@ MonoBehaviour:
       - m_Target: {fileID: 70329809}
         m_TargetAssemblyTypeName: EnemyManager, Assembly-CSharp
         m_MethodName: StartEnemyTurn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 888368976}
+        m_TargetAssemblyTypeName: Grid, Assembly-CSharp
+        m_MethodName: OnTurnEndButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

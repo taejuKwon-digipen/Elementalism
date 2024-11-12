@@ -10,4 +10,8 @@ public class GameEvents : MonoBehaviour
 
     public static Action MoveShapeToStartPosition;
 
+    // 퍼즐 재생성 위해서 변수 추가
+    public static Action RequestNewShapes;
+
+    public static Action SetShapeInactive;
 }
