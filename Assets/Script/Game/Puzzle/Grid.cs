@@ -191,7 +191,7 @@ public class Grid : MonoBehaviour
             {
                 _blocks[squareIndex].GetComponent<Block>().PlaceShapeOnBoard();
             }
-            shapeStorage.GetCurrentSelectedShape().DeactivateShape();
+            //shapeStorage.GetCurrentSelectedShape().DeactivateShape();
 
             // 퍼즐 재생성 기능 구현
             var shapeLeft = 0;
