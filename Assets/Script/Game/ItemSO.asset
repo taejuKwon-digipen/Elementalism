@@ -20,7 +20,7 @@ MonoBehaviour:
     CardDescription: Low Damage
     UseMagic: 0
     Percent: 11
-    cardImage: {fileID: 21300000, guid: 8ddd4071397dc66468480f4f5a8da138, type: 3}
+    cardImage: {fileID: 2800000, guid: ff81e51fb26b3ff4da6cd67cdae55a04, type: 3}
     UseProp: 1
     UseBuff: 0
     UseDraw: 0
@@ -33,7 +33,7 @@ MonoBehaviour:
     CardDescription: Low Damage
     UseMagic: 0
     Percent: 11
-    cardImage: {fileID: 21300000, guid: bc62c7dae0fb89e44aa8e55f90063197, type: 3}
+    cardImage: {fileID: 2800000, guid: bc62c7dae0fb89e44aa8e55f90063197, type: 3}
     UseProp: 1
     UseBuff: 0
     UseDraw: 0
@@ -46,7 +46,7 @@ MonoBehaviour:
     CardDescription: Low Damage
     UseMagic: 0
     Percent: 11
-    cardImage: {fileID: 21300000, guid: c1a2e8ad29173a348a47ad13042fad59, type: 3}
+    cardImage: {fileID: 2800000, guid: c1a2e8ad29173a348a47ad13042fad59, type: 3}
     UseProp: 1
     UseBuff: 0
     UseDraw: 0
@@ -59,7 +59,7 @@ MonoBehaviour:
     CardDescription: Low Damage
     UseMagic: 0
     Percent: 11
-    cardImage: {fileID: 21300000, guid: 414341b633bfa374b87f70dadd6d4a45, type: 3}
+    cardImage: {fileID: 2800000, guid: 414341b633bfa374b87f70dadd6d4a45, type: 3}
     UseProp: 1
     UseBuff: 0
     UseDraw: 0
@@ -72,7 +72,7 @@ MonoBehaviour:
     CardDescription: Create lava terrain
     UseMagic: 1
     Percent: 4.75
-    cardImage: {fileID: 21300000, guid: 56048745d570b794693890cc9a04d43c, type: 3}
+    cardImage: {fileID: 2800000, guid: 56048745d570b794693890cc9a04d43c, type: 3}
     UseProp: 0
     UseBuff: 0
     UseDraw: 0
@@ -85,7 +85,7 @@ MonoBehaviour:
     CardDescription: Provides Shields
     UseMagic: 1
     Percent: 4.75
-    cardImage: {fileID: 21300000, guid: 588a4861d2f07a243aa8e28b3bc578fc, type: 3}
+    cardImage: {fileID: 2800000, guid: 588a4861d2f07a243aa8e28b3bc578fc, type: 3}
     UseProp: 0
     UseBuff: 0
     UseDraw: 0
@@ -98,7 +98,7 @@ MonoBehaviour:
     CardDescription: Freezes the enemy
     UseMagic: 1
     Percent: 4.75
-    cardImage: {fileID: 21300000, guid: 0e420161712bf374a84877d6ba5bb6e6, type: 3}
+    cardImage: {fileID: 2800000, guid: 0e420161712bf374a84877d6ba5bb6e6, type: 3}
     UseProp: 0
     UseBuff: 0
     UseDraw: 0
@@ -111,7 +111,7 @@ MonoBehaviour:
     CardDescription: Damage proportional to health to all enemies
     UseMagic: 1
     Percent: 4.75
-    cardImage: {fileID: 21300000, guid: dcc9235fa6c513f4baf7c293e3d2ea35, type: 3}
+    cardImage: {fileID: 2800000, guid: dcc9235fa6c513f4baf7c293e3d2ea35, type: 3}
     UseProp: 0
     UseBuff: 0
     UseDraw: 0
@@ -124,7 +124,7 @@ MonoBehaviour:
     CardDescription: Next attack Damage increase
     UseMagic: 0
     Percent: 7
-    cardImage: {fileID: 21300000, guid: 8ddd4071397dc66468480f4f5a8da138, type: 3}
+    cardImage: {fileID: 2800000, guid: 8ddd4071397dc66468480f4f5a8da138, type: 3}
     UseProp: 1
     UseBuff: 1
     UseDraw: 0
@@ -137,7 +137,7 @@ MonoBehaviour:
     CardDescription: Restore
     UseMagic: 0
     Percent: 7
-    cardImage: {fileID: 21300000, guid: b0073eace33cfd846902e47a30c87725, type: 3}
+    cardImage: {fileID: 2800000, guid: b0073eace33cfd846902e47a30c87725, type: 3}
     UseProp: 1
     UseBuff: 1
     UseDraw: 0
@@ -150,7 +150,7 @@ MonoBehaviour:
     CardDescription: Provides defense
     UseMagic: 0
     Percent: 7
-    cardImage: {fileID: 21300000, guid: fee189d840148bd4db3e61314d327c06, type: 3}
+    cardImage: {fileID: 2800000, guid: fee189d840148bd4db3e61314d327c06, type: 3}
     UseProp: 1
     UseBuff: 1
     UseDraw: 0
@@ -163,7 +163,7 @@ MonoBehaviour:
     CardDescription: Provides Lucks
     UseMagic: 0
     Percent: 7
-    cardImage: {fileID: 21300000, guid: 4b02e7fb390e70c4c929ced5b4cfb151, type: 3}
+    cardImage: {fileID: 2800000, guid: 4b02e7fb390e70c4c929ced5b4cfb151, type: 3}
     UseProp: 1
     UseBuff: 1
     UseDraw: 0
@@ -176,7 +176,7 @@ MonoBehaviour:
     CardDescription: Draw Card
     UseMagic: 0
     Percent: 3
-    cardImage: {fileID: 21300000, guid: c32675664d97ecb4083f50bddbd610b0, type: 3}
+    cardImage: {fileID: 2800000, guid: c32675664d97ecb4083f50bddbd610b0, type: 3}
     UseProp: 0
     UseBuff: 0
     UseDraw: 1
@@ -189,7 +189,7 @@ MonoBehaviour:
     CardDescription: Shuffle Card
     UseMagic: 0
     Percent: 3
-    cardImage: {fileID: 21300000, guid: 94ec2eaac6657c1409886921db8ffef5, type: 3}
+    cardImage: {fileID: 2800000, guid: 94ec2eaac6657c1409886921db8ffef5, type: 3}
     UseProp: 0
     UseBuff: 0
     UseDraw: 1
@@ -202,7 +202,7 @@ MonoBehaviour:
     CardDescription: Shuffle puzzle
     UseMagic: 0
     Percent: 3
-    cardImage: {fileID: 21300000, guid: 9bbb39842240eff4ea35872260968f9d, type: 3}
+    cardImage: {fileID: 2800000, guid: 9bbb39842240eff4ea35872260968f9d, type: 3}
     UseProp: 0
     UseBuff: 0
     UseDraw: 1

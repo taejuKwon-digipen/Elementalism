@@ -26,7 +26,7 @@ public class CardItem
     public string CardDescription;
     public bool UseMagic = false;
     public float Percent;
-    public Sprite cardImage;
+    public Texture2D cardImage;
 
     public bool UseProp = false;
     public bool UseBuff = false;

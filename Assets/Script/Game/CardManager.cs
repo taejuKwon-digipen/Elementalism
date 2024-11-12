@@ -13,7 +13,6 @@ public class CardManager : MonoBehaviour
 
     [SerializeField] CardItemSO carditemso;
     [SerializeField] GameObject cardPrefab;
-    [SerializeField] Sprite Cardimage;
 
     [SerializeField] public List<Card> UsingCard;
     [SerializeField] public List<Card> WaitingCard;
