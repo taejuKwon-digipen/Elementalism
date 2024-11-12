@@ -113,6 +113,7 @@ public class CardManager : MonoBehaviour
             positionOccupied[currenttrueindex] = false;
         } //처음 3개 나오게
     }
+   
 
     public void OnCardClicked(Card card)
     {
@@ -175,6 +176,7 @@ public class CardManager : MonoBehaviour
         {
             ToBeSwitchCard(card);
             SwitchCard(Waitingcard_);
+
         }
     }
 
@@ -203,6 +205,7 @@ public class CardManager : MonoBehaviour
         UsingCard[CurrCardIndexForSwitch] = newcard; // 생성된 카드를 리스트에 추가
         WaitingCard.Clear();
         cardSelectionPanel.SetActive(false);
+        PanelBackground.SetActive(false);
     }
 
     void AddCard(bool isUse)
@@ -212,7 +215,7 @@ public class CardManager : MonoBehaviour
             Transform Canvas2Transform = GameObject.Find("Canvas2").transform;
             GameObject cardObject = Instantiate(cardPrefab, cardPosition[currenttrueindex], Quaternion.identity, Canvas2Transform);
             var card = cardObject.GetComponent<Card>();
-            card.Setup(PopCard(), true); // 필요에 따라 `isUse` 값을 조정
+            card.Setup(PopCard(), false); // 필요에 따라 `isUse` 값을 조정
             UsingCard.Add(card); // 생성된 카드를 리스트에 추가
         }
         else
