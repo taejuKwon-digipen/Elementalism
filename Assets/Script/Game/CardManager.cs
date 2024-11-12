@@ -198,6 +198,7 @@ public class CardManager : MonoBehaviour
         newcard.Setup(card.carditem, true); // 필요에 따라 `isUse` 값을 조정
         UsingCard[CurrCardIndexForSwitch] = newcard; // 생성된 카드를 리스트에 추가
         WaitingCard.Clear();
+
     }
 
     void AddCard(bool isUse)
