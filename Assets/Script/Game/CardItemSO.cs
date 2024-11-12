@@ -33,14 +33,17 @@ public class CardItem
     public int Damage;
     public int AddDamage;
 
-   /* void Awake()
-    {
+    public ShapeData cardShape; // 카드 모양 (ShapeData 사용)
+    public ElementType CreatedElementType;
 
-        if(UseProp == true)
-        {
-            
-        }
-    }*/
+    /* void Awake()
+     {
+
+         if(UseProp == true)
+         {
+
+         }
+     }*/
 
 }
 

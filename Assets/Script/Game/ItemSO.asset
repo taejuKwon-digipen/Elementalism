@@ -25,6 +25,8 @@ MonoBehaviour:
     UseDraw: 0
     Damage: 0
     AddDamage: 0
+    cardShape: {fileID: 11400000, guid: 1776bba0fbed59d4b86c945af6c5d67b, type: 2}
+    CreatedElementType: 0
   - CardName: Aqua Splash
     ID: 2
     PowerLeft: 2
@@ -37,6 +39,8 @@ MonoBehaviour:
     UseDraw: 0
     Damage: 0
     AddDamage: 0
+    cardShape: {fileID: 11400000, guid: bc434b102b587314b882a6efb2de2a27, type: 2}
+    CreatedElementType: 0
   - CardName: Stone Hurl
     ID: 3
     PowerLeft: 2
@@ -49,6 +53,8 @@ MonoBehaviour:
     UseDraw: 0
     Damage: 0
     AddDamage: 0
+    cardShape: {fileID: 11400000, guid: 009803ddf1fecca4480a640fc6a288b9, type: 2}
+    CreatedElementType: 0
   - CardName: Gentle Breeze
     ID: 4
     PowerLeft: 2
@@ -61,6 +67,8 @@ MonoBehaviour:
     UseDraw: 0
     Damage: 0
     AddDamage: 0
+    cardShape: {fileID: 11400000, guid: 455377b646b9aee4e82ef29b8c404a15, type: 2}
+    CreatedElementType: 0
   - CardName: Lava Surge
     ID: 5
     PowerLeft: 4
@@ -73,6 +81,8 @@ MonoBehaviour:
     UseDraw: 0
     Damage: 0
     AddDamage: 0
+    cardShape: {fileID: 11400000, guid: 8c4423c7e2c83a24e98ad4b25f8c979a, type: 2}
+    CreatedElementType: 1
   - CardName: Mud armor
     ID: 6
     PowerLeft: 3
@@ -85,6 +95,8 @@ MonoBehaviour:
     UseDraw: 0
     Damage: 0
     AddDamage: 0
+    cardShape: {fileID: 0}
+    CreatedElementType: 0
   - CardName: Frost Gale
     ID: 7
     PowerLeft: 1
@@ -97,6 +109,8 @@ MonoBehaviour:
     UseDraw: 0
     Damage: 0
     AddDamage: 0
+    cardShape: {fileID: 0}
+    CreatedElementType: 0
   - CardName: Scorching Wind
     ID: 8
     PowerLeft: 5
@@ -109,6 +123,8 @@ MonoBehaviour:
     UseDraw: 0
     Damage: 0
     AddDamage: 0
+    cardShape: {fileID: 0}
+    CreatedElementType: 0
   - CardName: Acceleration
     ID: 9
     PowerLeft: 2
@@ -121,6 +137,8 @@ MonoBehaviour:
     UseDraw: 0
     Damage: 0
     AddDamage: 0
+    cardShape: {fileID: 0}
+    CreatedElementType: 0
   - CardName: Healing Touch
     ID: 10
     PowerLeft: 1
@@ -133,6 +151,8 @@ MonoBehaviour:
     UseDraw: 0
     Damage: 0
     AddDamage: 0
+    cardShape: {fileID: 0}
+    CreatedElementType: 0
   - CardName: Endurance
     ID: 11
     PowerLeft: 2
@@ -145,6 +165,8 @@ MonoBehaviour:
     UseDraw: 0
     Damage: 0
     AddDamage: 0
+    cardShape: {fileID: 0}
+    CreatedElementType: 0
   - CardName: Talewind
     ID: 12
     PowerLeft: 1
@@ -157,6 +179,8 @@ MonoBehaviour:
     UseDraw: 0
     Damage: 0
     AddDamage: 0
+    cardShape: {fileID: 0}
+    CreatedElementType: 0
   - CardName: Draw Card
     ID: 13
     PowerLeft: 0
@@ -169,6 +193,8 @@ MonoBehaviour:
     UseDraw: 1
     Damage: 0
     AddDamage: 0
+    cardShape: {fileID: 0}
+    CreatedElementType: 0
   - CardName: Card Shuffle
     ID: 14
     PowerLeft: 0
@@ -181,6 +207,8 @@ MonoBehaviour:
     UseDraw: 1
     Damage: 0
     AddDamage: 0
+    cardShape: {fileID: 0}
+    CreatedElementType: 0
   - CardName: Puzzel Shuffle
     ID: 15
     PowerLeft: 0
@@ -193,3 +221,5 @@ MonoBehaviour:
     UseDraw: 1
     Damage: 0
     AddDamage: 0
+    cardShape: {fileID: 0}
+    CreatedElementType: 0
