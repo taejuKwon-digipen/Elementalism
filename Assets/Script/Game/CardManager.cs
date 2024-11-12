@@ -20,7 +20,7 @@ public class CardManager : MonoBehaviour
     [SerializeField] private Transform centerPosition; // 반원의 중심 위치
     [SerializeField] private float radius = 3.0f; // 반원의 반지름*/
 
-    public Transform canvasTransform;
+    public Transform Canvas2Transform;
 
     private List<bool> positionOccupied = new List<bool> { true, true, true }; //true = empty, false = ocuppied
 
@@ -192,8 +192,8 @@ public class CardManager : MonoBehaviour
     {
         Destroy(UsingCard[CurrCardIndexForSwitch]); //UsingCard 삭제
         currentCardIndex = CurrCardIndexForSwitch;
-        Transform canvasTransform = GameObject.Find("Canvas").transform;
-        GameObject cardObject = Instantiate(cardPrefab, cardPosition[currenttrueindex], Quaternion.identity, canvasTransform);
+        Transform Canvas2Transform = GameObject.Find("Canvas2").transform;
+        GameObject cardObject = Instantiate(cardPrefab, cardPosition[currenttrueindex], Quaternion.identity, Canvas2Transform);
         card = cardObject.GetComponent<Card>();
         card.Setup(PopCard(), true); // 필요에 따라 `isUse` 값을 조정
         UsingCard.Add(card); // 생성된 카드를 리스트에 추가
@@ -204,16 +204,16 @@ public class CardManager : MonoBehaviour
     {
         if (isUse == true)
         {
-            Transform canvasTransform = GameObject.Find("Canvas").transform;
-            GameObject cardObject = Instantiate(cardPrefab, cardPosition[currenttrueindex], Quaternion.identity, canvasTransform);
+            Transform Canvas2Transform = GameObject.Find("Canvas2").transform;
+            GameObject cardObject = Instantiate(cardPrefab, cardPosition[currenttrueindex], Quaternion.identity, Canvas2Transform);
             var card = cardObject.GetComponent<Card>();
             card.Setup(PopCard(), true); // 필요에 따라 `isUse` 값을 조정
             UsingCard.Add(card); // 생성된 카드를 리스트에 추가
         }
         else
         {
-            Transform canvasTransform = GameObject.Find("CardSelectionPanel").transform;
-            GameObject cardObject = Instantiate(cardPrefab, WaitingCardPosition[countwaitcard], Quaternion.identity, canvasTransform);
+            Transform Canvas2Transform = GameObject.Find("CardSelectionPanel").transform;
+            GameObject cardObject = Instantiate(cardPrefab, WaitingCardPosition[countwaitcard], Quaternion.identity, Canvas2Transform);
             var card = cardObject.GetComponent<Card>();
             card.Setup(PopCard(), true); // 필요에 따라 `isUse` 값을 조정
             WaitingCard.Add(card); // 생성된 카드를 리스트에 추가

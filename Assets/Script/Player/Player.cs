@@ -32,7 +32,6 @@ public class Player : Entity
         newPosition.y += this.GetComponent<RectTransform>().sizeDelta.y / 2;
         GameObject enemyObject = focusManager.GetFocusedEntity().transform.parent.gameObject;
         GameObject newBall = Instantiate(ball, newPosition, Quaternion.identity, this.transform.parent.parent);
-        Debug.Log(newBall.transform.position);
         BallBehavior behavior = newBall.GetComponent<BallBehavior>();
 
         behavior.focusedEnemy = enemyObject;
