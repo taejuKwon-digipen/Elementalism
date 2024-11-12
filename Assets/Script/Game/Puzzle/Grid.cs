@@ -17,6 +17,7 @@ public class Grid : MonoBehaviour
     public Vector2 startPosition = new Vector2(0, 0); // 그리드 시작 위치
     public float squareScale = 0.5f;              // 블록의 크기 스케일
     public float everySquareOffset = 0.0f;        // 각 블록의 오프셋
+    public bool turnEndButton = false;
     private Vector2 _offset = new Vector2(0, 0);  // 블록 간의 위치 오프셋 계산용 변수
     private List<GameObject> _blocks = new List<GameObject>(); // 생성된 원소 블록들의 리스트
 
@@ -29,6 +30,32 @@ public class Grid : MonoBehaviour
     private void OnDisable()
     {
         GameEvents.CheckIfShapeCanBePlaced -= CheckIfShapeCanBePlaced;
+    }
+
+    public void OnTurnEndButton()
+    {
+        turnEndButton = true;
+        // 퍼즐 재생성 기능 구현
+        var shapeLeft = 0;
+
+        foreach (var shape in shapeStorage.shapeList)
+        {
+            if (shape.IsOnStartPosition() && shape.IsAnyOfShapeSquareActive())
+            {
+                shapeLeft++;
+
+            }
+        }
+
+        if (shapeLeft == 0 && turnEndButton)
+        {
+            GameEvents.RequestNewShapes();
+        }
+        else
+        {
+            GameEvents.SetShapeInactive();
+        }
+
     }
 
     void Start()
@@ -205,15 +232,8 @@ public class Grid : MonoBehaviour
                 }
             }
 
-            if (shapeLeft == 0)
-            {
-                GameEvents.RequestNewShapes();
-                //onTurnEndButton == false;
-            }
-            else 
-            {
-                GameEvents.SetShapeInactive();
-            }
+            GameEvents.SetShapeInactive();
+            
         }
         else
         {
