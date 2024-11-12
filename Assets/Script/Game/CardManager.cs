@@ -191,9 +191,9 @@ public class CardManager : MonoBehaviour
     private void SwitchCard(Card card)
     {
         Destroy(UsingCard[CurrCardIndexForSwitch]); //UsingCard 삭제
-        currentCardIndex = CurrCardIndexForSwitch;
+        //currentCardIndex = CurrCardIndexForSwitch;
         Transform Canvas2Transform = GameObject.Find("Canvas2").transform;
-        GameObject cardObject = Instantiate(cardPrefab, cardPosition[currenttrueindex], Quaternion.identity, Canvas2Transform);
+        GameObject cardObject = Instantiate(cardPrefab, cardPosition[CurrCardIndexForSwitch], Quaternion.identity, Canvas2Transform);
         card = cardObject.GetComponent<Card>();
         card.Setup(PopCard(), true); // 필요에 따라 `isUse` 값을 조정
         UsingCard.Add(card); // 생성된 카드를 리스트에 추가

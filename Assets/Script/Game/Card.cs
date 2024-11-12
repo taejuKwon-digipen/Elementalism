@@ -4,7 +4,7 @@ using DG.Tweening;
 using TMPro;
 using System.Collections;
 
-public class Card : MonoBehaviour
+public class Card : MonoBehaviour, IPointerDownHandler
 {
     [SerializeField] TMP_Text nameTMP;
     [SerializeField] TMP_Text PowerLeftTMP;
@@ -37,7 +37,14 @@ public class Card : MonoBehaviour
         }
     }
 
-    public void OnPointerUp(PointerEventData eventData)
+   /* public void OnPointerUp(PointerEventData eventData)
+    {
+        currentMousePosition = (Input.mousePosition);
+        Debug.Log("WaitingCard 선택");
+        CardManager.Inst.NotifyCardSelection(this); // CardManager에 카드가 삭제되었음을 알림a
+    }*/
+
+    public void OnPointerDown(PointerEventData eventData)
     {
         currentMousePosition = (Input.mousePosition);
         Debug.Log("WaitingCard 선택");

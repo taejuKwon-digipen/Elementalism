@@ -312,9 +312,10 @@ MonoBehaviour:
   cardPrefab: {fileID: 7253010570474884399, guid: a58a6a79d06ee464aaa2012ddb10b525, type: 3}
   UsingCard: []
   WaitingCard: []
-  canvasTransform: {fileID: 0}
+  Canvas2Transform: {fileID: 0}
   cardSelectionPanel: {fileID: 1224205003}
   selectionPanelContent: {fileID: 1224205004}
+  CurrCardIndexForSwitch: 0
 --- !u!4 &132627234
 Transform:
   m_ObjectHideFlags: 0
@@ -805,7 +806,7 @@ GameObject:
   - component: {fileID: 765825477}
   - component: {fileID: 765825476}
   m_Layer: 0
-  m_Name: Canvas
+  m_Name: Canvas2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2264,11 +2265,11 @@ RectTransform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 132627234}
   - {fileID: 1802280473}
   - {fileID: 679208805}
   - {fileID: 1269826078}
   - {fileID: 1103996760}
+  - {fileID: 132627234}
   - {fileID: 70329810}
   - {fileID: 675171323}
   - {fileID: 915089168}
