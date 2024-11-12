@@ -13,51 +13,183 @@ MonoBehaviour:
   m_Name: ItemSO
   m_EditorClassIdentifier: 
   items:
-  - CardName: 1
-    ID: 0
-    PowerLeft: 0
-    PowerRight: 0
-    CardDescription: 
+  - CardName: Flame Spark
+    ID: 1
+    PowerLeft: 2
+    PowerRight: 4
+    CardDescription: Low Damage
     UseMagic: 0
-    Percent: 25
+    Percent: 11
+    UseProp: 1
+    UseBuff: 0
+    UseDraw: 0
+    Damage: 0
+    AddDamage: 0
+  - CardName: Aqua Splash
+    ID: 2
+    PowerLeft: 2
+    PowerRight: 4
+    CardDescription: Low Damage
+    UseMagic: 0
+    Percent: 11
+    UseProp: 1
+    UseBuff: 0
+    UseDraw: 0
+    Damage: 0
+    AddDamage: 0
+  - CardName: Stone Hurl
+    ID: 3
+    PowerLeft: 2
+    PowerRight: 4
+    CardDescription: Low Damage
+    UseMagic: 0
+    Percent: 11
+    UseProp: 1
+    UseBuff: 0
+    UseDraw: 0
+    Damage: 0
+    AddDamage: 0
+  - CardName: Gentle Breeze
+    ID: 4
+    PowerLeft: 2
+    PowerRight: 4
+    CardDescription: Low Damage
+    UseMagic: 0
+    Percent: 11
+    UseProp: 1
+    UseBuff: 0
+    UseDraw: 0
+    Damage: 0
+    AddDamage: 0
+  - CardName: Lava Surge
+    ID: 5
+    PowerLeft: 4
+    PowerRight: 6
+    CardDescription: Create lava terrain
+    UseMagic: 1
+    Percent: 4.75
     UseProp: 0
     UseBuff: 0
     UseDraw: 0
     Damage: 0
     AddDamage: 0
-  - CardName: 2
-    ID: 0
-    PowerLeft: 0
-    PowerRight: 0
-    CardDescription: 
-    UseMagic: 0
-    Percent: 25
+  - CardName: Mud armor
+    ID: 6
+    PowerLeft: 3
+    PowerRight: 5
+    CardDescription: Provides Shields
+    UseMagic: 1
+    Percent: 4.75
     UseProp: 0
     UseBuff: 0
     UseDraw: 0
     Damage: 0
     AddDamage: 0
-  - CardName: 3
-    ID: 0
-    PowerLeft: 0
-    PowerRight: 0
-    CardDescription: 
-    UseMagic: 0
-    Percent: 25
+  - CardName: Frost Gale
+    ID: 7
+    PowerLeft: 1
+    PowerRight: 2
+    CardDescription: Freezes the enemy
+    UseMagic: 1
+    Percent: 4.75
     UseProp: 0
     UseBuff: 0
     UseDraw: 0
     Damage: 0
     AddDamage: 0
-  - CardName: 4
-    ID: 0
-    PowerLeft: 0
-    PowerRight: 0
-    CardDescription: 
-    UseMagic: 0
-    Percent: 25
+  - CardName: Scorching Wind
+    ID: 8
+    PowerLeft: 5
+    PowerRight: 10
+    CardDescription: Damage proportional to health to all enemies
+    UseMagic: 1
+    Percent: 4.75
     UseProp: 0
     UseBuff: 0
     UseDraw: 0
+    Damage: 0
+    AddDamage: 0
+  - CardName: Acceleration
+    ID: 9
+    PowerLeft: 2
+    PowerRight: 3
+    CardDescription: Next attack Damage increase
+    UseMagic: 0
+    Percent: 7
+    UseProp: 1
+    UseBuff: 1
+    UseDraw: 0
+    Damage: 0
+    AddDamage: 0
+  - CardName: Healing Touch
+    ID: 10
+    PowerLeft: 1
+    PowerRight: 2
+    CardDescription: Restore
+    UseMagic: 0
+    Percent: 7
+    UseProp: 1
+    UseBuff: 1
+    UseDraw: 0
+    Damage: 0
+    AddDamage: 0
+  - CardName: Endurance
+    ID: 11
+    PowerLeft: 2
+    PowerRight: 3
+    CardDescription: Provides defense
+    UseMagic: 0
+    Percent: 7
+    UseProp: 1
+    UseBuff: 1
+    UseDraw: 0
+    Damage: 0
+    AddDamage: 0
+  - CardName: Talewind
+    ID: 12
+    PowerLeft: 1
+    PowerRight: 2
+    CardDescription: Provides Lucks
+    UseMagic: 0
+    Percent: 7
+    UseProp: 1
+    UseBuff: 1
+    UseDraw: 0
+    Damage: 0
+    AddDamage: 0
+  - CardName: Draw Card
+    ID: 13
+    PowerLeft: 0
+    PowerRight: 0
+    CardDescription: Draw Card
+    UseMagic: 0
+    Percent: 3
+    UseProp: 0
+    UseBuff: 0
+    UseDraw: 1
+    Damage: 0
+    AddDamage: 0
+  - CardName: Card Shuffle
+    ID: 14
+    PowerLeft: 0
+    PowerRight: 0
+    CardDescription: Shuffle Card
+    UseMagic: 0
+    Percent: 3
+    UseProp: 0
+    UseBuff: 0
+    UseDraw: 1
+    Damage: 0
+    AddDamage: 0
+  - CardName: Puzzel Shuffle
+    ID: 15
+    PowerLeft: 0
+    PowerRight: 0
+    CardDescription: Shuffle puzzle
+    UseMagic: 0
+    Percent: 3
+    UseProp: 0
+    UseBuff: 0
+    UseDraw: 1
     Damage: 0
     AddDamage: 0
