@@ -5,7 +5,7 @@ using UnityEngine;
 public class GridChecker : MonoBehaviour
 {
     public Grid grid; // 그리드 스크립트 인스턴스
-
+    public Player player;
     // 버튼 클릭 시 호출할 검사 메서드
     public void OnCheckButtonPressed()
     {
@@ -43,6 +43,11 @@ public class GridChecker : MonoBehaviour
             damage = cardDamage * totalBlockCount;
             // 검사 결과를 출력합니다.
             Debug.Log("카드와 일치하는 블록의 총 개수: " + totalBlockCount + "\n카드 데미지:" + damage);
+            if (damage > 0)
+            {
+                // 파이어볼 공격 실행
+                player.AttackWithDamage(damage); // 새로운 메서드를 통해 공격력 적용
+            }
             totalBlockCount = 0;
             damage = 0;
         }
