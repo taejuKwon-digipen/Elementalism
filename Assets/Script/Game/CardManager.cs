@@ -190,13 +190,14 @@ public class CardManager : MonoBehaviour
     }
 
     private void SwitchCard(Card card) // card = Waitingcard_
-    { 
+    {
         //currentCardIndex = CurrCardIndexForSwitch;
         Transform Canvas2Transform = GameObject.Find("Canvas2").transform;
         GameObject cardObject = Instantiate(cardPrefab, cardPosition[CurrCardIndexForSwitch], Quaternion.identity, Canvas2Transform);
         var newcard = cardObject.GetComponent<Card>();
         newcard.Setup(card.carditem, true); // 필요에 따라 `isUse` 값을 조정
-        UsingCard.Add(newcard); // 생성된 카드를 리스트에 추가
+        UsingCard[CurrCardIndexForSwitch] = newcard; // 생성된 카드를 리스트에 추가
+        WaitingCard.Clear();
     }
 
     void AddCard(bool isUse)
