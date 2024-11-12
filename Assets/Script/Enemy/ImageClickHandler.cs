@@ -19,17 +19,17 @@ public class ImageClickHandler : MonoBehaviour, IPointerClickHandler
     {
         if (enemy.HP <= 0)
             return;
-        int damage = enemy.Hit(player, EntityType.Water);
+        //int damage = enemy.Hit(player, EntityType.Water);
 
-        GameObject obj = Instantiate(
-            Object,
-            enemy.transform.position,
-            Quaternion.identity,
-            Canva.transform
-        );
-        Damage d = obj.GetComponent<Damage>();
+        //GameObject obj = Instantiate(
+        //    Object,
+        //    enemy.transform.position,
+        //    Quaternion.identity,
+        //    Canva.transform
+        //);
+        //Damage d = obj.GetComponent<Damage>();
 
-        d.SetText('-' + damage.ToString());
+        //d.SetText('-' + damage.ToString());
         enemy.NotifyClickToLockManager();
     }
 }

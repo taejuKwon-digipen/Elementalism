@@ -95,7 +95,7 @@ MonoBehaviour:
     UseDraw: 0
     Damage: 0
     AddDamage: 0
-    cardShape: {fileID: 0}
+    cardShape: {fileID: 11400000, guid: d4cf2d68076e81d4599835b9c2cc39df, type: 2}
     CreatedElementType: 0
   - CardName: Frost Gale
     ID: 7
@@ -109,7 +109,7 @@ MonoBehaviour:
     UseDraw: 0
     Damage: 0
     AddDamage: 0
-    cardShape: {fileID: 0}
+    cardShape: {fileID: 11400000, guid: 8433066de5eb0fc4ba16b26b1c7bcb41, type: 2}
     CreatedElementType: 0
   - CardName: Scorching Wind
     ID: 8
@@ -123,7 +123,7 @@ MonoBehaviour:
     UseDraw: 0
     Damage: 0
     AddDamage: 0
-    cardShape: {fileID: 0}
+    cardShape: {fileID: 11400000, guid: ebd5f25102aae52449054a519e3dae38, type: 2}
     CreatedElementType: 0
   - CardName: Acceleration
     ID: 9
