@@ -14,8 +14,8 @@ public class CardManager : MonoBehaviour
     [SerializeField] CardItemSO carditemso;
     [SerializeField] GameObject cardPrefab;
 
-    [SerializeField] List<Card> UsingCard;
-    [SerializeField] List<Card> WaitingCard;
+    [SerializeField] public List<Card> UsingCard;
+    [SerializeField] public List<Card> WaitingCard;
 /*
     [SerializeField] private Transform centerPosition; // 반원의 중심 위치
     [SerializeField] private float radius = 3.0f; // 반원의 반지름*/
