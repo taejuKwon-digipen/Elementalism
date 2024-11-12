@@ -3,7 +3,14 @@ guid: ec316c2f27fb6934392c0ce9d3f24854
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - carditemso: {instanceID: 0}
+  - cardPrefab: {instanceID: 0}
+  - Cardimage: {instanceID: 0}
+  - Canvas2Transform: {instanceID: 0}
+  - cardSelectionPanel: {instanceID: 0}
+  - PanelBackground: {instanceID: 0}
+  - selectionPanelContent: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

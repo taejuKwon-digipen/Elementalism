@@ -12,7 +12,7 @@ public class Card : MonoBehaviour, IPointerDownHandler
     [SerializeField] TMP_Text PowerRightTMP;
     [SerializeField] TMP_Text CardDescriptionTMP;
     [SerializeField] TMP_Text IDTMP;
-    [SerializeField] Sprite image;
+    [SerializeField] Image imageComponent;
 
     public CardItem carditem;
     public bool isFront = true;
@@ -36,7 +36,14 @@ public class Card : MonoBehaviour, IPointerDownHandler
             PowerRightTMP.text = carditem.PowerRight.ToString();
             CardDescriptionTMP.text = carditem.CardDescription;
             IDTMP.text = carditem.ID.ToString();
-            //image = 
+
+
+            if (carditem.cardImage == null)
+            {
+                Debug.LogError("cardImage is null! Please check the assigned sprite.");
+            }
+            imageComponent = GetComponent<Image>();
+            imageComponent.sprite = carditem.cardImage;
         }
     }
 

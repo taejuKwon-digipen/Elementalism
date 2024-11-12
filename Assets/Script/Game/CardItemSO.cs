@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI; // UI 관련 스크립트에 활용
 
 /*
 [System.Serializable] //unity �ν����� â���� ������ �� �ֵ��� ����
@@ -25,6 +26,7 @@ public class CardItem
     public string CardDescription;
     public bool UseMagic = false;
     public float Percent;
+    public Sprite cardImage;
 
     public bool UseProp = false;
     public bool UseBuff = false;
