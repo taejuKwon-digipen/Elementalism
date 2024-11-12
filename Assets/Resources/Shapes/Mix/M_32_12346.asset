@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 19fc472c27d643f4db5c010430b08879, type: 3}
-  m_Name: M_1234
+  m_Name: M_32_12346
   m_EditorClassIdentifier: 
-  columns: 2
+  columns: 3
   rows: 2
   board:
-  - colum: 0100000003000000
-  - colum: 0200000004000000
+  - colum: 020000000000000002000000
+  - colum: 020000000300000002000000
