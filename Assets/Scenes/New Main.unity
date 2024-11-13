@@ -1517,8 +1517,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grid: {fileID: 888368976}
-  cardShape: {fileID: 11400000, guid: 8cc56711ae925be43ba82e98a9928c20, type: 2}
-  CreatedElementType: 1
+  player: {fileID: 1217043235}
 --- !u!114 &1413097660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1566,18 +1565,6 @@ MonoBehaviour:
       - m_Target: {fileID: 1413097659}
         m_TargetAssemblyTypeName: GridChecker, Assembly-CSharp
         m_MethodName: OnCheckButtonPressed
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1217043235}
-        m_TargetAssemblyTypeName: Player, Assembly-CSharp
-        m_MethodName: Attack
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
