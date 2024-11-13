@@ -19,6 +19,8 @@ public class EnemyManager : MonoBehaviour
     private readonly int[] numbers = { 1, 2, 2, 3, 3, 4 }; // Number of enemies to spawn at the next wave.
     private readonly List<SpawnAvailable> areSpawnPointsAvailable = new();
 
+    public bool isEnemyTurn = false;
+
     private void Awake() {
         foreach (var item in spawnPoints)
         {
@@ -103,6 +105,7 @@ public class EnemyManager : MonoBehaviour
 
     public void StartEnemyTurn()
     {
+        isEnemyTurn = true;
         StartCoroutine(EnemyTurn());
     }
 
@@ -116,5 +119,6 @@ public class EnemyManager : MonoBehaviour
             yield return StartCoroutine(entity.Turn());
             yield return new WaitForSecondsRealtime(1);
         }
+        isEnemyTurn = false;
     }
 }
