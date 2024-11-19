@@ -17,7 +17,7 @@ MonoBehaviour:
   Sprite: {fileID: -1112748105, guid: e14ad267ac3af804e81331c7a7487dab, type: 3}
   Animator: {fileID: 9100000, guid: 262b909234630434c912772f1a38f6f7, type: 2}
   Type: 4
-  MaxHP: 200
+  MaxHP: 50
   MaxMP: 0
   Attack: 10
   Defense: 5

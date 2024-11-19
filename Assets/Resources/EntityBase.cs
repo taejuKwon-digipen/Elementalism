@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,7 +21,7 @@ public class EntityBase : ScriptableObject
     public string Description;
 
     public Sprite Sprite;
-    public AnimatorController Animator;
+    public UnityEngine.RuntimeAnimatorController Animator;
 
     public EntityType Type;
 

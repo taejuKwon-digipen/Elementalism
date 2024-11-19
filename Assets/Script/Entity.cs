@@ -1,5 +1,4 @@
 using System;
-using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -11,12 +10,12 @@ public class Entity : MonoBehaviour
     public int MP;
 
     protected virtual void Start() {
-        var animator = this.GetComponent<Animator>();
+        var animator = this.GetComponent <RuntimeAnimatorController>();
         var image = this.GetComponent<Image>();
 
         HP = baseEntity.MaxHP;
         MP = baseEntity.MaxMP;
-        animator.runtimeAnimatorController = baseEntity.Animator ? baseEntity.Animator : null;
+        animator = baseEntity.Animator ? baseEntity.Animator : null;
         image.sprite = baseEntity.Sprite ? baseEntity.Sprite : null;
     }
 
