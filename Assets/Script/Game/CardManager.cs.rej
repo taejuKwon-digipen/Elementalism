@@ -1,0 +1,12 @@
+diff a/Assets/Script/Game/CardManager.cs b/Assets/Script/Game/CardManager.cs	(rejected hunks)
+@@ -95,6 +95,10 @@
+     {
+         SetCardBuffer();
+ 
++        Transform CardSelectionPanelPo= GameObject.Find("Canvas/Background").transform;
++        cardSelectionPanel= Instantiate(PanelBackground, new Vector3(0,0,0) , Quaternion.identity, CardSelectionPanelPo);
++
++
+         cardSelectionPanel.SetActive(false);
+         PanelBackground.SetActive(false);
+ 

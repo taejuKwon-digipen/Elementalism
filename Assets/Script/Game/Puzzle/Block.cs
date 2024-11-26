@@ -63,7 +63,7 @@ public class Block : MonoBehaviour
         ActivateSquare();
     }
 
-    // 칸을 활성화하는 메서드
+
     // 칸을 활성화하는 메서드
     public void ActivateSquare()
     {
@@ -78,6 +78,11 @@ public class Block : MonoBehaviour
             Selected = true;                            // 선택됨으로 설정
             SquareOccupied = true;                       // 점유됨으로 설정
         }
+    }
+
+    public void DisactivateActiveImage()
+    {
+        activeImage.gameObject.SetActive(false);
     }
 
     public void SetElementType(ElementType newType)

@@ -38,9 +38,9 @@ public class CardManager : MonoBehaviour
 
     private List<Vector3> cardPosition = new List<Vector3>
     {
-        new Vector3(7.3f,3,0),
-        new Vector3(7.3f,0,0),
-        new Vector3(7.3f,-3,0),
+        new Vector3(1746,850,0),
+        new Vector3(1746,540,0),
+        new Vector3(1746,230,0),
     };
 
     public int CurrCardIndexForSwitch = 0;
@@ -49,10 +49,10 @@ public class CardManager : MonoBehaviour
 
     private List<Vector3> WaitingCardPosition = new List<Vector3>
     {
-        new Vector3(-2,0,0),
-        new Vector3(-4, 0, 0),
-        new Vector3(-1, 0, 0),
-        new Vector3(2, 0, 0),
+        new Vector3(364,540,0),
+        new Vector3(728, 540, 0),
+        new Vector3(1092, 540, 0),
+        new Vector3(1456, 540, 0),
 
     };
 
@@ -94,10 +94,6 @@ public class CardManager : MonoBehaviour
     public void Start()
     {
         SetCardBuffer();
-
-        Transform CardSelectionPanelPo= GameObject.Find("Canvas/Background").transform;
-        cardSelectionPanel= Instantiate(PanelBackground, new Vector3(0,0,0) , Quaternion.identity, CardSelectionPanelPo);
-
 
         cardSelectionPanel.SetActive(false);
         PanelBackground.SetActive(false);
@@ -202,7 +198,7 @@ public class CardManager : MonoBehaviour
     private void SwitchCard(Card card) // card = Waitingcard_
     {
         //currentCardIndex = CurrCardIndexForSwitch;
-        Transform Canvas2Transform = GameObject.Find("Canvas/Background").transform;
+        Transform Canvas2Transform = GameObject.Find("Canvas2").transform;
         GameObject cardObject = Instantiate(cardPrefab, cardPosition[CurrCardIndexForSwitch], Quaternion.identity, Canvas2Transform);
         var newcard = cardObject.GetComponent<Card>();
         newcard.Setup(card.carditem, true); // 필요에 따라 `isUse` 값을 조정
@@ -216,7 +212,7 @@ public class CardManager : MonoBehaviour
     {
         if (isUse == true)
         {
-            Transform Canvas2Transform = GameObject.Find("Canvas/Background").transform;
+            Transform Canvas2Transform = GameObject.Find("Canvas2").transform;
             GameObject cardObject = Instantiate(cardPrefab, cardPosition[currenttrueindex], Quaternion.identity, Canvas2Transform);
             var card = cardObject.GetComponent<Card>();
             card.Setup(PopCard(), false); // 필요에 따라 `isUse` 값을 조정
