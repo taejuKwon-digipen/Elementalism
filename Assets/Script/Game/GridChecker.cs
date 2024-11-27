@@ -47,6 +47,7 @@ public class GridChecker : MonoBehaviour
             int cardRows = CardManager.Inst.UsingCard[i].carditem.cardShape.rows;
             int cardColumns = CardManager.Inst.UsingCard[i].carditem.cardShape.columns;
             int cardDamage = CardManager.Inst.UsingCard[i].carditem.PowerLeft;
+            int cardID = CardManager.Inst.UsingCard[i].carditem.ID;
             ElementType CreatedElementType = CardManager.Inst.UsingCard[i].carditem.CreatedElementType;
 
 
@@ -56,7 +57,7 @@ public class GridChecker : MonoBehaviour
                 for (int col = 0; col <= gridColumns - cardColumns; col++)
                 {
                     // 카드 모양이 그리드의 현재 서브 그리드에 맞는지 검사합니다.
-                    if (IsMatching(grid, CardManager.Inst.UsingCard[i].carditem.cardShape, row, col, CreatedElementType))
+                    if (IsMatching(grid, CardManager.Inst.UsingCard[i].carditem.cardShape, row, col, CreatedElementType, cardID))
                     {
                         // 매칭된 블록을 강조하는 코루틴을 실행합니다.
                         yield return StartCoroutine(HighlightMatchedBlocks(grid, cardRows, cardColumns, row, col));
@@ -143,7 +144,7 @@ public class GridChecker : MonoBehaviour
 
 
     // 그리드와 카드 모양이 일치하는지 확인하는 메서드
-    private bool IsMatching(Grid grid, ShapeData cardShape, int startRow, int startCol, ElementType createdType)
+    private bool IsMatching(Grid grid, ShapeData cardShape, int startRow, int startCol, ElementType createdType, int cardID)
     {
         for (int row = 0; row < cardShape.rows; row++)
         {
@@ -164,7 +165,7 @@ public class GridChecker : MonoBehaviour
         {
             for (int col = 0; col < cardShape.columns; col++)
             {
-                if (cardShape.board[row].colum[col] != ElementType.None)
+                if (cardID == 15 || cardShape.board[row].colum[col] != ElementType.None )
                 {
                     if (createdType != ElementType.None)
                     {

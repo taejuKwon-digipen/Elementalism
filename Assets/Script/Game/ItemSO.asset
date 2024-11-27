@@ -128,7 +128,7 @@ MonoBehaviour:
     UseProp: 1
     UseBuff: 1
     UseDraw: 0
-    cardShape: {fileID: 0}
+    cardShape: {fileID: 11400000, guid: 9b120312862a52949a5c24f9824549cc, type: 2}
     CreatedElementType: 0
   - CardName: Healing Touch
     ID: 10
@@ -141,7 +141,7 @@ MonoBehaviour:
     UseProp: 1
     UseBuff: 1
     UseDraw: 0
-    cardShape: {fileID: 0}
+    cardShape: {fileID: 11400000, guid: f13a577dfde784745a7826ad66d92337, type: 2}
     CreatedElementType: 0
   - CardName: Endurance
     ID: 11
@@ -154,7 +154,7 @@ MonoBehaviour:
     UseProp: 1
     UseBuff: 1
     UseDraw: 0
-    cardShape: {fileID: 0}
+    cardShape: {fileID: 11400000, guid: 41163a0720d3bc44ea6b1c8a8ccfb9e7, type: 2}
     CreatedElementType: 0
   - CardName: Talewind
     ID: 12
@@ -167,7 +167,7 @@ MonoBehaviour:
     UseProp: 1
     UseBuff: 1
     UseDraw: 0
-    cardShape: {fileID: 0}
+    cardShape: {fileID: 11400000, guid: 3434211979a93664d9bbc0d5bfc7a134, type: 2}
     CreatedElementType: 0
   - CardName: Draw Card
     ID: 13
@@ -193,7 +193,7 @@ MonoBehaviour:
     UseProp: 0
     UseBuff: 0
     UseDraw: 1
-    cardShape: {fileID: 0}
+    cardShape: {fileID: 11400000, guid: ac0891baae96e2d48b9395f586f74c07, type: 2}
     CreatedElementType: 0
   - CardName: Puzzel Shuffle
     ID: 15
@@ -206,5 +206,5 @@ MonoBehaviour:
     UseProp: 0
     UseBuff: 0
     UseDraw: 1
-    cardShape: {fileID: 0}
+    cardShape: {fileID: 11400000, guid: ac0891baae96e2d48b9395f586f74c07, type: 2}
     CreatedElementType: 0

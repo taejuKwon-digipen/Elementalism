@@ -126,7 +126,7 @@ public class Block : MonoBehaviour
         {
             currentCollidedBlock = collidedSquare.elementType; // 충돌된 원소 타입 저장
             isColliding = true; // 충돌 상태 설정
-            Debug.Log("충돌된 원소 타입: " + currentCollidedBlock);
+            //Debug.Log("충돌된 원소 타입: " + currentCollidedBlock);
         }
     }
 
