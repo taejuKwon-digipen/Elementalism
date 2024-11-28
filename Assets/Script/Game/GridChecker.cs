@@ -12,10 +12,9 @@ public class GridChecker : MonoBehaviour
     public void OnCheckButtonPressed()
     {
         StartCoroutine(ProcessCardsSequentially());
-
     }
-    // 버튼 클릭 시 모든 ActiveImage를 비활성화하는 메서드
 
+    // 버튼 클릭 시 모든 ActiveImage를 비활성화하는 메서드
     private void DisableAllActiveImages()
     {
         int totalBlocks = grid.rows * grid.columns;
@@ -48,7 +47,7 @@ public class GridChecker : MonoBehaviour
             int cardColumns = CardManager.Inst.UsingCard[i].carditem.cardShape.columns;
             int cardDamage = CardManager.Inst.UsingCard[i].carditem.PowerLeft;
             int cardID = CardManager.Inst.UsingCard[i].carditem.ID;
-            ElementType CreatedElementType = CardManager.Inst.UsingCard[i].carditem.CreatedElementType;
+            ElementType createdElementType = CardManager.Inst.UsingCard[i].carditem.CreatedElementType;
 
 
             // 슬라이딩 윈도우 방식으로 그리드를 순회합니다.
@@ -57,10 +56,14 @@ public class GridChecker : MonoBehaviour
                 for (int col = 0; col <= gridColumns - cardColumns; col++)
                 {
                     // 카드 모양이 그리드의 현재 서브 그리드에 맞는지 검사합니다.
-                    if (IsMatching(grid, CardManager.Inst.UsingCard[i].carditem.cardShape, row, col, CreatedElementType, cardID))
+                    if (CheckIfBlocksMatch(grid, cardShape, row, col))
                     {
                         // 매칭된 블록을 강조하는 코루틴을 실행합니다.
-                        yield return StartCoroutine(HighlightMatchedBlocks(grid, cardRows, cardColumns, row, col));
+                        yield return StartCoroutine(HighlightMatchedBlocks(grid, cardShape, row, col));
+                        // 강조 후 블록 변경
+                        ChangeBlocksAfterMatch(grid, cardShape, row, col, createdElementType, cardID);
+
+                        // 카드 블럭 수 더하기
                         totalDamage += CountBlocksInShape(cardShape);
                     }
                 }
@@ -81,19 +84,21 @@ public class GridChecker : MonoBehaviour
         DisableAllActiveImages();
     }
 
-    private IEnumerator HighlightMatchedBlocks(Grid grid, int cardRows, int cardColumns, int startRow, int startCol)
+    private IEnumerator HighlightMatchedBlocks(Grid grid, ShapeData cardShape, int startRow, int startCol)
     {
         List<GameObject> matchedBlocks = new List<GameObject>();
 
         // 매칭된 블록들을 찾아 리스트에 추가
-        for (int row = 0; row < cardRows; row++)
+        for (int row = 0; row < cardShape.rows; row++)
         {
-            for (int col = 0; col < cardColumns; col++)
+            for (int col = 0; col < cardShape.columns; col++)
             {
                 GameObject block = grid.GetBlockAt(startRow + row, startCol + col);
                 if (block != null)
                 {
-                    matchedBlocks.Add(block);
+                    // cardShape에 그 부분이 None이 아닐시 추가
+                    if (cardShape.board[row].colum[col] != ElementType.None)
+                        matchedBlocks.Add(block);                    
                 }
             }
         }
@@ -111,7 +116,8 @@ public class GridChecker : MonoBehaviour
                 if (normalImageTransform != null)
                 {
                     Image blockImage = normalImageTransform.GetComponent<Image>();
-                    if (blockImage != null)
+                   
+                    if (blockImage != null )
                     {
                         Color currentColor = blockImage.color;
                         currentColor.a = 0.5f;  // 알파 값을 0.5로 설정 (반투명)
@@ -129,7 +135,8 @@ public class GridChecker : MonoBehaviour
                 if (normalImageTransform != null)
                 {
                     Image blockImage = normalImageTransform.GetComponent<Image>();
-                    if (blockImage != null)
+                    
+                    if (blockImage != null )
                     {
                         Color currentColor = blockImage.color;
                         currentColor.a = 1.0f;  // 알파 값을 1.0으로 설정 (완전히 불투명)
@@ -144,7 +151,7 @@ public class GridChecker : MonoBehaviour
 
 
     // 그리드와 카드 모양이 일치하는지 확인하는 메서드
-    private bool IsMatching(Grid grid, ShapeData cardShape, int startRow, int startCol, ElementType createdType, int cardID)
+    private bool CheckIfBlocksMatch(Grid grid, ShapeData cardShape, int startRow, int startCol)
     {
         for (int row = 0; row < cardShape.rows; row++)
         {
@@ -155,21 +162,24 @@ public class GridChecker : MonoBehaviour
 
                 if (cardElementType != ElementType.None && cardElementType != gridElementType)
                 {
-                    return false;
+                    return false; // 카드와 그리드의 원소가 일치하지 않으면 false 반환
                 }
             }
         }
+        return true; // 모든 원소가 일치하면 true 반환
+    }
 
-        // 카드와 일치하는 블록을 찾았으면, 그 위치의 블록을 None으로 설정
+    // 블록을 변경하는 함수
+    private void ChangeBlocksAfterMatch(Grid grid, ShapeData cardShape, int startRow, int startCol, ElementType createdElementType, int cardID)
+    {
         for (int row = 0; row < cardShape.rows; row++)
         {
             for (int col = 0; col < cardShape.columns; col++)
             {
-                if (cardID == 15 || cardShape.board[row].colum[col] != ElementType.None )
-                {
-                    if (createdType != ElementType.None)
+                if (cardShape.board[row].colum[col] != ElementType.None) { 
+                    if (cardID == 15 || createdElementType != ElementType.None)
                     {
-                        grid.SetElementTypeAt(startRow + row, startCol + col, createdType);
+                        grid.SetElementTypeAt(startRow + row, startCol + col, createdElementType);
                     }
                     else
                     {
@@ -178,8 +188,8 @@ public class GridChecker : MonoBehaviour
                 }
             }
         }
-        return true;
     }
+
 
     // 카드 모양의 블록 수를 계산하는 메서드
     private int CountBlocksInShape(ShapeData shape)
