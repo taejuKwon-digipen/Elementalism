@@ -15,7 +15,7 @@ public abstract class Enemy : Entity
     protected EnemyManager em;
 
     protected void Awake() {
-        //focusManager = GameObject.Find("FocusManager").GetComponent<FocusManager>();
+        focusManager = GameObject.Find("FocusManager").GetComponent<FocusManager>();
     }
 
     protected override void Start() {
@@ -66,9 +66,9 @@ public abstract class Enemy : Entity
         var currentPosition = this.transform.parent.position;
         var finalPosition = new UnityEngine.Vector3(currentPosition.x - xDistance, currentPosition.y, currentPosition.z);
 
-        while (elapsedTime < 1.5f) {
+        while (elapsedTime < 0.7f) {
             elapsedTime += Time.deltaTime;
-            currentPosition = UnityEngine.Vector3.SmoothDamp(currentPosition, finalPosition, ref velocity, 0.2f);
+            currentPosition = UnityEngine.Vector3.SmoothDamp(currentPosition, finalPosition, ref velocity, 0.15f);
             this.transform.parent.position = currentPosition;
             yield return null;
         }
@@ -88,13 +88,11 @@ public abstract class Enemy : Entity
     {
         UnityEngine.Vector3 startingPoint = this.GetComponent<RectTransform>().position;
         startingPoint.y += this.GetComponent<RectTransform>().sizeDelta.y / 2;
-        RaycastHit2D[] infos = Physics2D.RaycastAll(startingPoint, UnityEngine.Vector3.left, 200);
+        RaycastHit2D[] infos = Physics2D.RaycastAll(startingPoint, UnityEngine.Vector3.left, 100);
         bool flag = false;
 
-        Debug.DrawRay(startingPoint, UnityEngine.Vector3.left * 200, Color.red);
         foreach (var info in infos) {
-            if (info.collider.gameObject != gameObject)
-            {
+            if (info.collider.gameObject != transform.parent.gameObject) {
                 flag = true;
                 Debug.Log("Something in front");
             }

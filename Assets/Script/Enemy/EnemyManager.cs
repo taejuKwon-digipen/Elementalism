@@ -105,6 +105,7 @@ public class EnemyManager : MonoBehaviour
 
     private IEnumerator EnemyTurn()
     {
+        yield return new WaitForSecondsRealtime(1);
         for (int i = 0; i < onFieldEntities.Count; i += 1) {
             if (i >= onFieldEntities.Count) {
                 continue;
@@ -113,7 +114,6 @@ public class EnemyManager : MonoBehaviour
             if (enemy.HP <= 0)
                 continue;
             yield return StartCoroutine(enemy.Turn());
-            yield return new WaitForSecondsRealtime(1);
         }
         isEnemyTurn = false;
     }

@@ -28,12 +28,12 @@ public class Fighter : Enemy
     override protected bool IsObstacleInFront()
     {
         Vector3 startingPoint = this.GetComponent<RectTransform>().position;
-        startingPoint.y += 1;
+        startingPoint.y += 0.5f;
         RaycastHit2D[] infos = Physics2D.RaycastAll(startingPoint, UnityEngine.Vector3.left, 1.5f);
         bool flag = false;
 
         foreach (var info in infos) {
-            if (info.collider.gameObject != gameObject)
+            if (info.collider.gameObject != transform.parent.gameObject)
             {
                 flag = true;
                 Debug.Log("Something in front");
@@ -45,7 +45,7 @@ public class Fighter : Enemy
     private void Update()
     {
         Vector3 startingPoint = this.GetComponent<RectTransform>().position;
-        startingPoint.y += 1;
-        Debug.DrawRay(startingPoint, UnityEngine.Vector3.left * 2f, Color.red);
+        startingPoint.y += 0.5f;
+        Debug.DrawRay(startingPoint, UnityEngine.Vector3.left * 1.5f, Color.blue);
     } 
 }
