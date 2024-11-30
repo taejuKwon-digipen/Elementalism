@@ -49,10 +49,17 @@ public class CardManager : MonoBehaviour
 
     private List<Vector3> WaitingCardPosition = new List<Vector3>
     {
+<<<<<<< Updated upstream
         new Vector3(364,540,0),
         new Vector3(728, 540, 0),
         new Vector3(1092, 540, 0),
         new Vector3(1456, 540, 0),
+=======
+        new Vector3(-0,0,0),
+        new Vector3(-4, 0, 0),
+        new Vector3(-1, 0, 0),
+        new Vector3(2, 0, 0),
+>>>>>>> Stashed changes
 
     };
 
@@ -200,6 +207,8 @@ public class CardManager : MonoBehaviour
         //currentCardIndex = CurrCardIndexForSwitch;
         Transform Canvas2Transform = GameObject.Find("Canvas2").transform;
         GameObject cardObject = Instantiate(cardPrefab, cardPosition[CurrCardIndexForSwitch], Quaternion.identity, Canvas2Transform);
+        Vector3 nowLocalScale = cardObject.transform.localScale;
+        //cardObject.transform.localScale = new Vector3(nowLocalScale.x * 0.08f, nowLocalScale.x * 0.08f, 1);
         var newcard = cardObject.GetComponent<Card>();
         newcard.Setup(card.carditem, true); // 필요에 따라 `isUse` 값을 조정
         UsingCard[CurrCardIndexForSwitch] = newcard; // 생성된 카드를 리스트에 추가
@@ -222,6 +231,8 @@ public class CardManager : MonoBehaviour
         {
             Transform Canvas2Transform = GameObject.Find("CardSelectionPanel").transform;
             GameObject cardObject = Instantiate(cardPrefab, WaitingCardPosition[countwaitcard], Quaternion.identity, Canvas2Transform);
+            Vector3 nowLocalScale = cardObject.transform.localScale;
+            cardObject.transform.localScale = new Vector3(nowLocalScale.x * 0.008f, nowLocalScale.x * 0.008f, 1);
             var card = cardObject.GetComponent<Card>();
             card.Setup(PopCard(), true); // 필요에 따라 `isUse` 값을 조정
             WaitingCard.Add(card); // 생성된 카드를 리스트에 추가
