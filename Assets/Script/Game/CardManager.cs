@@ -49,17 +49,12 @@ public class CardManager : MonoBehaviour
 
     private List<Vector3> WaitingCardPosition = new List<Vector3>
     {
-<<<<<<< Updated upstream
-        new Vector3(364,540,0),
-        new Vector3(728, 540, 0),
-        new Vector3(1092, 540, 0),
-        new Vector3(1456, 540, 0),
-=======
+
+
         new Vector3(-0,0,0),
         new Vector3(-4, 0, 0),
         new Vector3(-1, 0, 0),
         new Vector3(2, 0, 0),
->>>>>>> Stashed changes
 
     };
 
