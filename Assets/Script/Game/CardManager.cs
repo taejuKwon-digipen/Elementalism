@@ -156,6 +156,25 @@ public class CardManager : MonoBehaviour
        
     }
 
+    private int CalculateUsingCard(Card card)
+    {
+        float y = card.currentMousePosition.y;
+
+       if( y >= 650f )
+        {
+            CurrCardIndexForSwitch = 0;
+        }
+       else if( y <= 300f)
+        {
+            CurrCardIndexForSwitch = 2;
+        }
+        else
+        {
+            CurrCardIndexForSwitch = 1;
+        }
+        return CurrCardIndexForSwitch;
+    }
+
     public void NotifyCardSelection(Card card)
     {
         //if card == using card[0]---이면 GenerateSelectionCards() panel true
@@ -163,8 +182,8 @@ public class CardManager : MonoBehaviour
 
         if(card == UsingCard[0] || card == UsingCard[1] || card == UsingCard[2] )
         {
-            int index = cardPosition.FindIndex(pos => Vector3.Distance(pos, card.currentMousePosition) < 150f);
-            CurrCardIndexForSwitch = index;
+            CalculateUsingCard(card);
+            //int index = cardPosition.FindIndex(pos => Vector3.Distance(pos, card.currentMousePosition) < 150f); //여기가 문제임 포지션이 바뀌어서 인식을 못함
             cardSelectionPanel.SetActive(true);
             PanelBackground.SetActive(true);
             GenerateSelectionCards();
@@ -173,18 +192,23 @@ public class CardManager : MonoBehaviour
         else
         {
             ToBeSwitchCard(card);
-            SwitchCard(Waitingcard_);
+            SwitchCard(Waitingcard_); //여기서 에러뜸
 
         }
     }
 
     private Card ToBeSwitchCard(Card card)
     {
-        int index = WaitingCardPosition.FindIndex(pos => Vector3.Distance(pos, card.currentMousePosition) < 150f);
+        float x = (card.currentMousePosition.x - 400f) / 2;
+        Vector3 ForCalculate = new Vector3((card.currentMousePosition.x - 400f) / 2, card.currentMousePosition.y, card.currentMousePosition.z);
 
-        if( index >=0)
+        //int index = WaitingCardPosition.FindIndex(pos => Vector3.Distance(pos,new Vector3((card.currentMousePosition.x - 400f) / 100f, card.currentMousePosition.y, card.currentMousePosition.z)) < 2f);
+
+        int index = (int)((card.currentMousePosition.x - 400f) / 200f) -1;
+
+        if ( index >=0)
         {
-           return Waitingcard_ = WaitingCard[index];
+           return Waitingcard_ = WaitingCard[index]; //Waitingcard중에서도 index번째카드를
         }
         else
         {
@@ -195,11 +219,9 @@ public class CardManager : MonoBehaviour
 
     private void SwitchCard(Card card) // card = Waitingcard_
     {
-        //currentCardIndex = CurrCardIndexForSwitch;
+        currentCardIndex = CurrCardIndexForSwitch;
         Transform Canvas2Transform = GameObject.Find("Canvas/Background").transform;
         GameObject cardObject = Instantiate(cardPrefab, cardPosition[CurrCardIndexForSwitch], Quaternion.identity, Canvas2Transform);
-        Vector3 nowLocalScale = cardObject.transform.localScale;
-        //cardObject.transform.localScale = new Vector3(nowLocalScale.x * 0.08f, nowLocalScale.x * 0.08f, 1);
         var newcard = cardObject.GetComponent<Card>();
         newcard.Setup(card.carditem, true); // 필요에 따라 `isUse` 값을 조정
         UsingCard[CurrCardIndexForSwitch] = newcard; // 생성된 카드를 리스트에 추가
