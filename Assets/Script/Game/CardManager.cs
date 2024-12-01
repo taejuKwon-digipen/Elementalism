@@ -38,24 +38,20 @@ public class CardManager : MonoBehaviour
 
     private List<Vector3> cardPosition = new List<Vector3>
     {
-        new Vector3(1746,850,0),
-        new Vector3(1746,540,0),
-        new Vector3(1746,230,0),
+        new Vector3(7,3f,0),
+        new Vector3(7,0,0),
+        new Vector3(7,-3f, 0)
     };
 
     public int CurrCardIndexForSwitch = 0;
 
 
-
-    private List<Vector3> WaitingCardPosition = new List<Vector3>
+    private List<Vector3> WaitingCardPosition = new List<Vector3> // Canvas로 옯기기
     {
-
-
         new Vector3(-0,0,0),
         new Vector3(-4, 0, 0),
         new Vector3(-1, 0, 0),
         new Vector3(2, 0, 0),
-
     };
 
     int countwaitcard = 0;
@@ -200,7 +196,7 @@ public class CardManager : MonoBehaviour
     private void SwitchCard(Card card) // card = Waitingcard_
     {
         //currentCardIndex = CurrCardIndexForSwitch;
-        Transform Canvas2Transform = GameObject.Find("Canvas2").transform;
+        Transform Canvas2Transform = GameObject.Find("Canvas/Background").transform;
         GameObject cardObject = Instantiate(cardPrefab, cardPosition[CurrCardIndexForSwitch], Quaternion.identity, Canvas2Transform);
         Vector3 nowLocalScale = cardObject.transform.localScale;
         //cardObject.transform.localScale = new Vector3(nowLocalScale.x * 0.08f, nowLocalScale.x * 0.08f, 1);
@@ -214,15 +210,15 @@ public class CardManager : MonoBehaviour
 
     void AddCard(bool isUse)
     {
-        if (isUse == true)
+        if (isUse == true) //얘가 오른쪽 3개
         {
-            Transform Canvas2Transform = GameObject.Find("Canvas2").transform;
+            Transform Canvas2Transform = GameObject.Find("Canvas/Background").transform;
             GameObject cardObject = Instantiate(cardPrefab, cardPosition[currenttrueindex], Quaternion.identity, Canvas2Transform);
             var card = cardObject.GetComponent<Card>();
             card.Setup(PopCard(), false); // 필요에 따라 `isUse` 값을 조정
             UsingCard.Add(card); // 생성된 카드를 리스트에 추가
         }
-        else
+        else //얘가 뒤에 나오는 4개
         {
             Transform Canvas2Transform = GameObject.Find("CardSelectionPanel").transform;
             GameObject cardObject = Instantiate(cardPrefab, WaitingCardPosition[countwaitcard], Quaternion.identity, Canvas2Transform);
