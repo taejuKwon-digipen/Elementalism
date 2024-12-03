@@ -11,7 +11,7 @@ public class Card : MonoBehaviour, IPointerDownHandler
     [SerializeField] TMP_Text PowerLeftTMP;
     [SerializeField] TMP_Text PowerRightTMP;
     [SerializeField] TMP_Text CardDescriptionTMP;
-    [SerializeField] TMP_Text IDTMP;
+    //[SerializeField] TMP_Text IDTMP;
     [SerializeField] RawImage rawImage;
 
     public CardItem carditem;
@@ -35,7 +35,7 @@ public class Card : MonoBehaviour, IPointerDownHandler
             PowerLeftTMP.text = carditem.PowerLeft.ToString();
             PowerRightTMP.text = carditem.PowerRight.ToString();
             CardDescriptionTMP.text = carditem.CardDescription;
-            IDTMP.text = carditem.ID.ToString();
+            //IDTMP.text = carditem.ID.ToString();
 
             rawImage = transform.Find("Border/ImageBorder/Image").GetComponent<RawImage>();
             if (rawImage != null)

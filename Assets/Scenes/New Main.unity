@@ -310,7 +310,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentCardIndex: 0
   carditemso: {fileID: 11400000, guid: 015ed88d3a04d5e42a18bfb553c95c97, type: 2}
-  cardPrefab: {fileID: 926199898147725727, guid: 6073ed0992870034581d285835408f02, type: 3}
+  cardPrefab: {fileID: 7253010570474884399, guid: 5632baa7a090d254796d49f67b8d583e, type: 3}
   UsingCard: []
   WaitingCard: []
   Canvas2Transform: {fileID: 0}
