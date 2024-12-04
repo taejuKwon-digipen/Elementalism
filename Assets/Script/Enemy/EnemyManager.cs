@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,7 +17,7 @@ public class EnemyManager : MonoBehaviour
 
     [SerializeField]
     private List<GameObject> onFieldEntities;
-    private readonly int[] numbers = { 1, 1, 1, 1, 1, 1 }; // Number of enemies to spawn at the next wave.
+    private readonly int[] numbers = {4};//{ 1, 2, 2, 3, 3, 1 }; // Number of enemies to spawn at the next wave.
     private readonly List<SpawnAvailable> areSpawnPointsAvailable = new();
 
     public bool isEnemyTurn = false;
@@ -36,7 +37,6 @@ public class EnemyManager : MonoBehaviour
     private void Update()
     {
         SpawnNewEnemies();
-        CleanUpList();
     }
 
     /**
@@ -47,22 +47,16 @@ public class EnemyManager : MonoBehaviour
         if (onFieldEntities.Count != 0)
             return;
         ResetSpawnPoints();
-        int numberToSpawn = numbers[Random.Range(0, numbers.Length)];
+        int numberToSpawn = numbers[UnityEngine.Random.Range(0, numbers.Length)];
         for (int i = 0; i < numberToSpawn; i += 1) {
             var entityToSpawn = spawnableEnemies[0];
             var spawn = GetNewSpawn();
             var newEntity = Instantiate(entityToSpawn, spawn, Quaternion.identity, canvas.transform);
             newEntity.GetComponentInChildren<ImageClickHandler>().Canva = canvas;
+            newEntity.GetComponentInChildren<Enemy>().SetEnemyManager(this);
             onFieldEntities.Add(newEntity);
         }
-    }
-
-    /**
-      * <summary>Clean up all the null GameObject when enemy are dead, Maybe too expensive but there's not a lot of enemy to manage so</summary>
-      */
-    private void CleanUpList()
-    {
-        onFieldEntities.RemoveAll(item => item == null);
+        onFieldEntities.Sort((a, b) => Convert.ToInt32(a.GetComponent<Transform>().position.x.CompareTo(b.GetComponent<Transform>().position.x)));
     }
 
     /**
@@ -75,7 +69,7 @@ public class EnemyManager : MonoBehaviour
             IsAvailable = false
         };
         while (result.IsAvailable == false) {
-            int index = Random.Range(0, areSpawnPointsAvailable.Count);
+            int index = UnityEngine.Random.Range(0, areSpawnPointsAvailable.Count);
             result = areSpawnPointsAvailable[index];
         }
         result.IsAvailable = false;
@@ -111,14 +105,21 @@ public class EnemyManager : MonoBehaviour
 
     private IEnumerator EnemyTurn()
     {
-        foreach (var obj in onFieldEntities)
-        {
-            Enemy entity = obj.GetComponentInChildren<Enemy>();
-            if (entity.HP <= 0)
+        yield return new WaitForSecondsRealtime(1);
+        for (int i = 0; i < onFieldEntities.Count; i += 1) {
+            if (i >= onFieldEntities.Count) {
                 continue;
-            yield return StartCoroutine(entity.Turn());
-            yield return new WaitForSecondsRealtime(1);
+            }
+            Enemy enemy = onFieldEntities[i].GetComponentInChildren<Enemy>();
+            if (enemy.HP <= 0)
+                continue;
+            yield return StartCoroutine(enemy.Turn());
         }
         isEnemyTurn = false;
+    }
+
+    public void DestroyEnemy(GameObject enemy)
+    {
+        onFieldEntities.Remove(enemy);
     }
 }

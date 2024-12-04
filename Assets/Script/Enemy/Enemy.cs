@@ -1,5 +1,5 @@
-using System;
 using System.Collections;
+using System.Numerics;
 using UnityEngine;
 
 public abstract class Enemy : Entity 
@@ -11,6 +11,8 @@ public abstract class Enemy : Entity
     protected FocusManager focusManager;
 
     protected Player player;
+
+    protected EnemyManager em;
 
     protected void Awake() {
         focusManager = GameObject.Find("FocusManager").GetComponent<FocusManager>();
@@ -60,16 +62,41 @@ public abstract class Enemy : Entity
     protected IEnumerator GoForward(float xDistance)
     {
         float elapsedTime = 0.0f;
-        var velocity = Vector3.zero;
+        var velocity = UnityEngine.Vector3.zero;
         var currentPosition = this.transform.parent.position;
-        var finalPosition = new Vector3(currentPosition.x - xDistance, currentPosition.y, currentPosition.z);
+        var finalPosition = new UnityEngine.Vector3(currentPosition.x - xDistance, currentPosition.y, currentPosition.z);
 
-        while (elapsedTime < 1.5f) {
+        while (elapsedTime < 0.7f) {
             elapsedTime += Time.deltaTime;
-            currentPosition = Vector3.SmoothDamp(currentPosition, finalPosition, ref velocity, 0.2f);
+            currentPosition = UnityEngine.Vector3.SmoothDamp(currentPosition, finalPosition, ref velocity, 0.15f);
             this.transform.parent.position = currentPosition;
             yield return null;
         }
         this.transform.parent.position = finalPosition;
+    }
+
+    public void SetEnemyManager(EnemyManager enemyManager)
+    {
+        em = enemyManager;
+    }
+
+    protected void OnDestroy() {
+        em.DestroyEnemy(this.transform.parent.gameObject);
+    }
+
+    protected virtual bool IsObstacleInFront()
+    {
+        UnityEngine.Vector3 startingPoint = this.GetComponent<RectTransform>().position;
+        startingPoint.y += this.GetComponent<RectTransform>().sizeDelta.y / 2;
+        RaycastHit2D[] infos = Physics2D.RaycastAll(startingPoint, UnityEngine.Vector3.left, 100);
+        bool flag = false;
+
+        foreach (var info in infos) {
+            if (info.collider.gameObject != transform.parent.gameObject) {
+                flag = true;
+                Debug.Log("Something in front");
+            }
+        }
+        return flag;
     }
 }

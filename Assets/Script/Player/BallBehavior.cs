@@ -14,12 +14,6 @@ public class BallBehavior : MonoBehaviour
         transform.position = player.transform.position;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void FixedUpdate() {
         //var currentPosition = transform.position;
 
@@ -31,11 +25,11 @@ public class BallBehavior : MonoBehaviour
 
         transform.position = Vector3.MoveTowards(transform.position, enemyPosition, speed * Time.fixedDeltaTime);
 
-        // ¸ñÇ¥¿¡ µµÂøÇß´ÂÁö È®ÀÎ
+        // ï¿½ï¿½Ç¥ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ß´ï¿½ï¿½ï¿½ È®ï¿½ï¿½
         if (Vector3.Distance(transform.position, enemyPosition) <= 0.1f)
         {
-            entity.HP -= damage;
-            //entity.Hit(player, player.baseEntity.Type);
+            //entity.HP -= damage;
+            entity.Hit(player, player.baseEntity.Type);
             Destroy(this.gameObject);
         }
     }
