@@ -947,12 +947,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shapeStorage: {fileID: 1407986775}
-  columns: 10
-  rows: 10
+  columns: 8
+  rows: 8
   squaresGap: 2
   block: {fileID: 7400204757253662088, guid: 29508bbd22652274c99f4e3d891b685b, type: 3}
-  startPosition: {x: -320, y: 320}
-  squareScale: 0.6
+  startPosition: {x: -280, y: 320}
+  squareScale: 0.7
   everySquareOffset: 0.5
   turnEndButton: 0
 --- !u!224 &894884651 stripped
@@ -1503,8 +1503,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 619.29, y: -490}
-  m_SizeDelta: {x: 200, y: 100}
+  m_AnchoredPosition: {x: -544.99, y: -470.04}
+  m_SizeDelta: {x: 336.03, y: 116.08}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1413097659
 MonoBehaviour:
@@ -1620,7 +1620,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 3fe489e000de6274487be7dad171638a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 93b1ec2118f7d454ebf5827f60dc9cb6, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1708,7 +1708,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ff8bda2d00180cf4a8d4841dc5d94d8c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 70c9d8a6d725da5429fd833eda97b96d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2146,7 +2146,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8052122634427833858, guid: 78527069f3b9eb04c8ace1e29a9ae4d6, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -375
+      value: -208.75
       objectReference: {fileID: 0}
     - target: {fileID: 8052122634427833858, guid: 78527069f3b9eb04c8ace1e29a9ae4d6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

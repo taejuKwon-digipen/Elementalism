@@ -38,6 +38,7 @@ public class GridChecker : MonoBehaviour
     {
         int gridRows = grid.rows;
         int gridColumns = grid.columns;
+        int addDamage = 0;
 
         for (int i = 0; i < 3; i++)
         {
@@ -70,13 +71,16 @@ public class GridChecker : MonoBehaviour
             }
             //Debug.Log("count : " + totalDamage);
 
+            if (cardID == 9)
+                addDamage = totalDamage;
+
             totalDamage *= cardDamage;
 
             //Debug.Log("total damage: " + totalDamage);
 
             // 공격 실행
             if (totalDamage != 0)
-                player.AttackWithDamage(totalDamage);
+                player.AttackWithDamage(totalDamage + addDamage);
 
             // 다음 카드로 넘어가기 전에 약간의 딜레이를 줍니다.
             yield return new WaitForSeconds(0.5f);
@@ -176,8 +180,8 @@ public class GridChecker : MonoBehaviour
         {
             for (int col = 0; col < cardShape.columns; col++)
             {
-                if (cardShape.board[row].colum[col] != ElementType.None) { 
-                    if (cardID == 15 || createdElementType != ElementType.None)
+                if (cardID == 15 || cardShape.board[row].colum[col] != ElementType.None) { 
+                    if (createdElementType != ElementType.None)
                     {
                         grid.SetElementTypeAt(startRow + row, startCol + col, createdElementType);
                     }

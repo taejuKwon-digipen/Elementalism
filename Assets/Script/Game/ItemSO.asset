@@ -119,8 +119,8 @@ MonoBehaviour:
     CreatedElementType: 0
   - CardName: Acceleration
     ID: 9
-    PowerLeft: 2
-    PowerRight: 3
+    PowerLeft: 0
+    PowerRight: 0
     CardDescription: Next attack Damage increase
     UseMagic: 0
     Percent: 7
