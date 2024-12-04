@@ -279,7 +279,7 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
         // 화면 좌표를 캔버스의 로컬 좌표로 변환하여 위치 설정
         RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvas.transform as RectTransform,
             eventData.position, Camera.main, out pos);
-        _transform.localPosition = pos + offset;
+        _transform.localPosition = pos;// + offset;
     }
 
     // 드래그 종료 시 호출되는 메서드

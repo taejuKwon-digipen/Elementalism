@@ -32,6 +32,17 @@ public class Grid : MonoBehaviour
         GameEvents.CheckIfShapeCanBePlaced -= CheckIfShapeCanBePlaced;
     }
 
+    // 특정 행과 열에 해당하는 블록을 반환하는 메서드
+    public GameObject GetBlockAt(int row, int column)
+    {
+        int index = row * columns + column; // 1차원 리스트 인덱스 계산
+        if (index >= 0 && index < _blocks.Count)
+        {
+            return _blocks[index]; // 인덱스에 해당하는 블록 반환
+        }
+        return null; // 유효하지 않은 위치인 경우 null 반환
+    }
+
     public void OnTurnEndButton()
     {
         turnEndButton = true;
