@@ -808,10 +808,10 @@ RectTransform:
   - {fileID: 1407986774}
   - {fileID: 1775695597}
   - {fileID: 1413097658}
-  - {fileID: 1284981624}
   - {fileID: 1156529407}
   - {fileID: 348185676}
   - {fileID: 1318659207}
+  - {fileID: 1284981624}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}

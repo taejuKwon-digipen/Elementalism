@@ -197,10 +197,10 @@ public class CardManager : MonoBehaviour
         }
         else
         {
-            WaitingCard.Remove(card);
-            Destroy(card.gameObject);
             ToBeSwitchCard(card); //일단 보류
             SwitchCard(Waitingcard_);
+            //WaitingCard.Remove(card);
+            Destroy(card.gameObject);
         }
     }
 
