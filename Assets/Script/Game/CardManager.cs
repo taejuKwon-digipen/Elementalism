@@ -211,7 +211,7 @@ public class CardManager : MonoBehaviour
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, Mathf.Abs(Camera.main.transform.position.z)));
         Debug.Log("WC- WorldPosition :" + worldPosition);
 
-        int index = WaitingCardPosition.FindIndex(pos => Vector3.Distance(pos, worldPosition) < 3f);
+        int index = WaitingCardPosition.FindIndex(pos => Vector3.Distance(pos, worldPosition) < 1.5f);
 
         if (index >= 0)
         {
