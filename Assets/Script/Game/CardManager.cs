@@ -1,6 +1,7 @@
 ﻿using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -45,6 +46,11 @@ public class CardManager : MonoBehaviour
 
     public int CurrCardIndexForSwitch = 0;
 
+    public void XButtonClicked()
+    {
+        cardSelectionPanel.SetActive(false);
+        PanelBackground.SetActive(false);
+    }
 
     private List<Vector3> WaitingCardPosition = new List<Vector3> // Canvas로 옯기기
     {
