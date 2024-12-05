@@ -48,10 +48,10 @@ public class CardManager : MonoBehaviour
 
     private List<Vector3> WaitingCardPosition = new List<Vector3> // Canvas로 옯기기
     {
-        new Vector3(-3,0,0),
-        new Vector3(-1, 0, 0),
-        new Vector3(1, 0, 0),
-        new Vector3(3, 0, 0),
+        new Vector3(-6,0,0),
+        new Vector3(-2, 0, 0),
+        new Vector3(2, 0, 0),
+        new Vector3(6, 0, 0),
     };
 
     int countwaitcard = 0;
@@ -153,7 +153,7 @@ public class CardManager : MonoBehaviour
 
     public void Update()
     {
-       
+     
     }
 
     private int CalculateUsingCard(Card card)
@@ -199,7 +199,7 @@ public class CardManager : MonoBehaviour
 
     private Card ToBeSwitchCard(Card card)
     {
-        float x = (card.currentMousePosition.x - 400f) / 2;
+        /*float x = (card.currentMousePosition.x - 400f) / 2;
         Vector3 ForCalculate = new Vector3((card.currentMousePosition.x - 400f) / 2, card.currentMousePosition.y, card.currentMousePosition.z);
 
         //int index = WaitingCardPosition.FindIndex(pos => Vector3.Distance(pos,new Vector3((card.currentMousePosition.x - 400f) / 100f, card.currentMousePosition.y, card.currentMousePosition.z)) < 2f);
@@ -214,7 +214,27 @@ public class CardManager : MonoBehaviour
         {
             Debug.Log("index error");
             return null;
+        }*/
+
+        Vector3 mousePosition = card.currentMousePosition; // 화면 좌표
+        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, Mathf.Abs(Camera.main.transform.position.z)));
+        Debug.Log("WC- WorldPosition :" + worldPosition);
+
+        int index = WaitingCardPosition.FindIndex(pos => Vector3.Distance(pos, worldPosition) < 3f);
+
+        if (index >= 0)
+        {
+            Debug.Log("Waitingcard Index: " + index);
+            Waitingcard_ = WaitingCard[index];
         }
+        else
+        {
+            Debug.Log("웨이팅카드 ToBeSwitchCard에서 에러");
+            return null;
+        }
+
+        return null;
+      
     }
 
     private void SwitchCard(Card card) // card = Waitingcard_
@@ -245,37 +265,11 @@ public class CardManager : MonoBehaviour
             Transform Canvas2Transform = GameObject.Find("CardSelectionPanel").transform;
             GameObject cardObject = Instantiate(cardPrefab, WaitingCardPosition[countwaitcard], Quaternion.identity, Canvas2Transform);
             Vector3 nowLocalScale = cardObject.transform.localScale;
-            cardObject.transform.localScale = new Vector3(nowLocalScale.x * 0.009f, nowLocalScale.x * 0.009f, 1);
+            cardObject.transform.localScale = new Vector3(nowLocalScale.x * 0.014f, nowLocalScale.x * 0.014f, 1);
             var card = cardObject.GetComponent<Card>();
             card.Setup(PopCard(), true); // 필요에 따라 `isUse` 값을 조정
             WaitingCard.Add(card); // 생성된 카드를 리스트에 추가
         }
        
     }
-
-
-    /*private void DisplayCardInArc()
-    {
-        int cardCount = cards.Count;
-        float angleStep = 120f / (cardCount - 1);
-        float startAngle = -90f;
-
-        for(int i = 0; i < cardCount; i++)
-        {
-            float angle = startAngle + i * angleStep;
-            float radian = angle * Mathf.Deg2Rad; // 각도를 라디안으로 변환
-
-            // 삼각함수를 이용해 x, y 좌표 계산
-            float x = centerPosition.position.x + radius * Mathf.Cos(radian);
-            float y = centerPosition.position.y + radius * Mathf.Sin(radian);
-
-            Vector3 targetPosition = new Vector3(x, y, centerPosition.position.z);
-
-            // 카드 위치와 회전 설정
-            cards[i].transform.position = targetPosition;
-            cards[i].transform.rotation = Quaternion.Euler(0, 0, angle); // 카드가 반원을 따라 회전하도록 설정
-            cards[i].SetActive(true); // 카드 활성화
-        }
-
-    }*/
 }
