@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Numerics;
 using UnityEngine;
 
 public abstract class Enemy : Entity 
@@ -13,9 +12,11 @@ public abstract class Enemy : Entity
     protected Player player;
 
     protected EnemyManager em;
+    protected Animator animator;
 
     protected void Awake() {
         focusManager = GameObject.Find("FocusManager").GetComponent<FocusManager>();
+        animator = this.GetComponent<Animator>();
     }
 
     protected override void Start() {

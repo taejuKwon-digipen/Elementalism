@@ -57,6 +57,7 @@ public class EnemyManager : MonoBehaviour
             onFieldEntities.Add(newEntity);
         }
         onFieldEntities.Sort((a, b) => Convert.ToInt32(a.GetComponent<Transform>().position.x.CompareTo(b.GetComponent<Transform>().position.x)));
+        onFieldEntities[0].GetComponentInChildren<Enemy>().NotifyClickToLockManager();
     }
 
     /**

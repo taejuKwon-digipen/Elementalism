@@ -267,7 +267,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvas: {fileID: 679208801}
   spawnableEnemies:
-  - {fileID: 198335889538635230, guid: 41f66a8a6e0ee6f40b83aa4c66b68851, type: 3}
+  - {fileID: 4252167804875577219, guid: 1fddf91cca188ff4ab4d597211122905, type: 3}
   spawnPoints:
   - {fileID: 1351839050}
   - {fileID: 652656023}
@@ -2216,11 +2216,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2810203057477724362, guid: 1ded03112ab2ac44296a46d7d785e107, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -600
+      value: -745
       objectReference: {fileID: 0}
     - target: {fileID: 2810203057477724362, guid: 1ded03112ab2ac44296a46d7d785e107, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 5
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 2810203057477724362, guid: 1ded03112ab2ac44296a46d7d785e107, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2237,6 +2237,10 @@ PrefabInstance:
     - target: {fileID: 2810203057477724362, guid: 1ded03112ab2ac44296a46d7d785e107, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4022652852466214142, guid: 1ded03112ab2ac44296a46d7d785e107, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 2.4300003
       objectReference: {fileID: 0}
     - target: {fileID: 4419247661943907349, guid: 1ded03112ab2ac44296a46d7d785e107, type: 3}
       propertyPath: m_Name
@@ -2261,6 +2265,10 @@ PrefabInstance:
     - target: {fileID: 6791115653192081878, guid: 1ded03112ab2ac44296a46d7d785e107, type: 3}
       propertyPath: m_SizeDelta.y
       value: -10.558998
+      objectReference: {fileID: 0}
+    - target: {fileID: 6791115653192081878, guid: 1ded03112ab2ac44296a46d7d785e107, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.00002670288
       objectReference: {fileID: 0}
     - target: {fileID: 6791115653192081878, guid: 1ded03112ab2ac44296a46d7d785e107, type: 3}
       propertyPath: m_AnchoredPosition.y
