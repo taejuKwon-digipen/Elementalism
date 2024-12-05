@@ -134,11 +134,17 @@ public class CardManager : MonoBehaviour
 
     private void GenerateSelectionCards()
     {
-        // 이전에 생성된 카드가 있다면 모두 삭제
+        if(WaitingCard.Count > 0)
+        {
+            return;
+        }
+
+        //선택가능카드목록생성
         foreach (Transform child in selectionPanelContent)
         {
             Destroy(child.gameObject);
         }
+
 
         for (int i = 0; i < 4; i++)
         {
@@ -191,30 +197,15 @@ public class CardManager : MonoBehaviour
         }
         else
         {
-            ToBeSwitchCard(card);
-            SwitchCard(Waitingcard_); //여기서 에러뜸
-
+            WaitingCard.Remove(card);
+            Destroy(card.gameObject);
+            ToBeSwitchCard(card); //일단 보류
+            SwitchCard(Waitingcard_);
         }
     }
 
     private Card ToBeSwitchCard(Card card)
     {
-        /*float x = (card.currentMousePosition.x - 400f) / 2;
-        Vector3 ForCalculate = new Vector3((card.currentMousePosition.x - 400f) / 2, card.currentMousePosition.y, card.currentMousePosition.z);
-
-        //int index = WaitingCardPosition.FindIndex(pos => Vector3.Distance(pos,new Vector3((card.currentMousePosition.x - 400f) / 100f, card.currentMousePosition.y, card.currentMousePosition.z)) < 2f);
-
-        int index = (int)((card.currentMousePosition.x - 400f) / 200f) -1;
-
-        if ( index >=0)
-        {
-           return Waitingcard_ = WaitingCard[index]; //Waitingcard중에서도 index번째카드를
-        }
-        else
-        {
-            Debug.Log("index error");
-            return null;
-        }*/
 
         Vector3 mousePosition = card.currentMousePosition; // 화면 좌표
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, Mathf.Abs(Camera.main.transform.position.z)));
@@ -245,7 +236,7 @@ public class CardManager : MonoBehaviour
         var newcard = cardObject.GetComponent<Card>();
         newcard.Setup(card.carditem, true); // 필요에 따라 `isUse` 값을 조정
         UsingCard[CurrCardIndexForSwitch] = newcard; // 생성된 카드를 리스트에 추가
-        WaitingCard.Clear();
+        //WaitingCard.Clear();
         cardSelectionPanel.SetActive(false);
         PanelBackground.SetActive(false);
     }
@@ -262,6 +253,11 @@ public class CardManager : MonoBehaviour
         }
         else //얘가 뒤에 나오는 4개
         {
+            if(WaitingCard.Count >=4)
+            {
+                return;
+            }
+
             Transform Canvas2Transform = GameObject.Find("CardSelectionPanel").transform;
             GameObject cardObject = Instantiate(cardPrefab, WaitingCardPosition[countwaitcard], Quaternion.identity, Canvas2Transform);
             Vector3 nowLocalScale = cardObject.transform.localScale;
