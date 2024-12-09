@@ -4,6 +4,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Grid : MonoBehaviour
@@ -20,6 +21,9 @@ public class Grid : MonoBehaviour
     public bool turnEndButton = false;
     private Vector2 _offset = new Vector2(0, 0);  // 블록 간의 위치 오프셋 계산용 변수
     private List<GameObject> _blocks = new List<GameObject>(); // 생성된 원소 블록들의 리스트
+
+    // OraImage 활성화를 위한 추가 필드
+    private List<int> oraIndices = new List<int>();
 
     // 게임 이벤트에 메서드를 등록합니다.
     private void OnEnable()
@@ -79,6 +83,27 @@ public class Grid : MonoBehaviour
     {
         SpawnBlocks();        // 원소 블록들을 생성합니다.
         SetBlocksPositions(); // 생성된 블록들의 위치를 설정합니다.
+        InitializeOra(); // Ora 초기화
+    }
+
+    // 랜덤 Ora 초기화
+    private void InitializeOra()
+    {
+        oraIndices = GetRandomIndices(2); // 랜덤한 두 위치를 선택
+        foreach (var index in oraIndices)
+        {
+            var block = _blocks[index].GetComponent<Block>();
+            if (block != null)
+            {
+                block.ActivateOraImage(); // Ora 활성화
+            }
+        }
+    }
+
+    // 랜덤한 블록 인덱스 리스트 반환
+    private List<int> GetRandomIndices(int count)
+    {
+        return Enumerable.Range(0, _blocks.Count).OrderBy(x => Random.value).Take(count).ToList();
     }
 
     // 원소 블록들을 생성하는 메서드

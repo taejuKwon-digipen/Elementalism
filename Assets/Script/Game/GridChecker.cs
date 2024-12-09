@@ -33,6 +33,55 @@ public class GridChecker : MonoBehaviour
         }
     }
 
+    // 버튼 클릭 시 OraImage를 재설정하는 메서드
+    private void ReplaceOraImages()
+    {
+        // 기존 Ora 비활성화
+        int totalBlocks = grid.rows * grid.columns;
+        for (int i = 0; i < totalBlocks; i++)
+        {
+            GameObject block = grid.GetBlockAt(i / grid.columns, i % grid.columns);
+            if (block != null)
+            {
+                Block blockScript = block.GetComponent<Block>();
+                if (blockScript != null)
+                {
+                    blockScript.DisactivateOraImage(); // 기존 Ora 비활성화
+                }
+            }
+        }
+
+        // 새로운 Ora 위치를 랜덤으로 설정
+        List<int> randomIndices = GetRandomIndices(totalBlocks, 2); // 랜덤한 2개의 인덱스 가져오기
+        foreach (int index in randomIndices)
+        {
+            GameObject block = grid.GetBlockAt(index / grid.columns, index % grid.columns);
+            if (block != null)
+            {
+                Block blockScript = block.GetComponent<Block>();
+                if (blockScript != null)
+                {
+                    blockScript.ActivateOraImage(); // 새로운 Ora 활성화
+                }
+            }
+        }
+    }
+
+    // 랜덤한 블록 인덱스를 생성하는 헬퍼 메서드
+    private List<int> GetRandomIndices(int totalBlocks, int count)
+    {
+        List<int> indices = new List<int>();
+        while (indices.Count < count)
+        {
+            int randomIndex = Random.Range(0, totalBlocks);
+            if (!indices.Contains(randomIndex)) // 중복 방지
+            {
+                indices.Add(randomIndex);
+            }
+        }
+        return indices;
+    }
+
     // 카드들을 순차적으로 검사하는 코루틴
     private IEnumerator ProcessCardsSequentially()
     {
@@ -43,10 +92,13 @@ public class GridChecker : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             int totalDamage = 0;
+            int blockCount = 0;
+            int oraBlockCount = 0;
             ShapeData cardShape = CardManager.Inst.UsingCard[i].carditem.cardShape;
             int cardRows = CardManager.Inst.UsingCard[i].carditem.cardShape.rows;
             int cardColumns = CardManager.Inst.UsingCard[i].carditem.cardShape.columns;
             int cardDamage = CardManager.Inst.UsingCard[i].carditem.PowerLeft;
+            int cardCritDamage = CardManager.Inst.UsingCard[i].carditem.PowerRight;
             int cardID = CardManager.Inst.UsingCard[i].carditem.ID;
             ElementType createdElementType = CardManager.Inst.UsingCard[i].carditem.CreatedElementType;
 
@@ -65,16 +117,26 @@ public class GridChecker : MonoBehaviour
                         ChangeBlocksAfterMatch(grid, cardShape, row, col, createdElementType, cardID);
 
                         // 카드 블럭 수 더하기
-                        totalDamage += CountBlocksInShape(cardShape);
+                        blockCount += CountBlocksInShape(cardShape);
+
+                        oraBlockCount = CountOraBlocks(grid, cardShape, row, col);
+
                     }
                 }
             }
             //Debug.Log("count : " + totalDamage);
 
             if (cardID == 9)
-                addDamage = totalDamage;
+                addDamage = blockCount;
 
-            totalDamage *= cardDamage;
+            if(oraBlockCount > 0)
+            {
+                totalDamage = cardDamage * blockCount;
+            }
+            else
+            {
+                totalDamage = cardCritDamage * blockCount;
+            }
 
             //Debug.Log("total damage: " + totalDamage);
 
@@ -86,9 +148,33 @@ public class GridChecker : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
         }
         DisableAllActiveImages();
+        ReplaceOraImages();
     }
 
-    private IEnumerator HighlightMatchedBlocks(Grid grid, ShapeData cardShape, int startRow, int startCol)
+    // Ora 활성화된 블록 수 계산
+    private int CountOraBlocks(Grid grid, ShapeData shape, int startRow, int startCol)
+    {
+        int oraCount = 0;
+
+        for (int row = 0; row < shape.rows; row++)
+        {
+            for (int col = 0; col < shape.columns; col++)
+            {
+                if (shape.board[row].colum[col] != ElementType.None)
+                {
+                    var block = grid.GetBlockAt(startRow + row, startCol + col).GetComponent<Block>();
+                    if (block != null && block.IsOraActive())
+                    {
+                        oraCount++;
+                    }
+                }
+            }
+        }
+
+        return oraCount;
+    }
+
+private IEnumerator HighlightMatchedBlocks(Grid grid, ShapeData cardShape, int startRow, int startCol)
     {
         List<GameObject> matchedBlocks = new List<GameObject>();
 

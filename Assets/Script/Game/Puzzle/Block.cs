@@ -21,6 +21,8 @@ public class Block : MonoBehaviour
     public Image hooverImage;    // 마우스 오버 시 나타나는 이미지
     public Image activeImage;    // 활성화된 상태의 이미지
     public Image nomalImage;     // 기본 상태의 이미지
+    public Image oraImage;     // 오라 상태의 이미지
+
 
     // 각 원소에 해당하는 스프라이트들
     public Sprite fireSprite;    // 불 스프라이트
@@ -83,6 +85,21 @@ public class Block : MonoBehaviour
     public void DisactivateActiveImage()
     {
         activeImage.gameObject.SetActive(false);
+    }
+
+    public void ActivateOraImage()
+    {
+        oraImage.gameObject.SetActive(true);
+    }
+    public void DisactivateOraImage()
+    {
+        oraImage.gameObject.SetActive(false);
+    }
+
+    // Ora 활성 상태 확인
+    public bool IsOraActive()
+    {
+        return oraImage != null && oraImage.gameObject.activeSelf;
     }
 
     public void SetElementType(ElementType newType)
