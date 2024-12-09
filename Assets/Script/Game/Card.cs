@@ -14,10 +14,12 @@ public class Card : MonoBehaviour, IPointerDownHandler
     //[SerializeField] TMP_Text IDTMP;
     [SerializeField] RawImage rawImage;
 
+    
+
     public CardItem carditem;
     public bool isFront = true;
 
-    private bool IsUsingCard = false;
+    public bool IsUsingCard = false;
 
     //public bool isInSelectionPanel = false; // 이 카드가 선택 패널 안에 있는지 여부
 
