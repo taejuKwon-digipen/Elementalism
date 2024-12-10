@@ -47,8 +47,7 @@ public class CardManager : MonoBehaviour
     //수정중 - 버튼 클릭 시 패널 닫히게
     public void XButtonClicked()
     {
-        cardSelectionPanel.SetActive(false);
-        PanelBackground.SetActive(false);
+       OpenCardSelectionPanel(false);
     }
 
     //왼쪽 대기 카드 4개 위치
@@ -151,8 +150,8 @@ public class CardManager : MonoBehaviour
     //패널이 열리면 카드 생성 (Waiting Card 4개)
     private void GenerateSelectionCards()
     {
-        /*//Waiting Card가 남아있으면
-        if(WaitingCard.Count <= 1)
+        //Waiting Card가 1개 이하 있으면
+        /*if (WaitingCard.gameobject.count <= 1)
         {
             return;
         }*/
@@ -170,13 +169,23 @@ public class CardManager : MonoBehaviour
 
     public void TurnEndButton()
     {
+        Debug.Log("TrunEndButton");
+
+        for(int i = 0; i<4; i++)
+        {
+            Destroy(WaitingCard[i].gameObject);
+        }
+
         for(int i = 0; i < 3; i++)
         {
+            Destroy(UsingCard[i].gameObject);
             if(positionOccupied[i] == true)
             {
                 positionOccupied[i] = false;
             }
         }
+        WaitingCard.Clear();
+        UsingCard.Clear();
         AddUsingCard();
     }
 
@@ -210,7 +219,7 @@ public class CardManager : MonoBehaviour
         //if card == using card[0]---이면 GenerateSelectionCards() panel true
         //아니고 waitingcard면 switch
 
-        if(card == UsingCard[0] || card == UsingCard[1] || card == UsingCard[2] )
+         if(card == UsingCard[0] || card == UsingCard[1] || card == UsingCard[2] )
         {
             CalculateUsingCard(card);
             OpenCardSelectionPanel(true);
@@ -263,12 +272,8 @@ public class CardManager : MonoBehaviour
     }
 
     //카드 오브젝트 추가
-    void AddCard(bool isUse/*bool onAttackButton*/)
+    void AddCard(bool isUse)
     {
-        /*if(onAttackButton == true)
-        { 
-        }*/
-
         if (isUse == true) //Using card
         {
             Transform Canvas2Transform = GameObject.Find("Canvas/Background").transform;
