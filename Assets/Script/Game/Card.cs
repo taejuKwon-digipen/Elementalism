@@ -4,6 +4,7 @@ using DG.Tweening; // 애니메이션 처리를 위한 DOTween 라이브러리
 using TMPro; // TextMeshPro를 사용하기 위한 네임스페이스
 using System.Collections;
 using UnityEngine.UI; // UI 관련 기능을 위한 네임스페이스
+using System.Collections.Generic;
 
 public class Card : MonoBehaviour, IPointerDownHandler // 마우스 클릭 이벤트 처리 인터페이스 구현
 {
@@ -63,7 +64,7 @@ public class Card : MonoBehaviour, IPointerDownHandler // 마우스 클릭 이�
     // ShapeData를 기반으로 원소 스프라이트로 카드 모양 생성
     private void GenerateShapeFromData(ShapeData shapeData)
     {
-        // 카드의 모양 영역을 초기화 (이미 생성된 블록이 있다면 삭제)
+        // 카드의 모양 영역 초기화 (이미 생성된 블록이 있다면 삭제)
         foreach (Transform child in transform.Find("Border/ImageBorder"))
         {
             Destroy(child.gameObject);
@@ -72,6 +73,8 @@ public class Card : MonoBehaviour, IPointerDownHandler // 마우스 클릭 이�
         // ShapeData를 순회하며 원소에 따라 블록 생성
         var parentTransform = transform.Find("Border/ImageBorder"); // 부모 오브젝트
         var blockPrefab = Resources.Load<GameObject>("BlockPrefab"); // 블록 프리팹 로드
+
+        List<Vector2> blockPositions = new List<Vector2>(); // 블록 위치를 저장할 리스트
 
         for (int row = 0; row < shapeData.rows; row++)
         {
@@ -83,7 +86,10 @@ public class Card : MonoBehaviour, IPointerDownHandler // 마우스 클릭 이�
                     // 블록 인스턴스 생성
                     var block = Instantiate(blockPrefab, parentTransform);
                     var rectTransform = block.GetComponent<RectTransform>();
-                    rectTransform.anchoredPosition = new Vector2(column * 50, -row * 50); // 블록 위치 조정
+                    Vector2 position = new Vector2(column * 45, -row * 45); // 블록 위치 계산
+                    rectTransform.anchoredPosition = position; // 블록 위치 설정
+                    blockPositions.Add(position); // 블록 위치 리스트에 추가
+
                     var image = block.GetComponent<Image>();
 
                     // 원소 타입에 따라 스프라이트 설정
@@ -103,6 +109,30 @@ public class Card : MonoBehaviour, IPointerDownHandler // 마우스 클릭 이�
                             break;
                     }
                 }
+            }
+        }
+
+        // 배열 중심 계산
+        if (blockPositions.Count > 0)
+        {
+            float minX = float.MaxValue, maxX = float.MinValue;
+            float minY = float.MaxValue, maxY = float.MinValue;
+
+            foreach (var pos in blockPositions)
+            {
+                if (pos.x < minX) minX = pos.x;
+                if (pos.x > maxX) maxX = pos.x;
+                if (pos.y < minY) minY = pos.y;
+                if (pos.y > maxY) maxY = pos.y;
+            }
+
+            Vector2 center = new Vector2((minX + maxX) / 2, (minY + maxY) / 2);
+
+            // 블록들의 중심이 (0,0)이 되도록 이동
+            foreach (Transform block in parentTransform)
+            {
+                var rectTransform = block.GetComponent<RectTransform>();
+                rectTransform.anchoredPosition -= center; // 중심점 만큼 이동
             }
         }
     }
