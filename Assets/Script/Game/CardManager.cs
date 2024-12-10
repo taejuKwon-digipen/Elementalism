@@ -22,7 +22,7 @@ public class CardManager : MonoBehaviour
     public Transform Canvas2Transform; // UI 캔버스의 트랜스폼
 
     // 카드 위치 상태 리스트 (false = 비어있음, true = 사용 중)
-    private List<bool> positionOccupied = new List<bool> { false, false, false }; //true = empty, false = ocuppied
+    private List<bool> positionOccupied;
 
     List<CardItem> ItemBuffer; // 카드 데이터를 저장하는 버퍼
 
@@ -35,6 +35,7 @@ public class CardManager : MonoBehaviour
     [SerializeField] private Transform selectionPanelContent; // 선택 패널의 콘텐츠 영역
 
     private Card clickedCard; // 클릭된 카드 참조
+    int positionOCIndex = 0;
 
     //오른쪽 카드 3개 위치
     private List<Vector3> cardPosition = new List<Vector3>
@@ -108,27 +109,24 @@ public class CardManager : MonoBehaviour
         cardSelectionPanel.SetActive(false); // 카드 선택 패널 비활성화
         PanelBackground.SetActive(false); // 배경 비활성화
 
-        AddUsingCard(); // 사용 카드 3개 추가
-
+        positionOccupied = new List<bool> { false, false, false }; //false = empty, true = ocuppied
+        AddEmptyUsingCard(); // 사용 카드 3개 추가
+   
     }
-    // 오른쪽 사용 카드 3개 추가 메서드
-    public void AddUsingCard()
+
+
+    // 오른쪽 사용 빈 카드 3개 추가 메서드
+    public void AddEmptyUsingCard()
     {
         //Using Card 선택시 positionOccupied 가 false이면 비어있으니까 카드 넣기
-        for (int i = 0; i < 3; i++)
+        for (currenttrueindex = 0; currenttrueindex < 3; currenttrueindex++)
         {
-            for (int j = 0; j < 3; j++)
-            {
-                if (positionOccupied[j] == false) // 비어있는 위치에 추가
-                {
-                    currenttrueindex = j;
-                    break;
-                }
-            }
             print(PopCard().CardName + " - Using Card");// 카드 이름 출력
             AddCard(true);// 사용 카드 추가
-            positionOccupied[currenttrueindex] = true;  // 위치 점유 상태 업데이트
-        } 
+            positionOccupied[currenttrueindex] = false;  // 위치 점유 상태 업데이트
+        }
+
+        currenttrueindex = 0;
     }
 
 
@@ -137,7 +135,6 @@ public class CardManager : MonoBehaviour
     {
         if (open == true)
         {
-            
             cardSelectionPanel.SetActive(true); // 패널 활성화
             PanelBackground.SetActive(true); // 배경 활성화
             GenerateSelectionCards();// 대기 카드 생성
@@ -153,15 +150,9 @@ public class CardManager : MonoBehaviour
     //패널이 열리면 카드 생성 (Waiting Card 4개)
     private void GenerateSelectionCards()
     {
-        //Waiting Card가 1개 이하 있으면
-        /*if (WaitingCard.gameobject.count <= 1)
-        {
-            return;
-        }*/
 
         for (int i = 0; i < 4; i++)
         {
-            //print(PopCard().CardName + " - Waiting Card");
             countwaitcard = i; // 현재 대기 카드 인덱스
             AddCard(false); // 대기 카드로 추가
 
@@ -177,6 +168,10 @@ public class CardManager : MonoBehaviour
 
         for(int i = 0; i<4; i++)
         {
+            if (WaitingCard[i].gameObject.activeSelf == false)
+            {
+                WaitingCard[i].gameObject.SetActive(true);
+            }
             Destroy(WaitingCard[i].gameObject);
         }
 
@@ -190,7 +185,7 @@ public class CardManager : MonoBehaviour
         }
         WaitingCard.Clear();
         UsingCard.Clear();
-        AddUsingCard();
+        AddEmptyUsingCard();
     }
 
     public void Update()
@@ -226,8 +221,14 @@ public class CardManager : MonoBehaviour
          if(card == UsingCard[0] || card == UsingCard[1] || card == UsingCard[2] )
         {
             CalculateUsingCard(card);
+            positionOCIndex = CurrCardIndexForSwitch;
+            if (positionOccupied[positionOCIndex] == true)
+            {
+                ReChoose(positionOCIndex);
+            }
             OpenCardSelectionPanel(true);
-            card.gameObject.SetActive(false);
+            Destroy(card.gameObject);
+            //card.gameObject.SetActive(false);
         }
         else
         {
@@ -235,6 +236,18 @@ public class CardManager : MonoBehaviour
             SwitchCard(Waitingcard_);
             card.gameObject.SetActive(false);
             Debug.Log("셋액티브 폴스로 됨");
+        }
+    }
+
+    private void ReChoose(int PositionOCIndex)
+    {
+        for(int i = 0; i < 3; i++)
+        {
+            if(WaitingCard[i].gameObject.activeSelf == false && WaitingCard[i] == UsingCard[PositionOCIndex])
+            {
+                WaitingCard[i].gameObject.SetActive(true);
+                Destroy(UsingCard[PositionOCIndex].gameObject);
+            }
         }
     }
 
@@ -271,6 +284,7 @@ public class CardManager : MonoBehaviour
         var newcard = cardObject.GetComponent<Card>();
         newcard.Setup(card.carditem, true); // 필요에 따라 `isUse` 값을 조정
         UsingCard[CurrCardIndexForSwitch] = newcard; // 생성된 카드를 리스트에 추가
+        positionOccupied[CurrCardIndexForSwitch] = true;
         //WaitingCard.Clear(); 
         OpenCardSelectionPanel(false);
     }
