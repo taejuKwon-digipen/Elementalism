@@ -254,17 +254,6 @@ public class CardManager : MonoBehaviour
         }
     }
 
-    private void ReChoose(int RechooseIndex)
-    {
-        /*for(int i = 0; i < 3; i++)
-        {
-            if(WaitingCard[i].gameObject.activeSelf == false && WaitingCard[i] == UsingCard[PositionOCIndex])
-            {
-                WaitingCard[i].gameObject.SetActive(true);
-                Destroy(UsingCard[PositionOCIndex].gameObject);
-            }
-        }*/
-    }
 
     //카드 바꾸기 위해서 WaitingCard포지션에서 마우스포인터와 가까운 카드를 찾아서 Card Waitingcard_를 넘겨줌 
     private Card ToBeSwitchCard(Card card)
@@ -322,7 +311,7 @@ public class CardManager : MonoBehaviour
         }
         else
         {
-
+            Destroy(UsingCard[CurrCardIndexForSwitch].gameObject);
             currentCardIndex = CurrCardIndexForSwitch;
             Transform Canvas2Transform = GameObject.Find("Canvas/Background").transform;
             GameObject cardObject = Instantiate(cardPrefab, cardPosition[CurrCardIndexForSwitch], Quaternion.identity, Canvas2Transform);
