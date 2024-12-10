@@ -35,7 +35,7 @@ public class CardManager : MonoBehaviour
     [SerializeField] private Transform selectionPanelContent; // 선택 패널의 콘텐츠 영역
 
     private Card clickedCard; // 클릭된 카드 참조
-    int positionOCIndex = 0;
+    int RechooseIndex = 0;
 
     //오른쪽 카드 3개 위치
     private List<Vector3> cardPosition = new List<Vector3>
@@ -240,14 +240,10 @@ public class CardManager : MonoBehaviour
          if(card == UsingCard[0] || card == UsingCard[1] || card == UsingCard[2] )
         {
             CalculateUsingCard(card);
-            positionOCIndex = CurrCardIndexForSwitch;
-            if (positionOccupied[positionOCIndex] == true)
-            {
-                ReChoose(positionOCIndex);
-            }
+            RechooseIndex = CurrCardIndexForSwitch;
             OpenCardSelectionPanel(true);
-            Destroy(card.gameObject);
-            //card.gameObject.SetActive(false);
+            //Destroy(card.gameObject);
+
         }
         else
         {
@@ -258,16 +254,16 @@ public class CardManager : MonoBehaviour
         }
     }
 
-    private void ReChoose(int PositionOCIndex)
+    private void ReChoose(int RechooseIndex)
     {
-        for(int i = 0; i < 3; i++)
+        /*for(int i = 0; i < 3; i++)
         {
             if(WaitingCard[i].gameObject.activeSelf == false && WaitingCard[i] == UsingCard[PositionOCIndex])
             {
                 WaitingCard[i].gameObject.SetActive(true);
                 Destroy(UsingCard[PositionOCIndex].gameObject);
             }
-        }
+        }*/
     }
 
     //카드 바꾸기 위해서 WaitingCard포지션에서 마우스포인터와 가까운 카드를 찾아서 Card Waitingcard_를 넘겨줌 
@@ -297,15 +293,46 @@ public class CardManager : MonoBehaviour
     //ToBeSwitchCard에서 받은 카드를 UsingCard에 넣고 오브젝트 만들기
     private void SwitchCard(Card card) // card = Waitingcard_
     {
-        currentCardIndex = CurrCardIndexForSwitch;
-        Transform Canvas2Transform = GameObject.Find("Canvas/Background").transform;
-        GameObject cardObject = Instantiate(cardPrefab, cardPosition[CurrCardIndexForSwitch], Quaternion.identity, Canvas2Transform);
-        var newcard = cardObject.GetComponent<Card>();
-        newcard.Setup(card.carditem, true); // 필요에 따라 `isUse` 값을 조정
-        UsingCard[CurrCardIndexForSwitch] = newcard; // 생성된 카드를 리스트에 추가
-        positionOccupied[CurrCardIndexForSwitch] = true;
-        //WaitingCard.Clear(); 
-        OpenCardSelectionPanel(false);
+        if (positionOccupied[RechooseIndex] == true)
+        {
+            int SameIndex = 0;
+
+            for(int i = 0; i <4; i++)
+            {
+                if (WaitingCard[i].gameObject.activeSelf == false && WaitingCard[i].carditem == UsingCard[RechooseIndex].carditem)
+                {
+                    SameIndex = i; //WaitingCard중 i번째 카드와 동일
+                    break;
+                }
+            }
+            Destroy(UsingCard[RechooseIndex].gameObject);//이전 UsingCard gameobject 삭제
+            UsingCard.RemoveAt(RechooseIndex);//Usingcard 리스트에서 삭제
+
+            WaitingCard[SameIndex].gameObject.SetActive(true); //Waitingcard활성화
+
+            Transform Canvas2Transform = GameObject.Find("Canvas/Background").transform;
+            GameObject cardObject = Instantiate(cardPrefab, cardPosition[RechooseIndex], Quaternion.identity, Canvas2Transform);
+
+            var newcard = cardObject.GetComponent<Card>();
+            newcard.Setup(card.carditem, true); // 필요에 따라 `isUse` 값을 조정
+            //UsingCard[RechooseIndex] = newcard; // 생성된 카드를 리스트에 추가 <- 에러뜸
+            UsingCard.Insert(RechooseIndex, newcard);
+
+            OpenCardSelectionPanel(false);
+        }
+        else
+        {
+
+            currentCardIndex = CurrCardIndexForSwitch;
+            Transform Canvas2Transform = GameObject.Find("Canvas/Background").transform;
+            GameObject cardObject = Instantiate(cardPrefab, cardPosition[CurrCardIndexForSwitch], Quaternion.identity, Canvas2Transform);
+            var newcard = cardObject.GetComponent<Card>();
+            newcard.Setup(card.carditem, true); // 필요에 따라 `isUse` 값을 조정
+            UsingCard[CurrCardIndexForSwitch] = newcard; // 생성된 카드를 리스트에 추가
+            positionOccupied[CurrCardIndexForSwitch] = true;
+            //WaitingCard.Clear(); 
+            OpenCardSelectionPanel(false);
+        }
     }
 
     //카드 오브젝트 추가
