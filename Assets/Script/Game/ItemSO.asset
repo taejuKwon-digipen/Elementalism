@@ -24,6 +24,7 @@ MonoBehaviour:
     UseProp: 1
     UseBuff: 0
     UseDraw: 0
+    UseImage: 0
     cardShape: {fileID: 11400000, guid: 1776bba0fbed59d4b86c945af6c5d67b, type: 2}
     CreatedElementType: 0
   - CardName: Aqua Splash
@@ -37,6 +38,7 @@ MonoBehaviour:
     UseProp: 1
     UseBuff: 0
     UseDraw: 0
+    UseImage: 0
     cardShape: {fileID: 11400000, guid: bc434b102b587314b882a6efb2de2a27, type: 2}
     CreatedElementType: 0
   - CardName: Stone Hurl
@@ -50,6 +52,7 @@ MonoBehaviour:
     UseProp: 1
     UseBuff: 0
     UseDraw: 0
+    UseImage: 0
     cardShape: {fileID: 11400000, guid: 009803ddf1fecca4480a640fc6a288b9, type: 2}
     CreatedElementType: 0
   - CardName: Gentle Breeze
@@ -63,6 +66,7 @@ MonoBehaviour:
     UseProp: 1
     UseBuff: 0
     UseDraw: 0
+    UseImage: 0
     cardShape: {fileID: 11400000, guid: 455377b646b9aee4e82ef29b8c404a15, type: 2}
     CreatedElementType: 0
   - CardName: Lava Surge
@@ -76,6 +80,7 @@ MonoBehaviour:
     UseProp: 0
     UseBuff: 0
     UseDraw: 0
+    UseImage: 0
     cardShape: {fileID: 11400000, guid: 8c4423c7e2c83a24e98ad4b25f8c979a, type: 2}
     CreatedElementType: 1
   - CardName: Mud armor
@@ -89,6 +94,7 @@ MonoBehaviour:
     UseProp: 0
     UseBuff: 0
     UseDraw: 0
+    UseImage: 0
     cardShape: {fileID: 11400000, guid: d4cf2d68076e81d4599835b9c2cc39df, type: 2}
     CreatedElementType: 0
   - CardName: Frost Gale
@@ -102,6 +108,7 @@ MonoBehaviour:
     UseProp: 0
     UseBuff: 0
     UseDraw: 0
+    UseImage: 0
     cardShape: {fileID: 11400000, guid: 8433066de5eb0fc4ba16b26b1c7bcb41, type: 2}
     CreatedElementType: 0
   - CardName: Scorching Wind
@@ -115,6 +122,7 @@ MonoBehaviour:
     UseProp: 0
     UseBuff: 0
     UseDraw: 0
+    UseImage: 0
     cardShape: {fileID: 11400000, guid: ebd5f25102aae52449054a519e3dae38, type: 2}
     CreatedElementType: 0
   - CardName: Acceleration
@@ -128,6 +136,7 @@ MonoBehaviour:
     UseProp: 1
     UseBuff: 1
     UseDraw: 0
+    UseImage: 0
     cardShape: {fileID: 11400000, guid: 9b120312862a52949a5c24f9824549cc, type: 2}
     CreatedElementType: 0
   - CardName: Healing Touch
@@ -141,6 +150,7 @@ MonoBehaviour:
     UseProp: 1
     UseBuff: 1
     UseDraw: 0
+    UseImage: 0
     cardShape: {fileID: 11400000, guid: f13a577dfde784745a7826ad66d92337, type: 2}
     CreatedElementType: 0
   - CardName: Endurance
@@ -154,6 +164,7 @@ MonoBehaviour:
     UseProp: 1
     UseBuff: 1
     UseDraw: 0
+    UseImage: 0
     cardShape: {fileID: 11400000, guid: 41163a0720d3bc44ea6b1c8a8ccfb9e7, type: 2}
     CreatedElementType: 0
   - CardName: Talewind
@@ -167,6 +178,7 @@ MonoBehaviour:
     UseProp: 1
     UseBuff: 1
     UseDraw: 0
+    UseImage: 0
     cardShape: {fileID: 11400000, guid: 3434211979a93664d9bbc0d5bfc7a134, type: 2}
     CreatedElementType: 0
   - CardName: Draw Card
@@ -180,6 +192,7 @@ MonoBehaviour:
     UseProp: 0
     UseBuff: 0
     UseDraw: 1
+    UseImage: 1
     cardShape: {fileID: 0}
     CreatedElementType: 0
   - CardName: Card Shuffle
@@ -193,6 +206,7 @@ MonoBehaviour:
     UseProp: 0
     UseBuff: 0
     UseDraw: 1
+    UseImage: 1
     cardShape: {fileID: 11400000, guid: ac0891baae96e2d48b9395f586f74c07, type: 2}
     CreatedElementType: 0
   - CardName: Puzzel Shuffle
@@ -206,5 +220,6 @@ MonoBehaviour:
     UseProp: 0
     UseBuff: 0
     UseDraw: 1
+    UseImage: 1
     cardShape: {fileID: 11400000, guid: ac0891baae96e2d48b9395f586f74c07, type: 2}
     CreatedElementType: 0

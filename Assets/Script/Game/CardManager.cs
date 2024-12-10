@@ -1,35 +1,37 @@
-﻿using DG.Tweening;
+﻿using DG.Tweening; // 애니메이션 처리를 위한 DOTween 라이브러리
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using Unity.VisualScripting; // 유니티 비주얼 스크립팅 기능
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.UI;// UI 관련 기능을 위한 네임스페이스
 
 public class CardManager : MonoBehaviour
 {
+    // 싱글톤 패턴: CardManager의 인스턴스
     public static CardManager Inst { get; private set; }
-    void Awake() => Inst = this;
+    void Awake() => Inst = this;// 싱글톤 초기화
 
-    public int currentCardIndex = 0;
+    public int currentCardIndex = 0;// 현재 카드의 인덱스
 
-    [SerializeField] CardItemSO carditemso;
-    [SerializeField] GameObject cardPrefab;
+    [SerializeField] CardItemSO carditemso; // 카드 데이터베이스 (ScriptableObject 사용)
+    [SerializeField] GameObject cardPrefab; // 카드 생성에 사용될 프리팹
 
-    [SerializeField] public List<Card> UsingCard;
-    [SerializeField] public List<Card> WaitingCard;
+    [SerializeField] public List<Card> UsingCard; // 사용 중인 카드 리스트 (오른쪽 3개)
+    [SerializeField] public List<Card> WaitingCard; // 대기 중인 카드 리스트 (왼쪽 4개)
 
-    public Transform Canvas2Transform;
+    public Transform Canvas2Transform; // UI 캔버스의 트랜스폼
 
+    // 카드 위치 상태 리스트 (false = 비어있음, true = 사용 중)
     private List<bool> positionOccupied = new List<bool> { false, false, false }; //true = empty, false = ocuppied
 
-    List<CardItem> ItemBuffer;
+    List<CardItem> ItemBuffer; // 카드 데이터를 저장하는 버퍼
 
-    int currenttrueindex = 0;
-    bool isUse = false;
-    Card Waitingcard_ = null;
+    int currenttrueindex = 0; // 현재 비어있는 위치의 인덱스
+    bool isUse = false; // 현재 사용 중인지 여부
+    Card Waitingcard_ = null; // 대기 중인 카드 참조
 
-    [SerializeField] private GameObject cardSelectionPanel;
-    [SerializeField] private GameObject PanelBackground;
+    [SerializeField] private GameObject cardSelectionPanel; // 카드 선택 패널
+    [SerializeField] private GameObject PanelBackground; // 패널 배경
     [SerializeField] private Transform selectionPanelContent; // 선택 패널의 콘텐츠 영역
 
     private Card clickedCard; // 클릭된 카드 참조
@@ -59,27 +61,28 @@ public class CardManager : MonoBehaviour
         new Vector3(6, 0, 0),
     };
 
-    int countwaitcard = 0;
+    int countwaitcard = 0; // 현재 대기 카드의 개수
 
     //카드 버퍼에서 카드 뽑아오기
     public CardItem PopCard()
     {
-        if(ItemBuffer.Count <= 0)
+        if(ItemBuffer.Count <= 0)  // 버퍼가 비어있으면 새로 채움
         {
-            SetCardBuffer();
+            SetCardBuffer(); // 카드 버퍼 설정
         }
 
-        CardItem card = ItemBuffer[0];
-        ItemBuffer.RemoveAt(0);
+        CardItem card = ItemBuffer[0]; // 첫 번째 카드 가져오기
+        ItemBuffer.RemoveAt(0); // 가져온 카드는 버퍼에서 제거
         return card;
     }
 
-    //카드 버퍼 100개 만들기
+    // 카드 버퍼 생성 메서드 (100개의 카드 생성)
     void SetCardBuffer()
     {
         ItemBuffer = new List<CardItem>();
 
-        for(int i = 0; i < carditemso.items.Length; i++)
+        // 카드 데이터베이스에서 Percent 값에 따라 버퍼 생성
+        for (int i = 0; i < carditemso.items.Length; i++)
         {
             CardItem cardditem = carditemso.items[i]; ;
             for (int j = 0; j < cardditem.Percent; j++)
@@ -88,8 +91,8 @@ public class CardManager : MonoBehaviour
             }
         }
 
-        //랜덤
-        for(int i = 0; i <ItemBuffer.Count; i++)
+        // 버퍼 섞기 (랜덤 정렬)
+        for (int i = 0; i <ItemBuffer.Count; i++)
         {
             int rand = Random.Range(i, ItemBuffer.Count);
             CardItem temp = ItemBuffer[i];
@@ -97,16 +100,18 @@ public class CardManager : MonoBehaviour
             ItemBuffer[rand] = temp;
         }
     }
+    // 게임 시작 시 초기화
     public void Start()
     {
-        SetCardBuffer();
+        SetCardBuffer(); // 카드 버퍼 설정
 
-        cardSelectionPanel.SetActive(false);
-        PanelBackground.SetActive(false);
+        cardSelectionPanel.SetActive(false); // 카드 선택 패널 비활성화
+        PanelBackground.SetActive(false); // 배경 비활성화
 
-        AddUsingCard();
+        AddUsingCard(); // 사용 카드 3개 추가
 
     }
+    // 오른쪽 사용 카드 3개 추가 메서드
     public void AddUsingCard()
     {
         //Using Card 선택시 positionOccupied 가 false이면 비어있으니까 카드 넣기
@@ -114,35 +119,33 @@ public class CardManager : MonoBehaviour
         {
             for (int j = 0; j < 3; j++)
             {
-                if (positionOccupied[j] == false)
+                if (positionOccupied[j] == false) // 비어있는 위치에 추가
                 {
                     currenttrueindex = j;
                     break;
                 }
             }
-            print(PopCard().CardName + " - Using Card");
-            AddCard(true);
-            positionOccupied[currenttrueindex] = true;
-        } //처음 3개 나오게
+            print(PopCard().CardName + " - Using Card");// 카드 이름 출력
+            AddCard(true);// 사용 카드 추가
+            positionOccupied[currenttrueindex] = true;  // 위치 점유 상태 업데이트
+        } 
     }
-   
 
-    //패널 열고 닫기
+
+    // 카드 선택 패널 열기/닫기
     private void OpenCardSelectionPanel(bool open)
     {
         if (open == true)
         {
-            // 패널 활성화
-            cardSelectionPanel.SetActive(true);
-            PanelBackground.SetActive(true);
-
-            // 선택 가능한 카드 목록 생성
-            GenerateSelectionCards();
+            
+            cardSelectionPanel.SetActive(true); // 패널 활성화
+            PanelBackground.SetActive(true); // 배경 활성화
+            GenerateSelectionCards();// 대기 카드 생성
         }
         else
         {
-            cardSelectionPanel.SetActive(false);
-            PanelBackground.SetActive(false);
+            cardSelectionPanel.SetActive(false); // 패널 비활성화
+            PanelBackground.SetActive(false); // 배경 비활성화
         }
         
     }
@@ -159,14 +162,15 @@ public class CardManager : MonoBehaviour
         for (int i = 0; i < 4; i++)
         {
             //print(PopCard().CardName + " - Waiting Card");
-            countwaitcard = i;
-            AddCard(false);
-            
+            countwaitcard = i; // 현재 대기 카드 인덱스
+            AddCard(false); // 대기 카드로 추가
+
         } //처음 4개 나오게
-        countwaitcard = 0;
+        countwaitcard = 0; // 대기 카드 초기화
 
     }
 
+    // 턴 종료 시 사용 카드 초기화 및 새 카드 추가
     public void TurnEndButton()
     {
         Debug.Log("TrunEndButton");
