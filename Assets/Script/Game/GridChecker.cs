@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,10 +8,16 @@ public class GridChecker : MonoBehaviour
 {
     public Grid grid; // 그리드 스크립트 인스턴스
     public Player player;
+    public List<Card> UsingCard_;
 
     // 버튼 클릭 시 호출할 검사 메서드
     public void OnCheckButtonPressed()
     {
+        UsingCard_.Clear();
+        for (int i = 0; i < 3; i++)
+        {
+            UsingCard_.Add((CardManager.Inst.UsingCard[i]));
+        }
         StartCoroutine(ProcessCardsSequentially());
     }
 
@@ -94,13 +101,13 @@ public class GridChecker : MonoBehaviour
             int totalDamage = 0;
             int blockCount = 0;
             int oraBlockCount = 0;
-            ShapeData cardShape = CardManager.Inst.UsingCard[i].carditem.cardShape;
-            int cardRows = CardManager.Inst.UsingCard[i].carditem.cardShape.rows;
-            int cardColumns = CardManager.Inst.UsingCard[i].carditem.cardShape.columns;
-            int cardDamage = CardManager.Inst.UsingCard[i].carditem.PowerLeft;
-            int cardCritDamage = CardManager.Inst.UsingCard[i].carditem.PowerRight;
-            int cardID = CardManager.Inst.UsingCard[i].carditem.ID;
-            ElementType createdElementType = CardManager.Inst.UsingCard[i].carditem.CreatedElementType;
+            ShapeData cardShape = UsingCard_[i].carditem.cardShape;
+            int cardRows = UsingCard_[i].carditem.cardShape.rows;
+            int cardColumns = UsingCard_[i].carditem.cardShape.columns;
+            int cardDamage = UsingCard_[i].carditem.PowerLeft;
+            int cardCritDamage = UsingCard_[i].carditem.PowerRight;
+            int cardID = UsingCard_[i].carditem.ID;
+            ElementType createdElementType = UsingCard_[i].carditem.CreatedElementType;
 
 
             // 슬라이딩 윈도우 방식으로 그리드를 순회합니다.

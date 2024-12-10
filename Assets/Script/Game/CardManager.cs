@@ -172,9 +172,18 @@ public class CardManager : MonoBehaviour
     // 턴 종료 시 사용 카드 초기화 및 새 카드 추가
     public void TurnEndButton()
     {
-        Debug.Log("TrunEndButton");
+        StartCoroutine(ExecuteTurnEndButton());
+    }
 
-        for(int i = 0; i<4; i++)
+    private IEnumerator ExecuteTurnEndButton()
+    {
+        Debug.Log("Waiting for 3 seconds before executing TurnEndButton...");
+        yield return new WaitForSeconds(3.0f); // 3초 딜레이
+
+        Debug.Log("Executing TurnEndButton...");
+
+        // WaitingCard 처리
+        for (int i = 0; i < 4; i++)
         {
             if (WaitingCard[i].gameObject.activeSelf == false)
             {
@@ -183,17 +192,19 @@ public class CardManager : MonoBehaviour
             Destroy(WaitingCard[i].gameObject);
         }
 
-        for(int i = 0; i < 3; i++)
+        // UsingCard 처리
+        for (int i = 0; i < 3; i++)
         {
             Destroy(UsingCard[i].gameObject);
-            if(positionOccupied[i] == true)
+            if (positionOccupied[i] == true)
             {
                 positionOccupied[i] = false;
             }
         }
         WaitingCard.Clear();
         UsingCard.Clear();
-        AddEmptyUsingCard();
+        Debug.Log("Clear Complete");
+        AddEmptyUsingCard(); // 빈 UsingCard 추가
     }
 
     public void Update()
