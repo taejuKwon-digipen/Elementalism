@@ -1,28 +1,35 @@
 ﻿using UnityEngine;
-using UnityEngine.EventSystems;
-using DG.Tweening;
-using TMPro;
+using UnityEngine.EventSystems; // 마우스 클릭 및 이벤트 처리를 위한 네임스페이스
+using DG.Tweening; // 애니메이션 처리를 위한 DOTween 라이브러리
+using TMPro; // TextMeshPro를 사용하기 위한 네임스페이스
 using System.Collections;
-using UnityEngine.UI; // UI 관련 스크립트에 활용
+using UnityEngine.UI; // UI 관련 기능을 위한 네임스페이스
 
-public class Card : MonoBehaviour, IPointerDownHandler
+public class Card : MonoBehaviour, IPointerDownHandler // 마우스 클릭 이벤트 처리 인터페이스 구현
 {
-    [SerializeField] TMP_Text nameTMP;
-    [SerializeField] TMP_Text PowerLeftTMP;
-    [SerializeField] TMP_Text PowerRightTMP;
-    [SerializeField] TMP_Text CardDescriptionTMP;
-    //[SerializeField] TMP_Text IDTMP;
-    [SerializeField] RawImage rawImage;
+    // UI 요소 연결 (카드 정보를 화면에 표시)
+    [SerializeField] TMP_Text nameTMP; // 카드 이름 텍스트
+    [SerializeField] TMP_Text PowerLeftTMP; // 일반 공격력 텍스트
+    [SerializeField] TMP_Text PowerRightTMP; // 크리티컬 공격력 텍스트
+    [SerializeField] TMP_Text CardDescriptionTMP; // 카드 설명 텍스트
+    //[SerializeField] TMP_Text IDTMP; // 카드 ID 표시 (현재 주석 처리됨)
+    [SerializeField] RawImage rawImage; // 카드 이미지를 표시하는 UI 컴포넌트
 
-    
+    // 각 원소에 해당하는 스프라이트들
+    public Sprite fireSprite;    // 불 스프라이트
+    public Sprite waterSprite;   // 물 스프라이트
+    public Sprite airSprite;     // 공기 스프라이트
+    public Sprite earthSprite;   // 흙 스프라이트
 
-    public CardItem carditem;
-    public bool isFront = true;
-    public bool IsUsingCard = false;
+    public CardItem carditem; // 카드 데이터 (카드의 이름, 공격력, 설명 등을 포함)
+    public bool isFront = true; // 카드가 앞면인지 여부
+    public bool IsUsingCard = false; // 카드가 현재 사용 중인지 여부
+    public bool isUsingImage = false; // 카드가 이미지 사용 중인지 여부
 
-    private const float deleteThresholdY = -.0f; // 카드가 삭제될 위치 기준 Y 좌표
-    public Vector3 currentMousePosition;
+    private const float deleteThresholdY = -.0f; // 카드가 삭제될 기준 Y 위치
+    public Vector3 currentMousePosition; // 현재 마우스 위치를 저장하는 변수
 
+    // 카드 초기화 및 데이터와 UI 연결
     public void Setup(CardItem carditem_, bool isFront_)
     {
         carditem = carditem_;
@@ -34,39 +41,89 @@ public class Card : MonoBehaviour, IPointerDownHandler
             PowerLeftTMP.text = carditem.PowerLeft.ToString();
             PowerRightTMP.text = carditem.PowerRight.ToString();
             CardDescriptionTMP.text = carditem.CardDescription;
-            //IDTMP.text = carditem.ID.ToString();
 
-            rawImage = transform.Find("Border/ImageBorder/Image").GetComponent<RawImage>();
-            if (rawImage != null)
+            isUsingImage = carditem.UseImage;
+
+            if (isUsingImage)
             {
-                rawImage.texture = carditem.cardImage;
+                rawImage = transform.Find("Border/ImageBorder/Image").GetComponent<RawImage>();
+                if (rawImage != null)
+                {
+                    rawImage.texture = carditem.cardImage;
+                }
+            }
+            else
+            {
+                GenerateShapeFromData(carditem.cardShape); // ShapeData를 기반으로 모양 생성
             }
         }
     }
 
-   /* public void OnPointerUp(PointerEventData eventData)
-    {
-        currentMousePosition = (Input.mousePosition);
-        Debug.Log("WaitingCard 선택");
-        CardManager.Inst.NotifyCardSelection(this); // CardManager에 카드가 삭제되었음을 알림a
-    }*/
 
-    public void OnPointerDown(PointerEventData eventData)
+    // ShapeData를 기반으로 원소 스프라이트로 카드 모양 생성
+    private void GenerateShapeFromData(ShapeData shapeData)
     {
-        currentMousePosition = (Input.mousePosition);
-        Debug.Log(currentMousePosition.y);
-        Debug.Log("OnPointerDown");
-        CardManager.Inst.NotifyCardSelection(this); // CardManager에 카드가 삭제되었음을 알림a
+        // 카드의 모양 영역을 초기화 (이미 생성된 블록이 있다면 삭제)
+        foreach (Transform child in transform.Find("Border/ImageBorder"))
+        {
+            Destroy(child.gameObject);
+        }
+
+        // ShapeData를 순회하며 원소에 따라 블록 생성
+        var parentTransform = transform.Find("Border/ImageBorder"); // 부모 오브젝트
+        var blockPrefab = Resources.Load<GameObject>("BlockPrefab"); // 블록 프리팹 로드
+
+        for (int row = 0; row < shapeData.rows; row++)
+        {
+            for (int column = 0; column < shapeData.columns; column++)
+            {
+                ElementType elementType = shapeData.board[row].colum[column];
+                if (elementType != ElementType.None)
+                {
+                    // 블록 인스턴스 생성
+                    var block = Instantiate(blockPrefab, parentTransform);
+                    var rectTransform = block.GetComponent<RectTransform>();
+                    rectTransform.anchoredPosition = new Vector2(column * 50, -row * 50); // 블록 위치 조정
+                    var image = block.GetComponent<Image>();
+
+                    // 원소 타입에 따라 스프라이트 설정
+                    switch (elementType)
+                    {
+                        case ElementType.Fire:
+                            image.sprite = fireSprite;
+                            break;
+                        case ElementType.Water:
+                            image.sprite = waterSprite;
+                            break;
+                        case ElementType.Air:
+                            image.sprite = airSprite;
+                            break;
+                        case ElementType.Earth:
+                            image.sprite = earthSprite;
+                            break;
+                    }
+                }
+            }
+        }
     }
 
+    // 마우스 클릭 이벤트 처리 메서드 (IPointerDownHandler 인터페이스 구현)
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        currentMousePosition = Input.mousePosition; // 클릭 시의 마우스 위치를 저장
+        Debug.Log(currentMousePosition.y); // 현재 마우스 Y 좌표를 디버그 로그로 출력
+        Debug.Log("OnPointerDown"); // 마우스 클릭 로그 출력
+        CardManager.Inst.NotifyCardSelection(this); // CardManager에 카드 선택 알림
+    }
 
-    /* // IPointerUpHandler 인터페이스 구현 - 마우스 버튼을 놓을 때 호출
-     public void OnPointerUp(PointerEventData eventData)
-     {
-         currentMousePosition = (Input.mousePosition);
-         Debug.Log("카드 선택");
-         CardManager.Inst.ViewWaitingCard(this); // CardManager에 카드가 선택됨을 알림
-         //Destroy(gameObject); // 카드 즉시 삭제
-     }*/
-
+    /* 
+    // 마우스 버튼을 놓을 때 호출되는 메서드 (현재 주석 처리됨)
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        currentMousePosition = Input.mousePosition; // 마우스 위치 저장
+        Debug.Log("카드 선택"); // 디버그 로그 출력
+        CardManager.Inst.ViewWaitingCard(this); // CardManager에 카드 선택 알림
+        //Destroy(gameObject); // 선택된 카드를 즉시 삭제
+    }
+    */
 }

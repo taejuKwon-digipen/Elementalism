@@ -32,6 +32,8 @@ public class CardItem
     public bool UseBuff = false;
     public bool UseDraw = false;
 
+    public bool UseImage = false;
+
     public ShapeData cardShape; // 카드 모양 (ShapeData 사용)
     public ElementType CreatedElementType;
 

@@ -1159,6 +1159,10 @@ MonoBehaviour:
   PowerRightTMP: {fileID: 3537536931601953869}
   CardDescriptionTMP: {fileID: 6935239494404841551}
   rawImage: {fileID: 0}
+  fireSprite: {fileID: 21300000, guid: 457a3991c97820543a72809558fdda18, type: 3}
+  waterSprite: {fileID: 21300000, guid: 1b257293bd5ab0c4bae0beac28953873, type: 3}
+  airSprite: {fileID: 21300000, guid: cae4eabbaed64fd4eae936068719b4ad, type: 3}
+  earthSprite: {fileID: 21300000, guid: 2d34d213e5f54e843b510d72c30d44f0, type: 3}
   carditem:
     CardName: 
     ID: 0
@@ -1171,9 +1175,12 @@ MonoBehaviour:
     UseProp: 0
     UseBuff: 0
     UseDraw: 0
+    UseImage: 0
     cardShape: {fileID: 0}
     CreatedElementType: 0
   isFront: 1
+  IsUsingCard: 0
+  isUsingImage: 0
   currentMousePosition: {x: 0, y: 0, z: 0}
 --- !u!114 &4269890238872951729
 MonoBehaviour:
