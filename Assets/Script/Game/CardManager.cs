@@ -17,13 +17,10 @@ public class CardManager : MonoBehaviour
 
     [SerializeField] public List<Card> UsingCard;
     [SerializeField] public List<Card> WaitingCard;
-/*
-    [SerializeField] private Transform centerPosition; // 반원의 중심 위치
-    [SerializeField] private float radius = 3.0f; // 반원의 반지름*/
 
     public Transform Canvas2Transform;
 
-    private List<bool> positionOccupied = new List<bool> { true, true, true }; //true = empty, false = ocuppied
+    private List<bool> positionOccupied = new List<bool> { false, false, false }; //true = empty, false = ocuppied
 
     List<CardItem> ItemBuffer;
 
@@ -37,6 +34,7 @@ public class CardManager : MonoBehaviour
 
     private Card clickedCard; // 클릭된 카드 참조
 
+    //오른쪽 카드 3개 위치
     private List<Vector3> cardPosition = new List<Vector3>
     {
         new Vector3(7,3f,0),
@@ -46,12 +44,14 @@ public class CardManager : MonoBehaviour
 
     public int CurrCardIndexForSwitch = 0;
 
+    //수정중 - 버튼 클릭 시 패널 닫히게
     public void XButtonClicked()
     {
         cardSelectionPanel.SetActive(false);
         PanelBackground.SetActive(false);
     }
 
+    //왼쪽 대기 카드 4개 위치
     private List<Vector3> WaitingCardPosition = new List<Vector3> // Canvas로 옯기기
     {
         new Vector3(-6,0,0),
@@ -62,9 +62,10 @@ public class CardManager : MonoBehaviour
 
     int countwaitcard = 0;
 
+    //카드 버퍼에서 카드 뽑아오기
     public CardItem PopCard()
     {
-        if(ItemBuffer.Count == 0)
+        if(ItemBuffer.Count <= 0)
         {
             SetCardBuffer();
         }
@@ -74,6 +75,7 @@ public class CardManager : MonoBehaviour
         return card;
     }
 
+    //카드 버퍼 100개 만들기
     void SetCardBuffer()
     {
         ItemBuffer = new List<CardItem>();
@@ -87,6 +89,7 @@ public class CardManager : MonoBehaviour
             }
         }
 
+        //랜덤
         for(int i = 0; i <ItemBuffer.Count; i++)
         {
             int rand = Random.Range(i, ItemBuffer.Count);
@@ -102,11 +105,17 @@ public class CardManager : MonoBehaviour
         cardSelectionPanel.SetActive(false);
         PanelBackground.SetActive(false);
 
+        AddUsingCard();
+
+    }
+    public void AddUsingCard()
+    {
+        //Using Card 선택시 positionOccupied 가 false이면 비어있으니까 카드 넣기
         for (int i = 0; i < 3; i++)
         {
-            for(int j = 0; j < 3; j ++)
+            for (int j = 0; j < 3; j++)
             {
-                if (positionOccupied[j] == true)
+                if (positionOccupied[j] == false)
                 {
                     currenttrueindex = j;
                     break;
@@ -114,77 +123,78 @@ public class CardManager : MonoBehaviour
             }
             print(PopCard().CardName + " - Using Card");
             AddCard(true);
-            positionOccupied[currenttrueindex] = false;
+            positionOccupied[currenttrueindex] = true;
         } //처음 3개 나오게
     }
    
 
-    public void OnCardClicked(Card card)
+    //패널 열고 닫기
+    private void OpenCardSelectionPanel(bool open)
     {
-        if(card == UsingCard[0] || card == UsingCard[1] || card == UsingCard[2])
+        if (open == true)
         {
-            clickedCard = card; // 클릭된 카드 저장
-            OpenCardSelectionPanel();
+            // 패널 활성화
+            cardSelectionPanel.SetActive(true);
+            PanelBackground.SetActive(true);
+
+            // 선택 가능한 카드 목록 생성
+            GenerateSelectionCards();
         }
-    }
-
-    private void OpenCardSelectionPanel()
-    {
-        // 패널 활성화
-        cardSelectionPanel.SetActive(true);
-        PanelBackground.SetActive(true);
-
-        // 선택 가능한 카드 목록 생성
-        GenerateSelectionCards();
-    }
-
-    private void ReChosen(Card card)
-    {
-        if(card.IsUsingCard == true)
+        else
         {
-
+            cardSelectionPanel.SetActive(false);
+            PanelBackground.SetActive(false);
         }
+        
     }
 
+    //패널이 열리면 카드 생성 (Waiting Card 4개)
     private void GenerateSelectionCards()
     {
-        if(WaitingCard.Count > 0)
+        /*//Waiting Card가 남아있으면
+        if(WaitingCard.Count <= 1)
         {
             return;
-        }
-
-        //선택가능카드목록생성
-        foreach (Transform child in selectionPanelContent)
-        {
-            Destroy(child.gameObject);
-        }
-
+        }*/
 
         for (int i = 0; i < 4; i++)
         {
-            print(PopCard().CardName + " - Waiting Card");
+            //print(PopCard().CardName + " - Waiting Card");
             countwaitcard = i;
             AddCard(false);
             
-        } //처음 3개 나오게
+        } //처음 4개 나오게
         countwaitcard = 0;
 
     }
 
-    public void Update()
+    public void TurnEndButton()
     {
-     
+        for(int i = 0; i < 3; i++)
+        {
+            if(positionOccupied[i] == true)
+            {
+                positionOccupied[i] = false;
+            }
+        }
+        AddUsingCard();
     }
 
+    public void Update()
+    {
+        TurnEndButton();
+    }
+
+    //Using Card 3개 클릭 인식
     private int CalculateUsingCard(Card card)
     {
         float y = card.currentMousePosition.y;
 
-       if( y >= 650f )
+        if (y >= 700f)
         {
             CurrCardIndexForSwitch = 0;
         }
-       else if( y <= 300f)
+        else if (y <= 410f)
         {
             CurrCardIndexForSwitch = 2;
         }
@@ -203,24 +213,22 @@ public class CardManager : MonoBehaviour
         if(card == UsingCard[0] || card == UsingCard[1] || card == UsingCard[2] )
         {
             CalculateUsingCard(card);
-            //int index = cardPosition.FindIndex(pos => Vector3.Distance(pos, card.currentMousePosition) < 150f); //여기가 문제임 포지션이 바뀌어서 인식을 못함
-            cardSelectionPanel.SetActive(true);
-            PanelBackground.SetActive(true);
-            GenerateSelectionCards();
-            Destroy(card.gameObject); //UsingCard 삭제
+            OpenCardSelectionPanel(true);
+            card.gameObject.SetActive(false);
         }
         else
         {
             ToBeSwitchCard(card); //일단 보류
             SwitchCard(Waitingcard_);
-            //WaitingCard.Remove(card);
-            Destroy(card.gameObject);
+            card.gameObject.SetActive(false);
+            Debug.Log("셋액티브 폴스로 됨");
+            //Destroy(card.gameObject);
         }
     }
 
+    //카드 바꾸기 위해서 WaitingCard포지션에서 마우스포인터와 가까운 카드를 찾아서 Card Waitingcard_를 넘겨줌 
     private Card ToBeSwitchCard(Card card)
     {
-
         Vector3 mousePosition = card.currentMousePosition; // 화면 좌표
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, Mathf.Abs(Camera.main.transform.position.z)));
         Debug.Log("WC- WorldPosition :" + worldPosition);
@@ -242,6 +250,7 @@ public class CardManager : MonoBehaviour
       
     }
 
+    //ToBeSwitchCard에서 받은 카드를 UsingCard에 넣고 오브젝트 만들기
     private void SwitchCard(Card card) // card = Waitingcard_
     {
         currentCardIndex = CurrCardIndexForSwitch;
@@ -251,13 +260,13 @@ public class CardManager : MonoBehaviour
         newcard.Setup(card.carditem, true); // 필요에 따라 `isUse` 값을 조정
         UsingCard[CurrCardIndexForSwitch] = newcard; // 생성된 카드를 리스트에 추가
         //WaitingCard.Clear(); 
-        cardSelectionPanel.SetActive(false);
-        PanelBackground.SetActive(false);
+        OpenCardSelectionPanel(false);
     }
 
+    //카드 오브젝트 추가
     void AddCard(bool isUse)
     {
-        if (isUse == true) //얘가 오른쪽 3개
+        if (isUse == true) //Using card
         {
             Transform Canvas2Transform = GameObject.Find("Canvas/Background").transform;
             GameObject cardObject = Instantiate(cardPrefab, cardPosition[currenttrueindex], Quaternion.identity, Canvas2Transform);

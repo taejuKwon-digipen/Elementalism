@@ -57,8 +57,8 @@ public class Card : MonoBehaviour, IPointerDownHandler
     public void OnPointerDown(PointerEventData eventData)
     {
         currentMousePosition = (Input.mousePosition);
-        Debug.Log(currentMousePosition);
-        Debug.Log("WaitingCard 선택");
+        Debug.Log(currentMousePosition.y);
+        Debug.Log("OnPointerDown");
         CardManager.Inst.NotifyCardSelection(this); // CardManager에 카드가 삭제되었음을 알림a
     }
 
