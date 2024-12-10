@@ -21,6 +21,7 @@ public class Fighter : Enemy
             yield return StartCoroutine(GoForward(1));
             yield break;
         }
+        animator.SetTrigger("Attack");
         player.Hit(this, baseEntity.Type);
         yield return null;
     }
