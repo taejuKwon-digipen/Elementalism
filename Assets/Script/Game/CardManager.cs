@@ -65,16 +65,24 @@ public class CardManager : MonoBehaviour
     int countwaitcard = 0; // 현재 대기 카드의 개수
 
     //카드 버퍼에서 카드 뽑아오기
-    public CardItem PopCard()
+    public CardItem PopCard(bool IsFront)
     {
         if(ItemBuffer.Count <= 0)  // 버퍼가 비어있으면 새로 채움
         {
             SetCardBuffer(); // 카드 버퍼 설정
         }
 
-        CardItem card = ItemBuffer[0]; // 첫 번째 카드 가져오기
-        ItemBuffer.RemoveAt(0); // 가져온 카드는 버퍼에서 제거
-        return card;
+        if (IsFront == true)
+        {
+            CardItem card = ItemBuffer[0]; // 첫 번째 카드 가져오기
+            ItemBuffer.RemoveAt(0); // 가져온 카드는 버퍼에서 제거
+            return card;
+        }
+        else
+        {
+            CardItem card = null;
+            return card;
+        }
     }
 
     // 카드 버퍼 생성 메서드 (100개의 카드 생성)
@@ -121,7 +129,7 @@ public class CardManager : MonoBehaviour
         //Using Card 선택시 positionOccupied 가 false이면 비어있으니까 카드 넣기
         for (currenttrueindex = 0; currenttrueindex < 3; currenttrueindex++)
         {
-            print(PopCard().CardName + " - Using Card");// 카드 이름 출력
+            //print(PopCard(false).CardName + " - Using Card");// 카드 이름 출력
             AddCard(true);// 사용 카드 추가
             positionOccupied[currenttrueindex] = false;  // 위치 점유 상태 업데이트
         }
@@ -297,7 +305,7 @@ public class CardManager : MonoBehaviour
             Transform Canvas2Transform = GameObject.Find("Canvas/Background").transform;
             GameObject cardObject = Instantiate(cardPrefab, cardPosition[currenttrueindex], Quaternion.identity, Canvas2Transform);
             var card = cardObject.GetComponent<Card>();
-            card.Setup(PopCard(), false); // 필요에 따라 `isUse` 값을 조정
+            card.Setup(PopCard(false), false); // 필요에 따라 `isUse` 값을 조정
             UsingCard.Add(card); // 생성된 카드를 리스트에 추가
         }
         else //얘가 뒤에 나오는 4개
@@ -312,7 +320,7 @@ public class CardManager : MonoBehaviour
             Vector3 nowLocalScale = cardObject.transform.localScale;
             cardObject.transform.localScale = new Vector3(nowLocalScale.x * 0.014f, nowLocalScale.x * 0.014f, 1);
             var card = cardObject.GetComponent<Card>();
-            card.Setup(PopCard(), true); // 필요에 따라 `isUse` 값을 조정
+            card.Setup(PopCard(true), true); // 필요에 따라 `isUse` 값을 조정
             WaitingCard.Add(card); // 생성된 카드를 리스트에 추가
         }
        
