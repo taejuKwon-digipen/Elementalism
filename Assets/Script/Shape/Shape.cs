@@ -63,7 +63,7 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
                 RotateShape(-90); // 왼쪽으로 90도 회전
             }
             // E 키가 눌리면 오른쪽으로 회전
-            if (Input.GetKeyDown(KeyCode.E))
+            if (Input.GetKeyDown(KeyCode.E) || Input.GetMouseButtonDown(1))
             {
                 RotateShape(90);  // 오른쪽으로 90도 회전
             }
