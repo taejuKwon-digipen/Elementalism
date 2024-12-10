@@ -32,10 +32,13 @@ public class CardManager : MonoBehaviour
 
     [SerializeField] private GameObject cardSelectionPanel; // 카드 선택 패널
     [SerializeField] private GameObject PanelBackground; // 패널 배경
+    [SerializeField] private Button Xbutton;
     [SerializeField] private Transform selectionPanelContent; // 선택 패널의 콘텐츠 영역
 
     private Card clickedCard; // 클릭된 카드 참조
     int RechooseIndex = 0;
+
+    
 
     //오른쪽 카드 3개 위치
     private List<Vector3> cardPosition = new List<Vector3>
@@ -50,6 +53,7 @@ public class CardManager : MonoBehaviour
     //수정중 - 버튼 클릭 시 패널 닫히게
     public void XButtonClicked()
     {
+        Debug.Log("X버튼 클릭");
        OpenCardSelectionPanel(false);
     }
 
@@ -143,12 +147,14 @@ public class CardManager : MonoBehaviour
     {
         if (open == true)
         {
+            Xbutton.interactable = true;
             cardSelectionPanel.SetActive(true); // 패널 활성화
             PanelBackground.SetActive(true); // 배경 활성화
             GenerateSelectionCards();// 대기 카드 생성
         }
         else
         {
+            Xbutton.interactable = false;
             cardSelectionPanel.SetActive(false); // 패널 비활성화
             PanelBackground.SetActive(false); // 배경 비활성화
         }
