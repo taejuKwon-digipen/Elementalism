@@ -49,7 +49,7 @@ public class EnemyManager : MonoBehaviour
         ResetSpawnPoints();
         int numberToSpawn = numbers[UnityEngine.Random.Range(0, numbers.Length)];
         for (int i = 0; i < numberToSpawn; i += 1) {
-            var entityToSpawn = spawnableEnemies[0];
+            var entityToSpawn = spawnableEnemies[UnityEngine.Random.Range(0, spawnableEnemies.Count)];
             var spawn = GetNewSpawn();
             var newEntity = Instantiate(entityToSpawn, spawn, Quaternion.identity, canvas.transform);
             newEntity.GetComponentInChildren<ImageClickHandler>().Canva = canvas;
