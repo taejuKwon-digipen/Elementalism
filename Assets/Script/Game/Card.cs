@@ -18,10 +18,7 @@ public class Card : MonoBehaviour, IPointerDownHandler
 
     public CardItem carditem;
     public bool isFront = true;
-
     public bool IsUsingCard = false;
-
-    //public bool isInSelectionPanel = false; // 이 카드가 선택 패널 안에 있는지 여부
 
     private const float deleteThresholdY = -.0f; // 카드가 삭제될 위치 기준 Y 좌표
     public Vector3 currentMousePosition;

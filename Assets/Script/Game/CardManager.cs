@@ -182,7 +182,7 @@ public class CardManager : MonoBehaviour
 
     public void Update()
     {
-        TurnEndButton();
+
     }
 
     //Using Card 3개 클릭 인식
@@ -222,7 +222,6 @@ public class CardManager : MonoBehaviour
             SwitchCard(Waitingcard_);
             card.gameObject.SetActive(false);
             Debug.Log("셋액티브 폴스로 됨");
-            //Destroy(card.gameObject);
         }
     }
 
@@ -264,8 +263,12 @@ public class CardManager : MonoBehaviour
     }
 
     //카드 오브젝트 추가
-    void AddCard(bool isUse)
+    void AddCard(bool isUse/*bool onAttackButton*/)
     {
+        /*if(onAttackButton == true)
+        { 
+        }*/
+
         if (isUse == true) //Using card
         {
             Transform Canvas2Transform = GameObject.Find("Canvas/Background").transform;
