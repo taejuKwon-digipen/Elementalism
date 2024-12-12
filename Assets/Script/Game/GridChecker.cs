@@ -181,7 +181,7 @@ public class GridChecker : MonoBehaviour
         return oraCount;
     }
 
-private IEnumerator HighlightMatchedBlocks(Grid grid, ShapeData cardShape, int startRow, int startCol)
+    private IEnumerator HighlightMatchedBlocks(Grid grid, ShapeData cardShape, int startRow, int startCol)
     {
         List<GameObject> matchedBlocks = new List<GameObject>();
 
@@ -223,7 +223,8 @@ private IEnumerator HighlightMatchedBlocks(Grid grid, ShapeData cardShape, int s
                 }
             }
 
-            yield return new WaitForSeconds(blinkDuration);
+            if (matchedBlocks.Count != 1)
+                yield return new WaitForSeconds(blinkDuration);
 
             // 블록을 다시 불투명으로 설정
             foreach (var block in matchedBlocks)
@@ -242,7 +243,8 @@ private IEnumerator HighlightMatchedBlocks(Grid grid, ShapeData cardShape, int s
                 }
             }
 
-            yield return new WaitForSeconds(blinkDuration);
+            if (matchedBlocks.Count != 1)
+                yield return new WaitForSeconds(blinkDuration);
         }
     }
 
