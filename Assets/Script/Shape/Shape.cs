@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using MoreMountains.Feedbacks;
 
 public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBeginDragHandler, IDragHandler, IEndDragHandler,
     IPointerDownHandler
@@ -19,6 +20,9 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     public ShapeData CurrentShapeData;       // 현재 Shape의 데이터
 
     public int TotalSquareNumber {get; set;}
+
+    public MMF_Player cameraShakeFeedback;
+
     private List<GameObject> _currentShape = new List<GameObject>();  // 현재 Shape를 구성하는 블록들의 리스트
     private Vector3 _shapeStartScale;        // 초기 스케일 값
     private RectTransform _transform;        // RectTransform 컴포넌트
@@ -30,12 +34,17 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     private bool _shapeActive = true;
     public void Awake()
     {
-        _shapeStartScale = this.GetComponent<RectTransform>().localScale; // 초기 스케일 저장
-        _transform = this.GetComponent<RectTransform>();                  // RectTransform 가져오기
-        _canvas = GetComponentInParent<Canvas>();                         // 부모 캔버스 가져오기
-        _shapeDraggable = true;                                           // 드래그 가능 설정
+        _shapeStartScale = this.GetComponent<RectTransform>().localScale;
+        _transform = this.GetComponent<RectTransform>();
+        _canvas = GetComponentInParent<Canvas>();
+        _shapeDraggable = true;
         _startPosition = _transform.localPosition;
         _shapeActive = true;
+
+        if (cameraShakeFeedback != null)
+        {
+            cameraShakeFeedback.Initialization();
+        }
     }
 
     private void OnEnable()
@@ -287,6 +296,7 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     {
         this.GetComponent<RectTransform>().localScale = _shapeStartScale; // 스케일을 원래대로 변경
         _isDragging = false; // 드래그 중 상태 해제
+        cameraShakeFeedback.PlayFeedbacks();
         GameEvents.CheckIfShapeCanBePlaced(); // Shape를 배치할 수 있는지 체크하는 이벤트 호출
     }
     
