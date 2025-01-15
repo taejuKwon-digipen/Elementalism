@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting; // 유니티 비주얼 스크립팅 기능
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;// UI 관련 기능을 위한 네임스페이스
 
 public class CardManager : MonoBehaviour
@@ -30,6 +31,7 @@ public class CardManager : MonoBehaviour
     bool isUse = false; // 현재 사용 중인지 여부
     Card Waitingcard_ = null; // 대기 중인 카드 참조
 
+
     [SerializeField] private GameObject cardSelectionPanel; // 카드 선택 패널
     [SerializeField] private GameObject PanelBackground; // 패널 배경
     [SerializeField] private Button Xbutton;
@@ -38,7 +40,7 @@ public class CardManager : MonoBehaviour
     private Card clickedCard; // 클릭된 카드 참조
     int RechooseIndex = 0;
 
-    
+
 
     //오른쪽 카드 3개 위치
     private List<Vector3> cardPosition = new List<Vector3>
@@ -54,7 +56,7 @@ public class CardManager : MonoBehaviour
     public void XButtonClicked()
     {
         Debug.Log("X버튼 클릭");
-       OpenCardSelectionPanel(false);
+        OpenCardSelectionPanel(false);
     }
 
     //왼쪽 대기 카드 4개 위치
@@ -71,7 +73,7 @@ public class CardManager : MonoBehaviour
     //카드 버퍼에서 카드 뽑아오기
     public CardItem PopCard(bool IsFront)
     {
-        if(ItemBuffer.Count <= 0)  // 버퍼가 비어있으면 새로 채움
+        if (ItemBuffer.Count <= 0)  // 버퍼가 비어있으면 새로 채움
         {
             SetCardBuffer(); // 카드 버퍼 설정
         }
@@ -105,7 +107,7 @@ public class CardManager : MonoBehaviour
         }
 
         // 버퍼 섞기 (랜덤 정렬)
-        for (int i = 0; i <ItemBuffer.Count; i++)
+        for (int i = 0; i < ItemBuffer.Count; i++)
         {
             int rand = Random.Range(i, ItemBuffer.Count);
             CardItem temp = ItemBuffer[i];
@@ -123,7 +125,7 @@ public class CardManager : MonoBehaviour
 
         positionOccupied = new List<bool> { false, false, false }; //false = empty, true = ocuppied
         AddEmptyUsingCard(); // 사용 카드 3개 추가
-   
+
     }
 
 
@@ -158,7 +160,7 @@ public class CardManager : MonoBehaviour
             cardSelectionPanel.SetActive(false); // 패널 비활성화
             PanelBackground.SetActive(false); // 배경 비활성화
         }
-        
+
     }
 
     //패널이 열리면 카드 생성 (Waiting Card 4개)
@@ -243,7 +245,7 @@ public class CardManager : MonoBehaviour
         //if card == using card[0]---이면 GenerateSelectionCards() panel true
         //아니고 waitingcard면 switch
 
-         if(card == UsingCard[0] || card == UsingCard[1] || card == UsingCard[2] )
+        if (card == UsingCard[0] || card == UsingCard[1] || card == UsingCard[2])
         {
             CalculateUsingCard(card);
             RechooseIndex = CurrCardIndexForSwitch;
@@ -282,7 +284,7 @@ public class CardManager : MonoBehaviour
         }
 
         return null;
-      
+
     }
 
     //ToBeSwitchCard에서 받은 카드를 UsingCard에 넣고 오브젝트 만들기
@@ -292,7 +294,7 @@ public class CardManager : MonoBehaviour
         {
             int SameIndex = 0;
 
-            for(int i = 0; i <4; i++)
+            for (int i = 0; i < 4; i++)
             {
                 if (WaitingCard[i].gameObject.activeSelf == false && WaitingCard[i].carditem == UsingCard[RechooseIndex].carditem)
                 {
@@ -306,11 +308,12 @@ public class CardManager : MonoBehaviour
             WaitingCard[SameIndex].gameObject.SetActive(true); //Waitingcard활성화
 
             Transform Canvas2Transform = GameObject.Find("Canvas/Background").transform;
-            GameObject cardObject = Instantiate(cardPrefab, cardPosition[RechooseIndex], Quaternion.identity, Canvas2Transform);
+            GameObject WaitingcardObject = Instantiate(cardPrefab, cardPosition[RechooseIndex], Quaternion.identity, Canvas2Transform);
 
-            var newcard = cardObject.GetComponent<Card>();
+            var newcard = WaitingcardObject.GetComponent<Card>();
             newcard.Setup(card.carditem, true); // 필요에 따라 `isUse` 값을 조정
             //UsingCard[RechooseIndex] = newcard; // 생성된 카드를 리스트에 추가 <- 에러뜸
+
             UsingCard.Insert(RechooseIndex, newcard);
 
             OpenCardSelectionPanel(false);
@@ -343,7 +346,7 @@ public class CardManager : MonoBehaviour
         }
         else //얘가 뒤에 나오는 4개
         {
-            if(WaitingCard.Count >=4)
+            if (WaitingCard.Count >= 4)
             {
                 return;
             }
@@ -352,10 +355,23 @@ public class CardManager : MonoBehaviour
             GameObject cardObject = Instantiate(cardPrefab, WaitingCardPosition[countwaitcard], Quaternion.identity, Canvas2Transform);
             Vector3 nowLocalScale = cardObject.transform.localScale;
             cardObject.transform.localScale = new Vector3(nowLocalScale.x * 0.014f, nowLocalScale.x * 0.014f, 1);
+
+            BoxCollider collider = cardObject.AddComponent<BoxCollider>();
+            collider.isTrigger = true;
+
+            if (!cardObject.TryGetComponent<CardMouseHandler>(out var cardHandler))
+            {
+                cardHandler = cardObject.AddComponent<CardMouseHandler>();
+                cardHandler.Initialize(1.2f, 0.2f); // 배율과 지속 시간 설정
+            }
+
+            Debug.Log($"Card Created: {cardObject.name} with MouseHandler");
+
             var card = cardObject.GetComponent<Card>();
             card.Setup(PopCard(true), true); // 필요에 따라 `isUse` 값을 조정
             WaitingCard.Add(card); // 생성된 카드를 리스트에 추가
         }
-       
+
     }
 }
+
