@@ -316,4 +316,12 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     {
         _transform.transform.localPosition = _startPosition;
     }
+
+    public void ResetToStartPosition()
+    {
+        _transform.localPosition = _startPosition;
+        _transform.localScale = _shapeStartScale;
+        _isDragging = false;
+        ActivateShape();
+    }
 }

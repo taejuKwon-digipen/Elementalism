@@ -20,6 +20,36 @@ public class GridChecker : MonoBehaviour
         }
         StartCoroutine(ProcessCardsSequentially());
     }
+    public void OnResetButtonPressed()
+    {
+        // Grid의 모든 블록을 원래 상태로 복원
+        int totalBlocks = grid.rows * grid.columns;
+        for (int i = 0; i < totalBlocks; i++)
+        {
+            GameObject block = grid.GetBlockAt(i / grid.columns, i % grid.columns);
+            if (block != null)
+            {
+                Block blockScript = block.GetComponent<Block>();
+                if (blockScript != null)
+                {
+                    blockScript.RestoreState();
+                }
+            }
+        }
+
+        // Shape들을 초기 상태로 복원
+        foreach (var shape in FindObjectsOfType<Shape>())
+        {
+            shape.ResetToStartPosition();
+        }
+
+        // ShapeStorage에서 초기 Shape 데이터로 재설정
+        ShapeStorage shapeStorage = FindObjectOfType<ShapeStorage>();
+        if (shapeStorage != null)
+        {
+            shapeStorage.ResetToInitialShapes();
+        }
+    }
 
     // 버튼 클릭 시 모든 ActiveImage를 비활성화하는 메서드
     private void DisableAllActiveImages()
@@ -108,6 +138,7 @@ public class GridChecker : MonoBehaviour
             int cardCritDamage = UsingCard_[i].carditem.PowerRight;
             int cardID = UsingCard_[i].carditem.ID;
             ElementType createdElementType = UsingCard_[i].carditem.CreatedElementType;
+
 
 
             // 슬라이딩 윈도우 방식으로 그리드를 순회합니다.
@@ -306,5 +337,6 @@ public class GridChecker : MonoBehaviour
         }
         return count;
     }
+
 }
 

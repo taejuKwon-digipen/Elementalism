@@ -32,6 +32,8 @@ public class Block : MonoBehaviour
 
     public ElementType elementType = ElementType.None; // 원소 타입을 저장하는 변수 (초기화)
     public ElementType currentCollidedBlock = ElementType.None;
+
+    public ElementType originalElementType = ElementType.None;
     private bool isColliding = false;
 
     // 프로퍼티들
@@ -60,6 +62,28 @@ public class Block : MonoBehaviour
         return hooverImage.gameObject.activeSelf;   // hooverImage가 활성화되어 있으면 true 반환
     }
 
+    public void RestoreState()
+    {
+        // originalElementType이 있다면 그 타입으로 복원
+        if (originalElementType != ElementType.None)
+        {
+            elementType = originalElementType;
+            originalElementType = ElementType.None;
+        }
+
+        // 기타 상태 초기화
+        Selected = false;
+        SquareOccupied = false;
+        
+        // 이미지 상태 초기화
+        if (hooverImage != null)
+            hooverImage.gameObject.SetActive(false);
+        if (activeImage != null)
+            activeImage.gameObject.SetActive(false);
+            
+        currentCollidedBlock = ElementType.None;
+    }
+    
     public void PlaceShapeOnBoard()
     {
         ActivateSquare();
@@ -71,6 +95,11 @@ public class Block : MonoBehaviour
     {
         if (currentCollidedBlock != ElementType.None)
         {
+            if(originalElementType == ElementType.None)
+            {
+                originalElementType = elementType;
+            }   
+            
             hooverImage.gameObject.SetActive(false);    // hooverImage 비활성화
             activeImage.gameObject.SetActive(true);     // activeImage 활성화
 
