@@ -91,6 +91,8 @@ public class CardManager : MonoBehaviour
         }
     }
 
+    //사용하는 카드 버퍼 따로 만들기
+
     // 카드 버퍼 생성 메서드 (100개의 카드 생성)
     void SetCardBuffer()
     {
@@ -220,8 +222,15 @@ public class CardManager : MonoBehaviour
 
     }
 
-    //Using Card 3개 클릭 인식
-    private int CalculateUsingCard(Card card)
+    //클릭된 카드 (오른쪽 3개 중)
+    public Card SelectCardForSwitch(Card card)
+    {
+        //여기 카드가 오른쪽 클릭된 카드
+        return card;
+    }
+
+    //Using Card 3개 클릭 인식 -> 얘를 CardMouseHandler로 옮겨야함
+    /*private int CalculateUsingCard(Card card)
     {
         float y = card.currentMousePosition.y;
 
@@ -238,7 +247,7 @@ public class CardManager : MonoBehaviour
             CurrCardIndexForSwitch = 1;
         }
         return CurrCardIndexForSwitch;
-    }
+    }*/
 
     public void NotifyCardSelection(Card card)
     {
