@@ -295,49 +295,66 @@ public class CardManager : MonoBehaviour
             return null;
         }
 
-        return null;
+        return Waitingcard_;
 
     }
 
     //ToBeSwitchCard에서 받은 카드를 UsingCard에 넣고 오브젝트 만들기
     private void SwitchCard(Card card)
     {
-        //지금 여기가 이상함 안바뀜 개헷갈려시발
-        if (positionOccupied[RechooseIndex] == true)
+        if(card == null)
         {
-            int SameIndex = -1;
+            Debug.LogError("SwitchCard() 호출 시 WaitingCard가 NULL임!");
+            return;
+        }
 
-            for (int i = 0; i < 4; i++)
+        Debug.Log($"SwitchCard() 실행 - UsingCard[{RechooseIndex}] 위치 변경");
+
+        Card oldCard = UsingCard[RechooseIndex];
+
+        // 1. 기존 UsingCard 삭제
+        if (UsingCard[RechooseIndex] != null)
+        {
+            oldCard = UsingCard[RechooseIndex];
+            Destroy(UsingCard[RechooseIndex].gameObject);
+            UsingCard.RemoveAt(RechooseIndex);
+        }
+
+        // 2. WaitingCard를 새로운 UsingCard로 변경
+        Transform Canvas2Transform = GameObject.Find("Canvas/Background").transform;
+        GameObject newCardObject = Instantiate(cardPrefab, cardPosition[RechooseIndex], Quaternion.identity, Canvas2Transform);
+
+        var newCard = newCardObject.GetComponent<Card>();
+        newCard.Setup(card.carditem, true);
+
+        UsingCard.Insert(RechooseIndex, newCard);
+        Debug.Log($"UsingCard[{RechooseIndex}]에 새 카드 {newCard.name} 추가됨");
+
+        // 3️. 선택한 WaitingCard 비활성화 (사라지는 문제 해결)
+        int waitingIndex = WaitingCard.IndexOf(card);
+        if (waitingIndex != -1)
+        {
+            WaitingCard[waitingIndex].gameObject.SetActive(false);
+            Debug.Log($"WaitingCard[{waitingIndex}] 비활성화됨");
+        }
+        else
+        {
+            Debug.LogWarning("SwitchCard() - 선택한 카드가 WaitingCard 리스트에 없음");
+        }
+
+        for(int i = 0; i < 4; i++)
+        {
+            if (WaitingCard[i] == oldCard)
             {
-                if (!WaitingCard[i].gameObject.activeSelf && WaitingCard[i].carditem == UsingCard[RechooseIndex].carditem)
-                {
-                    SameIndex = i;
-                    break;
-                }
-            }
-
-            if (SameIndex != -1)
-            {
-                Debug.Log($"Replacing UsingCard[{RechooseIndex}] with WaitingCard[{SameIndex}]");
-
-                Destroy(UsingCard[RechooseIndex].gameObject);
-                UsingCard.RemoveAt(RechooseIndex);
-                WaitingCard[SameIndex].gameObject.SetActive(true);
-
-                Transform Canvas2Transform = GameObject.Find("Canvas/Background").transform;
-                GameObject newCardObject = Instantiate(cardPrefab, cardPosition[RechooseIndex], Quaternion.identity, Canvas2Transform);
-
-                var newCard = newCardObject.GetComponent<Card>();
-                newCard.Setup(card.carditem, true);
-                UsingCard.Insert(RechooseIndex, newCard);
-
-                OpenCardSelectionPanel(false);
-            }
-            else
-            {
-                Debug.LogError("No matching WaitingCard found!");
+                WaitingCard[i].gameObject.SetActive(true);
+                oldCard = null;
+                break;
             }
         }
+        // 4️. 패널 닫기
+        OpenCardSelectionPanel(false);
+
+        //TODO WaitingCard에서 다른거 선택시 안나옴
     }
 
     //카드 오브젝트 추가
