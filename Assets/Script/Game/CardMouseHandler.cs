@@ -11,6 +11,11 @@ public class CardMouseHandler : MonoBehaviour, IPointerEnterHandler, IPointerExi
     public float scaleMultiplier = 1.2f; // 확대 배율
     public float duration = 0.2f;       // 애니메이션 지속 시간
 
+    public void SetCardManager(CardManager manager)
+    {
+        cardManager = manager;
+    }
+
     // 초기 설정
     public void Initialize(float multiplier, float animDuration)
     {
@@ -32,22 +37,9 @@ public class CardMouseHandler : MonoBehaviour, IPointerEnterHandler, IPointerExi
         Debug.Log($"Mouse Exit: {gameObject.name}");
         transform.DOScale(originalScale, duration).SetEase(Ease.OutQuad);
     }
+    //------------------------여기까지 확대, 밑에는 클릭------------------------//
 
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        Debug.Log($"Mouse Clicked on: {gameObject.name}");
-
-
-        // 클릭한 카드 감지
-        Card selectedCard = GetClickedCard();
-        //클릭한 카드가 존재하는지 확인, 카드 매니저가 존재하는지 확인
-        //-> 카드 클릭 && 카드매니저 존재할 때만 아래 코드 실행
-        if (selectedCard != null && cardManager != null)
-        {
-            cardManager.SelectCardForSwitch(selectedCard);
-        }
-    }
-    private Card GetClickedCard()
+    private Card GetClickedCard() //마우스로 클릭된 카드를 찾아 리턴
     {
         // 마우스 위치를 월드 좌표로 변환
         Vector3 mousePos = Input.mousePosition;
@@ -60,10 +52,34 @@ public class CardMouseHandler : MonoBehaviour, IPointerEnterHandler, IPointerExi
             if (clickedCard != null)
             {
                 Debug.Log($"Clicked Card: {clickedCard.name}");
+                //클릭된 카드 리턴
                 return clickedCard;
             }
         }
         return null;
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        Debug.Log($"Mouse Clicked on: {gameObject.name}");
+
+        Card selectedCard = GetClickedCard();
+
+        if (selectedCard != null && cardManager != null)
+        {
+            int cardIndex = cardManager.GetUsingCardIndex(selectedCard); // 몇 번째인지 확인
+
+            if (cardIndex != -1) // 클릭한 카드가 UsingCard 리스트 안에 있다면
+            {
+                Debug.Log($"Clicked card is UsingCard[{cardIndex}]");
+                cardManager.CurrCardIndexForSwitch = cardIndex;
+                cardManager.NotifyCardSelection(selectedCard);
+            }
+            else
+            {
+                Debug.Log("Clicked card is NOT in UsingCard");
+            }
+        }
     }
 
 }
