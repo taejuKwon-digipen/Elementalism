@@ -1,6 +1,7 @@
 ﻿using DG.Tweening; // 애니메이션 처리를 위한 DOTween 라이브러리
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting; // 유니티 비주얼 스크립팅 기능
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -299,10 +300,9 @@ public class CardManager : MonoBehaviour
 
     }
 
-    //ToBeSwitchCard에서 받은 카드를 UsingCard에 넣고 오브젝트 만들기
     private void SwitchCard(Card card)
     {
-        if(card == null)
+        if (card == null)
         {
             Debug.LogError("SwitchCard() 호출 시 WaitingCard가 NULL임!");
             return;
@@ -312,38 +312,42 @@ public class CardManager : MonoBehaviour
 
         Card oldCard = null;
 
-        // 1. 기존 UsingCard 삭제
+        // 1️. 기존 UsingCard 삭제
         if (positionOccupied[RechooseIndex] == true)
         {
             oldCard = UsingCard[RechooseIndex];
-            Destroy(UsingCard[RechooseIndex].gameObject);
-            UsingCard.RemoveAt(RechooseIndex);
+            UsignCard[RechooseIndex].Destory();
+            Debug.Log($"이전 카드 {oldCard.name} 비활성화됨 (UsingCard[{RechooseIndex}])");
         }
-
-        if (oldCard != null)
+        else
         {
-            for (int i = 0; i < 4; i++)
-            {
-                if (WaitingCard[i].carditem.ID == oldCard.carditem.ID)
-                {
-                    WaitingCard[i].gameObject.SetActive(true);
-                    oldCard = null;
-                    break;
-                }
-            }
+            positionOccupied[RechooseIndex] = true;
         }
 
-        // 2. WaitingCard를 새로운 UsingCard로 변경
-        Transform Canvas2Transform = GameObject.Find("Canvas/Background").transform;
-        GameObject newCardObject = Instantiate(cardPrefab, cardPosition[RechooseIndex], Quaternion.identity, Canvas2Transform);
+        // 2️⃣ WaitingCard에서 같은 카드 찾아서 활성화
+        Card existingWaitingCard = WaitingCard.FirstOrDefault(wc => !wc.gameObject.activeSelf && wc.carditem.ID == card.carditem.ID);
+
+        if (existingWaitingCard != null)
+        {
+            existingWaitingCard.gameObject.SetActive(true);
+            Debug.Log($"WaitingCard에서 {existingWaitingCard.name} 활성화됨");
+        }
+        else
+        {
+            Debug.LogWarning($"비활성화된 WaitingCard 중 {card.name}을 찾을 수 없음!");
+        }
+
+        // 3️⃣ 새로운 UsingCard 생성
+        Transform canvasTransform = GameObject.Find("Canvas/Background").transform;
+        GameObject newCardObject = Instantiate(cardPrefab, cardPosition[RechooseIndex], Quaternion.identity, canvasTransform);
 
         var newCard = newCardObject.GetComponent<Card>();
         newCard.Setup(card.carditem, true);
+        UsingCard[RechooseIndex] = newCard; // 리스트 업데이트
 
-        UsingCard.Insert(RechooseIndex, newCard);
         Debug.Log($"UsingCard[{RechooseIndex}]에 새 카드 {newCard.name} 추가됨");
 
-        // 3️. 선택한 WaitingCard 비활성화 (사라지는 문제 해결)
+        // 4️⃣ 선택된 WaitingCard 비활성화
         int waitingIndex = WaitingCard.IndexOf(card);
         if (waitingIndex != -1)
         {
@@ -354,11 +358,11 @@ public class CardManager : MonoBehaviour
         {
             Debug.LogWarning("SwitchCard() - 선택한 카드가 WaitingCard 리스트에 없음");
         }
-        // 4️. 패널 닫기
-        OpenCardSelectionPanel(false);
 
-        //TODO WaitingCard에서 다른거 선택시 안나옴
+        // 5️⃣ 패널 닫기
+        OpenCardSelectionPanel(false);
     }
+
 
     //카드 오브젝트 추가
     void AddCard(bool isUse)
