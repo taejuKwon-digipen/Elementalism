@@ -310,14 +310,27 @@ public class CardManager : MonoBehaviour
 
         Debug.Log($"SwitchCard() 실행 - UsingCard[{RechooseIndex}] 위치 변경");
 
-        Card oldCard = UsingCard[RechooseIndex];
+        Card oldCard = null;
 
         // 1. 기존 UsingCard 삭제
-        if (UsingCard[RechooseIndex] != null)
+        if (positionOccupied[RechooseIndex] == true)
         {
             oldCard = UsingCard[RechooseIndex];
             Destroy(UsingCard[RechooseIndex].gameObject);
             UsingCard.RemoveAt(RechooseIndex);
+        }
+
+        if (oldCard != null)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                if (WaitingCard[i].carditem.ID == oldCard.carditem.ID)
+                {
+                    WaitingCard[i].gameObject.SetActive(true);
+                    oldCard = null;
+                    break;
+                }
+            }
         }
 
         // 2. WaitingCard를 새로운 UsingCard로 변경
@@ -340,16 +353,6 @@ public class CardManager : MonoBehaviour
         else
         {
             Debug.LogWarning("SwitchCard() - 선택한 카드가 WaitingCard 리스트에 없음");
-        }
-
-        for(int i = 0; i < 4; i++)
-        {
-            if (WaitingCard[i] == oldCard)
-            {
-                WaitingCard[i].gameObject.SetActive(true);
-                oldCard = null;
-                break;
-            }
         }
         // 4️. 패널 닫기
         OpenCardSelectionPanel(false);
