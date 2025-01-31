@@ -302,6 +302,8 @@ public class CardManager : MonoBehaviour
 
     private void SwitchCard(Card card)
     {
+
+        //바꾼 카드 다시 나오게 하면 됨
         if (card == null)
         {
             Debug.LogError("SwitchCard() 호출 시 WaitingCard가 NULL임!");
@@ -312,42 +314,47 @@ public class CardManager : MonoBehaviour
 
         Card oldCard = null;
 
-        // 1️. 기존 UsingCard 삭제
-        if (positionOccupied[RechooseIndex] == true)
+        //1. 기존카드 존재 -> OldCard 에 카드 저장 삭제
+        if (positionOccupied[RechooseIndex] == true) // 기존 카드가 있을 경우
         {
-            oldCard = UsingCard[RechooseIndex];
-            UsignCard[RechooseIndex].Destory();
-            Debug.Log($"이전 카드 {oldCard.name} 비활성화됨 (UsingCard[{RechooseIndex}])");
-        }
-        else
-        {
-            positionOccupied[RechooseIndex] = true;
+            oldCard = UsingCard[RechooseIndex]; // 기존 카드 저장
+            Debug.Log($"이전 카드: {oldCard.name} (UsingCard[{RechooseIndex}])");
+
+            Destroy(UsingCard[RechooseIndex].gameObject);
+            UsingCard[RechooseIndex] = null; // 인덱스 유지
         }
 
-        // 2️⃣ WaitingCard에서 같은 카드 찾아서 활성화
-        Card existingWaitingCard = WaitingCard.FirstOrDefault(wc => !wc.gameObject.activeSelf && wc.carditem.ID == card.carditem.ID);
-
-        if (existingWaitingCard != null)
-        {
-            existingWaitingCard.gameObject.SetActive(true);
-            Debug.Log($"WaitingCard에서 {existingWaitingCard.name} 활성화됨");
-        }
-        else
-        {
-            Debug.LogWarning($"비활성화된 WaitingCard 중 {card.name}을 찾을 수 없음!");
-        }
-
-        // 3️⃣ 새로운 UsingCard 생성
-        Transform canvasTransform = GameObject.Find("Canvas/Background").transform;
-        GameObject newCardObject = Instantiate(cardPrefab, cardPosition[RechooseIndex], Quaternion.identity, canvasTransform);
+        // 2️⃣ 새로운 카드 생성 후 정확한 위치에 삽입
+        Transform Canvas2Transform = GameObject.Find("Canvas/Background").transform;
+        GameObject newCardObject = Instantiate(cardPrefab, cardPosition[RechooseIndex], Quaternion.identity, Canvas2Transform);
 
         var newCard = newCardObject.GetComponent<Card>();
         newCard.Setup(card.carditem, true);
-        UsingCard[RechooseIndex] = newCard; // 리스트 업데이트
+
+        UsingCard[RechooseIndex] = newCard;
+        positionOccupied[RechooseIndex] = true;
 
         Debug.Log($"UsingCard[{RechooseIndex}]에 새 카드 {newCard.name} 추가됨");
 
-        // 4️⃣ 선택된 WaitingCard 비활성화
+        // 3️⃣ 기존 oldCard를 WaitingCard에서 활성화 (항상 4개 유지)
+        if (oldCard != null)
+        {
+            int inactiveIndex = WaitingCard.FindIndex(wc => !wc.gameObject.activeSelf);
+            if (inactiveIndex != -1)
+            {
+                // 비활성화된 WaitingCard 자리에 oldCard를 다시 배치
+                WaitingCard[inactiveIndex] = oldCard;
+                oldCard.gameObject.SetActive(true);
+                oldCard.transform.position = WaitingCardPosition[inactiveIndex]; // 기존 위치 복구
+                Debug.Log($"WaitingCard[{inactiveIndex}] 위치에 기존 카드 {oldCard.name} 다시 추가됨");
+            }
+            else
+            {
+                Debug.LogWarning("WaitingCard에 빈 슬롯이 없음! 카드 교체 불가능");
+            }
+        }
+
+        // 4️⃣ 선택한 WaitingCard 비활성화 (사라지는 문제 해결 안됨 지피티시발로마)
         int waitingIndex = WaitingCard.IndexOf(card);
         if (waitingIndex != -1)
         {
@@ -361,7 +368,12 @@ public class CardManager : MonoBehaviour
 
         // 5️⃣ 패널 닫기
         OpenCardSelectionPanel(false);
+
+        // 디버깅 로그 추가 (리스트 상태 확인)
+        Debug.Log($"현재 UsingCard 리스트 상태: {string.Join(", ", UsingCard.Select(c => c != null ? c.name : "NULL"))}");
+        Debug.Log($"현재 WaitingCard 리스트 상태: {string.Join(", ", WaitingCard.Select(c => c != null ? c.name : "NULL"))}");
     }
+
 
 
     //카드 오브젝트 추가
