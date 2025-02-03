@@ -67,18 +67,8 @@ public class CardMouseHandler : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
         if (selectedCard != null && cardManager != null)
         {
-            int cardIndex = cardManager.GetUsingCardIndex(selectedCard); // 몇 번째인지 확인
+           cardManager.NotifyCardSelection(selectedCard);
 
-            if (cardIndex != -1) // 클릭한 카드가 UsingCard 리스트 안에 있다면
-            {
-                Debug.Log($"Clicked card is UsingCard[{cardIndex}]");
-                cardManager.CurrCardIndexForSwitch = cardIndex;
-                cardManager.NotifyCardSelection(selectedCard);
-            }
-            else
-            {
-                Debug.Log("Clicked card is NOT in UsingCard");
-            }
         }
     }
 

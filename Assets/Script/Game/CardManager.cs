@@ -42,7 +42,7 @@ public class CardManager : MonoBehaviour
 
     private Card clickedCard; // 클릭된 카드 참조
     int RechooseIndex = 0;
-
+    Card OldCard = null;
 
 
     //오른쪽 카드 3개 위치
@@ -250,128 +250,111 @@ public class CardManager : MonoBehaviour
 
     public void NotifyCardSelection(Card card)
     {
+        //CurrCardIndexForSwitch = WaitingCardIndex
+        //currenttrueindex = old usingcard index
+            
         int cardIndex = GetUsingCardIndex(card); // 클릭한 카드의 인덱스 가져오기
-
-        if (cardIndex != -1) // 클릭한 카드가 UsingCard 리스트 안에 있다면
+        if (cardIndex != -1 && positionOccupied[cardIndex] == true) //UsingCard 선택되고 카드가 이미 선택 -> Switch 준비
         {
-            Debug.Log($"Clicked card is UsingCard[{cardIndex}]");
-
-            CurrCardIndexForSwitch = cardIndex; // 선택한 카드의 위치 저장
-            RechooseIndex = cardIndex;  // 같은 인덱스로 갱신
-
+            OldCard = UsingCard[cardIndex];
+            currenttrueindex = cardIndex;
             OpenCardSelectionPanel(true);
         }
-        else  // WaitingCard를 클릭한 경우
+        else if( cardIndex != -1 && positionOccupied[cardIndex] ==false) //UsingCard선택되고 카드 아무것도없을때 -> AddCard준비
         {
-            Debug.Log("Clicked card is NOT in UsingCard, switching...");
-
-            ToBeSwitchCard(card);
-            SwitchCard(Waitingcard_);
-
+            OpenCardSelectionPanel(true);
+            currenttrueindex = cardIndex;
+        }
+        else if(cardIndex == -1)  //WaitingCard 선택됨
+        {
+            CurrCardIndexForSwitch = FindWaitingCard(card);
+            if (OldCard == null)
+            {
+                AddUsingCard(card);
+            }else if( OldCard != null)
+            { 
+                SwitchCard(card);
+                OldCard = null;                  
+            }
             card.gameObject.SetActive(false);
+            OpenCardSelectionPanel(false);
         }
     }
 
-
-
-    //카드 바꾸기 위해서 WaitingCard포지션에서 마우스포인터와 가까운 카드를 찾아서 Card Waitingcard_를 넘겨줌 
-    private Card ToBeSwitchCard(Card card)
+    public void AddUsingCard(Card waitingcard)
     {
-        Vector3 mousePosition = card.currentMousePosition; // 화면 좌표
-        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, Mathf.Abs(Camera.main.transform.position.z)));
-        Debug.Log("WC- WorldPosition :" + worldPosition);
+        //CurrCardIndexForSwitch = WaitingCardIndex
+        //currenttrueindex = old usingcard index
 
-        int index = WaitingCardPosition.FindIndex(pos => Vector3.Distance(pos, worldPosition) < 1.5f);
+        Destroy(UsingCard[currenttrueindex].gameObject);
 
+        Transform Canvas2Transform = GameObject.Find("Canvas/Background").transform;
+        GameObject newCardObject = Instantiate(cardPrefab, cardPosition[currenttrueindex], Quaternion.identity, Canvas2Transform);
 
-        //이것도 마우스핸들러로 바꿀수있을듯?
-        if (index >= 0)
-        {
-            Debug.Log("Waitingcard Index: " + index);
-            Waitingcard_ = WaitingCard[index];
-        }
-        else
-        {
-            Debug.Log("웨이팅카드 ToBeSwitchCard에서 에러");
-            return null;
-        }
+        var newCard = newCardObject.GetComponent<Card>();
+        newCard.Setup(waitingcard.carditem, true);
 
-        return Waitingcard_;
+        UsingCard[currenttrueindex] = newCard;
+        positionOccupied[currenttrueindex] = true;
 
+        Debug.Log($"UsingCard[{RechooseIndex}]에 새 카드 {newCard.name} 추가됨");
     }
 
-    private void SwitchCard(Card card)
+    public int FindWaitingCard(Card card)
     {
+        for(int i = 0; i < WaitingCard.Count; i++)
+        {
+            if (WaitingCard[i] == card && WaitingCard[i].gameObject.activeSelf ==true)
+            {
+                return i;
+            }
+        }
+        return -1;  
+    }
 
+    private void SwitchCard(Card waitingcard) // 이 카드는 WaitingCard
+    {
         //바꾼 카드 다시 나오게 하면 됨
-        if (card == null)
+        if (waitingcard == null)
         {
             Debug.LogError("SwitchCard() 호출 시 WaitingCard가 NULL임!");
             return;
         }
+        //CurrCardIndexForSwitch = WaitingCardIndex
+        //currenttrueindex = old usingcard index
 
-        Debug.Log($"SwitchCard() 실행 - UsingCard[{RechooseIndex}] 위치 변경");
 
-        Card oldCard = null;
+        //1. 기존카드 존재 -> OldCard 에 카드 저장 후 삭제
+        Card oldcard = UsingCard [currenttrueindex];
+        Debug.Log($"이전 카드: {oldcard.name} (UsingCard[{RechooseIndex}])");
 
-        //1. 기존카드 존재 -> OldCard 에 카드 저장 삭제
-        if (positionOccupied[RechooseIndex] == true) // 기존 카드가 있을 경우
-        {
-            oldCard = UsingCard[RechooseIndex]; // 기존 카드 저장
-            Debug.Log($"이전 카드: {oldCard.name} (UsingCard[{RechooseIndex}])");
+        Destroy(UsingCard[currenttrueindex].gameObject);
+  
 
-            Destroy(UsingCard[RechooseIndex].gameObject);
-            UsingCard[RechooseIndex] = null; // 인덱스 유지
-        }
-
-        // 2️⃣ 새로운 카드 생성 후 정확한 위치에 삽입
+        // 2️. 새로운 카드 생성 후 삽입
         Transform Canvas2Transform = GameObject.Find("Canvas/Background").transform;
-        GameObject newCardObject = Instantiate(cardPrefab, cardPosition[RechooseIndex], Quaternion.identity, Canvas2Transform);
+        GameObject newCardObject = Instantiate(cardPrefab, cardPosition[CurrCardIndexForSwitch], Quaternion.identity, Canvas2Transform); //여기서 에러뜸
 
         var newCard = newCardObject.GetComponent<Card>();
-        newCard.Setup(card.carditem, true);
+        newCard.Setup(waitingcard.carditem, true);
 
-        UsingCard[RechooseIndex] = newCard;
-        positionOccupied[RechooseIndex] = true;
+        UsingCard[currenttrueindex] = newCard;
+        positionOccupied[currenttrueindex] = true;
 
         Debug.Log($"UsingCard[{RechooseIndex}]에 새 카드 {newCard.name} 추가됨");
 
-        // 3️⃣ 기존 oldCard를 WaitingCard에서 활성화 (항상 4개 유지)
-        if (oldCard != null)
+        // 3️. 기존 oldCard를 WaitingCard에서 활성화 
+        if (oldcard != null)
         {
-            int inactiveIndex = WaitingCard.FindIndex(wc => !wc.gameObject.activeSelf);
-            if (inactiveIndex != -1)
+            for( int i = 0; i < WaitingCard.Count; i++)
             {
-                // 비활성화된 WaitingCard 자리에 oldCard를 다시 배치
-                WaitingCard[inactiveIndex] = oldCard;
-                oldCard.gameObject.SetActive(true);
-                oldCard.transform.position = WaitingCardPosition[inactiveIndex]; // 기존 위치 복구
-                Debug.Log($"WaitingCard[{inactiveIndex}] 위치에 기존 카드 {oldCard.name} 다시 추가됨");
-            }
-            else
-            {
-                Debug.LogWarning("WaitingCard에 빈 슬롯이 없음! 카드 교체 불가능");
+                if(oldcard == WaitingCard[i] && WaitingCard[i].gameObject.activeSelf == false)
+                {
+                    WaitingCard[i].gameObject.SetActive(true);
+                }
             }
         }
-
-        // 4️⃣ 선택한 WaitingCard 비활성화 (사라지는 문제 해결 안됨 지피티시발로마)
-        int waitingIndex = WaitingCard.IndexOf(card);
-        if (waitingIndex != -1)
-        {
-            WaitingCard[waitingIndex].gameObject.SetActive(false);
-            Debug.Log($"WaitingCard[{waitingIndex}] 비활성화됨");
-        }
-        else
-        {
-            Debug.LogWarning("SwitchCard() - 선택한 카드가 WaitingCard 리스트에 없음");
-        }
-
-        // 5️⃣ 패널 닫기
-        OpenCardSelectionPanel(false);
-
-        // 디버깅 로그 추가 (리스트 상태 확인)
-        Debug.Log($"현재 UsingCard 리스트 상태: {string.Join(", ", UsingCard.Select(c => c != null ? c.name : "NULL"))}");
-        Debug.Log($"현재 WaitingCard 리스트 상태: {string.Join(", ", WaitingCard.Select(c => c != null ? c.name : "NULL"))}");
+        oldcard = null;
     }
 
 
