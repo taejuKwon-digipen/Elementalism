@@ -56,6 +56,7 @@ public class CardMouseHandler : MonoBehaviour, IPointerEnterHandler, IPointerExi
                 return clickedCard;
             }
         }
+        ResetScale();
         return null;
     }
 
@@ -68,8 +69,12 @@ public class CardMouseHandler : MonoBehaviour, IPointerEnterHandler, IPointerExi
         if (selectedCard != null && cardManager != null)
         {
            cardManager.NotifyCardSelection(selectedCard);
-
         }
+        
+    }
+    public void ResetScale()
+    {
+        transform.localScale = originalScale; // 크기를 원래대로 되돌림
     }
 
 }

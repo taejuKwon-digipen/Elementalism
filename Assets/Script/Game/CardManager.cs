@@ -333,7 +333,7 @@ public class CardManager : MonoBehaviour
 
         // 2️. 새로운 카드 생성 후 삽입
         Transform Canvas2Transform = GameObject.Find("Canvas/Background").transform;
-        GameObject newCardObject = Instantiate(cardPrefab, cardPosition[CurrCardIndexForSwitch], Quaternion.identity, Canvas2Transform); //여기서 에러뜸
+        GameObject newCardObject = Instantiate(cardPrefab, cardPosition[currenttrueindex], Quaternion.identity, Canvas2Transform); //여기서 에러뜸
 
         var newCard = newCardObject.GetComponent<Card>();
         newCard.Setup(waitingcard.carditem, true);
@@ -343,18 +343,24 @@ public class CardManager : MonoBehaviour
 
         Debug.Log($"UsingCard[{RechooseIndex}]에 새 카드 {newCard.name} 추가됨");
 
+        if (newCard.TryGetComponent<CardMouseHandler>(out var newCardHandler))
+        {
+            newCardHandler.ResetScale();  // 새 카드 크기 초기화
+        }
+
         // 3️. 기존 oldCard를 WaitingCard에서 활성화 
         if (oldcard != null)
         {
             for( int i = 0; i < WaitingCard.Count; i++)
             {
-                if(oldcard == WaitingCard[i] && WaitingCard[i].gameObject.activeSelf == false)
+                if(oldcard.gameObject.name == WaitingCard[i].gameObject.name && !WaitingCard[i].gameObject.activeSelf )
                 {
                     WaitingCard[i].gameObject.SetActive(true);
                 }
             }
+            oldcard = null;
         }
-        oldcard = null;
+
     }
 
 
