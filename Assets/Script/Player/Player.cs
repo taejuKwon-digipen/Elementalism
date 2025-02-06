@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,11 +6,24 @@ public class Player : Entity
 {
     public GameObject ball;
     private FocusManager focusManager;
+    public ShopManager shopManager;
+    public int totalMonsters = 1;    
+    private int defeatedMonsters = 0;
+    public int Gold { get; set; } = 100;
+    public int MaxHP = 100;
+    public int CurrentHP { get; private set; }
+    private Animator animator;
+    public GameObject fireballPrefab;
+    public Transform fireballSpawnPoint;
+    public float fireballSpeed = 5f;
+
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
         focusManager = FindAnyObjectByType<FocusManager>();
+        CurrentHP = MaxHP;
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -44,6 +57,7 @@ public class Player : Entity
         if (entity == null || entity.HP <= 0)
             return;
 
+        // 볼 생성 및 발사
         Vector3 newPosition = this.transform.position;
         newPosition.y += this.GetComponent<RectTransform>().sizeDelta.y / 2;
 
@@ -53,6 +67,35 @@ public class Player : Entity
 
         behavior.focusedEnemy = enemyObject;
         behavior.player = this;
-        behavior.damage = damage; // 공격력 설정
+        behavior.damage = damage;
+
+        // 애니메이션 실행
+        if (animator != null)
+        {
+            animator.SetTrigger("Attack");
+        }
+    }
+
+    public void HealHP(int amount)
+    {
+        CurrentHP = Mathf.Min(CurrentHP + amount, MaxHP);
+    }
+
+    public void OnMonsterDefeated()
+    {
+        defeatedMonsters++;
+        Gold += 50;
+        
+        Debug.Log($"Shop Debug: Monster defeated! Count: {defeatedMonsters}/{totalMonsters}");
+
+        if (defeatedMonsters >= totalMonsters)
+        {
+            Debug.Log("Shop Debug: All monsters defeated! Opening shop...");
+            if (shopManager != null)
+            {
+                shopManager.OpenShop();
+            }
+            defeatedMonsters = 0;
+        }
     }
 }

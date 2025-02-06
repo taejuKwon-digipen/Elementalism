@@ -15,7 +15,7 @@ public class CardManager : MonoBehaviour
     public int currentCardIndex = 0;// 현재 카드의 인덱스
 
     [SerializeField] CardItemSO carditemso; // 카드 데이터베이스 (ScriptableObject 사용)
-    [SerializeField] GameObject cardPrefab; // 카드 생성에 사용될 프리팹
+    public GameObject cardPrefab;  // Inspector에서 할당
 
     [SerializeField] public List<Card> UsingCard; // 사용 중인 카드 리스트 (오른쪽 3개)
     [SerializeField] public List<Card> WaitingCard; // 대기 중인 카드 리스트 (왼쪽 4개)
@@ -51,6 +51,16 @@ public class CardManager : MonoBehaviour
     };
 
     public int CurrCardIndexForSwitch = 0;
+
+    [SerializeField] private GameObject UsingCardPanel;  // 사용 중인 카드 패널
+    
+    // 사용 중인 카드들의 위치
+    private List<Vector3> UsingCardPositions = new List<Vector3>
+    {
+        new Vector3(7, 3f, 0),
+        new Vector3(7, 0, 0),
+        new Vector3(7, -3f, 0)
+    };
 
     //수정중 - 버튼 클릭 시 패널 닫히게
     public void XButtonClicked()
@@ -372,6 +382,32 @@ public class CardManager : MonoBehaviour
             WaitingCard.Add(card); // 생성된 카드를 리스트에 추가
         }
 
+    }
+
+    // 카드를 덱에 추가하는 메서드
+    public void AddCardToBuffer(CardItem cardItem)
+    {
+        // 비어있는 위치 찾기
+        for (int i = 0; i < 3; i++)
+        {
+            if (!positionOccupied[i])
+            {
+                // 새 카드 생성 및 설정
+                GameObject newCard = Instantiate(cardPrefab, UsingCardPanel.transform);
+                Card cardComponent = newCard.GetComponent<Card>();
+                cardComponent.Setup(cardItem, true);
+                
+                // 카드 위치 설정
+                RectTransform rectTransform = newCard.GetComponent<RectTransform>();
+                rectTransform.anchoredPosition = UsingCardPositions[i];
+                
+                // 카드 리스트에 추가
+                UsingCard[i] = cardComponent;
+                positionOccupied[i] = true;
+                
+                break;
+            }
+        }
     }
 }
 

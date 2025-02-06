@@ -25,11 +25,22 @@ public class BallBehavior : MonoBehaviour
 
         transform.position = Vector3.MoveTowards(transform.position, enemyPosition, speed * Time.fixedDeltaTime);
 
-        // ��ǥ�� �����ߴ��� Ȯ��
+        // 목표에 도달했는지 확인
         if (Vector3.Distance(transform.position, enemyPosition) <= 0.1f)
         {
-            //entity.HP -= damage;
+            int previousHP = entity.HP;
             entity.Hit(player, player.baseEntity.Type);
+            
+            // 몬스터가 죽었는지 확인
+            if (previousHP > 0 && entity.HP <= 0)
+            {
+                Player playerComponent = player as Player;
+                if (playerComponent != null)
+                {
+                    playerComponent.OnMonsterDefeated();
+                }
+            }
+            
             Destroy(this.gameObject);
         }
     }

@@ -17,7 +17,7 @@ public class EnemyManager : MonoBehaviour
 
     [SerializeField]
     private List<GameObject> onFieldEntities;
-    private readonly int[] numbers = {4};//{ 1, 2, 2, 3, 3, 1 }; // Number of enemies to spawn at the next wave.
+    private readonly int[] numbers = {3};//{ 1, 2, 2, 3, 3, 1 }; // Number of enemies to spawn at the next wave.
     private readonly List<SpawnAvailable> areSpawnPointsAvailable = new();
 
     public bool isEnemyTurn = false;
