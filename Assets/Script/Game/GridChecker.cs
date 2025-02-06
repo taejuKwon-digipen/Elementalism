@@ -128,78 +128,98 @@ public class GridChecker : MonoBehaviour
 
         for (int i = 0; i < 3; i++)
         {
-            // null 체크 추가
             if (UsingCard_[i] == null || UsingCard_[i].carditem == null)
             {
-                Debug.LogWarning($"Card at index {i} is null or has no carditem");
+                Debug.LogWarning($"GridChecker : Card at index {i} is null or has no carditem");
                 continue;
             }
 
             int totalDamage = 0;
-            int blockCount = 0;
-            int oraBlockCount = 0;
+            int matchedBlockCount = 0;  // 매칭된 블록 수
+            int oraBlockCount = 0;      // 터진 오라 블록 수
             ShapeData cardShape = UsingCard_[i].carditem.cardShape;
             
-            // cardShape null 체크 추가
             if (cardShape == null)
             {
-                Debug.LogWarning($"Card at index {i} has no shape data");
+                Debug.LogWarning($"GridChecker : Card at index {i} has no shape data");
                 continue;
             }
 
-            int cardRows = cardShape.rows;
-            int cardColumns = cardShape.columns;
-            int cardDamage = UsingCard_[i].carditem.PowerLeft;
-            int cardCritDamage = UsingCard_[i].carditem.PowerRight;
+            int cardDamage = UsingCard_[i].carditem.PowerLeft;      // 기본 데미지
+            int cardCritDamage = UsingCard_[i].carditem.PowerRight; // 크리티컬 데미지
             int cardID = UsingCard_[i].carditem.ID;
             ElementType createdElementType = UsingCard_[i].carditem.CreatedElementType;
 
-            // 슬라이딩 윈도우 방식으로 그리드를 순회합니다.
-            for (int row = 0; row <= gridRows - cardRows; row++)
+            // 그리드 순회하며 매칭 확인
+            for (int row = 0; row <= gridRows - cardShape.rows; row++)
             {
-                for (int col = 0; col <= gridColumns - cardColumns; col++)
+                for (int col = 0; col <= gridColumns - cardShape.columns; col++)
                 {
-                    // 카드 모양이 그리드의 현재 서브 그리드에 맞는지 검사합니다.
                     if (CheckIfBlocksMatch(grid, cardShape, row, col))
                     {
-                        // 매칭된 블록을 강조하는 코루틴을 실행합니다.
                         yield return StartCoroutine(HighlightMatchedBlocks(grid, cardShape, row, col));
-                        // 강조 후 블록 변경
+                        
+                        // 매칭된 블록 수 계산
+                        int currentMatchedBlocks = CountMatchedBlocks(cardShape);
+                        matchedBlockCount += currentMatchedBlocks;
+                        
+                        // 오라 블록 수 계산
+                        oraBlockCount += CountOraBlocks(grid, cardShape, row, col);
+                        
+                        // 블록 변경
                         ChangeBlocksAfterMatch(grid, cardShape, row, col, createdElementType, cardID);
-
-                        // 카드 블럭 수 더하기
-                        blockCount += CountBlocksInShape(cardShape);
-
-                        oraBlockCount = CountOraBlocks(grid, cardShape, row, col);
-
                     }
                 }
             }
-            //Debug.Log("count : " + totalDamage);
 
+            // ID 9 카드의 특수 효과
             if (cardID == 9)
-                addDamage = blockCount;
+                addDamage = matchedBlockCount;
 
-            if(oraBlockCount > 0)
+            // 데미지 계산
+            if (oraBlockCount > 0)
             {
-                totalDamage = cardDamage * blockCount;
+                // 오라 블록이 있으면 크리티컬 데미지
+                totalDamage = cardCritDamage * matchedBlockCount;
+                Debug.Log($"GridChecker : Critical Hit! Blocks: {matchedBlockCount}, Ora blocks: {oraBlockCount}, Damage: {totalDamage}");
             }
             else
+
             {
-                totalDamage = cardCritDamage * blockCount;
+                // 일반 데미지
+                totalDamage = cardDamage * matchedBlockCount;
+                Debug.Log($"GridChecker : Normal Hit! Blocks: {matchedBlockCount}, Damage: {totalDamage}");
             }
 
-            //Debug.Log("total damage: " + totalDamage);
 
             // 공격 실행
-            if (totalDamage != 0)
+            if (totalDamage > 0)
+            {
                 player.AttackWithDamage(totalDamage + addDamage);
+            }
 
-            // 다음 카드로 넘어가기 전에 약간의 딜레이를 줍니다.
             yield return new WaitForSeconds(0.5f);
         }
+        
         DisableAllActiveImages();
         ReplaceOraImages();
+    }
+
+    // 매칭된 블록 수를 계산하는 메서드
+    private int CountMatchedBlocks(ShapeData cardShape)
+    {
+        int count = 0;
+        for (int row = 0; row < cardShape.rows; row++)
+        {
+            for (int col = 0; col < cardShape.columns; col++)
+            {
+                if (cardShape.board[row].colum[col] != ElementType.None)
+                {
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 
     // Ora 활성화된 블록 수 계산
@@ -331,24 +351,6 @@ public class GridChecker : MonoBehaviour
                 }
             }
         }
-    }
-
-
-    // 카드 모양의 블록 수를 계산하는 메서드
-    private int CountBlocksInShape(ShapeData shape)
-    {
-        int count = 0;
-        for (int row = 0; row < shape.rows; row++)
-        {
-            for (int col = 0; col < shape.columns; col++)
-            {
-                if (shape.board[row].colum[col] != ElementType.None)
-                {
-                    count++;
-                }
-            }
-        }
-        return count;
     }
 
 }

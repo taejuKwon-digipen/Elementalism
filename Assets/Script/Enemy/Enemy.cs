@@ -25,11 +25,11 @@ public abstract class Enemy : Entity
         player = GameObject.FindWithTag("Player").GetComponentInChildren<Player>();
     }
 
-    public override int Hit(Entity attacker, EntityType attackType)
+    public override int Hit(Entity attacker, EntityType attackType, int damageAmount)
     {
-        int damages = DamageManager.ComputeDamages(attacker, this, attackType);
-        this.HP -= damages;
-        if (this.HP <= 0) {
+        this.HP -= damageAmount;
+        if (this.HP <= 0)
+        {
             this.HP = 0;
             if (this.transform.parent.Find("HealthBar") != null)
                 Destroy(this.transform.parent.Find("HealthBar").gameObject);
@@ -39,7 +39,7 @@ public abstract class Enemy : Entity
             
             StartCoroutine(Fade());
         }
-        return damages;
+        return damageAmount;
     }
 
     protected IEnumerator Fade()
@@ -77,6 +77,22 @@ public abstract class Enemy : Entity
             this.transform.parent.position = currentPosition;
             yield return null;
         }
+        this.transform.parent.position = finalPosition;
+    }
+
+    protected IEnumerator GoBackward(float xDistance)
+    {
+        float elapsedTime = 0.0f;
+        var velocity = UnityEngine.Vector3.zero;
+        var currentPosition = this.transform.parent.position;
+        var finalPosition = new UnityEngine.Vector3(currentPosition.x + xDistance, currentPosition.y, currentPosition.z);
+
+        while (elapsedTime < 0.7f) {
+            elapsedTime += Time.deltaTime;
+            this.transform.parent.position = UnityEngine.Vector3.SmoothDamp(this.transform.parent.position, finalPosition, ref velocity, 0.7f);
+            yield return null;
+        }
+
         this.transform.parent.position = finalPosition;
     }
 

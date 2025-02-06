@@ -22,7 +22,7 @@ public class Fighter : Enemy
             yield break;
         }
         animator.SetTrigger("Attack");
-        player.Hit(this, baseEntity.Type);
+        player.Hit(this, baseEntity.Type, baseEntity.Attack);
         yield return null;
     }
 

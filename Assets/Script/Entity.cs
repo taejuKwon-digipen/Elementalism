@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Entity : MonoBehaviour
+public abstract class Entity : MonoBehaviour
 {
     public EntityBase baseEntity;
     public int HP;
@@ -24,10 +24,13 @@ public class Entity : MonoBehaviour
       * </summary>
       * <param name="attack">Attack statistic of the other entity </param>
       */
-    public virtual int Hit(Entity attacker, EntityType attackType)
+    public virtual int Hit(Entity attacker, EntityType attackType, int damageAmount)
     {
-        int damages = DamageManager.ComputeDamages(attacker, this, attackType);
-        this.HP -=  damages;
-        return damages;
+        this.HP -= damageAmount;
+        if (this.HP <= 0)
+        {
+            this.HP = 0;
+        }
+        return damageAmount;
     }
 }

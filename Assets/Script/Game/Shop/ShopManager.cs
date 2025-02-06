@@ -21,8 +21,10 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private Player player;
     [SerializeField] private CardManager cardManager;
     [SerializeField] private CardItemSO cardDatabase;
-    
+    [SerializeField] private EnemyManager enemyManager;
+
     private List<Card> shopCards = new List<Card>();
+    private bool isShopOpen = false;  // 상점 열림 상태 추적
 
     private void Start()
     {
@@ -36,6 +38,15 @@ public class ShopManager : MonoBehaviour
         shopPanel.SetActive(true);
         GenerateShopCards();
         UpdateUI();
+    }
+
+    private void Update()
+    {
+        if(!isShopOpen && enemyManager.IsAllEnemiesDefeated())
+        {
+            OpenShop();
+            isShopOpen = true;  // 상점이 열렸음을 표시
+        }
     }
 
     private void GenerateShopCards()
@@ -92,5 +103,12 @@ public class ShopManager : MonoBehaviour
     {
         goldText.text = $"Gold: {player.Gold}";
         healCostText.text = $"Heal ({healAmount} HP) - {healCost} Gold";
+    }
+
+    // 상점을 닫을 때 isShopOpen 리셋
+    public void CloseShop()
+    {
+        shopPanel.SetActive(false);
+        isShopOpen = false;  // 다음 라운드를 위해 리셋
     }
 }

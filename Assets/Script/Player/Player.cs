@@ -81,17 +81,5 @@ public class Player : Entity
     {
         defeatedMonsters++;
         Gold += 50;
-        
-        Debug.Log($"Shop Debug: Monster defeated! Count: {defeatedMonsters}/{totalMonsters}");
-
-        if (defeatedMonsters >= totalMonsters)
-        {
-            Debug.Log("Shop Debug: All monsters defeated! Opening shop...");
-            if (shopManager != null)
-            {
-                shopManager.OpenShop();
-            }
-            defeatedMonsters = 0;
-        }
     }
 }

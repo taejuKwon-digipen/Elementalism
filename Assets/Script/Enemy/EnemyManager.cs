@@ -34,13 +34,19 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void Start()
     {
         SpawnNewEnemies();
     }
 
+    public bool IsAllEnemiesDefeated()
+    {
+        return onFieldEntities.Count == 0;
+    }
+
     /**
       * <summary>Spawn a random amount of enemies when all enemies are defeated</summary>
+
       */
     private void SpawnNewEnemies()
     {

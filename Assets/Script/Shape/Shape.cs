@@ -32,6 +32,8 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
 
     private Vector3 _startPosition;
     private bool _shapeActive = true;
+    private bool _isSelected = false;
+
     public void Awake()
     {
         _shapeStartScale = this.GetComponent<RectTransform>().localScale;
@@ -274,8 +276,9 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     // 드래그 시작 시 호출되는 메서드
     public void OnBeginDrag(PointerEventData eventData)
     {
-        this.GetComponent<RectTransform>().localScale = shapeSelectedScale; // 선택된 상태로 스케일 변경
-        _isDragging = true; // 드래그 중 상태 설정
+        this.GetComponent<RectTransform>().localScale = shapeSelectedScale;
+        _isDragging = true;
+        _isSelected = true;
     }
 
     // 드래그 중에 호출되는 메서드
@@ -295,10 +298,16 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     // 드래그 종료 시 호출되는 메서드
     public void OnEndDrag(PointerEventData eventData)
     {
-        this.GetComponent<RectTransform>().localScale = _shapeStartScale; // 스케일을 원래대로 변경
-        _isDragging = false; // 드래그 중 상태 해제
-        cameraShakeFeedback.PlayFeedbacks();
-        GameEvents.CheckIfShapeCanBePlaced(); // Shape를 배치할 수 있는지 체크하는 이벤트 호출
+        this.GetComponent<RectTransform>().localScale = _shapeStartScale;
+        _isDragging = false;
+        
+        // 유효한 위치에 놓였는지 확인
+        if (_isSelected)
+        {
+            cameraShakeFeedback.PlayFeedbacks();
+            GameEvents.CheckIfShapeCanBePlaced();
+        }
+        _isSelected = false;
     }
     
     // 모양을 회전시키는 메서드
@@ -324,5 +333,10 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
         _transform.localScale = _shapeStartScale;
         _isDragging = false;
         ActivateShape();
+    }
+
+    public bool IsSelected()
+    {
+        return _isSelected;
     }
 }

@@ -29,7 +29,7 @@ public class BallBehavior : MonoBehaviour
         if (Vector3.Distance(transform.position, enemyPosition) <= 0.1f)
         {
             int previousHP = entity.HP;
-            entity.Hit(player, player.baseEntity.Type);
+            entity.Hit(player, player.baseEntity.Type, damage);
             
             // 몬스터가 죽었는지 확인
             if (previousHP > 0 && entity.HP <= 0)

@@ -2388,6 +2388,7 @@ MonoBehaviour:
   player: {fileID: 1217043235}
   cardManager: {fileID: 132627233}
   cardDatabase: {fileID: 11400000, guid: a247e1fa27649624ea12313feb6a6e1d, type: 2}
+  enemyManager: {fileID: 70329809}
 --- !u!4 &143156546
 Transform:
   m_ObjectHideFlags: 0

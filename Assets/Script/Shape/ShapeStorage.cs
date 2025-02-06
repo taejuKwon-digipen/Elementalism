@@ -5,6 +5,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class ShapeStorage : MonoBehaviour
 {
@@ -37,20 +38,42 @@ public class ShapeStorage : MonoBehaviour
     {
         foreach(var shape in shapeList) 
         {
-            if(shape.IsOnStartPosition() == false && shape.IsAnyOfShapeSquareActive())
+            if(shape.IsSelected() && shape.IsAnyOfShapeSquareActive())
                 return shape;
         }
-
-        Debug.LogError("There is no shape selected!");
+        
+        // 에러 대신 경고 메시지로 변경
+        Debug.LogWarning("No shape is currently selected");
         return null;
     }
 
     private void RequestNewShapes()
     {
+        // 이전 Shape 데이터 저장
+        List<ShapeData> previousShapes = new List<ShapeData>();
         foreach (var shape in shapeList)
         {
-            var shapeIndex = UnityEngine.Random.Range(0, shapeData.Count);
-            shape.RequestNewShape(shapeData[shapeIndex]);
+            if (shape.CurrentShapeData != null)
+            {
+                previousShapes.Add(shape.CurrentShapeData);
+            }
+        }
+
+        // 새로운 Shape 생성 시 이전과 다른 모양 선택
+        foreach (var shape in shapeList)
+        {
+            var availableShapes = shapeData.Where(s => !previousShapes.Contains(s)).ToList();
+            if (availableShapes.Count > 0)
+            {
+                var shapeIndex = UnityEngine.Random.Range(0, availableShapes.Count);
+                shape.RequestNewShape(availableShapes[shapeIndex]);
+            }
+            else
+            {
+                // 모든 모양이 사용된 경우 랜덤 선택
+                var shapeIndex = UnityEngine.Random.Range(0, shapeData.Count);
+                shape.RequestNewShape(shapeData[shapeIndex]);
+            }
         }
     }
 
