@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;// UI 관련 기능을 위한 네임스페이스
 
+
 public class CardManager : MonoBehaviour
 {
     // 싱글톤 패턴: CardManager의 인스턴스
@@ -100,6 +101,11 @@ public class CardManager : MonoBehaviour
         }
     }
 
+    private void SaveScriptableObject()
+    {
+        UnityEditor.EditorUtility.SetDirty(carditemso);
+    }
+
     private void SetUnlockedCard()
     {
         for (int i = 0; i < carditemso.items.Length; i++)
@@ -107,9 +113,9 @@ public class CardManager : MonoBehaviour
             CardItem cardditem = carditemso.items[i];
             Items.Add(cardditem);
         }
-
+        SaveScriptableObject();
         //IsUnlocked가 true인 카드들만 모임
-        UnlockedCards = carditemso.items.Where(Items => Items.IsUnlocked==false).ToList(); //왜 true를 못받아올까?
+        UnlockedCards = carditemso.items.Where(Items => Items.IsUnlocked==true).ToList(); //왜 true를 못받아올까?
 
     }
 
@@ -129,8 +135,6 @@ public class CardManager : MonoBehaviour
         {
             ItemBuffer = UnlockedCards;
         }
-
-        
 
         /*// 카드 데이터베이스에서 Percent 값에 따라 버퍼 생성
         for (int i = 0; i < carditemso.items.Length; i++)

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI; // UI 관련 스크립트에 활용
 
@@ -51,7 +52,14 @@ public class CardItem
 
 
 [CreateAssetMenu(fileName = "ItemSO", menuName = "Scriptable Object/ItemSO")]
-public class CardItemSO: ScriptableObject
+public class CardItemSO : ScriptableObject
 {
     public CardItem[] items;
+
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        EditorUtility.SetDirty(this);
+    }
+#endif
 }
