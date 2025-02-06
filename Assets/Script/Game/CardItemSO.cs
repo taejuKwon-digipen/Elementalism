@@ -33,6 +33,7 @@ public class CardItem
     public bool UseDraw = false;
 
     public bool UseImage = false;
+    public bool IsUnlocked = false;
 
     public ShapeData cardShape; // 카드 모양 (ShapeData 사용)
     public ElementType CreatedElementType;

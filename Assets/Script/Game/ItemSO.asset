@@ -19,12 +19,13 @@ MonoBehaviour:
     PowerRight: 4
     CardDescription: Low Damage
     UseMagic: 0
-    Percent: 11
+    Percent: 3
     cardImage: {fileID: 2800000, guid: ff81e51fb26b3ff4da6cd67cdae55a04, type: 3}
     UseProp: 1
     UseBuff: 0
     UseDraw: 0
     UseImage: 0
+    IsUnlocked: 1
     cardShape: {fileID: 11400000, guid: 1776bba0fbed59d4b86c945af6c5d67b, type: 2}
     CreatedElementType: 0
   - CardName: Aqua Splash
@@ -33,12 +34,13 @@ MonoBehaviour:
     PowerRight: 4
     CardDescription: Low Damage
     UseMagic: 0
-    Percent: 11
+    Percent: 3
     cardImage: {fileID: 2800000, guid: bc62c7dae0fb89e44aa8e55f90063197, type: 3}
     UseProp: 1
     UseBuff: 0
     UseDraw: 0
     UseImage: 0
+    IsUnlocked: 1
     cardShape: {fileID: 11400000, guid: bc434b102b587314b882a6efb2de2a27, type: 2}
     CreatedElementType: 0
   - CardName: Stone Hurl
@@ -47,12 +49,13 @@ MonoBehaviour:
     PowerRight: 4
     CardDescription: Low Damage
     UseMagic: 0
-    Percent: 11
+    Percent: 3
     cardImage: {fileID: 2800000, guid: c1a2e8ad29173a348a47ad13042fad59, type: 3}
     UseProp: 1
     UseBuff: 0
     UseDraw: 0
     UseImage: 0
+    IsUnlocked: 1
     cardShape: {fileID: 11400000, guid: 009803ddf1fecca4480a640fc6a288b9, type: 2}
     CreatedElementType: 0
   - CardName: Gentle Breeze
@@ -61,12 +64,13 @@ MonoBehaviour:
     PowerRight: 4
     CardDescription: Low Damage
     UseMagic: 0
-    Percent: 11
+    Percent: 3
     cardImage: {fileID: 2800000, guid: 414341b633bfa374b87f70dadd6d4a45, type: 3}
     UseProp: 1
     UseBuff: 0
     UseDraw: 0
     UseImage: 0
+    IsUnlocked: 1
     cardShape: {fileID: 11400000, guid: 455377b646b9aee4e82ef29b8c404a15, type: 2}
     CreatedElementType: 0
   - CardName: Lava Surge
@@ -75,12 +79,13 @@ MonoBehaviour:
     PowerRight: 6
     CardDescription: Create lava terrain
     UseMagic: 1
-    Percent: 4.75
+    Percent: 1
     cardImage: {fileID: 2800000, guid: 56048745d570b794693890cc9a04d43c, type: 3}
     UseProp: 0
     UseBuff: 0
     UseDraw: 0
     UseImage: 0
+    IsUnlocked: 1
     cardShape: {fileID: 11400000, guid: 8c4423c7e2c83a24e98ad4b25f8c979a, type: 2}
     CreatedElementType: 1
   - CardName: Mud armor
@@ -89,12 +94,13 @@ MonoBehaviour:
     PowerRight: 5
     CardDescription: Provides Shields
     UseMagic: 1
-    Percent: 4.75
+    Percent: 1
     cardImage: {fileID: 2800000, guid: 588a4861d2f07a243aa8e28b3bc578fc, type: 3}
     UseProp: 0
     UseBuff: 0
     UseDraw: 0
     UseImage: 0
+    IsUnlocked: 1
     cardShape: {fileID: 11400000, guid: d4cf2d68076e81d4599835b9c2cc39df, type: 2}
     CreatedElementType: 0
   - CardName: Frost Gale
@@ -103,12 +109,13 @@ MonoBehaviour:
     PowerRight: 2
     CardDescription: Freezes the enemy
     UseMagic: 1
-    Percent: 4.75
+    Percent: 1
     cardImage: {fileID: 2800000, guid: 0e420161712bf374a84877d6ba5bb6e6, type: 3}
     UseProp: 0
     UseBuff: 0
     UseDraw: 0
     UseImage: 0
+    IsUnlocked: 1
     cardShape: {fileID: 11400000, guid: 8433066de5eb0fc4ba16b26b1c7bcb41, type: 2}
     CreatedElementType: 0
   - CardName: Scorching Wind
@@ -117,12 +124,13 @@ MonoBehaviour:
     PowerRight: 10
     CardDescription: Damage proportional to health to all enemies
     UseMagic: 1
-    Percent: 4.75
+    Percent: 1
     cardImage: {fileID: 2800000, guid: dcc9235fa6c513f4baf7c293e3d2ea35, type: 3}
     UseProp: 0
     UseBuff: 0
     UseDraw: 0
     UseImage: 0
+    IsUnlocked: 1
     cardShape: {fileID: 11400000, guid: ebd5f25102aae52449054a519e3dae38, type: 2}
     CreatedElementType: 0
   - CardName: Acceleration
@@ -131,12 +139,13 @@ MonoBehaviour:
     PowerRight: 0
     CardDescription: Next attack Damage increase
     UseMagic: 0
-    Percent: 7
+    Percent: 2
     cardImage: {fileID: 2800000, guid: 8ddd4071397dc66468480f4f5a8da138, type: 3}
     UseProp: 1
     UseBuff: 1
     UseDraw: 0
     UseImage: 0
+    IsUnlocked: 1
     cardShape: {fileID: 11400000, guid: 9b120312862a52949a5c24f9824549cc, type: 2}
     CreatedElementType: 0
   - CardName: Healing Touch
@@ -145,12 +154,13 @@ MonoBehaviour:
     PowerRight: 2
     CardDescription: Restore
     UseMagic: 0
-    Percent: 7
+    Percent: 2
     cardImage: {fileID: 2800000, guid: b0073eace33cfd846902e47a30c87725, type: 3}
     UseProp: 1
     UseBuff: 1
     UseDraw: 0
     UseImage: 0
+    IsUnlocked: 1
     cardShape: {fileID: 11400000, guid: f13a577dfde784745a7826ad66d92337, type: 2}
     CreatedElementType: 0
   - CardName: Endurance
@@ -159,12 +169,13 @@ MonoBehaviour:
     PowerRight: 3
     CardDescription: Provides defense
     UseMagic: 0
-    Percent: 7
+    Percent: 2
     cardImage: {fileID: 2800000, guid: fee189d840148bd4db3e61314d327c06, type: 3}
     UseProp: 1
     UseBuff: 1
     UseDraw: 0
     UseImage: 0
+    IsUnlocked: 1
     cardShape: {fileID: 11400000, guid: 41163a0720d3bc44ea6b1c8a8ccfb9e7, type: 2}
     CreatedElementType: 0
   - CardName: Talewind
@@ -173,12 +184,13 @@ MonoBehaviour:
     PowerRight: 2
     CardDescription: Provides Lucks
     UseMagic: 0
-    Percent: 7
+    Percent: 2
     cardImage: {fileID: 2800000, guid: 4b02e7fb390e70c4c929ced5b4cfb151, type: 3}
     UseProp: 1
     UseBuff: 1
     UseDraw: 0
     UseImage: 0
+    IsUnlocked: 1
     cardShape: {fileID: 11400000, guid: 3434211979a93664d9bbc0d5bfc7a134, type: 2}
     CreatedElementType: 0
   - CardName: Draw Card
@@ -193,6 +205,7 @@ MonoBehaviour:
     UseBuff: 0
     UseDraw: 1
     UseImage: 1
+    IsUnlocked: 0
     cardShape: {fileID: 0}
     CreatedElementType: 0
   - CardName: Card Shuffle
@@ -201,12 +214,13 @@ MonoBehaviour:
     PowerRight: 0
     CardDescription: Shuffle Card
     UseMagic: 0
-    Percent: 3
+    Percent: 2
     cardImage: {fileID: 2800000, guid: 94ec2eaac6657c1409886921db8ffef5, type: 3}
     UseProp: 0
     UseBuff: 0
     UseDraw: 1
     UseImage: 1
+    IsUnlocked: 0
     cardShape: {fileID: 11400000, guid: ac0891baae96e2d48b9395f586f74c07, type: 2}
     CreatedElementType: 0
   - CardName: Puzzel Shuffle
@@ -215,11 +229,12 @@ MonoBehaviour:
     PowerRight: 0
     CardDescription: Shuffle puzzle
     UseMagic: 0
-    Percent: 3
+    Percent: 1
     cardImage: {fileID: 2800000, guid: 9bbb39842240eff4ea35872260968f9d, type: 3}
     UseProp: 0
     UseBuff: 0
     UseDraw: 1
     UseImage: 1
+    IsUnlocked: 0
     cardShape: {fileID: 11400000, guid: ac0891baae96e2d48b9395f586f74c07, type: 2}
     CreatedElementType: 0
