@@ -69,11 +69,7 @@ public class Player : Entity
         behavior.player = this;
         behavior.damage = damage;
 
-        // 애니메이션 실행
-        if (animator != null)
-        {
-            animator.SetTrigger("Attack");
-        }
+
     }
 
     public void HealHP(int amount)

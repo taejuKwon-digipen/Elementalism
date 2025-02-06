@@ -128,18 +128,31 @@ public class GridChecker : MonoBehaviour
 
         for (int i = 0; i < 3; i++)
         {
+            // null 체크 추가
+            if (UsingCard_[i] == null || UsingCard_[i].carditem == null)
+            {
+                Debug.LogWarning($"Card at index {i} is null or has no carditem");
+                continue;
+            }
+
             int totalDamage = 0;
             int blockCount = 0;
             int oraBlockCount = 0;
             ShapeData cardShape = UsingCard_[i].carditem.cardShape;
-            int cardRows = UsingCard_[i].carditem.cardShape.rows;
-            int cardColumns = UsingCard_[i].carditem.cardShape.columns;
+            
+            // cardShape null 체크 추가
+            if (cardShape == null)
+            {
+                Debug.LogWarning($"Card at index {i} has no shape data");
+                continue;
+            }
+
+            int cardRows = cardShape.rows;
+            int cardColumns = cardShape.columns;
             int cardDamage = UsingCard_[i].carditem.PowerLeft;
             int cardCritDamage = UsingCard_[i].carditem.PowerRight;
             int cardID = UsingCard_[i].carditem.ID;
             ElementType createdElementType = UsingCard_[i].carditem.CreatedElementType;
-
-
 
             // 슬라이딩 윈도우 방식으로 그리드를 순회합니다.
             for (int row = 0; row <= gridRows - cardRows; row++)

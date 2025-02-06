@@ -33,6 +33,10 @@ public abstract class Enemy : Entity
             this.HP = 0;
             if (this.transform.parent.Find("HealthBar") != null)
                 Destroy(this.transform.parent.Find("HealthBar").gameObject);
+            
+            // 포커스 매니저에게 적이 죽었음을 알림
+            focusManager.ChangeWhenFocusedDie();
+            
             StartCoroutine(Fade());
         }
         return damages;
