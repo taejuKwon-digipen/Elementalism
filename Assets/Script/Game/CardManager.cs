@@ -1,4 +1,5 @@
 ﻿using DG.Tweening; // 애니메이션 처리를 위한 DOTween 라이브러리
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +7,7 @@ using Unity.VisualScripting; // 유니티 비주얼 스크립팅 기능
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;// UI 관련 기능을 위한 네임스페이스
+
 
 public class CardManager : MonoBehaviour
 {
@@ -21,12 +23,15 @@ public class CardManager : MonoBehaviour
     [SerializeField] public List<Card> UsingCard; // 사용 중인 카드 리스트 (오른쪽 3개)
     [SerializeField] public List<Card> WaitingCard; // 대기 중인 카드 리스트 (왼쪽 4개)
 
+    List<CardItem> UnlockedCards; //해금 카드 리스트
+    public List<CardItem> Items;  // 모든 카드 리스트
+
     public Transform Canvas2Transform; // UI 캔버스의 트랜스폼
 
     // 카드 위치 상태 리스트 (false = 비어있음, true = 사용 중)
     private List<bool> positionOccupied;
 
-    List<CardItem> ItemBuffer; // 카드 데이터를 저장하는 버퍼
+    List<CardItem> ItemBuffer ; // 카드 데이터를 저장하는 버퍼
 
     int currenttrueindex = 0; // 현재 비어있는 위치의 인덱스
     bool isUse = false; // 현재 사용 중인지 여부
@@ -88,6 +93,7 @@ public class CardManager : MonoBehaviour
     {
         if (ItemBuffer.Count <= 0)  // 버퍼가 비어있으면 새로 채움
         {
+            SetUnlockedCard();
             SetCardBuffer(); // 카드 버퍼 설정
         }
 
@@ -99,25 +105,57 @@ public class CardManager : MonoBehaviour
         }
         else
         {
+            Debug.Log("PopCard 92번, 카드 버퍼 없음");
             CardItem card = null;
             return card;
         }
     }
 
-    //사용하는 카드 버퍼 따로 만들기
-
-    // 카드 버퍼 생성 메서드 (100개의 카드 생성)
-    void SetCardBuffer()
+    private void SaveScriptableObject()
     {
-        ItemBuffer = new List<CardItem>();
+        UnityEditor.EditorUtility.SetDirty(carditemso);
+    }
 
-        // 카드 데이터베이스에서 Percent 값에 따라 버퍼 생성
+    private void SetUnlockedCard()
+    {
         for (int i = 0; i < carditemso.items.Length; i++)
         {
-            CardItem cardditem = carditemso.items[i]; ;
-            for (int j = 0; j < cardditem.Percent; j++)
+            CardItem cardditem = carditemso.items[i];
+            Items.Add(cardditem);
+        }
+        SaveScriptableObject();
+        //IsUnlocked가 true인 카드들만 모임
+        UnlockedCards = carditemso.items.Where(Items => Items.IsUnlocked==true).ToList(); //왜 true를 못받아올까?
+
+    }
+
+    //사용하는 카드 버퍼 따로 만들기
+
+    // 카드 버퍼 생성 메서드 
+    void SetCardBuffer()
+    {
+
+        ItemBuffer = new List<CardItem>();
+
+        if(UnlockedCards == null)
+        {
+            Debug.Log("Unlocked Card List is null, Line 119");
+        }
+        else
+        {
+            ItemBuffer = UnlockedCards;
+        }
+
+        /*// 카드 데이터베이스에서 Percent 값에 따라 버퍼 생성
+        for (int i = 0; i < carditemso.items.Length; i++)
+        {
+            CardItem cardditem = carditemso.items[i];
+            if (cardditem.IsUnlocked == true)
             {
-                ItemBuffer.Add(cardditem);
+                for (int j = 0; j < cardditem.Percent; j++)
+                {
+                    ItemBuffer.Add(cardditem);
+                }
             }
         }
 
@@ -128,7 +166,7 @@ public class CardManager : MonoBehaviour
             CardItem temp = ItemBuffer[i];
             ItemBuffer[i] = ItemBuffer[rand];
             ItemBuffer[rand] = temp;
-        }
+        }*/
     }
     // 게임 시작 시 초기화
     public void Start()
@@ -354,18 +392,19 @@ public class CardManager : MonoBehaviour
         Debug.Log($"UsingCard[{RechooseIndex}]에 새 카드 {newCard.name} 추가됨");
 
         if (newCard.TryGetComponent<CardMouseHandler>(out var newCardHandler))
-        {
-            newCardHandler.ResetScale();  // 새 카드 크기 초기화
-        }
+    {
+        newCardHandler.ResetScale();  // 새 카드 크기 초기화
+    }
 
         // 3️. 기존 oldCard를 WaitingCard에서 활성화 
         if (oldcard != null)
         {
             for( int i = 0; i < WaitingCard.Count; i++)
             {
-                if(oldcard.gameObject.name == WaitingCard[i].gameObject.name && !WaitingCard[i].gameObject.activeSelf )
+                if(oldcard.carditem.CardName == WaitingCard[i].carditem.CardName && !WaitingCard[i].gameObject.activeSelf )
                 {
                     WaitingCard[i].gameObject.SetActive(true);
+                    break;
                 }
             }
             oldcard = null;

@@ -42,6 +42,7 @@ public class Card : MonoBehaviour, IPointerDownHandler // 마우스 클릭 이�
             PowerLeftTMP.text = carditem.PowerLeft.ToString();
             PowerRightTMP.text = carditem.PowerRight.ToString();
             CardDescriptionTMP.text = carditem.CardDescription;
+ 
 
             isUsingImage = carditem.UseImage;
 
