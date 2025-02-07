@@ -276,6 +276,7 @@ MonoBehaviour:
   - {fileID: 1360623218}
   onFieldEntities: []
   isEnemyTurn: 0
+  effectprefab: {fileID: 1109042888843568254, guid: 701e34b9d38b33f4f86814363f8fca96, type: 3}
 --- !u!4 &70329810
 Transform:
   m_ObjectHideFlags: 0
@@ -330,7 +331,6 @@ MonoBehaviour:
   PanelBackground: {fileID: 1690809469}
   Xbutton: {fileID: 1294666958}
   selectionPanelContent: {fileID: 1224205004}
-  duration: 0.3
   CurrCardIndexForSwitch: 0
 --- !u!4 &132627234
 Transform:
@@ -803,7 +803,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 679208801}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 90}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.009259259, y: 0.009259259, z: 0.009259259}
   m_ConstrainProportionsScale: 0
   m_Children:

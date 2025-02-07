@@ -14,6 +14,8 @@ public abstract class Enemy : Entity
     protected EnemyManager em;
     protected Animator animator;
 
+    public ParticleSystem effect;
+
     protected void Awake() {
         focusManager = GameObject.Find("FocusManager").GetComponent<FocusManager>();
         animator = this.GetComponent<Animator>();
@@ -21,12 +23,17 @@ public abstract class Enemy : Entity
 
     protected override void Start() {
         base.Start();
-
         player = GameObject.FindWithTag("Player").GetComponentInChildren<Player>();
+    }
+
+    public void SetEffectPrefab(ParticleSystem effectprefab)
+    {
+        effect = effectprefab;
     }
 
     public override int Hit(Entity attacker, EntityType attackType)
     {
+        effect.Play();
         int damages = DamageManager.ComputeDamages(attacker, this, attackType);
         this.HP -= damages;
         if (this.HP <= 0) {
@@ -100,4 +107,5 @@ public abstract class Enemy : Entity
         }
         return flag;
     }
+
 }
