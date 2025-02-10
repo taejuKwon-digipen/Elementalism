@@ -16,6 +16,13 @@ public class Player : Entity
     public GameObject fireballPrefab;
     public Transform fireballSpawnPoint;
     public float fireballSpeed = 5f;
+    private int shield = 0;
+
+    public int Shield
+    {
+        get => shield;
+        private set => shield = Mathf.Max(0, value);
+    }
 
     // Start is called before the first frame update
     protected override void Start()
@@ -81,5 +88,34 @@ public class Player : Entity
     {
         defeatedMonsters++;
         Gold += 50;
+    }
+
+    public void AddShield(int amount)
+    {
+        Shield += amount;
+        Debug.Log($"Shield added: {amount}, Total shield: {Shield}");
+    }
+
+    public override int Hit(Entity attacker, EntityType attackType, int damageAmount)
+    {
+        // 쉴드가 있다면 먼저 쉴드로 데미지를 막음
+        if (Shield > 0)
+        {
+            if (Shield >= damageAmount)
+            {
+                Shield -= damageAmount;
+                return 0;  // 모든 데미지를 쉴드가 막음
+            }
+            else
+            {
+                int remainingDamage = damageAmount - Shield;
+                Shield = 0;
+                this.HP -= remainingDamage;
+                return remainingDamage;
+            }
+        }
+
+        // 쉴드가 없으면 일반적인 데미지 처리
+        return base.Hit(attacker, attackType, damageAmount);
     }
 }

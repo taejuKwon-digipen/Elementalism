@@ -195,7 +195,8 @@ public class GridChecker : MonoBehaviour
             // 공격 실행
             if (totalDamage > 0)
             {
-                player.AttackWithDamage(totalDamage + addDamage);
+                var ability = CardAbilityManager.GetAbility(cardID);
+                ability.ExecuteAbility(player, totalDamage + addDamage, oraBlockCount);
             }
 
             yield return new WaitForSeconds(0.5f);
