@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class ShopManager : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private Button healButton;
     [SerializeField] private TextMeshProUGUI goldText;
     [SerializeField] private TextMeshProUGUI healCostText;
+    [SerializeField] private Button worldMapButton;  // 월드맵 버튼
     
     [Header("Settings")]
     [SerializeField] private int healAmount = 20;
@@ -31,6 +33,11 @@ public class ShopManager : MonoBehaviour
         shopPanel.SetActive(false);
         healButton.onClick.AddListener(OnHealButtonClicked);
         UpdateUI();
+
+        if (worldMapButton != null)
+        {
+            worldMapButton.onClick.AddListener(OnWorldMapButtonClick);
+        }
     }
 
     public void OpenShop()
@@ -110,5 +117,11 @@ public class ShopManager : MonoBehaviour
     {
         shopPanel.SetActive(false);
         isShopOpen = false;  // 다음 라운드를 위해 리셋
+    }
+
+    private void OnWorldMapButtonClick()
+    {
+        Debug.Log("Loading World Map scene...");
+        SceneManager.LoadScene("WorldMap");  // "WorldMap"은 맵 씬의 이름입니다
     }
 }

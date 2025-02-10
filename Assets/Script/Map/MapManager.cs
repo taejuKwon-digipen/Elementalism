@@ -39,10 +39,18 @@ public class MapManager : MonoBehaviour
     private List<Node> nodes = new();
     private readonly List<List<Node>> nodesByColumn = new();
 
+    [SerializeField] private MapCharacter mapCharacter;
+
     void Start()
     {
         GenerateMap();
         DrawConnection();
+        
+        // 시작 노드에 캐릭터 배치
+        if (mapCharacter != null && nodes.Count > 0)
+        {
+            mapCharacter.SetCurrentNode(nodes[0]);
+        }
     }
 
     private void GenerateMap()

@@ -156,6 +156,7 @@ MonoBehaviour:
   map: {fileID: 1703228283}
   columns: 9
   nodePerColumn: 3
+  mapCharacter: {fileID: 0}
 --- !u!4 &243330638
 Transform:
   m_ObjectHideFlags: 0
@@ -317,7 +318,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 55
 --- !u!114 &1703228285
 MonoBehaviour:
   m_ObjectHideFlags: 0

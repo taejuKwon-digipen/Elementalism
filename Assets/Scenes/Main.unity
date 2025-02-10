@@ -2382,6 +2382,7 @@ MonoBehaviour:
   healButton: {fileID: 1457736594}
   goldText: {fileID: 559949883}
   healCostText: {fileID: 1026882783}
+  worldMapButton: {fileID: 910418015}
   healAmount: 20
   healCost: 50
   cardCost: 100
