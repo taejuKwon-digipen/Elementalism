@@ -125,8 +125,8 @@ public class CardManager : MonoBehaviour
         }
         SaveScriptableObject();
         //IsUnlocked가 true인 카드들만 모임
-        UnlockedCards = carditemso.items.Where(Items => Items.IsUnlocked==true).ToList(); //왜 true를 못받아올까?
-
+        UnlockedCards = carditemso.items.Where(Items => Items.IsUnlocked==false).ToList(); //왜 true를 못받아올까?
+        ShuffleList(UnlockedCards);
     }
 
     //사용하는 카드 버퍼 따로 만들기
@@ -145,28 +145,6 @@ public class CardManager : MonoBehaviour
         {
             ItemBuffer = UnlockedCards;
         }
-
-        /*// 카드 데이터베이스에서 Percent 값에 따라 버퍼 생성
-        for (int i = 0; i < carditemso.items.Length; i++)
-        {
-            CardItem cardditem = carditemso.items[i];
-            if (cardditem.IsUnlocked == true)
-            {
-                for (int j = 0; j < cardditem.Percent; j++)
-                {
-                    ItemBuffer.Add(cardditem);
-                }
-            }
-        }
-
-        // 버퍼 섞기 (랜덤 정렬)
-        for (int i = 0; i < ItemBuffer.Count; i++)
-        {
-            int rand = Random.Range(i, ItemBuffer.Count);
-            CardItem temp = ItemBuffer[i];
-            ItemBuffer[i] = ItemBuffer[rand];
-            ItemBuffer[rand] = temp;
-        }*/
     }
     // 게임 시작 시 초기화
     public void Start()
@@ -181,6 +159,19 @@ public class CardManager : MonoBehaviour
         positionOccupied = new List<bool> { false, false, false }; //false = empty, true = ocuppied
         AddEmptyUsingCard(); // 사용 카드 3개 추가
 
+    }
+
+    private void ShuffleList<T>(List<T> list)
+    {
+        System.Random random = new System.Random();
+
+        int n = list.Count;
+        while(n > 1)
+        {
+            n--;
+            int k = random.Next(n + 1);
+            (list[n], list[k]) = (list[k], list[n]);
+        }
     }
     private void RegisterCardMouseHandlers()
     {
