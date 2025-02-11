@@ -15,6 +15,7 @@ public abstract class Enemy : Entity
     protected Animator animator;
 
     public ParticleSystem effect;
+    public GameObject hubDamageText;
 
     protected void Awake() {
         focusManager = GameObject.Find("FocusManager").GetComponent<FocusManager>();
@@ -30,11 +31,18 @@ public abstract class Enemy : Entity
     {
         effect = effectprefab;
     }
+    public void SetDmgTextPrefab(GameObject hubDmgTextfab)
+    {
+        hubDamageText = hubDmgTextfab;
+    }
 
     public override int Hit(Entity attacker, EntityType attackType)
     {
         effect.Play();
         int damages = DamageManager.ComputeDamages(attacker, this, attackType);
+        GameObject hubText = Instantiate(hubDamageText);
+        hubText.transform.position = this.transform.position;
+        hubText.GetComponent<DamageText>().damage = damages;
         this.HP -= damages;
         if (this.HP <= 0) {
             this.HP = 0;

@@ -277,6 +277,7 @@ MonoBehaviour:
   onFieldEntities: []
   isEnemyTurn: 0
   effectprefab: {fileID: 1109042888843568254, guid: 701e34b9d38b33f4f86814363f8fca96, type: 3}
+  hubDmgTextfab: {fileID: 4776940546630474416, guid: 416639a3c06145d4e89e606807e99850, type: 3}
 --- !u!4 &70329810
 Transform:
   m_ObjectHideFlags: 0
@@ -326,6 +327,7 @@ MonoBehaviour:
   cardPrefab: {fileID: 7253010570474884399, guid: 5632baa7a090d254796d49f67b8d583e, type: 3}
   UsingCard: []
   WaitingCard: []
+  Items: []
   Canvas2Transform: {fileID: 0}
   cardSelectionPanel: {fileID: 1224205003}
   PanelBackground: {fileID: 1690809469}

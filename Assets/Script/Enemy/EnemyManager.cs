@@ -23,6 +23,7 @@ public class EnemyManager : MonoBehaviour
     public bool isEnemyTurn = false;
 
     public GameObject effectprefab;
+    public GameObject hubDmgTextfab;
 
     private void Awake() {
         foreach (var item in spawnPoints)
@@ -87,6 +88,11 @@ public class EnemyManager : MonoBehaviour
                 GameObject effect = Instantiate(effectprefab, spawn, Quaternion.identity, newEntity.transform);
 
                 enemyComponent.SetEffectPrefab(effect.GetComponent<ParticleSystem>());
+            }
+
+            if(hubDmgTextfab != null)
+            {
+                enemyComponent.SetDmgTextPrefab(hubDmgTextfab);
             }
 
         }
