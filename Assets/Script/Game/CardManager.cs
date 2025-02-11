@@ -13,7 +13,7 @@ public class CardManager : MonoBehaviour
 {
     // 싱글톤 패턴: CardManager의 인스턴스
     public static CardManager Inst { get; private set; }
-    void Awake() => Inst = this;// 싱글톤 초기화
+    //void Awake() => Inst = this;// 싱글톤 초기화
 
     public int currentCardIndex = 0;// 현재 카드의 인덱스
 
@@ -23,20 +23,17 @@ public class CardManager : MonoBehaviour
     [SerializeField] public List<Card> UsingCard; // 사용 중인 카드 리스트 (오른쪽 3개)
     [SerializeField] public List<Card> WaitingCard; // 대기 중인 카드 리스트 (왼쪽 4개)
 
-    List<CardItem> UnlockedCards; //해금 카드 리스트
-    public List<CardItem> Items;  // 모든 카드 리스트
+    private List<CardItem> UnlockedCards = new List<CardItem>(); //해금 카드 리스트
+    public List<CardItem> Items = new List<CardItem>();  // 모든 카드 리스트
 
     public Transform Canvas2Transform; // UI 캔버스의 트랜스폼
 
     // 카드 위치 상태 리스트 (false = 비어있음, true = 사용 중)
     private List<bool> positionOccupied;
 
-    List<CardItem> ItemBuffer ; // 카드 데이터를 저장하는 버퍼
-
     int currenttrueindex = 0; // 현재 비어있는 위치의 인덱스
     bool isUse = false; // 현재 사용 중인지 여부
     Card Waitingcard_ = null; // 대기 중인 카드 참조
-
 
     [SerializeField] private GameObject cardSelectionPanel; // 카드 선택 패널
     [SerializeField] private GameObject PanelBackground; // 패널 배경
@@ -48,6 +45,38 @@ public class CardManager : MonoBehaviour
     private Card clickedCard; // 클릭된 카드 참조
     int RechooseIndex = 0;
     Card OldCard = null;
+    private void LoadCardItemSO()
+    {
+        //Resources에서 SO 불러오기
+        CardItemSO loadedSO = Resources.Load<CardItemSO>("ItemSO");
+
+        if (loadedSO != null)
+        {
+            carditemso = loadedSO;
+            Debug.Log("SO가 Resources에서 정상적으로 불러와짐!");
+        }
+        else
+        {
+            Debug.LogError("Resources에 'ItemSO'가 없습니다! 'Resources/ItemSO.asset' 위치를 확인하세요.");
+        }
+    }
+
+    private void Awake()
+    {
+        //싱글톤 초기화 유지
+        if (Inst == null)
+        {
+            Inst = this;
+            DontDestroyOnLoad(gameObject); // 씬 변경 시 유지되도록 설정
+
+            //SO 강제 로드 (초기화 방지)
+            LoadCardItemSO();
+        }
+        else
+        {
+            Destroy(gameObject); // 이미 존재하면 새 인스턴스 파괴
+        }
+    }
 
 
     //오른쪽 카드 3개 위치
@@ -91,7 +120,7 @@ public class CardManager : MonoBehaviour
     //카드 버퍼에서 카드 뽑아오기
     public CardItem PopCard(bool IsFront)
     {
-        if (ItemBuffer.Count <= 0)  // 버퍼가 비어있으면 새로 채움
+        if (UnlockedCards.Count <= 0)  // 버퍼가 비어있으면 새로 채움
         {
             SetUnlockedCard();
             SetCardBuffer(); // 카드 버퍼 설정
@@ -99,8 +128,8 @@ public class CardManager : MonoBehaviour
 
         if (IsFront == true)
         {
-            CardItem card = ItemBuffer[0]; // 첫 번째 카드 가져오기
-            ItemBuffer.RemoveAt(0); // 가져온 카드는 버퍼에서 제거
+            CardItem card = UnlockedCards[0]; // 첫 번째 카드 가져오기
+            UnlockedCards.RemoveAt(0); // 가져온 카드는 버퍼에서 제거
             return card;
         }
         else
@@ -116,39 +145,41 @@ public class CardManager : MonoBehaviour
         UnityEditor.EditorUtility.SetDirty(carditemso);
     }
 
+    private void CheckSOData()
+    {
+        foreach (var card in carditemso.items)
+        {
+            Debug.Log($"📌 카드 ID: {card.ID}, IsUnlocked: {card.IsUnlocked}");
+        }
+    }
+
     private void SetUnlockedCard()
     {
-        for (int i = 0; i < carditemso.items.Length; i++)
-        {
-            CardItem cardditem = carditemso.items[i];
-            Items.Add(cardditem);
-        }
-        SaveScriptableObject();
-        //IsUnlocked가 true인 카드들만 모임
-        UnlockedCards = carditemso.items.Where(Items => Items.IsUnlocked==false).ToList(); //왜 true를 못받아올까?
+        CheckSOData();
+
+        Items = new List<CardItem>(carditemso.items);
+
+        UnlockedCards = Items.Where(item => item.IsUnlocked == true).ToList();
         ShuffleList(UnlockedCards);
     }
 
-    //사용하는 카드 버퍼 따로 만들기
-
-    // 카드 버퍼 생성 메서드 
     void SetCardBuffer()
     {
 
-        ItemBuffer = new List<CardItem>();
+        //ItemBuffer = new List<CardItem>();
 
         if(UnlockedCards == null)
         {
             Debug.Log("Unlocked Card List is null, Line 119");
         }
-        else
-        {
-            ItemBuffer = UnlockedCards;
-        }
+        
     }
     // 게임 시작 시 초기화
     public void Start()
     {
+        Debug.Log($"SO 확인: {carditemso.name}");
+        CheckSOData();
+
         RegisterCardMouseHandlers();
 
         SetCardBuffer(); // 카드 버퍼 설정
