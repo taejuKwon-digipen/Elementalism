@@ -11,6 +11,9 @@ using UnityEngine.UI;// UI 관련 기능을 위한 네임스페이스
 
 public class CardManager : MonoBehaviour
 {
+    [SerializeField] List<GameObject> spownpoints = new List<GameObject>(); //Using Card spawn points
+    [SerializeField] List<GameObject> Wspownpoints = new List<GameObject>(); // Waiting Card spawn points
+
     // 싱글톤 패턴: CardManager의 인스턴스
     public static CardManager Inst { get; private set; }
     //void Awake() => Inst = this;// 싱글톤 초기화
@@ -45,6 +48,7 @@ public class CardManager : MonoBehaviour
     private Card clickedCard; // 클릭된 카드 참조
     int RechooseIndex = 0;
     Card OldCard = null;
+
     private void LoadCardItemSO()
     {
         //Resources에서 SO 불러오기
@@ -78,26 +82,10 @@ public class CardManager : MonoBehaviour
         }
     }
 
-
-    //오른쪽 카드 3개 위치
-    private List<Vector3> cardPosition = new List<Vector3>
-    {
-        new Vector3(7,3f,0),
-        new Vector3(7,0,0),
-        new Vector3(7,-3f, 0)
-    };
-
     public int CurrCardIndexForSwitch = 0;
 
     [SerializeField] private GameObject UsingCardPanel;  // 사용 중인 카드 패널
     
-    // 사용 중인 카드들의 위치
-    private List<Vector3> UsingCardPositions = new List<Vector3>
-    {
-        new Vector3(7, 3f, 0),
-        new Vector3(7, 0, 0),
-        new Vector3(7, -3f, 0)
-    };
 
     //수정중 - 버튼 클릭 시 패널 닫히게
     public void XButtonClicked()
@@ -105,15 +93,6 @@ public class CardManager : MonoBehaviour
         Debug.Log("X버튼 클릭");
         OpenCardSelectionPanel(false);
     }
-
-    //왼쪽 대기 카드 4개 위치
-    private List<Vector3> WaitingCardPosition = new List<Vector3> // Canvas로 옯기기
-    {
-        new Vector3(-6,0,0),
-        new Vector3(-2, 0, 0),
-        new Vector3(2, 0, 0),
-        new Vector3(6, 0, 0),
-    };
 
     int countwaitcard = 0; // 현재 대기 카드의 개수
 
@@ -358,8 +337,8 @@ public class CardManager : MonoBehaviour
 
         Destroy(UsingCard[currenttrueindex].gameObject);
 
-        Transform Canvas2Transform = GameObject.Find("Canvas/Background").transform;
-        GameObject newCardObject = Instantiate(cardPrefab, cardPosition[currenttrueindex], Quaternion.identity, Canvas2Transform);
+        Transform Canvas2Transform = GameObject.Find("Canvas/Background/Cards").transform;
+        GameObject newCardObject = Instantiate(cardPrefab, spownpoints[currenttrueindex].transform.position/*cardPosition[currenttrueindex]*/, Quaternion.identity, Canvas2Transform);
 
         var newCard = newCardObject.GetComponent<Card>();
         newCard.Setup(waitingcard.carditem, true);
@@ -402,8 +381,8 @@ public class CardManager : MonoBehaviour
   
 
         // 2️. 새로운 카드 생성 후 삽입
-        Transform Canvas2Transform = GameObject.Find("Canvas/Background").transform;
-        GameObject newCardObject = Instantiate(cardPrefab, cardPosition[currenttrueindex], Quaternion.identity, Canvas2Transform); //여기서 에러뜸
+        Transform Canvas2Transform = GameObject.Find("Canvas/Background/Cards").transform;
+        GameObject newCardObject = Instantiate(cardPrefab, spownpoints[currenttrueindex].transform.position, Quaternion.identity, Canvas2Transform); //여기서 에러뜸
 
         var newCard = newCardObject.GetComponent<Card>();
         newCard.Setup(waitingcard.carditem, true);
@@ -441,8 +420,8 @@ public class CardManager : MonoBehaviour
     {
         if (isUse == true) //Using card
         {
-            Transform Canvas2Transform = GameObject.Find("Canvas/Background").transform;
-            GameObject cardObject = Instantiate(cardPrefab, cardPosition[currenttrueindex], Quaternion.identity, Canvas2Transform);
+            Transform Canvas2Transform = GameObject.Find("Canvas/Background/Cards").transform;
+            GameObject cardObject = Instantiate(cardPrefab, spownpoints[currenttrueindex].transform.position, Quaternion.identity, Canvas2Transform);
             var card = cardObject.GetComponent<Card>();
             card.Setup(PopCard(false), false); // 필요에 따라 `isUse` 값을 조정
             UsingCard.Add(card); // 생성된 카드를 리스트에 추가
@@ -455,7 +434,7 @@ public class CardManager : MonoBehaviour
             }
 
             Transform Canvas2Transform = GameObject.Find("CardSelectionPanel").transform;
-            GameObject cardObject = Instantiate(cardPrefab, WaitingCardPosition[countwaitcard], Quaternion.identity, Canvas2Transform);
+            GameObject cardObject = Instantiate(cardPrefab, Wspownpoints[countwaitcard].transform.position, Quaternion.identity, Canvas2Transform);
             Vector3 nowLocalScale = cardObject.transform.localScale;
             cardObject.transform.localScale = new Vector3(nowLocalScale.x * 0.014f, nowLocalScale.x * 0.014f, 1);
 
@@ -492,7 +471,7 @@ public class CardManager : MonoBehaviour
                 
                 // 카드 위치 설정
                 RectTransform rectTransform = newCard.GetComponent<RectTransform>();
-                rectTransform.anchoredPosition = UsingCardPositions[i];
+                rectTransform.anchoredPosition = spownpoints[i].transform.position;
                 
                 // 카드 리스트에 추가
                 UsingCard[i] = cardComponent;
