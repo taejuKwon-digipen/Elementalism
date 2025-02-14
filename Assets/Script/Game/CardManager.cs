@@ -1,4 +1,5 @@
 ﻿using DG.Tweening; // 애니메이션 처리를 위한 DOTween 라이브러리
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,11 +8,15 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;// UI 관련 기능을 위한 네임스페이스
 
+
 public class CardManager : MonoBehaviour
 {
+    [SerializeField] List<GameObject> spownpoints = new List<GameObject>(); //Using Card spawn points
+    [SerializeField] List<GameObject> Wspownpoints = new List<GameObject>(); // Waiting Card spawn points
+
     // 싱글톤 패턴: CardManager의 인스턴스
     public static CardManager Inst { get; private set; }
-    void Awake() => Inst = this;// 싱글톤 초기화
+    //void Awake() => Inst = this;// 싱글톤 초기화
 
     public int currentCardIndex = 0;// 현재 카드의 인덱스
 
@@ -21,17 +26,17 @@ public class CardManager : MonoBehaviour
     [SerializeField] public List<Card> UsingCard; // 사용 중인 카드 리스트 (오른쪽 3개)
     [SerializeField] public List<Card> WaitingCard; // 대기 중인 카드 리스트 (왼쪽 4개)
 
+    private List<CardItem> UnlockedCards = new List<CardItem>(); //해금 카드 리스트
+    public List<CardItem> Items = new List<CardItem>();  // 모든 카드 리스트
+
     public Transform Canvas2Transform; // UI 캔버스의 트랜스폼
 
     // 카드 위치 상태 리스트 (false = 비어있음, true = 사용 중)
     private List<bool> positionOccupied;
 
-    List<CardItem> ItemBuffer; // 카드 데이터를 저장하는 버퍼
-
     int currenttrueindex = 0; // 현재 비어있는 위치의 인덱스
     bool isUse = false; // 현재 사용 중인지 여부
     Card Waitingcard_ = null; // 대기 중인 카드 참조
-
 
     [SerializeField] private GameObject cardSelectionPanel; // 카드 선택 패널
     [SerializeField] private GameObject PanelBackground; // 패널 배경
@@ -44,26 +49,43 @@ public class CardManager : MonoBehaviour
     int RechooseIndex = 0;
     Card OldCard = null;
 
-
-    //오른쪽 카드 3개 위치
-    private List<Vector3> cardPosition = new List<Vector3>
+    private void LoadCardItemSO()
     {
-        new Vector3(7,3f,0),
-        new Vector3(7,0,0),
-        new Vector3(7,-3f, 0)
-    };
+        //Resources에서 SO 불러오기
+        CardItemSO loadedSO = Resources.Load<CardItemSO>("ItemSO");
+
+        if (loadedSO != null)
+        {
+            carditemso = loadedSO;
+            Debug.Log("SO가 Resources에서 정상적으로 불러와짐!");
+        }
+        else
+        {
+            Debug.LogError("Resources에 'ItemSO'가 없습니다! 'Resources/ItemSO.asset' 위치를 확인하세요.");
+        }
+    }
+
+    private void Awake()
+    {
+        //싱글톤 초기화 유지
+        if (Inst == null)
+        {
+            Inst = this;
+            DontDestroyOnLoad(gameObject); // 씬 변경 시 유지되도록 설정
+
+            //SO 강제 로드 (초기화 방지)
+            LoadCardItemSO();
+        }
+        else
+        {
+            Destroy(gameObject); // 이미 존재하면 새 인스턴스 파괴
+        }
+    }
 
     public int CurrCardIndexForSwitch = 0;
 
     [SerializeField] private GameObject UsingCardPanel;  // 사용 중인 카드 패널
     
-    // 사용 중인 카드들의 위치
-    private List<Vector3> UsingCardPositions = new List<Vector3>
-    {
-        new Vector3(7, 3f, 0),
-        new Vector3(7, 0, 0),
-        new Vector3(7, -3f, 0)
-    };
 
     //수정중 - 버튼 클릭 시 패널 닫히게
     public void XButtonClicked()
@@ -72,67 +94,71 @@ public class CardManager : MonoBehaviour
         OpenCardSelectionPanel(false);
     }
 
-    //왼쪽 대기 카드 4개 위치
-    private List<Vector3> WaitingCardPosition = new List<Vector3> // Canvas로 옯기기
-    {
-        new Vector3(-6,0,0),
-        new Vector3(-2, 0, 0),
-        new Vector3(2, 0, 0),
-        new Vector3(6, 0, 0),
-    };
-
     int countwaitcard = 0; // 현재 대기 카드의 개수
 
     //카드 버퍼에서 카드 뽑아오기
     public CardItem PopCard(bool IsFront)
     {
-        if (ItemBuffer.Count <= 0)  // 버퍼가 비어있으면 새로 채움
+        if (UnlockedCards.Count <= 0)  // 버퍼가 비어있으면 새로 채움
         {
+            SetUnlockedCard();
             SetCardBuffer(); // 카드 버퍼 설정
         }
 
         if (IsFront == true)
         {
-            CardItem card = ItemBuffer[0]; // 첫 번째 카드 가져오기
-            ItemBuffer.RemoveAt(0); // 가져온 카드는 버퍼에서 제거
+            CardItem card = UnlockedCards[0]; // 첫 번째 카드 가져오기
+            UnlockedCards.RemoveAt(0); // 가져온 카드는 버퍼에서 제거
             return card;
         }
         else
         {
+            Debug.Log("PopCard 92번, 카드 버퍼 없음");
             CardItem card = null;
             return card;
         }
     }
 
-    //사용하는 카드 버퍼 따로 만들기
+    private void SaveScriptableObject()
+    {
+        UnityEditor.EditorUtility.SetDirty(carditemso);
+    }
 
-    // 카드 버퍼 생성 메서드 (100개의 카드 생성)
+    private void CheckSOData()
+    {
+        foreach (var card in carditemso.items)
+        {
+            Debug.Log($"📌 카드 ID: {card.ID}, IsUnlocked: {card.IsUnlocked}");
+        }
+    }
+
+    private void SetUnlockedCard()
+    {
+        CheckSOData();
+
+        Items = new List<CardItem>(carditemso.items);
+
+        UnlockedCards = Items.Where(item => item.IsUnlocked == true).ToList();
+        ShuffleList(UnlockedCards);
+    }
+
     void SetCardBuffer()
     {
-        ItemBuffer = new List<CardItem>();
 
-        // 카드 데이터베이스에서 Percent 값에 따라 버퍼 생성
-        for (int i = 0; i < carditemso.items.Length; i++)
-        {
-            CardItem cardditem = carditemso.items[i]; ;
-            for (int j = 0; j < cardditem.Percent; j++)
-            {
-                ItemBuffer.Add(cardditem);
-            }
-        }
+        //ItemBuffer = new List<CardItem>();
 
-        // 버퍼 섞기 (랜덤 정렬)
-        for (int i = 0; i < ItemBuffer.Count; i++)
+        if(UnlockedCards == null)
         {
-            int rand = Random.Range(i, ItemBuffer.Count);
-            CardItem temp = ItemBuffer[i];
-            ItemBuffer[i] = ItemBuffer[rand];
-            ItemBuffer[rand] = temp;
+            Debug.Log("Unlocked Card List is null, Line 119");
         }
+        
     }
     // 게임 시작 시 초기화
     public void Start()
     {
+        Debug.Log($"SO 확인: {carditemso.name}");
+        CheckSOData();
+
         RegisterCardMouseHandlers();
 
         SetCardBuffer(); // 카드 버퍼 설정
@@ -143,6 +169,19 @@ public class CardManager : MonoBehaviour
         positionOccupied = new List<bool> { false, false, false }; //false = empty, true = ocuppied
         AddEmptyUsingCard(); // 사용 카드 3개 추가
 
+    }
+
+    private void ShuffleList<T>(List<T> list)
+    {
+        System.Random random = new System.Random();
+
+        int n = list.Count;
+        while(n > 1)
+        {
+            n--;
+            int k = random.Next(n + 1);
+            (list[n], list[k]) = (list[k], list[n]);
+        }
     }
     private void RegisterCardMouseHandlers()
     {
@@ -298,8 +337,8 @@ public class CardManager : MonoBehaviour
 
         Destroy(UsingCard[currenttrueindex].gameObject);
 
-        Transform Canvas2Transform = GameObject.Find("Canvas/Background").transform;
-        GameObject newCardObject = Instantiate(cardPrefab, cardPosition[currenttrueindex], Quaternion.identity, Canvas2Transform);
+        Transform Canvas2Transform = GameObject.Find("Canvas/Background/Cards").transform;
+        GameObject newCardObject = Instantiate(cardPrefab, spownpoints[currenttrueindex].transform.position/*cardPosition[currenttrueindex]*/, Quaternion.identity, Canvas2Transform);
 
         var newCard = newCardObject.GetComponent<Card>();
         newCard.Setup(waitingcard.carditem, true);
@@ -342,8 +381,8 @@ public class CardManager : MonoBehaviour
   
 
         // 2️. 새로운 카드 생성 후 삽입
-        Transform Canvas2Transform = GameObject.Find("Canvas/Background").transform;
-        GameObject newCardObject = Instantiate(cardPrefab, cardPosition[currenttrueindex], Quaternion.identity, Canvas2Transform); //여기서 에러뜸
+        Transform Canvas2Transform = GameObject.Find("Canvas/Background/Cards").transform;
+        GameObject newCardObject = Instantiate(cardPrefab, spownpoints[currenttrueindex].transform.position, Quaternion.identity, Canvas2Transform); //여기서 에러뜸
 
         var newCard = newCardObject.GetComponent<Card>();
         newCard.Setup(waitingcard.carditem, true);
@@ -354,18 +393,19 @@ public class CardManager : MonoBehaviour
         Debug.Log($"UsingCard[{RechooseIndex}]에 새 카드 {newCard.name} 추가됨");
 
         if (newCard.TryGetComponent<CardMouseHandler>(out var newCardHandler))
-        {
-            newCardHandler.ResetScale();  // 새 카드 크기 초기화
-        }
+    {
+        newCardHandler.ResetScale();  // 새 카드 크기 초기화
+    }
 
         // 3️. 기존 oldCard를 WaitingCard에서 활성화 
         if (oldcard != null)
         {
             for( int i = 0; i < WaitingCard.Count; i++)
             {
-                if(oldcard.gameObject.name == WaitingCard[i].gameObject.name && !WaitingCard[i].gameObject.activeSelf )
+                if(oldcard.carditem.CardName == WaitingCard[i].carditem.CardName && !WaitingCard[i].gameObject.activeSelf )
                 {
                     WaitingCard[i].gameObject.SetActive(true);
+                    break;
                 }
             }
             oldcard = null;
@@ -380,8 +420,8 @@ public class CardManager : MonoBehaviour
     {
         if (isUse == true) //Using card
         {
-            Transform Canvas2Transform = GameObject.Find("Canvas/Background").transform;
-            GameObject cardObject = Instantiate(cardPrefab, cardPosition[currenttrueindex], Quaternion.identity, Canvas2Transform);
+            Transform Canvas2Transform = GameObject.Find("Canvas/Background/Cards").transform;
+            GameObject cardObject = Instantiate(cardPrefab, spownpoints[currenttrueindex].transform.position, Quaternion.identity, Canvas2Transform);
             var card = cardObject.GetComponent<Card>();
             card.Setup(PopCard(false), false); // 필요에 따라 `isUse` 값을 조정
             UsingCard.Add(card); // 생성된 카드를 리스트에 추가
@@ -394,7 +434,7 @@ public class CardManager : MonoBehaviour
             }
 
             Transform Canvas2Transform = GameObject.Find("CardSelectionPanel").transform;
-            GameObject cardObject = Instantiate(cardPrefab, WaitingCardPosition[countwaitcard], Quaternion.identity, Canvas2Transform);
+            GameObject cardObject = Instantiate(cardPrefab, Wspownpoints[countwaitcard].transform.position, Quaternion.identity, Canvas2Transform);
             Vector3 nowLocalScale = cardObject.transform.localScale;
             cardObject.transform.localScale = new Vector3(nowLocalScale.x * 0.014f, nowLocalScale.x * 0.014f, 1);
 
@@ -431,7 +471,7 @@ public class CardManager : MonoBehaviour
                 
                 // 카드 위치 설정
                 RectTransform rectTransform = newCard.GetComponent<RectTransform>();
-                rectTransform.anchoredPosition = UsingCardPositions[i];
+                rectTransform.anchoredPosition = spownpoints[i].transform.position;
                 
                 // 카드 리스트에 추가
                 UsingCard[i] = cardComponent;
