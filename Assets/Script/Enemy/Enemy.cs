@@ -26,9 +26,20 @@ public abstract class Enemy : Entity
         base.Start();
         player = GameObject.FindWithTag("Player").GetComponentInChildren<Player>();
     }
-
+    public void SetEffectPrefab(ParticleSystem effectprefab)
+    {
+        effect = effectprefab;
+    }
+    public void SetDmgTextPrefab(GameObject hubDmgTextfab)
+    {
+        hubDamageText = hubDmgTextfab;
+    }
     public override int Hit(Entity attacker, EntityType attackType, int damageAmount)
     {
+        effect.Play();
+        GameObject hubText = Instantiate(hubDamageText);
+        hubText.transform.position = this.transform.position;
+        hubText.GetComponent<DamageText>().damage = damageAmount;
         this.HP -= damageAmount;
         if (this.HP <= 0)
         {
