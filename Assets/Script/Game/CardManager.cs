@@ -85,7 +85,7 @@ public class CardManager : MonoBehaviour
     public int CurrCardIndexForSwitch = 0;
 
     [SerializeField] private GameObject UsingCardPanel;  // 사용 중인 카드 패널
-    
+
 
     //수정중 - 버튼 클릭 시 패널 닫히게
     public void XButtonClicked()
@@ -130,11 +130,6 @@ public class CardManager : MonoBehaviour
         {
             Debug.Log($"📌 카드 ID: {card.ID}, IsUnlocked: {card.IsUnlocked}");
         }
-
-        SaveScriptableObject();
-        //IsUnlocked가 true인 카드들만 모임
-        UnlockedCards = carditemso.items.Where(Items => Items.IsUnlocked== true).ToList(); //왜 true를 못받아올까?
-
     }
 
     private void SetUnlockedCard()
@@ -152,11 +147,11 @@ public class CardManager : MonoBehaviour
 
         //ItemBuffer = new List<CardItem>();
 
-        if(UnlockedCards == null)
+        if (UnlockedCards == null)
         {
             Debug.Log("Unlocked Card List is null, Line 119");
         }
-        
+
     }
     // 게임 시작 시 초기화
     public void Start()
@@ -181,7 +176,7 @@ public class CardManager : MonoBehaviour
         System.Random random = new System.Random();
 
         int n = list.Count;
-        while(n > 1)
+        while (n > 1)
         {
             n--;
             int k = random.Next(n + 1);
@@ -306,7 +301,7 @@ public class CardManager : MonoBehaviour
     {
         //CurrCardIndexForSwitch = WaitingCardIndex
         //currenttrueindex = old usingcard index
-            
+
         int cardIndex = GetUsingCardIndex(card); // 클릭한 카드의 인덱스 가져오기
         if (cardIndex != -1 && positionOccupied[cardIndex] == true) //UsingCard 선택되고 카드가 이미 선택 -> Switch 준비
         {
@@ -314,21 +309,22 @@ public class CardManager : MonoBehaviour
             currenttrueindex = cardIndex;
             OpenCardSelectionPanel(true);
         }
-        else if( cardIndex != -1 && positionOccupied[cardIndex] ==false) //UsingCard선택되고 카드 아무것도없을때 -> AddCard준비
+        else if (cardIndex != -1 && positionOccupied[cardIndex] == false) //UsingCard선택되고 카드 아무것도없을때 -> AddCard준비
         {
             OpenCardSelectionPanel(true);
             currenttrueindex = cardIndex;
         }
-        else if(cardIndex == -1)  //WaitingCard 선택됨
+        else if (cardIndex == -1)  //WaitingCard 선택됨
         {
             CurrCardIndexForSwitch = FindWaitingCard(card);
             if (OldCard == null)
             {
                 AddUsingCard(card);
-            }else if( OldCard != null)
-            { 
+            }
+            else if (OldCard != null)
+            {
                 SwitchCard(card);
-                OldCard = null;                  
+                OldCard = null;
             }
             card.gameObject.SetActive(false);
             OpenCardSelectionPanel(false);
@@ -356,14 +352,14 @@ public class CardManager : MonoBehaviour
 
     public int FindWaitingCard(Card card)
     {
-        for(int i = 0; i < WaitingCard.Count; i++)
+        for (int i = 0; i < WaitingCard.Count; i++)
         {
-            if (WaitingCard[i] == card && WaitingCard[i].gameObject.activeSelf ==true)
+            if (WaitingCard[i] == card && WaitingCard[i].gameObject.activeSelf == true)
             {
                 return i;
             }
         }
-        return -1;  
+        return -1;
     }
 
     private void SwitchCard(Card waitingcard) // 이 카드는 WaitingCard
@@ -379,11 +375,11 @@ public class CardManager : MonoBehaviour
 
 
         //1. 기존카드 존재 -> OldCard 에 카드 저장 후 삭제
-        Card oldcard = UsingCard [currenttrueindex];
+        Card oldcard = UsingCard[currenttrueindex];
         Debug.Log($"이전 카드: {oldcard.name} (UsingCard[{RechooseIndex}])");
 
         Destroy(UsingCard[currenttrueindex].gameObject);
-  
+
 
         // 2️. 새로운 카드 생성 후 삽입
         Transform Canvas2Transform = GameObject.Find("Canvas/Background/Cards").transform;
@@ -398,16 +394,16 @@ public class CardManager : MonoBehaviour
         Debug.Log($"UsingCard[{RechooseIndex}]에 새 카드 {newCard.name} 추가됨");
 
         if (newCard.TryGetComponent<CardMouseHandler>(out var newCardHandler))
-    {
-        newCardHandler.ResetScale();  // 새 카드 크기 초기화
-    }
+        {
+            newCardHandler.ResetScale();  // 새 카드 크기 초기화
+        }
 
         // 3️. 기존 oldCard를 WaitingCard에서 활성화 
         if (oldcard != null)
         {
-            for( int i = 0; i < WaitingCard.Count; i++)
+            for (int i = 0; i < WaitingCard.Count; i++)
             {
-                if(oldcard.carditem.CardName == WaitingCard[i].carditem.CardName && !WaitingCard[i].gameObject.activeSelf )
+                if (oldcard.carditem.CardName == WaitingCard[i].carditem.CardName && !WaitingCard[i].gameObject.activeSelf)
                 {
                     WaitingCard[i].gameObject.SetActive(true);
                     break;
@@ -473,18 +469,17 @@ public class CardManager : MonoBehaviour
                 GameObject newCard = Instantiate(cardPrefab, UsingCardPanel.transform);
                 Card cardComponent = newCard.GetComponent<Card>();
                 cardComponent.Setup(cardItem, true);
-                
+
                 // 카드 위치 설정
                 RectTransform rectTransform = newCard.GetComponent<RectTransform>();
                 rectTransform.anchoredPosition = spownpoints[i].transform.position;
-                
+
                 // 카드 리스트에 추가
                 UsingCard[i] = cardComponent;
                 positionOccupied[i] = true;
-                
+
                 break;
             }
         }
     }
 }
-
