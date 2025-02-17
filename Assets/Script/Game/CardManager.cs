@@ -130,6 +130,11 @@ public class CardManager : MonoBehaviour
         {
             Debug.Log($"📌 카드 ID: {card.ID}, IsUnlocked: {card.IsUnlocked}");
         }
+
+        SaveScriptableObject();
+        //IsUnlocked가 true인 카드들만 모임
+        UnlockedCards = carditemso.items.Where(Items => Items.IsUnlocked== true).ToList(); //왜 true를 못받아올까?
+
     }
 
     private void SetUnlockedCard()

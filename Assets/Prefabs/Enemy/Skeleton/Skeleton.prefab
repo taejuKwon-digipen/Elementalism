@@ -95,6 +95,7 @@ MonoBehaviour:
   MP: 0
   durationFadeOut: 5
   focusManager: {fileID: 0}
+  effect: {fileID: 0}
 --- !u!95 &9062103568006288483
 Animator:
   serializedVersion: 5
