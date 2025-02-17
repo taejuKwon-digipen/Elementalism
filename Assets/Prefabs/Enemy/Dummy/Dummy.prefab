@@ -550,6 +550,7 @@ MonoBehaviour:
   MP: 0
   durationFadeOut: 2
   focusManager: {fileID: 0}
+  effect: {fileID: 0}
 --- !u!114 &255894264840811693
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -22,6 +22,9 @@ public class EnemyManager : MonoBehaviour
 
     public bool isEnemyTurn = false;
 
+    public GameObject effectprefab;
+    public GameObject hubDmgTextfab;
+
     private void Awake() {
         foreach (var item in spawnPoints)
         {
@@ -48,24 +51,61 @@ public class EnemyManager : MonoBehaviour
       * <summary>Spawn a random amount of enemies when all enemies are defeated</summary>
 
       */
+    //private void SpawnNewEnemies()
+    //{
+    //    if (onFieldEntities.Count != 0)
+    //        return;
+    //    ResetSpawnPoints();
+    //    int numberToSpawn = numbers[UnityEngine.Random.Range(0, numbers.Length)];
+    //    for (int i = 0; i < numberToSpawn; i += 1) {
+    //        var entityToSpawn = spawnableEnemies[UnityEngine.Random.Range(0, spawnableEnemies.Count)];
+    //        var spawn = GetNewSpawn();
+    //        var newEntity = Instantiate(entityToSpawn, spawn, Quaternion.identity, canvas.transform);
+    //        newEntity.GetComponentInChildren<ImageClickHandler>().Canva = canvas;
+    //        newEntity.GetComponentInChildren<Enemy>().SetEnemyManager(this);
+    //        onFieldEntities.Add(newEntity);
+    //    }
+    //    onFieldEntities.Sort((a, b) => Convert.ToInt32(a.GetComponent<Transform>().position.x.CompareTo(b.GetComponent<Transform>().position.x)));
+    //    onFieldEntities[0].GetComponentInChildren<Enemy>().NotifyClickToLockManager();
+    //}
+
     private void SpawnNewEnemies()
     {
         if (onFieldEntities.Count != 0)
             return;
+
         ResetSpawnPoints();
         int numberToSpawn = numbers[UnityEngine.Random.Range(0, numbers.Length)];
-        for (int i = 0; i < numberToSpawn; i += 1) {
+
+        for (int i = 0; i < numberToSpawn; i++)
+        {
             var entityToSpawn = spawnableEnemies[UnityEngine.Random.Range(0, spawnableEnemies.Count)];
             var spawn = GetNewSpawn();
             var newEntity = Instantiate(entityToSpawn, spawn, Quaternion.identity, canvas.transform);
+
+            var enemyComponent = newEntity.GetComponentInChildren<Enemy>();
             newEntity.GetComponentInChildren<ImageClickHandler>().Canva = canvas;
-            newEntity.GetComponentInChildren<Enemy>().SetEnemyManager(this);
+            enemyComponent.SetEnemyManager(this);
+
             onFieldEntities.Add(newEntity);
+
+            if (effectprefab != null)
+            {
+                GameObject effect = Instantiate(effectprefab, spawn, Quaternion.identity, newEntity.transform);
+
+                enemyComponent.SetEffectPrefab(effect.GetComponent<ParticleSystem>());
+            }
+
+            if(hubDmgTextfab != null)
+            {
+                enemyComponent.SetDmgTextPrefab(hubDmgTextfab);
+            }
+
         }
+
         onFieldEntities.Sort((a, b) => Convert.ToInt32(a.GetComponent<Transform>().position.x.CompareTo(b.GetComponent<Transform>().position.x)));
         onFieldEntities[0].GetComponentInChildren<Enemy>().NotifyClickToLockManager();
     }
-
     /**
       * <summary>Set together spawn point and their availability</summary>
       */

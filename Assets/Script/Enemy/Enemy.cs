@@ -14,6 +14,9 @@ public abstract class Enemy : Entity
     protected EnemyManager em;
     protected Animator animator;
 
+    public ParticleSystem effect;
+    public GameObject hubDamageText;
+
     protected void Awake() {
         focusManager = GameObject.Find("FocusManager").GetComponent<FocusManager>();
         animator = this.GetComponent<Animator>();
@@ -21,7 +24,6 @@ public abstract class Enemy : Entity
 
     protected override void Start() {
         base.Start();
-
         player = GameObject.FindWithTag("Player").GetComponentInChildren<Player>();
     }
 
@@ -120,4 +122,5 @@ public abstract class Enemy : Entity
         }
         return flag;
     }
+
 }
