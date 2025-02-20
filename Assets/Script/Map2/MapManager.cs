@@ -29,23 +29,24 @@ public class MapManager : MonoBehaviour
 
     void Start()
     {
-
         GenerateMap();
-        ConncetNodes();
+        ConnectNodes();
         DrawMap();
     }
 
     //노드 생성
     void GenerateMap()
     {
+        //First Node 추가
         Vector2 FirstNodePosition = firstNodePO.transform.position;
-
+        List<Node> nodeInFirst = new(); //현재 층의 노드 리스트
         GameObject firstNode = Instantiate(nodePrefab, mapContainer);
         Node Firstnode = firstNode.GetComponent<Node>();
-        Firstnode.SetPosition(FirstNodePosition); 
-        
+        Firstnode.SetPosition(FirstNodePosition);
+        nodeInFirst.Add(Firstnode);
+        map.Add(nodeInFirst);
 
-        for (int i = 1; i < row; i++ )
+        for (int i = 1; i < row -1; i++ )
         {
             int nodeCount = Random.Range(minNodePerCol, maxNodePerCol);
             List<Node> nodeInCol = new(); //현재 층의 노드 리스트
@@ -54,38 +55,52 @@ public class MapManager : MonoBehaviour
             {
                 GameObject nodeobj = Instantiate(nodePrefab, mapContainer); //노드 프리펩 생성
                 Node node = nodeobj.GetComponent<Node>(); //노드 컴포넌트 가져오기
-                node.SetPosition(new Vector2(FirstNodePosition.x + i * 150, FirstNodePosition.y +j * 300 - nodeCount * 100)); //노드위치 배치
+                node.SetPosition(new Vector2(FirstNodePosition.x + i * 300, FirstNodePosition.y + j * 300 - nodeCount * 100)); //노드위치 배치
                 nodeInCol.Add(node);// 리스트에 추가
             }
             map.Add(nodeInCol);//전체 맵 리스트에 추가
         }
+
+        //Boss Node 추가
+        List<Node> nodeInEnd = new(); //현재 층의 노드 리스트
+        GameObject BossNode = Instantiate(nodePrefab, mapContainer);
+        Node bossNode = BossNode.GetComponent<Node>();
+        bossNode.SetPosition(new Vector2(FirstNodePosition.x + (row-1) * 300, FirstNodePosition.y) );
+        nodeInEnd.Add(bossNode);
+        map.Add(nodeInEnd);
+
+        currentNode = map[0][0];
     }
 
     //노드 연결
-    void ConncetNodes()
+    void ConnectNodes()
     {
-        for(int i = 0; i < col -1; i++)
+        // 가까운 노드 2개만 선택하는 방식으로 변경
+        for (int i = 0; i < row - 1; i++)
         {
-            List<Node> currentCol = map[i]; //현재 층의 노드 리스트
-            List<Node> nextCol = map[i + 1];//다음 층의 노드 리스트
+            List<Node> currentCol = map[i]; // 현재 층의 노드 리스트
+            List<Node> nextCol = map[i + 1]; // 다음 층의 노드 리스트
 
-            foreach(Node node in currentCol)
+            foreach (Node node in currentCol)
             {
-                int connections = Random.Range(1, nextCol.Count + 1); //최소 한개 이상 연결 생성
-                // HashSet -> 고유한 요소 집합을 저장하는 컬렉션 : 중복값 허용X
-                HashSet<int> connectedIndices = new(); //중복 연결 방지를 위한 HashSet
-
-                while (connectedIndices.Count < connections)
+                if (i == row - 1) // 마지막 층이면 모든 노드를 보스 노드에 연결
                 {
-                    int randomIndex = Random.Range(0, nextCol.Count); //랜덤한 노드 선택
-
-                    if(!connectedIndices.Contains(randomIndex)){ //랜덤 노드 선택
-                        connectedIndices.Add(randomIndex);
-                        node.connectedNodes.Add(nextCol[randomIndex]); //노드 연결 저장
+                    foreach (Node bossNode in nextCol)
+                    {
+                        node.connectedNodes.Add(bossNode);
                     }
-                   
                 }
+                else // 일반적인 경우, 가까운 2개 노드만 선택
+                {
+                    List<Node> sortedNextCol = new List<Node>(nextCol);
+                    sortedNextCol.Sort((a, b) => Vector3.Distance(node.transform.position, a.transform.position)
+                                            .CompareTo(Vector3.Distance(node.transform.position, b.transform.position)));
 
+                    for (int j = 0; j < Mathf.Min(2, sortedNextCol.Count); j++)
+                    {
+                        node.connectedNodes.Add(sortedNextCol[j]);
+                    }
+                }
             }
         }
     }
@@ -118,10 +133,10 @@ public class MapManager : MonoBehaviour
 
     public void MovePlayer(Node selectedNode)
     {
-        if (currentNode == null || currentNode.connectedNodes.Contains(selectedNode))
+       /* if (currentNode == null || currentNode.connectedNodes.Contains(selectedNode))
         { // 이동 가능한 노드인지 확인
             currentNode = selectedNode; // 플레이어의 현재 위치 업데이트
             // 선택한 노드에 대한 이벤트 실행 (전투, 상점 등)
-        }
+        }*/
     }
 }

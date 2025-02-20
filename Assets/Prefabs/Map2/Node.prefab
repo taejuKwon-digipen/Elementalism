@@ -223,6 +223,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3a9a0c72979ea94b8b33dac303515a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: {fileID: 6105562869006259346}
+  TypeTXT: {fileID: 6105562869006259346}
   nodeType: 3
   connectedNodes: []

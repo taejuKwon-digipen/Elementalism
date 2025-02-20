@@ -449,10 +449,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 837d40a244caa9646abf2ef63a104438, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  col: 3
+  col: 5
   row: 9
   minNodePerCol: 2
-  maxNodePerCol: 4
+  maxNodePerCol: 5
   battleChance: 70
   eventChance: 20
   shopChance: 10
@@ -460,6 +460,7 @@ MonoBehaviour:
   mapContainer: {fileID: 1821202520}
   linePrefab: {fileID: 6011132921761891074, guid: 51abcf28c027ba64d807d4013c4663c6, type: 3}
   lines: []
+  firstNodePO: {fileID: 241957851}
 --- !u!4 &1265301631
 Transform:
   m_ObjectHideFlags: 0

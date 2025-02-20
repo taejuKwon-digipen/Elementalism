@@ -14,8 +14,7 @@ public enum NodeType
 
 public class Node : MonoBehaviour
 {
-    [SerializeField] TMP_Text Type;
-
+    [SerializeField] TMP_Text TypeTXT;
 
     public NodeType nodeType;
     public List<Node> connectedNodes = new();//연결된 노드 리스트
@@ -37,10 +36,11 @@ public class Node : MonoBehaviour
         if (roll < (cumulative += mapManager.battleChance))
         {
             nodeType = NodeType.Battle;
-            Type.text = nodeType.ToString();
         }
         else if (roll < (cumulative += mapManager.eventChance)) nodeType = NodeType.Event;
         else if (roll < (cumulative += mapManager.shopChance)) nodeType = NodeType.Shop;
+        
+        TypeTXT.text = nodeType.ToString();
     }
 
     public void SetPosition(Vector2 newPosition)
