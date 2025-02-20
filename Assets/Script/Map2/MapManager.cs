@@ -22,11 +22,14 @@ public class MapManager : MonoBehaviour
     [SerializeField] public GameObject linePrefab; // 라인 프리펩
     public List<GameObject> lines = new();
 
+    [SerializeField] public GameObject firstNodePO;
+
     private List<List<Node>> map = new(); //층별 노드리스트
     private Node currentNode; //현재 플레이어가 위치한 노드
 
     void Start()
     {
+
         GenerateMap();
         ConncetNodes();
         DrawMap();
@@ -35,7 +38,14 @@ public class MapManager : MonoBehaviour
     //노드 생성
     void GenerateMap()
     {
-        for(int i = 0; i < col; i++ )
+        Vector2 FirstNodePosition = firstNodePO.transform.position;
+
+        GameObject firstNode = Instantiate(nodePrefab, mapContainer);
+        Node Firstnode = firstNode.GetComponent<Node>();
+        Firstnode.SetPosition(FirstNodePosition); 
+        
+
+        for (int i = 1; i < row; i++ )
         {
             int nodeCount = Random.Range(minNodePerCol, maxNodePerCol);
             List<Node> nodeInCol = new(); //현재 층의 노드 리스트
@@ -44,7 +54,7 @@ public class MapManager : MonoBehaviour
             {
                 GameObject nodeobj = Instantiate(nodePrefab, mapContainer); //노드 프리펩 생성
                 Node node = nodeobj.GetComponent<Node>(); //노드 컴포넌트 가져오기
-                node.SetPosition(new Vector2( i * 150 - nodeCount * 100, j * 300)); //노드위치 배치
+                node.SetPosition(new Vector2(FirstNodePosition.x + i * 150, FirstNodePosition.y +j * 300 - nodeCount * 100)); //노드위치 배치
                 nodeInCol.Add(node);// 리스트에 추가
             }
             map.Add(nodeInCol);//전체 맵 리스트에 추가
