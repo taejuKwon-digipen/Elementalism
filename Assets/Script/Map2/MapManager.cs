@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 public class MapManager : MonoBehaviour
 {
@@ -18,7 +19,8 @@ public class MapManager : MonoBehaviour
 
     [SerializeField] public GameObject nodePrefab; // 노드 UI 프리펩
     public Transform mapContainer; // 맵 노드가 들어갈 부모 오브젝트
-    [SerializeField] public LineRenderer linePrefab; // 라인 프리펩
+    [SerializeField] public GameObject linePrefab; // 라인 프리펩
+    public List<GameObject> lines = new();
 
     private List<List<Node>> map = new(); //층별 노드리스트
     private Node currentNode; //현재 플레이어가 위치한 노드
@@ -42,7 +44,7 @@ public class MapManager : MonoBehaviour
             {
                 GameObject nodeobj = Instantiate(nodePrefab, mapContainer); //노드 프리펩 생성
                 Node node = nodeobj.GetComponent<Node>(); //노드 컴포넌트 가져오기
-                node.SetPosition(new Vector2(col * 200, i * 150 - nodeCount * 75)); //노드위치 배치
+                node.SetPosition(new Vector2( i * 150 - nodeCount * 100, j * 300)); //노드위치 배치
                 nodeInCol.Add(node);// 리스트에 추가
             }
             map.Add(nodeInCol);//전체 맵 리스트에 추가
@@ -86,13 +88,22 @@ public class MapManager : MonoBehaviour
             {
                 foreach (Node connectedNode in node.connectedNodes)
                 {
-                    LineRenderer line = Instantiate(linePrefab, mapContainer); // 선(LineRenderer) 생성
-                    line.positionCount = 2;
-                    line.SetPosition(0, node.transform.position); // 시작점
-                    line.SetPosition(1, connectedNode.transform.position); // 끝점
+                    CreateLineBetweenNodes(node, connectedNode);
                 }
             }
         }
+    }
+
+    void CreateLineBetweenNodes(Node nodeA, Node nodeB)
+    {
+        GameObject lineObj = Instantiate(linePrefab, transform); // 라인 프리팹 생성
+        LineRenderer line = lineObj.GetComponent<LineRenderer>();
+
+        line.positionCount = 2;
+        line.SetPosition(0, nodeA.transform.position);
+        line.SetPosition(1, nodeB.transform.position);
+
+        lines.Add(lineObj); // 리스트에 추가하여 나중에 활성화/비활성화 관리
     }
 
     public void MovePlayer(Node selectedNode)

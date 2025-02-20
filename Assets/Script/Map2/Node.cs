@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public enum NodeType
@@ -13,6 +14,9 @@ public enum NodeType
 
 public class Node : MonoBehaviour
 {
+    [SerializeField] TMP_Text Type;
+
+
     public NodeType nodeType;
     public List<Node> connectedNodes = new();//연결된 노드 리스트
     private Vector2 position; //노드 위치
@@ -30,7 +34,11 @@ public class Node : MonoBehaviour
         int roll = Random.Range(0, 100); // 0~99 사이의 난수 생성
         int cumulative = 0;
 
-        if (roll < (cumulative += mapManager.battleChance)) nodeType = NodeType.Battle;
+        if (roll < (cumulative += mapManager.battleChance))
+        {
+            nodeType = NodeType.Battle;
+            Type.text = nodeType.ToString();
+        }
         else if (roll < (cumulative += mapManager.eventChance)) nodeType = NodeType.Event;
         else if (roll < (cumulative += mapManager.shopChance)) nodeType = NodeType.Shop;
     }
@@ -57,20 +65,32 @@ public class Node : MonoBehaviour
         }
 
         Debug.Log("Selected Node: " + nodeType);
-        MapManager Mapmanager = FindObjectOfType<MapManager>();
-        if (Mapmanager != null)
+        MapManager mapManager = FindObjectOfType<MapManager>();
+        if (mapManager != null)
         {
-            Mapmanager.MovePlayer(this);
+            mapManager.MovePlayer(this);
         }
 
-        // 선택한 노드의 연결된 노드만 활성화
-        foreach (Node node in FindObjectsOfType<Node>())
+        // 모든 라인을 비활성화
+        foreach (GameObject line in mapManager.lines)
         {
-            node.SetSelectable(false); // 모든 노드 비활성화
+            line.SetActive(false);
         }
+
+        // 연결된 노드들의 라인 활성화
         foreach (Node connectedNode in connectedNodes)
         {
-            connectedNode.SetSelectable(true); // 연결된 노드만 활성화
+            // 연결된 노드와 현재 노드 사이의 라인 활성화
+            foreach (GameObject line in mapManager.lines)
+            {
+                LineRenderer lr = line.GetComponent<LineRenderer>();
+                if ((lr.GetPosition(0) == transform.position && lr.GetPosition(1) == connectedNode.transform.position) ||
+                    (lr.GetPosition(1) == transform.position && lr.GetPosition(0) == connectedNode.transform.position))
+                {
+                    line.SetActive(true);
+                }
+            }
+            connectedNode.SetSelectable(true);
         }
     }
 }
