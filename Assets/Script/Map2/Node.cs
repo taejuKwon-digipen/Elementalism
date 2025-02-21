@@ -21,9 +21,21 @@ public class Node : MonoBehaviour
     private Vector2 position; //노드 위치
     private bool isSelectable = false;
 
+    public bool IsTypeAssigned = false;
+
     private void Start()
     {
-        AssignRandomType(); // 노드 타입을 확률적으로 설정
+        if (!IsTypeAssigned)
+        {
+            AssignRandomType(); // 노드 타입을 확률적으로 설정
+        }
+    }
+
+    public void SetNodeType(NodeType type)
+    {
+         nodeType = type;
+         IsTypeAssigned = true;
+         TypeTXT.text = nodeType.ToString();
     }
 
     void AssignRandomType()

@@ -18,7 +18,8 @@ public class MapManager : MonoBehaviour
     [SerializeField] public int shopChance;
 
     [SerializeField] public GameObject nodePrefab; // 노드 UI 프리펩
-    public Transform mapContainer; // 맵 노드가 들어갈 부모 오브젝트
+    [SerializeField] public Transform NodemapContainer; // 맵 노드가 들어갈 부모 오브젝트
+    [SerializeField] public Transform LinemapContainer; // 라인 들어갈 부모 오브젝트
     [SerializeField] public GameObject linePrefab; // 라인 프리펩
     public List<GameObject> lines = new();
 
@@ -40,9 +41,10 @@ public class MapManager : MonoBehaviour
         //First Node 추가
         Vector2 FirstNodePosition = firstNodePO.transform.position;
         List<Node> nodeInFirst = new(); //현재 층의 노드 리스트
-        GameObject firstNode = Instantiate(nodePrefab, mapContainer);
+        GameObject firstNode = Instantiate(nodePrefab, NodemapContainer);
         Node Firstnode = firstNode.GetComponent<Node>();
         Firstnode.SetPosition(FirstNodePosition);
+        Firstnode.SetNodeType(NodeType.Start); //노드 타입 변경
         nodeInFirst.Add(Firstnode);
         map.Add(nodeInFirst);
 
@@ -53,19 +55,21 @@ public class MapManager : MonoBehaviour
             
             for(int j = 0; j < nodeCount; j++ )
             {
-                GameObject nodeobj = Instantiate(nodePrefab, mapContainer); //노드 프리펩 생성
+                int roll = Random.Range(200, 220);
+                GameObject nodeobj = Instantiate(nodePrefab, NodemapContainer); //노드 프리펩 생성
                 Node node = nodeobj.GetComponent<Node>(); //노드 컴포넌트 가져오기
-                node.SetPosition(new Vector2(FirstNodePosition.x + i * 300, FirstNodePosition.y + j * 300 - nodeCount * 100)); //노드위치 배치
+                node.SetPosition(new Vector2(FirstNodePosition.x + i * roll, FirstNodePosition.y + j * roll - nodeCount * 100)); //노드위치 배치
                 nodeInCol.Add(node);// 리스트에 추가
             }
             map.Add(nodeInCol);//전체 맵 리스트에 추가
         }
-
+        int roll2 = Random.Range(220,250);
         //Boss Node 추가
         List<Node> nodeInEnd = new(); //현재 층의 노드 리스트
-        GameObject BossNode = Instantiate(nodePrefab, mapContainer);
+        GameObject BossNode = Instantiate(nodePrefab, NodemapContainer);
         Node bossNode = BossNode.GetComponent<Node>();
-        bossNode.SetPosition(new Vector2(FirstNodePosition.x + (row-1) * 300, FirstNodePosition.y) );
+        bossNode.SetNodeType(NodeType.Boss);
+        bossNode.SetPosition(new Vector2(FirstNodePosition.x + (row-2) * roll2, FirstNodePosition.y) );
         nodeInEnd.Add(bossNode);
         map.Add(nodeInEnd);
 
@@ -83,11 +87,18 @@ public class MapManager : MonoBehaviour
 
             foreach (Node node in currentCol)
             {
-                if (i == row - 1) // 마지막 층이면 모든 노드를 보스 노드에 연결
+                if (i == row - 2) // 마지막 층이면 모든 노드를 보스 노드에 연결
                 {
                     foreach (Node bossNode in nextCol)
                     {
                         node.connectedNodes.Add(bossNode);
+                    }
+
+                }else if( i == 0)
+                {
+                    foreach(Node startNode in nextCol)
+                    {
+                        node.connectedNodes.Add(startNode);
                     }
                 }
                 else // 일반적인 경우, 가까운 2개 노드만 선택
@@ -121,7 +132,7 @@ public class MapManager : MonoBehaviour
 
     void CreateLineBetweenNodes(Node nodeA, Node nodeB)
     {
-        GameObject lineObj = Instantiate(linePrefab, transform); // 라인 프리팹 생성
+        GameObject lineObj = Instantiate(linePrefab, LinemapContainer); // 라인 프리팹 생성
         LineRenderer line = lineObj.GetComponent<LineRenderer>();
 
         line.positionCount = 2;
