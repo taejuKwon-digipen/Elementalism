@@ -55,7 +55,7 @@ public class MapManager : MonoBehaviour
             
             for(int j = 0; j < nodeCount; j++ )
             {
-                int roll = Random.Range(200, 220);
+                int roll = Random.Range(250, 300);
                 GameObject nodeobj = Instantiate(nodePrefab, NodemapContainer); //노드 프리펩 생성
                 Node node = nodeobj.GetComponent<Node>(); //노드 컴포넌트 가져오기
                 node.SetPosition(new Vector2(FirstNodePosition.x + i * roll, FirstNodePosition.y + j * roll - nodeCount * 100)); //노드위치 배치
@@ -63,7 +63,7 @@ public class MapManager : MonoBehaviour
             }
             map.Add(nodeInCol);//전체 맵 리스트에 추가
         }
-        int roll2 = Random.Range(220,250);
+        int roll2 = Random.Range(250, 300);
         //Boss Node 추가
         List<Node> nodeInEnd = new(); //현재 층의 노드 리스트
         GameObject BossNode = Instantiate(nodePrefab, NodemapContainer);
