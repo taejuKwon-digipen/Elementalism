@@ -25,6 +25,8 @@ public class MapManager : MonoBehaviour
 
     [SerializeField] public GameObject firstNodePO;
 
+    public string SceneToLoad;
+
     private List<List<Node>> map = new(); //층별 노드리스트
     private Node currentNode; //현재 플레이어가 위치한 노드
 
@@ -69,7 +71,7 @@ public class MapManager : MonoBehaviour
         GameObject BossNode = Instantiate(nodePrefab, NodemapContainer);
         Node bossNode = BossNode.GetComponent<Node>();
         bossNode.SetNodeType(NodeType.Boss);
-        bossNode.SetPosition(new Vector2(FirstNodePosition.x + (row-2) * roll2, FirstNodePosition.y) );
+        bossNode.SetPosition(new Vector2(FirstNodePosition.x + (row-1) * roll2, FirstNodePosition.y) );
         nodeInEnd.Add(bossNode);
         map.Add(nodeInEnd);
 
