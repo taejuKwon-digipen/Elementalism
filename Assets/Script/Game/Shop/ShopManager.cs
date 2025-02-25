@@ -135,6 +135,6 @@ public class ShopManager : MonoBehaviour
     private void OnWorldMapButtonClick()
     {
         Debug.Log("Loading World Map scene...");
-        SceneManager.LoadScene("WorldMap");  // "WorldMap"은 맵 씬의 이름입니다
+        SceneManager.LoadScene("Map2");  // "WorldMap"은 맵 씬의 이름입니다
     }
 }
