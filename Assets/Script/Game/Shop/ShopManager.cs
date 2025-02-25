@@ -86,13 +86,26 @@ public class ShopManager : MonoBehaviour
 
     private void PurchaseCard(int index)
     {
-        if (player.Gold >= cardCost)
+        if (player.Gold >= cardCost && index < shopCards.Count)
         {
+            CardItem purchasedCard = shopCards[index].carditem;
+            
+            // 골드 차감
             player.Gold -= cardCost;
-            cardManager.AddCardToBuffer(shopCards[index].carditem);
+            
+            // 카드를 인벤토리에 추가
+            cardManager.AddCardToInventory(purchasedCard);
+            
+            Debug.Log($"카드 구매 완료: {purchasedCard.CardName} (ID: {purchasedCard.ID})");
+            
+            // UI 정리
             Destroy(shopCards[index].gameObject);
             shopCards.RemoveAt(index);
             UpdateUI();
+        }
+        else
+        {
+            Debug.Log($"골드 부족! 필요: {cardCost}, 현재: {player.Gold}");
         }
     }
 

@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00c34be0526a656498cbe66c094801fa, type: 3}
+  m_Name: Inventory
+  m_EditorClassIdentifier: 
+  unlockedCards:
+  - CardName: 
+    ID: 1
+    PowerLeft: 0
+    PowerRight: 0
+    CardDescription: 
+    UseMagic: 0
+    Percent: 0
+    cardImage: {fileID: 0}
+    UseProp: 0
+    UseBuff: 0
+    UseDraw: 0
+    UseImage: 0
+    IsUnlocked: 1
+    cardShape: {fileID: 0}
+    CreatedElementType: 0
+  - CardName: 
+    ID: 2
+    PowerLeft: 0
+    PowerRight: 0
+    CardDescription: 
+    UseMagic: 0
+    Percent: 0
+    cardImage: {fileID: 0}
+    UseProp: 0
+    UseBuff: 0
+    UseDraw: 0
+    UseImage: 0
+    IsUnlocked: 1
+    cardShape: {fileID: 0}
+    CreatedElementType: 0
+  - CardName: 
+    ID: 3
+    PowerLeft: 0
+    PowerRight: 0
+    CardDescription: 
+    UseMagic: 0
+    Percent: 0
+    cardImage: {fileID: 0}
+    UseProp: 0
+    UseBuff: 0
+    UseDraw: 0
+    UseImage: 0
+    IsUnlocked: 1
+    cardShape: {fileID: 0}
+    CreatedElementType: 0
+  - CardName: 
+    ID: 4
+    PowerLeft: 0
+    PowerRight: 0
+    CardDescription: 
+    UseMagic: 0
+    Percent: 0
+    cardImage: {fileID: 0}
+    UseProp: 0
+    UseBuff: 0
+    UseDraw: 0
+    UseImage: 0
+    IsUnlocked: 1
+    cardShape: {fileID: 0}
+    CreatedElementType: 0

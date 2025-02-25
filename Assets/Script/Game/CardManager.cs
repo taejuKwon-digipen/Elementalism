@@ -49,6 +49,10 @@ public class CardManager : MonoBehaviour
     int RechooseIndex = 0;
     Card OldCard = null;
 
+    [Header("Inventory")]
+    [SerializeField] private List<CardItem> inventoryCards = new List<CardItem>();
+    private List<CardItem> sessionCards = new List<CardItem>(); // 현재 세션에서 사용 가능한 카드들
+
     private void LoadCardItemSO()
     {
         //Resources에서 SO 불러오기
@@ -67,18 +71,16 @@ public class CardManager : MonoBehaviour
 
     private void Awake()
     {
-        //싱글톤 초기화 유지
         if (Inst == null)
         {
             Inst = this;
-            DontDestroyOnLoad(gameObject); // 씬 변경 시 유지되도록 설정
-
-            //SO 강제 로드 (초기화 방지)
+            DontDestroyOnLoad(gameObject);
             LoadCardItemSO();
+            LoadInitialCards(); // 초기 카드 로드
         }
         else
         {
-            Destroy(gameObject); // 이미 존재하면 새 인스턴스 파괴
+            Destroy(gameObject);
         }
     }
 
@@ -97,31 +99,36 @@ public class CardManager : MonoBehaviour
     int countwaitcard = 0; // 현재 대기 카드의 개수
 
     //카드 버퍼에서 카드 뽑아오기
-    public CardItem PopCard(bool IsFront)
+    public CardItem PopCard(bool isSelection = false)
     {
-        if (UnlockedCards.Count <= 0)  // 버퍼가 비어있으면 새로 채움
+        if (Items.Count <= 0)
         {
-            SetUnlockedCard();
-            SetCardBuffer(); // 카드 버퍼 설정
+            RefreshCardBuffer(); // 카드가 없으면 버퍼 새로고침
         }
 
-        if (IsFront == true)
+        if (Items.Count > 0)
         {
-            CardItem card = UnlockedCards[0]; // 첫 번째 카드 가져오기
-            UnlockedCards.RemoveAt(0); // 가져온 카드는 버퍼에서 제거
-            return card;
+            int randomIndex = UnityEngine.Random.Range(0, Items.Count);
+            CardItem item = Items[randomIndex];
+            
+            if (!isSelection)
+            {
+                Items.RemoveAt(randomIndex);
+            }
+            
+            return item;
         }
-        else
-        {
-            Debug.Log("PopCard 92번, 카드 버퍼 없음");
-            CardItem card = null;
-            return card;
-        }
+        
+        Debug.LogWarning("카드를 뽑을 수 없습니다: 카드가 없음");
+        return null;
     }
 
     private void SaveScriptableObject()
     {
+#if UNITY_EDITOR
         UnityEditor.EditorUtility.SetDirty(carditemso);
+        UnityEditor.AssetDatabase.SaveAssets();
+#endif
     }
 
     private void CheckSOData()
@@ -139,11 +146,8 @@ public class CardManager : MonoBehaviour
 
     private void SetUnlockedCard()
     {
-        CheckSOData();
-
-        Items = new List<CardItem>(carditemso.items);
-
-        UnlockedCards = Items.Where(item => item.IsUnlocked == true).ToList();
+        // 세션 카드만 사용
+        UnlockedCards = new List<CardItem>(sessionCards);
         ShuffleList(UnlockedCards);
     }
 
@@ -159,21 +163,26 @@ public class CardManager : MonoBehaviour
         
     }
     // 게임 시작 시 초기화
-    public void Start()
+    void Start()
     {
         Debug.Log($"SO 확인: {carditemso.name}");
-        CheckSOData();
-
+        
+        // 현재 세션에서 사용할 카드 설정
+        SetSessionCards();
+        
         RegisterCardMouseHandlers();
+        cardSelectionPanel.SetActive(false);
+        PanelBackground.SetActive(false);
 
-        SetCardBuffer(); // 카드 버퍼 설정
+        positionOccupied = new List<bool> { false, false, false };
+        AddEmptyUsingCard();
 
-        cardSelectionPanel.SetActive(false); // 카드 선택 패널 비활성화
-        PanelBackground.SetActive(false); // 배경 비활성화
-
-        positionOccupied = new List<bool> { false, false, false }; //false = empty, true = ocuppied
-        AddEmptyUsingCard(); // 사용 카드 3개 추가
-
+        // 인벤토리 카드 로그 출력
+        Debug.Log($"인벤토리 카드 수: {inventoryCards.Count}");
+        foreach (var card in inventoryCards)
+        {
+            Debug.Log($"인벤토리 카드: {card.CardName} (ID: {card.ID})");
+        }
     }
 
     private void ShuffleList<T>(List<T> list)
@@ -484,6 +493,75 @@ public class CardManager : MonoBehaviour
                 
                 break;
             }
+        }
+    }
+
+    private void LoadInitialCards()
+    {
+        // 인벤토리가 비어있을 때만 기본 카드 추가
+        if (inventoryCards.Count == 0)
+        {
+            // 기본 카드 (ID: 1,2,3,4) 추가
+            for (int i = 1; i <= 4; i++)
+            {
+                var card = carditemso.items.FirstOrDefault(x => x.ID == i);
+                if (card != null)
+                {
+                    inventoryCards.Add(card);
+                    card.IsUnlocked = true;
+                    Debug.Log($"기본 카드 추가됨: {card.CardName} (ID: {card.ID})");
+                }
+            }
+        }
+    }
+
+    // 현재 세션에서 사용할 카드 설정
+    private void SetSessionCards()
+    {
+        sessionCards.Clear();
+        
+        // 인벤토리에 있는 카드만 세션 카드에 추가
+        foreach (var card in inventoryCards)
+        {
+            sessionCards.Add(card);
+            Debug.Log($"세션에 카드 추가: {card.CardName} (ID: {card.ID})");
+        }
+        
+        // Items 리스트 초기화 (세션 카드만 사용)
+        RefreshCardBuffer();
+    }
+
+    private void RefreshCardBuffer()
+    {
+        Items.Clear();
+        Items.AddRange(sessionCards); // 인벤토리 카드가 아닌 세션 카드 사용
+        Debug.Log($"카드 버퍼 새로고침. 총 카드 수: {Items.Count}");
+    }
+
+    public void AddCardToInventory(CardItem cardItem)
+    {
+        if (!inventoryCards.Exists(x => x.ID == cardItem.ID))
+        {
+            // 인벤토리에 카드 추가
+            inventoryCards.Add(cardItem);
+            
+            // 현재 세션에도 카드 추가
+            sessionCards.Add(cardItem);
+            
+            // SO에서 카드 상태 업데이트
+            var cardInSO = carditemso.items.FirstOrDefault(x => x.ID == cardItem.ID);
+            if (cardInSO != null)
+            {
+                cardInSO.IsUnlocked = true;
+            }
+            
+            // 카드 버퍼 새로고침
+            RefreshCardBuffer();
+            
+            Debug.Log($"새 카드가 인벤토리에 추가됨: {cardItem.CardName} (ID: {cardItem.ID})");
+            
+            // ScriptableObject 저장
+            SaveScriptableObject();
         }
     }
 }
