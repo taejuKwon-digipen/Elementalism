@@ -134,15 +134,23 @@ public class MapManager : MonoBehaviour
 
     void CreateLineBetweenNodes(Node nodeA, Node nodeB)
     {
-        GameObject lineObj = Instantiate(linePrefab, LinemapContainer); // 라인 프리팹 생성
+        GameObject lineObj = Instantiate(linePrefab, LinemapContainer);
         LineRenderer line = lineObj.GetComponent<LineRenderer>();
 
-        line.positionCount = 2;
-        line.SetPosition(0, nodeA.transform.position);
-        line.SetPosition(1, nodeB.transform.position);
+        line.useWorldSpace = false; // World Space 사용 안 함 (부모 기준으로 움직이게)
 
-        lines.Add(lineObj); // 리스트에 추가하여 나중에 활성화/비활성화 관리
+        // 부모(Content) 기준으로 상대적인 좌표를 적용해야 함
+        Vector3 localPosA = LinemapContainer.InverseTransformPoint(nodeA.transform.position);
+        Vector3 localPosB = LinemapContainer.InverseTransformPoint(nodeB.transform.position);
+
+        line.positionCount = 2;
+        line.SetPosition(0, localPosA);
+        line.SetPosition(1, localPosB);
+
+        lines.Add(lineObj);
+        lineObj.transform.SetSiblingIndex(0);
     }
+
 
     public void MovePlayer(Node selectedNode)
     {

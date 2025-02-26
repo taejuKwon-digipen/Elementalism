@@ -42,8 +42,14 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Backgroung
+  - name: Background
     uniqueID: 1338833139
+    locked: 0
+  - name: Lines
+    uniqueID: 464654813
+    locked: 0
+  - name: Node
+    uniqueID: 1759382141
     locked: 0
   - name: Block
     uniqueID: 2663394095
