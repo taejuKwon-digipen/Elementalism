@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
+using System.Linq;
+using UnityEditor.Experimental.GraphView;
 
 public class MapManager : MonoBehaviour
 {
@@ -35,53 +37,85 @@ public class MapManager : MonoBehaviour
         GenerateMap();
         ConnectNodes();
         DrawMap();
+
+        map[0][0].SetSelectable(true);
+        MovePlayer(map[0][0]);
     }
 
-    //노드 생성
+    // 노드 간 최소 거리 설정
+    float minDistance = 150f; // 예시값 (너무 작은 값을 설정하면 노드들이 겹칠 수 있음)
+    bool IsPositionValid(Vector2 newPos)
+    {
+        foreach (var col in map)
+        {
+            foreach (var node in col)
+            {
+                if (Vector2.Distance(node.GetPosition(), newPos) < minDistance)
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     void GenerateMap()
     {
-        //First Node 추가
         Vector2 FirstNodePosition = firstNodePO.transform.position;
-        List<Node> nodeInFirst = new(); //현재 층의 노드 리스트
+        List<Node> nodeInFirst = new();
         GameObject firstNode = Instantiate(nodePrefab, NodemapContainer);
         Node Firstnode = firstNode.GetComponent<Node>();
         Firstnode.SetPosition(FirstNodePosition);
-        Firstnode.SetNodeType(NodeType.Start); //노드 타입 변경
+        Firstnode.SetNodeType(NodeType.Start);
         nodeInFirst.Add(Firstnode);
         map.Add(nodeInFirst);
 
-        for (int i = 1; i < row -1; i++ )
+        for (int i = 1; i < row - 1; i++)
         {
             int nodeCount = Random.Range(minNodePerCol, maxNodePerCol);
-            List<Node> nodeInCol = new(); //현재 층의 노드 리스트
-            
-            for(int j = 0; j < nodeCount; j++ )
+            List<Node> nodeInCol = new();
+
+            for (int j = 0; j < nodeCount; j++)
             {
-                int roll = Random.Range(250, 300);
-                GameObject nodeobj = Instantiate(nodePrefab, NodemapContainer); //노드 프리펩 생성
-                Node node = nodeobj.GetComponent<Node>(); //노드 컴포넌트 가져오기
-                node.SetPosition(new Vector2(FirstNodePosition.x + i * roll, FirstNodePosition.y + j * roll - nodeCount * 100)); //노드위치 배치
-                nodeInCol.Add(node);// 리스트에 추가
+                Vector2 newPos;
+                do
+                {
+                    int roll = Random.Range(250, 300);
+                    newPos = new Vector2(FirstNodePosition.x + i * roll, FirstNodePosition.y + j * roll - nodeCount * 100);
+                }
+                while (!IsPositionValid(newPos)); // 유효한 위치일 때까지 반복
+
+                GameObject nodeobj = Instantiate(nodePrefab, NodemapContainer);
+                Node node = nodeobj.GetComponent<Node>();
+                node.SetPosition(newPos);
+                nodeInCol.Add(node);
             }
-            map.Add(nodeInCol);//전체 맵 리스트에 추가
+            map.Add(nodeInCol);
         }
-        int roll2 = Random.Range(250, 300);
-        //Boss Node 추가
-        List<Node> nodeInEnd = new(); //현재 층의 노드 리스트
+
+        // Boss Node 추가
+        List<Node> nodeInEnd = new();
         GameObject BossNode = Instantiate(nodePrefab, NodemapContainer);
         Node bossNode = BossNode.GetComponent<Node>();
         bossNode.SetNodeType(NodeType.Boss);
-        bossNode.SetPosition(new Vector2(FirstNodePosition.x + (row-1) * roll2, FirstNodePosition.y) );
+        Vector2 bossPos;
+        do
+        {
+            int roll2 = Random.Range(250, 300);
+            bossPos = new Vector2(FirstNodePosition.x + (row - 1) * roll2, FirstNodePosition.y);
+        }
+        while (!IsPositionValid(bossPos)); // 유효한 위치일 때까지 반복
+
+        bossNode.SetPosition(bossPos);
         nodeInEnd.Add(bossNode);
         map.Add(nodeInEnd);
 
         currentNode = map[0][0];
     }
 
-    //노드 연결
+
     void ConnectNodes()
     {
-        // 가까운 노드 2개만 선택하는 방식으로 변경
         for (int i = 0; i < row - 1; i++)
         {
             List<Node> currentCol = map[i]; // 현재 층의 노드 리스트
@@ -95,19 +129,20 @@ public class MapManager : MonoBehaviour
                     {
                         node.connectedNodes.Add(bossNode);
                     }
-
-                }else if( i == 0)
+                }
+                else if (i == 0) // 첫 번째 층이면 모든 노드를 시작 노드에 연결
                 {
-                    foreach(Node startNode in nextCol)
+                    foreach (Node startNode in nextCol)
                     {
                         node.connectedNodes.Add(startNode);
                     }
                 }
-                else // 일반적인 경우, 가까운 2개 노드만 선택
+                else // 일반적인 경우, 각 노드를 다음 층의 2개 노드와 연결
                 {
+                    // 각 노드가 두 개의 노드와만 연결되도록 처리
                     List<Node> sortedNextCol = new List<Node>(nextCol);
                     sortedNextCol.Sort((a, b) => Vector3.Distance(node.transform.position, a.transform.position)
-                                            .CompareTo(Vector3.Distance(node.transform.position, b.transform.position)));
+                                                .CompareTo(Vector3.Distance(node.transform.position, b.transform.position)));
 
                     for (int j = 0; j < Mathf.Min(2, sortedNextCol.Count); j++)
                     {
@@ -116,7 +151,52 @@ public class MapManager : MonoBehaviour
                 }
             }
         }
+
+        // 모든 층에서 연결이 잘 되었는지 확인하고, 연결되지 않은 노드들끼리도 연결 처리
+        EnsureAllNodesConnected();
     }
+
+    void EnsureAllNodesConnected()
+    {
+        // 모든 노드를 체크하여 연결되지 않은 노드가 있다면, 이를 해결
+        for (int i = 0; i < row - 1; i++)
+        {
+            List<Node> currentCol = map[i]; // 현재 층의 노드 리스트
+            List<Node> nextCol = map[i + 1]; // 다음 층의 노드 리스트
+
+            foreach (Node node in currentCol)
+            {
+                // 연결된 노드가 없으면, 다음 층의 노드 중 하나와 연결
+                if (node.connectedNodes.Count == 0)
+                {
+                    Node fallbackNode = nextCol[Random.Range(0, nextCol.Count)];
+                    node.connectedNodes.Add(fallbackNode);
+                }
+            }
+
+            foreach (Node nextNode in nextCol)
+            {
+                // 연결된 노드가 없으면, 이전 층의 노드 중 하나와 연결
+                bool isConnected = false;
+                foreach (Node node in map[i])
+                {
+                    if (node.connectedNodes.Contains(nextNode))
+                    {
+                        isConnected = true;
+                        break;
+                    }
+                }
+
+                if (!isConnected)
+                {
+                    Node fallbackNode = map[i][Random.Range(0, map[i].Count)];
+                    nextNode.connectedNodes.Add(fallbackNode);
+                }
+            }
+        }
+    }
+
+
 
     void DrawMap()
     {
@@ -154,10 +234,25 @@ public class MapManager : MonoBehaviour
 
     public void MovePlayer(Node selectedNode)
     {
-       /* if (currentNode == null || currentNode.connectedNodes.Contains(selectedNode))
-        { // 이동 가능한 노드인지 확인
+       if(currentNode == null || currentNode.connectedNodes.Contains(selectedNode))
+        {
             currentNode = selectedNode; // 플레이어의 현재 위치 업데이트
-            // 선택한 노드에 대한 이벤트 실행 (전투, 상점 등)
-        }*/
+            Debug.Log("현재 노드: " + currentNode.name);
+
+            // 이전에 반짝이던 노드들은 정지
+            foreach (Node node in map.SelectMany(nodes => nodes))
+            {
+                node.StopBlinking();
+            }
+
+            // 현재 노드의 연결된 노드들을 반짝이게 설정
+            foreach (Node node in currentNode.connectedNodes)
+            {
+                node.UpdateVisual();
+            }
+        }else if (selectedNode == map[0][0])
+        {
+            selectedNode.UpdateVisual();
+        }
     }
 }
