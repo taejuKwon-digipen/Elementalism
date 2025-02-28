@@ -29,7 +29,7 @@ public class Node : MonoBehaviour
     private void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        mapManager = FindObjectOfType<MapManager>(); // 맵 매니저 찾기
+        mapManager = MapManager.Instance; // 싱글턴으로 MapManager 참조
 
         if (!IsTypeAssigned)
         {
@@ -41,21 +41,24 @@ public class Node : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (!isSelectable) return;
+        if (!isSelectable)
+        {
+            Debug.Log("이 노드는 선택할 수 없습니다.");
+            return;
+        }
 
         Debug.Log($"[클릭] {nodeType} 노드 선택됨");
 
-        // DOTween 애니메이션 정지 (씬 전환 전에 반드시 실행)
         if (spriteRenderer != null)
         {
             spriteRenderer.DOKill();
         }
 
-        // 씬 이동 처리
         string SceneToLoad = GetSceneNameByNodeType(nodeType);
         if (!string.IsNullOrEmpty(SceneToLoad))
         {
-            StopAllCoroutines(); // DOTween 이외의 코루틴도 정지
+            StopAllCoroutines();
+            Debug.Log($"씬 {SceneToLoad} 로드 중...");
             SceneManager.LoadScene(SceneToLoad);
         }
 
@@ -64,16 +67,19 @@ public class Node : MonoBehaviour
         {
             mapManager.MovePlayer(this);
         }
+        else
+        {
+            Debug.LogError("mapManager가 null입니다! MapManager.Instance가 정상적으로 설정되었는지 확인하세요.");
+        }
 
-        // 연결된 노드 활성화
         foreach (var node in connectedNodes)
         {
             node.SetSelectable(true);
         }
 
-        // 노드 선택 시 라인 활성화
         ShowConnectedLines();
     }
+
 
 
     public void SetSelectable(bool selectable)
@@ -103,7 +109,7 @@ public class Node : MonoBehaviour
     {
         isSelectable = false;
         spriteRenderer.DOKill(); // DOTween 애니메이션 정지
-        spriteRenderer.color = new Color(1, 1, 1, 1); // 원래 색상 복원
+        //spriteRenderer.color = new Color(1, 1, 1, 1); // 원래 색상 복원
     }
 
     private string GetSceneNameByNodeType(NodeType type)

@@ -29,18 +29,132 @@ public class MapManager : MonoBehaviour
 
     public string SceneToLoad;
 
-    private List<List<Node>> map = new(); //층별 노드리스트
+    private /*static*/ List<List<Node>> map = new(); //층별 노드리스트
     private Node currentNode; //현재 플레이어가 위치한 노드
 
-    void Start()
-    {
-        GenerateMap();
-        ConnectNodes();
-        DrawMap();
+    public static MapManager Instance;
 
-        map[0][0].SetSelectable(true);
-        MovePlayer(map[0][0]);
+    private static bool isInitialized = false; // 최초 실행 여부
+
+
+    private void Awake()
+    {
+        Debug.Log("MapManager Awake 호출");
+
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+            SceneManager.sceneLoaded += OnSceneLoaded;
+            Debug.Log("MapManager 인스턴스 생성됨");
+            
+            /*if (map.Count == 0) // 맵이 없으면 생성
+            {
+                Debug.Log("처음 실행 → 맵 생성 중...");
+                GenerateMap();
+                ConnectNodes();
+                DrawMap();
+                currentNode = map[0][0];
+                MovePlayer(currentNode);
+            }*/
+        }
+        /*else
+        {
+            Debug.Log("MapManager 중복 생성됨 → 새 객체 삭제");
+            Destroy(gameObject);
+            return;
+        }*/
     }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "Map2") // 맵 씬일 때 실행
+        {
+            if (map.Count == 0) // 맵이 없으면 다시 생성 (예외 처리)
+            {
+                Debug.LogWarning("맵 데이터 없음 → 새로 생성");
+                GenerateMap();
+                ConnectNodes();
+                DrawMap();
+                currentNode = map[0][0];
+                currentNode.SetSelectable(true);
+                MovePlayer(currentNode);
+            }
+            else
+            {
+                Debug.Log("맵 씬으로 돌아옴, 기존 맵 복원 중...");
+                RestoreMapState();
+                DrawMap();
+            }
+        }
+    }
+
+    private void RestoreMapState()
+    {
+        Debug.Log("RestoreMapState 실행: 기존 맵 복원 중...");
+
+        if (map == null || map.Count == 0)
+        {
+            Debug.LogWarning("기존 맵 데이터 없음 → 새로 생성");
+            GenerateMap();
+            ConnectNodes();
+            DrawMap();
+            return;
+        }
+
+        for (int i = 0; i < map.Count; i++)
+        {
+            for (int j = 0; j < map[i].Count; j++)
+            {
+                if (map[i][j] == null) // 노드가 사라졌다면 다시 생성
+                {
+                    Debug.LogWarning($"노드 {i}-{j}가 사라짐 → 다시 생성");
+
+                    Vector2 nodePos = nodePositions.Keys.ElementAt(j); // 저장된 위치 가져오기
+                    GameObject newNodeObj = Instantiate(nodePrefab, NodemapContainer);
+                    Node newNode = newNodeObj.GetComponent<Node>();
+                    newNode.SetPosition(nodePos);
+                    newNode.SetNodeType(map[i][j].nodeType);
+                    newNode.connectedNodes = map[i][j].connectedNodes;
+
+                    map[i][j] = newNode; // 리스트에 새 노드 반영
+                    nodePositions[nodePos] = newNode; // Dictionary 업데이트
+                }
+
+                map[i][j].gameObject.SetActive(true);
+                map[i][j].UpdateVisual();
+
+                if (map[i][j] == currentNode)
+                {
+                    map[i][j].SetSelectable(false);
+                }
+                else if (currentNode.connectedNodes.Contains(map[i][j]))
+                {
+                    map[i][j].SetSelectable(true);
+                }
+            }
+        }
+
+        foreach (var line in lines)
+        {
+            if (line == null)
+            {
+                Debug.LogWarning(" 라인이 사라짐 → 다시 생성");
+                DrawMap();
+                return;
+            }
+
+            line.SetActive(true);
+        }
+    }
+
+
+    private void Start()
+    {
+        Debug.Log($"MapManager 존재 확인: {this.gameObject.name}");
+        
+    }
+
 
     // 노드 간 최소 거리 설정
     float minDistance = 150f; // 예시값 (너무 작은 값을 설정하면 노드들이 겹칠 수 있음)
@@ -59,6 +173,8 @@ public class MapManager : MonoBehaviour
         return true;
     }
 
+    private Dictionary<Vector2, Node> nodePositions = new(); // 노드 위치 저장용
+
     void GenerateMap()
     {
         Vector2 FirstNodePosition = firstNodePO.transform.position;
@@ -69,6 +185,9 @@ public class MapManager : MonoBehaviour
         Firstnode.SetNodeType(NodeType.Start);
         nodeInFirst.Add(Firstnode);
         map.Add(nodeInFirst);
+
+        // 노드의 위치를 Dictionary에 저장
+        nodePositions[FirstNodePosition] = Firstnode;
 
         for (int i = 1; i < row - 1; i++)
         {
@@ -83,12 +202,15 @@ public class MapManager : MonoBehaviour
                     int roll = Random.Range(250, 300);
                     newPos = new Vector2(FirstNodePosition.x + i * roll, FirstNodePosition.y + j * roll - nodeCount * 100);
                 }
-                while (!IsPositionValid(newPos)); // 유효한 위치일 때까지 반복
+                while (!IsPositionValid(newPos));
 
                 GameObject nodeobj = Instantiate(nodePrefab, NodemapContainer);
                 Node node = nodeobj.GetComponent<Node>();
                 node.SetPosition(newPos);
                 nodeInCol.Add(node);
+
+                //  노드의 위치를 Dictionary에 저장
+                nodePositions[newPos] = node;
             }
             map.Add(nodeInCol);
         }
@@ -104,11 +226,14 @@ public class MapManager : MonoBehaviour
             int roll2 = Random.Range(250, 300);
             bossPos = new Vector2(FirstNodePosition.x + (row - 1) * roll2, FirstNodePosition.y);
         }
-        while (!IsPositionValid(bossPos)); // 유효한 위치일 때까지 반복
+        while (!IsPositionValid(bossPos));
 
         bossNode.SetPosition(bossPos);
         nodeInEnd.Add(bossNode);
         map.Add(nodeInEnd);
+
+        // 보스 노드 위치도 저장
+        nodePositions[bossPos] = bossNode;
 
         currentNode = map[0][0];
     }
@@ -196,8 +321,6 @@ public class MapManager : MonoBehaviour
         }
     }
 
-
-
     void DrawMap()
     {
         foreach (List<Node> levelNodes in map)
@@ -234,7 +357,7 @@ public class MapManager : MonoBehaviour
 
     public void MovePlayer(Node selectedNode)
     {
-       if(currentNode == null || currentNode.connectedNodes.Contains(selectedNode))
+       if(/*currentNode == null ||*/ currentNode.connectedNodes.Contains(selectedNode))
         {
             currentNode = selectedNode; // 플레이어의 현재 위치 업데이트
             Debug.Log("현재 노드: " + currentNode.name);
