@@ -20,15 +20,13 @@ public class MapManager : MonoBehaviour
     [SerializeField] public int shopChance;
 
     [SerializeField] public GameObject nodePrefab; // 노드 UI 프리펩
-    [SerializeField] public Transform NodemapContainer; // 맵 노드가 들어갈 부모 오브젝트
-    [SerializeField] public Transform LinemapContainer; // 라인 들어갈 부모 오브젝트
     [SerializeField] public GameObject linePrefab; // 라인 프리펩
     public List<GameObject> lines = new();
 
     [SerializeField] public GameObject firstNodePO;
 
     public string SceneToLoad;
-
+    public Transform Container; // 맵 노드가 들어갈 부모 오브젝트
     private /*static*/ List<List<Node>> map = new(); //층별 노드리스트
     private Node currentNode; //현재 플레이어가 위치한 노드
 
@@ -40,31 +38,51 @@ public class MapManager : MonoBehaviour
     private void Awake()
     {
         Debug.Log("MapManager Awake 호출");
-
+        
         if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
             SceneManager.sceneLoaded += OnSceneLoaded;
             Debug.Log("MapManager 인스턴스 생성됨");
-            
-            /*if (map.Count == 0) // 맵이 없으면 생성
-            {
-                Debug.Log("처음 실행 → 맵 생성 중...");
-                GenerateMap();
-                ConnectNodes();
-                DrawMap();
-                currentNode = map[0][0];
-                MovePlayer(currentNode);
-            }*/
         }
-        /*else
+        else
         {
             Debug.Log("MapManager 중복 생성됨 → 새 객체 삭제");
             Destroy(gameObject);
             return;
-        }*/
+        }
+
+        FindContainer();
     }
+
+    private void FindContainer()
+    {
+        //Content 하위에서 NodemapContainer를 찾음
+        GameObject containerObj = GameObject.Find("Content");
+        if (containerObj != null)
+        {
+            Container = containerObj.transform;
+            Debug.Log("NodemapContainer 할당 완료");
+        }
+        else
+        {
+            Debug.LogError("NodemapContainer를 찾을 수 없음!");
+        }
+
+        //Content 하위에서 LinemapContainer를 찾음
+        GameObject lineContainerObj = GameObject.Find("Content");
+        if (lineContainerObj != null)
+        {
+            Container = lineContainerObj.transform;
+            Debug.Log("LinemapContainer 할당 완료");
+        }
+        else
+        {
+            Debug.LogError("LinemapContainer를 찾을 수 없음!");
+        }
+    }
+
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
@@ -83,6 +101,7 @@ public class MapManager : MonoBehaviour
             else
             {
                 Debug.Log("맵 씬으로 돌아옴, 기존 맵 복원 중...");
+                FindContainer();
                 RestoreMapState();
                 DrawMap();
             }
@@ -101,50 +120,52 @@ public class MapManager : MonoBehaviour
             DrawMap();
             return;
         }
-
-        for (int i = 0; i < map.Count; i++)
+        else
         {
-            for (int j = 0; j < map[i].Count; j++)
+            for (int i = 0; i < map.Count; i++)
             {
-                if (map[i][j] == null) // 노드가 사라졌다면 다시 생성
+                for (int j = 0; j < map[i].Count; j++)
                 {
-                    Debug.LogWarning($"노드 {i}-{j}가 사라짐 → 다시 생성");
+                    if (map[i][j] == null) // 노드가 사라졌다면 다시 생성
+                    {
+                        Debug.LogWarning($"노드 {i}-{j}가 사라짐 → 다시 생성");
 
-                    Vector2 nodePos = nodePositions.Keys.ElementAt(j); // 저장된 위치 가져오기
-                    GameObject newNodeObj = Instantiate(nodePrefab, NodemapContainer);
-                    Node newNode = newNodeObj.GetComponent<Node>();
-                    newNode.SetPosition(nodePos);
-                    newNode.SetNodeType(map[i][j].nodeType);
-                    newNode.connectedNodes = map[i][j].connectedNodes;
+                        Vector2 nodePos = nodePositions.Keys.ElementAt(j); // 저장된 위치 가져오기
+                        GameObject newNodeObj = Instantiate(nodePrefab, Container);
+                        Node newNode = newNodeObj.GetComponent<Node>();
+                        newNode.SetPosition(nodePos);
+                        newNode.SetNodeType(map[i][j].nodeType);
+                        newNode.connectedNodes = map[i][j].connectedNodes;
 
-                    map[i][j] = newNode; // 리스트에 새 노드 반영
-                    nodePositions[nodePos] = newNode; // Dictionary 업데이트
-                }
+                        map[i][j] = newNode; // 리스트에 새 노드 반영
+                        nodePositions[nodePos] = newNode; // Dictionary 업데이트
+                    }
 
-                map[i][j].gameObject.SetActive(true);
-                map[i][j].UpdateVisual();
+                    map[i][j].gameObject.SetActive(true);
+                    map[i][j].UpdateVisual();
 
-                if (map[i][j] == currentNode)
-                {
-                    map[i][j].SetSelectable(false);
-                }
-                else if (currentNode.connectedNodes.Contains(map[i][j]))
-                {
-                    map[i][j].SetSelectable(true);
+                    if (map[i][j] == currentNode)
+                    {
+                        map[i][j].SetSelectable(false);
+                    }
+                    else if (currentNode.connectedNodes.Contains(map[i][j]))
+                    {
+                        map[i][j].SetSelectable(true);
+                    }
                 }
             }
-        }
 
-        foreach (var line in lines)
-        {
-            if (line == null)
+            foreach (var line in lines)
             {
-                Debug.LogWarning(" 라인이 사라짐 → 다시 생성");
-                DrawMap();
-                return;
-            }
+                if (line == null)
+                {
+                    Debug.LogWarning(" 라인이 사라짐 → 다시 생성");
+                    DrawMap();
+                    return;
+                }
 
-            line.SetActive(true);
+                line.SetActive(true);
+            }
         }
     }
 
@@ -152,9 +173,7 @@ public class MapManager : MonoBehaviour
     private void Start()
     {
         Debug.Log($"MapManager 존재 확인: {this.gameObject.name}");
-        
     }
-
 
     // 노드 간 최소 거리 설정
     float minDistance = 150f; // 예시값 (너무 작은 값을 설정하면 노드들이 겹칠 수 있음)
@@ -179,12 +198,14 @@ public class MapManager : MonoBehaviour
     {
         Vector2 FirstNodePosition = firstNodePO.transform.position;
         List<Node> nodeInFirst = new();
-        GameObject firstNode = Instantiate(nodePrefab, NodemapContainer);
+        GameObject firstNode = Instantiate(nodePrefab, Container);
         Node Firstnode = firstNode.GetComponent<Node>();
         Firstnode.SetPosition(FirstNodePosition);
         Firstnode.SetNodeType(NodeType.Start);
         nodeInFirst.Add(Firstnode);
         map.Add(nodeInFirst);
+
+        Debug.Log("187line" + Firstnode);
 
         // 노드의 위치를 Dictionary에 저장
         nodePositions[FirstNodePosition] = Firstnode;
@@ -204,7 +225,7 @@ public class MapManager : MonoBehaviour
                 }
                 while (!IsPositionValid(newPos));
 
-                GameObject nodeobj = Instantiate(nodePrefab, NodemapContainer);
+                GameObject nodeobj = Instantiate(nodePrefab, Container);
                 Node node = nodeobj.GetComponent<Node>();
                 node.SetPosition(newPos);
                 nodeInCol.Add(node);
@@ -217,7 +238,7 @@ public class MapManager : MonoBehaviour
 
         // Boss Node 추가
         List<Node> nodeInEnd = new();
-        GameObject BossNode = Instantiate(nodePrefab, NodemapContainer);
+        GameObject BossNode = Instantiate(nodePrefab, Container);
         Node bossNode = BossNode.GetComponent<Node>();
         bossNode.SetNodeType(NodeType.Boss);
         Vector2 bossPos;
@@ -337,14 +358,14 @@ public class MapManager : MonoBehaviour
 
     void CreateLineBetweenNodes(Node nodeA, Node nodeB)
     {
-        GameObject lineObj = Instantiate(linePrefab, LinemapContainer);
+        GameObject lineObj = Instantiate(linePrefab, Container);
         LineRenderer line = lineObj.GetComponent<LineRenderer>();
 
         line.useWorldSpace = false; // World Space 사용 안 함 (부모 기준으로 움직이게)
 
         // 부모(Content) 기준으로 상대적인 좌표를 적용해야 함
-        Vector3 localPosA = LinemapContainer.InverseTransformPoint(nodeA.transform.position);
-        Vector3 localPosB = LinemapContainer.InverseTransformPoint(nodeB.transform.position);
+        Vector3 localPosA = Container.InverseTransformPoint(nodeA.transform.position);
+        Vector3 localPosB = Container.InverseTransformPoint(nodeB.transform.position);
 
         line.positionCount = 2;
         line.SetPosition(0, localPosA);
