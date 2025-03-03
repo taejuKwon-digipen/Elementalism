@@ -2,23 +2,33 @@ using UnityEngine;
 
 public class LineUpdater : MonoBehaviour
 {
-    public Transform content; // Scroll View의 Content
-    private Vector3 lastContentPos;
+    public RectTransform content; // Scroll View의 Content (RectTransform)
+    private Vector2 lastContentAnchoredPos;
     private LineRenderer[] lines;
 
     void Start()
     {
-        lastContentPos = content.position;
-        lines = GetComponentsInChildren<LineRenderer>(); // 모든 라인 가져오기
+        lastContentAnchoredPos = content.anchoredPosition;
+        lines = GetComponentsInChildren<LineRenderer>();
+
+        foreach (LineRenderer line in lines)
+        {
+            line.useWorldSpace = false; // 로컬 공간에서 움직이도록 설정
+        }
     }
+
 
     void Update()
     {
-        Vector3 delta = content.position - lastContentPos; // Content가 이동한 거리 계산
+        Vector2 delta = content.anchoredPosition - lastContentAnchoredPos; // Content가 이동한 거리 계산
+        Debug.Log("Delta: " + delta); // 확인용 로그
+
         foreach (LineRenderer line in lines)
         {
-            line.transform.position += delta; // 라인도 같은 거리만큼 이동
+            Vector3 newPos = line.transform.position + new Vector3(delta.x, delta.y, 0);
+            line.transform.position = newPos; // 라인 이동
         }
-        lastContentPos = content.position; // 현재 위치 업데이트
+
+        lastContentAnchoredPos = content.anchoredPosition; // 현재 위치 업데이트
     }
 }
