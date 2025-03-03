@@ -83,7 +83,6 @@ public class MapManager : MonoBehaviour
         }
     }
 
-
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (scene.name == "Map2") // 맵 씬일 때 실행
@@ -122,25 +121,20 @@ public class MapManager : MonoBehaviour
         }
         else
         {
-            for (int i = 0; i < map.Count; i++)
+            for (int i = 0; i < nodePositions.Count; i++)
+            {
+                Vector2 nodePos = nodePositions.Keys.ElementAt(i); // 저장된 위치 가져오기
+                GameObject newNodeObj = Instantiate(nodePrefab, Container);
+                Node newNode = newNodeObj.GetComponent<Node>();
+                newNode.SetPosition(nodePos);
+                NodeType nodetype = nodePositions.Values.ElementAt(i);
+                newNode.SetNodeType(nodetype);
+                
+            }
+            for(int i = 0; i < map.Count; i++)
             {
                 for (int j = 0; j < map[i].Count; j++)
                 {
-                    if (map[i][j] == null) // 노드가 사라졌다면 다시 생성
-                    {
-                        Debug.LogWarning($"노드 {i}-{j}가 사라짐 → 다시 생성");
-
-                        Vector2 nodePos = nodePositions.Keys.ElementAt(j); // 저장된 위치 가져오기
-                        GameObject newNodeObj = Instantiate(nodePrefab, Container);
-                        Node newNode = newNodeObj.GetComponent<Node>();
-                        newNode.SetPosition(nodePos);
-                        newNode.SetNodeType(map[i][j].nodeType);
-                        newNode.connectedNodes = map[i][j].connectedNodes;
-
-                        map[i][j] = newNode; // 리스트에 새 노드 반영
-                        nodePositions[nodePos] = newNode; // Dictionary 업데이트
-                    }
-
                     map[i][j].gameObject.SetActive(true);
                     map[i][j].UpdateVisual();
 
@@ -154,7 +148,7 @@ public class MapManager : MonoBehaviour
                     }
                 }
             }
-
+            ConnectNodes();
             foreach (var line in lines)
             {
                 if (line == null)
@@ -192,7 +186,7 @@ public class MapManager : MonoBehaviour
         return true;
     }
 
-    private Dictionary<Vector2, Node> nodePositions = new(); // 노드 위치 저장용
+    private Dictionary<Vector2, NodeType> nodePositions = new(); // 노드 위치 저장용
 
     void GenerateMap()
     {
@@ -206,9 +200,9 @@ public class MapManager : MonoBehaviour
         map.Add(nodeInFirst);
 
         Debug.Log("187line" + Firstnode);
-
+        nodePositions.Add(FirstNodePosition, Firstnode.GetNodeType());
         // 노드의 위치를 Dictionary에 저장
-        nodePositions[FirstNodePosition] = Firstnode;
+        //nodePositions[FirstNodePosition] = Firstnode;
 
         for (int i = 1; i < row - 1; i++)
         {
@@ -231,7 +225,8 @@ public class MapManager : MonoBehaviour
                 nodeInCol.Add(node);
 
                 //  노드의 위치를 Dictionary에 저장
-                nodePositions[newPos] = node;
+                //nodePositions[newPos] = node;
+                nodePositions.Add(newPos, node.GetNodeType());
             }
             map.Add(nodeInCol);
         }
@@ -254,7 +249,7 @@ public class MapManager : MonoBehaviour
         map.Add(nodeInEnd);
 
         // 보스 노드 위치도 저장
-        nodePositions[bossPos] = bossNode;
+        nodePositions.Add(bossPos, bossNode.GetNodeType());
 
         currentNode = map[0][0];
     }

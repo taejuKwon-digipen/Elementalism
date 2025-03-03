@@ -684,16 +684,15 @@ MonoBehaviour:
   row: 9
   minNodePerCol: 2
   maxNodePerCol: 5
-  battleChance: 70
-  eventChance: 20
-  shopChance: 10
+  battleChance: 50
+  eventChance: 30
+  shopChance: 20
   nodePrefab: {fileID: 7400204757253662088, guid: f7c3bc716f89e6348a64af8b792d4ae7, type: 3}
-  NodemapContainer: {fileID: 762030257}
-  LinemapContainer: {fileID: 762030257}
   linePrefab: {fileID: 6011132921761891074, guid: 51abcf28c027ba64d807d4013c4663c6, type: 3}
   lines: []
   firstNodePO: {fileID: 241957851}
   SceneToLoad: 
+  Container: {fileID: 0}
 --- !u!4 &1265301631
 Transform:
   m_ObjectHideFlags: 0

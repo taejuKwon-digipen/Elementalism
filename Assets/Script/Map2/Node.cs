@@ -118,9 +118,9 @@ public class Node : MonoBehaviour
         {
             case NodeType.Battle: return "Main";
             case NodeType.Start: return "Main";
-            // case NodeType.Shop: return "ShopScene";
-            // case NodeType.Event: return "EventScene";
-            // case NodeType.Boss: return "BossScene";
+            case NodeType.Shop: return "Main";
+            case NodeType.Event: return "Main";
+            case NodeType.Boss: return "Main";
             default: return "";
         }
     }
@@ -146,18 +146,23 @@ public class Node : MonoBehaviour
 
         if (roll < (cumulative += mapManager.battleChance))
         {
-            nodeType = NodeType.Battle;
+            SetNodeType(NodeType.Battle);
         }
         else if (roll < (cumulative += mapManager.eventChance))
         {
-            nodeType = NodeType.Event;
+            SetNodeType(NodeType.Event);
         }
         else if (roll < (cumulative += mapManager.shopChance))
         {
-            nodeType = NodeType.Shop;
+            SetNodeType(NodeType.Shop);
         }
 
         TypeTXT.text = nodeType.ToString();
+    }
+
+    public NodeType GetNodeType()
+    {
+        return this.nodeType;
     }
 
     public void SetPosition(Vector2 newPosition)
