@@ -53,6 +53,8 @@ public class CardManager : MonoBehaviour
     [SerializeField] private List<CardItem> inventoryCards = new List<CardItem>();
     private List<CardItem> sessionCards = new List<CardItem>(); // 현재 세션에서 사용 가능한 카드들
 
+    [SerializeField] private Deck deck; // 덱 참조
+
     private void LoadCardItemSO()
     {
         //Resources에서 SO 불러오기
@@ -101,26 +103,24 @@ public class CardManager : MonoBehaviour
     //카드 버퍼에서 카드 뽑아오기
     public CardItem PopCard(bool isSelection = false)
     {
-        if (Items.Count <= 0)
+        // deck이 null인지 확인
+        if (deck == null)
         {
-            RefreshCardBuffer(); // 카드가 없으면 버퍼 새로고침
-        }
-
-        if (Items.Count > 0)
-        {
-            int randomIndex = UnityEngine.Random.Range(0, Items.Count);
-            CardItem item = Items[randomIndex];
-            
-            if (!isSelection)
-            {
-                Items.RemoveAt(randomIndex);
-            }
-            
-            return item;
+            Debug.LogError("Deck이 할당되지 않았습니다.");
+            return null;
         }
         
-        Debug.LogWarning("카드를 뽑을 수 없습니다: 카드가 없음");
-        return null;
+        // 덱에서 카드 뽑기
+        CardItem drawnCard = deck.DrawCard();
+        
+        // 덱이 비어있으면 버린 카드 더미에서 덱 리필
+        if (drawnCard == null)
+        {
+            //Debug.LogWarning("카드를 뽑을 수 없습니다: 카드가 없음");
+            return null;
+        }
+        
+        return drawnCard;
     }
 
     private void SaveScriptableObject()
@@ -165,19 +165,70 @@ public class CardManager : MonoBehaviour
         // 현재 세션에서 사용할 카드 설정
         SetSessionCards();
         
+        // sessionCards가 비어있는지 확인
+        if (sessionCards.Count == 0)
+        {
+            Debug.LogWarning("세션 카드가 비어 있습니다. 기본 카드를 추가합니다.");
+            LoadInitialCards(); // 기본 카드 로드
+            SetSessionCards(); // 세션 카드 다시 설정
+        }
+        
+        // deck이 null인지 확인하고 처리
+        if (deck == null)
+        {
+            Debug.LogWarning("Deck이 할당되지 않았습니다. 새로 생성합니다.");
+            GameObject deckObject = new GameObject("Deck");
+            deck = deckObject.AddComponent<Deck>();
+            deckObject.transform.SetParent(transform);
+        }
+        
+        // 덱 초기화
+        deck.InitializeDeck(sessionCards);
+        
         RegisterCardMouseHandlers();
-        cardSelectionPanel.SetActive(false);
-        PanelBackground.SetActive(false);
+        
+        // cardSelectionPanel이 null인지 확인
+        if (cardSelectionPanel == null)
+        {
+            Debug.LogError("cardSelectionPanel이 할당되지 않았습니다.");
+            // 필요한 경우 여기서 생성할 수 있습니다.
+        }
+        else
+        {
+            cardSelectionPanel.SetActive(false);
+        }
+        
+        // PanelBackground가 null인지 확인
+        if (PanelBackground == null)
+        {
+            Debug.LogError("PanelBackground가 할당되지 않았습니다.");
+        }
+        else
+        {
+            PanelBackground.SetActive(false);
+        }
 
         positionOccupied = new List<bool> { false, false, false };
-        AddEmptyUsingCard();
-
-        // 인벤토리 카드 로그 출력
-        Debug.Log($"인벤토리 카드 수: {inventoryCards.Count}");
-        foreach (var card in inventoryCards)
+        
+        // UsingCard와 WaitingCard 초기화
+        UsingCard = new List<Card>();
+        WaitingCard = new List<Card>();
+        
+        // spownpoints와 Wspownpoints가 null인지 확인
+        if (spownpoints == null || spownpoints.Count < 3)
         {
-            Debug.Log($"인벤토리 카드: {card.CardName} (ID: {card.ID})");
+            Debug.LogError($"spownpoints가 null이거나 요소가 부족합니다. 현재 크기: {(spownpoints != null ? spownpoints.Count : 0)}");
         }
+        
+        if (Wspownpoints == null || Wspownpoints.Count < 6)
+        {
+            Debug.LogError($"Wspownpoints가 null이거나 요소가 부족합니다. 현재 크기: {(Wspownpoints != null ? Wspownpoints.Count : 0)}");
+        }
+        
+        AddEmptyUsingCard(); // 빈 UsingCard 추가
+        
+        // 초기 WaitingCard 6장 뽑기
+        DrawInitialWaitingCards();
     }
 
     private void ShuffleList<T>(List<T> list)
@@ -206,6 +257,13 @@ public class CardManager : MonoBehaviour
     // 오른쪽 사용 빈 카드 3개 추가 메서드
     public void AddEmptyUsingCard()
     {
+        // spownpoints가 null이거나 충분한 요소가 없는지 확인
+        if (spownpoints == null || spownpoints.Count < 3)
+        {
+            Debug.LogError($"spownpoints가 null이거나 요소가 부족합니다. 현재 크기: {(spownpoints != null ? spownpoints.Count : 0)}");
+            return;
+        }
+        
         //Using Card 선택시 positionOccupied 가 false이면 비어있으니까 카드 넣기
         for (currenttrueindex = 0; currenttrueindex < 3; currenttrueindex++)
         {
@@ -240,15 +298,19 @@ public class CardManager : MonoBehaviour
     //패널이 열리면 카드 생성 (Waiting Card 4개)
     private void GenerateSelectionCards()
     {
+        // 덱에 카드가 있는지 확인
+        if (deck != null && deck.GetDeckCount() == 0)
+        {
+            Debug.LogWarning("덱에 카드가 없습니다. 세션 카드를 다시 덱에 추가합니다.");
+            deck.InitializeDeck(sessionCards);
+        }
 
         for (int i = 0; i < 4; i++)
         {
             countwaitcard = i; // 현재 대기 카드 인덱스
             AddCard(false); // 대기 카드로 추가
-
         } //처음 4개 나오게
         countwaitcard = 0; // 대기 카드 초기화
-
     }
 
     // 턴 종료 시 사용 카드 초기화 및 새 카드 추가
@@ -264,29 +326,52 @@ public class CardManager : MonoBehaviour
 
         Debug.Log("Executing TurnEndButton...");
 
-        // WaitingCard 처리
-        for (int i = 0; i < 4; i++)
-        {
-            if (WaitingCard[i].gameObject.activeSelf == false)
-            {
-                WaitingCard[i].gameObject.SetActive(true);
-            }
-            Destroy(WaitingCard[i].gameObject);
-        }
-
-        // UsingCard 처리
+        // 사용한 카드를 버린 카드 더미로 이동
         for (int i = 0; i < 3; i++)
         {
-            Destroy(UsingCard[i].gameObject);
+            if (UsingCard[i] != null && UsingCard[i].gameObject.activeSelf && UsingCard[i].carditem != null)
+            {
+                // deck이 null인지 확인
+                if (deck != null)
+                {
+                    // 사용한 카드를 버린 카드 더미로 이동
+                    deck.AddToDiscard(UsingCard[i].carditem);
+                }
+            }
+            
+            if (UsingCard[i] != null)
+            {
+                Destroy(UsingCard[i].gameObject);
+            }
+            
             if (positionOccupied[i] == true)
             {
                 positionOccupied[i] = false;
             }
         }
+
+        // WaitingCard 처리
+        for (int i = 0; i < 4; i++)
+        {
+            if (WaitingCard[i] != null)
+            {
+                if (WaitingCard[i].gameObject.activeSelf == false)
+                {
+                    WaitingCard[i].gameObject.SetActive(true);
+                }
+                Destroy(WaitingCard[i].gameObject);
+            }
+        }
+
         WaitingCard.Clear();
         UsingCard.Clear();
+        countwaitcard = 0;
+        
         Debug.Log("Clear Complete");
         AddEmptyUsingCard(); // 빈 UsingCard 추가
+        
+        // 새로운 WaitingCard 4장 뽑기
+        DrawInitialWaitingCards();
     }
 
     public void Update()
@@ -430,10 +515,30 @@ public class CardManager : MonoBehaviour
     {
         if (isUse == true) //Using card
         {
-            Transform Canvas2Transform = GameObject.Find("Canvas/Background/Cards").transform;
+            // Canvas/Background/Cards를 찾을 수 없는 경우 처리
+            GameObject cardsParent = GameObject.Find("Canvas/Background/Cards");
+            if (cardsParent == null)
+            {
+                Debug.LogError("Canvas/Background/Cards를 찾을 수 없습니다.");
+                return;
+            }
+            
+            Transform Canvas2Transform = cardsParent.transform;
             GameObject cardObject = Instantiate(cardPrefab, spownpoints[currenttrueindex].transform.position, Quaternion.identity, Canvas2Transform);
             var card = cardObject.GetComponent<Card>();
-            card.Setup(PopCard(false), false); // 필요에 따라 `isUse` 값을 조정
+            
+            // PopCard에서 카드 가져오기
+            CardItem cardItem = PopCard(false);
+            
+            // cardItem이 null인지 확인
+            if (cardItem == null)
+            {
+                Debug.LogError("카드를 생성할 수 없습니다: PopCard가 null을 반환했습니다.");
+                Destroy(cardObject); // 카드 오브젝트 삭제
+                return;
+            }
+            
+            card.Setup(cardItem, false);
             UsingCard.Add(card); // 생성된 카드를 리스트에 추가
         }
         else //얘가 뒤에 나오는 4개
@@ -443,7 +548,23 @@ public class CardManager : MonoBehaviour
                 return;
             }
 
-            Transform Canvas2Transform = GameObject.Find("CardSelectionPanel").transform;
+            // CardSelectionPanel을 찾을 수 없는 경우 처리
+            GameObject cardSelectionPanelObj = GameObject.Find("CardSelectionPanel");
+            if (cardSelectionPanelObj == null)
+            {
+                Debug.LogError("CardSelectionPanel을 찾을 수 없습니다.");
+                return;
+            }
+            
+            Transform Canvas2Transform = cardSelectionPanelObj.transform;
+            
+            // Wspownpoints가 null이거나 충분한 요소가 없는지 확인
+            if (Wspownpoints == null || Wspownpoints.Count <= countwaitcard)
+            {
+                Debug.LogError($"Wspownpoints가 null이거나 인덱스({countwaitcard})가 범위를 벗어납니다. 현재 크기: {(Wspownpoints != null ? Wspownpoints.Count : 0)}");
+                return;
+            }
+            
             GameObject cardObject = Instantiate(cardPrefab, Wspownpoints[countwaitcard].transform.position, Quaternion.identity, Canvas2Transform);
             Vector3 nowLocalScale = cardObject.transform.localScale;
             cardObject.transform.localScale = new Vector3(nowLocalScale.x * 0.014f, nowLocalScale.x * 0.014f, 1);
@@ -460,7 +581,19 @@ public class CardManager : MonoBehaviour
             Debug.Log($"Card Created: {cardObject.name} with MouseHandler");
 
             var card = cardObject.GetComponent<Card>();
-            card.Setup(PopCard(true), true); // 필요에 따라 `isUse` 값을 조정
+            
+            // PopCard에서 카드 가져오기
+            CardItem cardItem = PopCard(true);
+            
+            // cardItem이 null인지 확인
+            if (cardItem == null)
+            {
+                Debug.LogError("카드를 생성할 수 없습니다: PopCard가 null을 반환했습니다.");
+                Destroy(cardObject); // 카드 오브젝트 삭제
+                return;
+            }
+            
+            card.Setup(cardItem, true);
             WaitingCard.Add(card); // 생성된 카드를 리스트에 추가
         }
 
@@ -497,8 +630,8 @@ public class CardManager : MonoBehaviour
         // 인벤토리가 비어있을 때만 기본 카드 추가
         if (inventoryCards.Count == 0)
         {
-            // 기본 카드 (ID: 1,2,3,4) 추가
-            for (int i = 1; i <= 4; i++)
+            // 기본 카드 (ID: 1,2,3,4,5,6) 추가
+            for (int i = 1; i <= 6; i++)
             {
                 var card = carditemso.items.FirstOrDefault(x => x.ID == i);
                 if (card != null)
@@ -559,5 +692,102 @@ public class CardManager : MonoBehaviour
             // ScriptableObject 저장
             SaveScriptableObject();
         }
+    }
+
+    private void DrawInitialWaitingCards()
+    {
+        if (deck == null)
+        {
+            Debug.LogError("Deck이 할당되지 않았습니다.");
+            return;
+        }
+        
+        // 덱에 카드가 있는지 확인
+        if (deck.GetDeckCount() == 0)
+        {
+            Debug.LogWarning("덱에 카드가 없습니다. 세션 카드를 다시 덱에 추가합니다.");
+            
+            // sessionCards가 비어있는지 확인
+            if (sessionCards.Count == 0)
+            {
+                Debug.LogWarning("세션 카드가 비어 있습니다. 기본 카드를 추가합니다.");
+                LoadInitialCards(); // 기본 카드 로드
+                SetSessionCards(); // 세션 카드 다시 설정
+            }
+            
+            deck.InitializeDeck(sessionCards);
+            
+            // 그래도 덱이 비어있으면 오류 출력 후 종료
+            if (deck.GetDeckCount() == 0)
+            {
+                Debug.LogError("덱을 초기화했지만 여전히 카드가 없습니다.");
+                return;
+            }
+        }
+        
+        // 대기 카드 6장 뽑기
+        for (int i = 0; i < 6; i++)
+        {
+            CardItem cardItem = deck.DrawCard();
+            if (cardItem != null)
+            {
+                AddWaitingCard(cardItem);
+            }
+            else
+            {
+                Debug.LogError("카드를 뽑을 수 없습니다: 덱이 비었습니다.");
+                break;
+            }
+        }
+    }
+
+    private void AddWaitingCard(CardItem cardItem)
+    {
+        if (WaitingCard.Count >= 6)
+        {
+            return;
+        }
+
+        // Wspownpoints가 null이거나 충분한 요소가 없는지 확인
+        if (Wspownpoints == null || Wspownpoints.Count <= countwaitcard)
+        {
+            Debug.LogError($"Wspownpoints가 null이거나 인덱스({countwaitcard})가 범위를 벗어납니다. 현재 크기: {(Wspownpoints != null ? Wspownpoints.Count : 0)}");
+            return;
+        }
+
+        // CardSelectionPanel을 찾을 수 없는 경우 처리
+        GameObject cardSelectionPanelObj = GameObject.Find("CardSelectionPanel");
+        if (cardSelectionPanelObj == null)
+        {
+            Debug.LogError("CardSelectionPanel을 찾을 수 없습니다.");
+            return;
+        }
+        
+        Transform Canvas2Transform = cardSelectionPanelObj.transform;
+        
+        // cardPrefab이 null인지 확인
+        if (cardPrefab == null)
+        {
+            Debug.LogError("cardPrefab이 할당되지 않았습니다.");
+            return;
+        }
+        
+        GameObject cardObject = Instantiate(cardPrefab, Wspownpoints[countwaitcard].transform.position, Quaternion.identity, Canvas2Transform);
+        Vector3 nowLocalScale = cardObject.transform.localScale;
+        cardObject.transform.localScale = new Vector3(nowLocalScale.x * 0.014f, nowLocalScale.x * 0.014f, 1);
+
+        BoxCollider collider = cardObject.AddComponent<BoxCollider>();
+        collider.isTrigger = true;
+
+        if (!cardObject.TryGetComponent<CardMouseHandler>(out var cardHandler))
+        {
+            cardHandler = cardObject.AddComponent<CardMouseHandler>();
+            cardHandler.Initialize(1.2f, 0.2f); // 배율과 지속 시간 설정
+        }
+
+        var card = cardObject.GetComponent<Card>();
+        card.Setup(cardItem, true);
+        WaitingCard.Add(card);
+        countwaitcard++;
     }
 }
