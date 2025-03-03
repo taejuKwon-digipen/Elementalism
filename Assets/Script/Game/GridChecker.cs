@@ -269,6 +269,17 @@ public class GridChecker : MonoBehaviour
         int blinkCount = 3;
         float blinkDuration = 0.1f; // 각 점멸의 지속 시간
 
+        // 현재 처리 중인 카드 찾기
+        Card currentCard = null;
+        for (int i = 0; i < UsingCard_.Count; i++)
+        {
+            if (UsingCard_[i] != null && UsingCard_[i].carditem != null && UsingCard_[i].carditem.cardShape == cardShape)
+            {
+                currentCard = UsingCard_[i];
+                break;
+            }
+        }
+
         for (int i = 0; i < blinkCount; i++)
         {
             // 블록을 반투명으로 설정
@@ -279,12 +290,24 @@ public class GridChecker : MonoBehaviour
                 {
                     Image blockImage = normalImageTransform.GetComponent<Image>();
                    
-                    if (blockImage != null )
+                    if (blockImage != null)
                     {
                         Color currentColor = blockImage.color;
                         currentColor.a = 0.5f;  // 알파 값을 0.5로 설정 (반투명)
                         blockImage.color = currentColor;
                     }
+                }
+            }
+
+            // 현재 처리 중인 카드만 반투명으로 설정
+            if (currentCard != null && currentCard.gameObject != null)
+            {
+                Image cardImage = currentCard.GetComponent<Image>();
+                if (cardImage != null)
+                {
+                    Color currentColor = cardImage.color;
+                    currentColor.a = 0.5f;
+                    cardImage.color = currentColor;
                 }
             }
 
@@ -299,12 +322,24 @@ public class GridChecker : MonoBehaviour
                 {
                     Image blockImage = normalImageTransform.GetComponent<Image>();
                     
-                    if (blockImage != null )
+                    if (blockImage != null)
                     {
                         Color currentColor = blockImage.color;
                         currentColor.a = 1.0f;  // 알파 값을 1.0으로 설정 (완전히 불투명)
                         blockImage.color = currentColor;
                     }
+                }
+            }
+
+            // 현재 처리 중인 카드만 다시 불투명으로 설정
+            if (currentCard != null && currentCard.gameObject != null)
+            {
+                Image cardImage = currentCard.GetComponent<Image>();
+                if (cardImage != null)
+                {
+                    Color currentColor = cardImage.color;
+                    currentColor.a = 1.0f;
+                    cardImage.color = currentColor;
                 }
             }
 
