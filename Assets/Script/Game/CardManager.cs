@@ -67,7 +67,7 @@ public class CardManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Resources에 'ItemSO'가 없습니다! 'Resources/ItemSO.asset' 위치를 확인하세요.");
+            Debug.Log("Resources에 'ItemSO'가 없습니다! 'Resources/ItemSO.asset' 위치를 확인하세요.");
         }
     }
 
@@ -106,7 +106,7 @@ public class CardManager : MonoBehaviour
         // deck이 null인지 확인
         if (deck == null)
         {
-            Debug.LogError("Deck이 할당되지 않았습니다.");
+            Debug.Log("Deck이 할당되지 않았습니다.");
             return null;
         }
         
@@ -190,7 +190,7 @@ public class CardManager : MonoBehaviour
         // cardSelectionPanel이 null인지 확인
         if (cardSelectionPanel == null)
         {
-            Debug.LogError("cardSelectionPanel이 할당되지 않았습니다.");
+            Debug.Log("cardSelectionPanel이 할당되지 않았습니다.");
             // 필요한 경우 여기서 생성할 수 있습니다.
         }
         else
@@ -201,7 +201,7 @@ public class CardManager : MonoBehaviour
         // PanelBackground가 null인지 확인
         if (PanelBackground == null)
         {
-            Debug.LogError("PanelBackground가 할당되지 않았습니다.");
+            Debug.Log("PanelBackground가 할당되지 않았습니다.");
         }
         else
         {
@@ -217,12 +217,12 @@ public class CardManager : MonoBehaviour
         // spownpoints와 Wspownpoints가 null인지 확인
         if (spownpoints == null || spownpoints.Count < 3)
         {
-            Debug.LogError($"spownpoints가 null이거나 요소가 부족합니다. 현재 크기: {(spownpoints != null ? spownpoints.Count : 0)}");
+            Debug.Log($"spownpoints가 null이거나 요소가 부족합니다. 현재 크기: {(spownpoints != null ? spownpoints.Count : 0)}");
         }
         
         if (Wspownpoints == null || Wspownpoints.Count < 6)
         {
-            Debug.LogError($"Wspownpoints가 null이거나 요소가 부족합니다. 현재 크기: {(Wspownpoints != null ? Wspownpoints.Count : 0)}");
+            Debug.Log($"Wspownpoints가 null이거나 요소가 부족합니다. 현재 크기: {(Wspownpoints != null ? Wspownpoints.Count : 0)}");
         }
         
         AddEmptyUsingCard(); // 빈 UsingCard 추가
@@ -260,7 +260,7 @@ public class CardManager : MonoBehaviour
         // spownpoints가 null이거나 충분한 요소가 없는지 확인
         if (spownpoints == null || spownpoints.Count < 3)
         {
-            Debug.LogError($"spownpoints가 null이거나 요소가 부족합니다. 현재 크기: {(spownpoints != null ? spownpoints.Count : 0)}");
+            Debug.Log($"spownpoints가 null이거나 요소가 부족합니다. 현재 크기: {(spownpoints != null ? spownpoints.Count : 0)}");
             return;
         }
         
@@ -461,7 +461,7 @@ public class CardManager : MonoBehaviour
         //바꾼 카드 다시 나오게 하면 됨
         if (waitingcard == null)
         {
-            Debug.LogError("SwitchCard() 호출 시 WaitingCard가 NULL임!");
+            Debug.Log("SwitchCard() 호출 시 WaitingCard가 NULL임!");
             return;
         }
         //CurrCardIndexForSwitch = WaitingCardIndex
@@ -519,7 +519,7 @@ public class CardManager : MonoBehaviour
             GameObject cardsParent = GameObject.Find("Canvas/Background/Cards");
             if (cardsParent == null)
             {
-                Debug.LogError("Canvas/Background/Cards를 찾을 수 없습니다.");
+                Debug.Log("Canvas/Background/Cards를 찾을 수 없습니다.");
                 return;
             }
             
@@ -533,7 +533,7 @@ public class CardManager : MonoBehaviour
             // cardItem이 null인지 확인
             if (cardItem == null)
             {
-                Debug.LogError("카드를 생성할 수 없습니다: PopCard가 null을 반환했습니다.");
+                Debug.Log("카드를 생성할 수 없습니다: PopCard가 null을 반환했습니다.");
                 Destroy(cardObject); // 카드 오브젝트 삭제
                 return;
             }
@@ -552,7 +552,7 @@ public class CardManager : MonoBehaviour
             GameObject cardSelectionPanelObj = GameObject.Find("CardSelectionPanel");
             if (cardSelectionPanelObj == null)
             {
-                Debug.LogError("CardSelectionPanel을 찾을 수 없습니다.");
+                Debug.Log("CardSelectionPanel을 찾을 수 없습니다.");
                 return;
             }
             
@@ -561,7 +561,7 @@ public class CardManager : MonoBehaviour
             // Wspownpoints가 null이거나 충분한 요소가 없는지 확인
             if (Wspownpoints == null || Wspownpoints.Count <= countwaitcard)
             {
-                Debug.LogError($"Wspownpoints가 null이거나 인덱스({countwaitcard})가 범위를 벗어납니다. 현재 크기: {(Wspownpoints != null ? Wspownpoints.Count : 0)}");
+                Debug.Log($"Wspownpoints가 null이거나 인덱스({countwaitcard})가 범위를 벗어납니다. 현재 크기: {(Wspownpoints != null ? Wspownpoints.Count : 0)}");
                 return;
             }
             
@@ -588,7 +588,7 @@ public class CardManager : MonoBehaviour
             // cardItem이 null인지 확인
             if (cardItem == null)
             {
-                Debug.LogError("카드를 생성할 수 없습니다: PopCard가 null을 반환했습니다.");
+                Debug.Log("카드를 생성할 수 없습니다: PopCard가 null을 반환했습니다.");
                 Destroy(cardObject); // 카드 오브젝트 삭제
                 return;
             }
@@ -698,7 +698,7 @@ public class CardManager : MonoBehaviour
     {
         if (deck == null)
         {
-            Debug.LogError("Deck이 할당되지 않았습니다.");
+            Debug.Log("Deck이 할당되지 않았습니다.");
             return;
         }
         
@@ -720,7 +720,7 @@ public class CardManager : MonoBehaviour
             // 그래도 덱이 비어있으면 오류 출력 후 종료
             if (deck.GetDeckCount() == 0)
             {
-                Debug.LogError("덱을 초기화했지만 여전히 카드가 없습니다.");
+                Debug.Log("덱을 초기화했지만 여전히 카드가 없습니다.");
                 return;
             }
         }
@@ -735,7 +735,7 @@ public class CardManager : MonoBehaviour
             }
             else
             {
-                Debug.LogError("카드를 뽑을 수 없습니다: 덱이 비었습니다.");
+                Debug.Log("카드를 뽑을 수 없습니다: 덱이 비었습니다.");
                 break;
             }
         }
@@ -751,7 +751,7 @@ public class CardManager : MonoBehaviour
         // Wspownpoints가 null이거나 충분한 요소가 없는지 확인
         if (Wspownpoints == null || Wspownpoints.Count <= countwaitcard)
         {
-            Debug.LogError($"Wspownpoints가 null이거나 인덱스({countwaitcard})가 범위를 벗어납니다. 현재 크기: {(Wspownpoints != null ? Wspownpoints.Count : 0)}");
+            Debug.Log($"Wspownpoints가 null이거나 인덱스({countwaitcard})가 범위를 벗어납니다. 현재 크기: {(Wspownpoints != null ? Wspownpoints.Count : 0)}");
             return;
         }
 
@@ -759,7 +759,7 @@ public class CardManager : MonoBehaviour
         GameObject cardSelectionPanelObj = GameObject.Find("CardSelectionPanel");
         if (cardSelectionPanelObj == null)
         {
-            Debug.LogError("CardSelectionPanel을 찾을 수 없습니다.");
+            Debug.Log("CardSelectionPanel을 찾을 수 없습니다.");
             return;
         }
         
@@ -768,7 +768,7 @@ public class CardManager : MonoBehaviour
         // cardPrefab이 null인지 확인
         if (cardPrefab == null)
         {
-            Debug.LogError("cardPrefab이 할당되지 않았습니다.");
+            Debug.Log("cardPrefab이 할당되지 않았습니다.");
             return;
         }
         

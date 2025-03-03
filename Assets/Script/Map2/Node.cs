@@ -100,18 +100,37 @@ public class Node : MonoBehaviour
         }
     }
 
-    private void StartBlinking()
+    //private void StartBlinking()
+    //{
+    //    spriteRenderer.DOFade(0.5f, 0.5f).SetLoops(-1, LoopType.Yoyo);
+    //}
+
+    //public void StopBlinking()
+    //{
+    //    isSelectable = false;
+    //    spriteRenderer.DOKill(); // DOTween 애니메이션 정지
+    //    //spriteRenderer.color = new Color(1, 1, 1, 1); // 원래 색상 복원
+    //}
+        private void StartBlinking()
     {
-        spriteRenderer.DOFade(0.5f, 0.5f).SetLoops(-1, LoopType.Yoyo);
+        if (transform != null)
+        {
+            transform.DOKill(); // 기존 트윈 효과 정지
+            transform.DOScale(Vector3.one * 1.2f, 0.5f) // 크기 1.2배 증가
+                .SetLoops(-1, LoopType.Yoyo) // 무한 반복 (커졌다 줄어들기)
+                .SetEase(Ease.InOutSine); // 부드러운 애니메이션
+        }
     }
 
     public void StopBlinking()
     {
         isSelectable = false;
-        spriteRenderer.DOKill(); // DOTween 애니메이션 정지
-        //spriteRenderer.color = new Color(1, 1, 1, 1); // 원래 색상 복원
+        if (transform != null)
+        {
+            transform.DOKill(); // 애니메이션 정지
+            transform.localScale = Vector3.one; // 원래 크기로 복귀
+        }
     }
-
     private string GetSceneNameByNodeType(NodeType type)
     {
         switch (type)
