@@ -100,17 +100,6 @@ public class Node : MonoBehaviour
         }
     }
 
-    //private void StartBlinking()
-    //{
-    //    spriteRenderer.DOFade(0.5f, 0.5f).SetLoops(-1, LoopType.Yoyo);
-    //}
-
-    //public void StopBlinking()
-    //{
-    //    isSelectable = false;
-    //    spriteRenderer.DOKill(); // DOTween 애니메이션 정지
-    //    //spriteRenderer.color = new Color(1, 1, 1, 1); // 원래 색상 복원
-    //}
         private void StartBlinking()
     {
         if (transform != null)
