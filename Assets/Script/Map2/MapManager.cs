@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using DG.Tweening;
 using System.Linq;
 using UnityEditor.Experimental.GraphView;
+using static TreeEditor.TreeEditorHelper;
 
 public class MapManager : MonoBehaviour
 {
@@ -27,13 +28,12 @@ public class MapManager : MonoBehaviour
 
     public string SceneToLoad;
     public Transform Container; // 맵 노드가 들어갈 부모 오브젝트
-    private /*static*/ List<List<Node>> map = new(); //층별 노드리스트
+    private static List<List<Node>> map = new(); //층별 노드리스트
     private Node currentNode; //현재 플레이어가 위치한 노드
 
     public static MapManager Instance;
 
     private static bool isInitialized = false; // 최초 실행 여부
-
 
     private void Awake()
     {
@@ -110,7 +110,7 @@ public class MapManager : MonoBehaviour
     private void RestoreMapState()
     {
         Debug.Log("RestoreMapState 실행: 기존 맵 복원 중...");
-
+        Debug.Log($"Map Count: {map.Count}, nodePosition Count: {nodePositions.Count}");
         if (map == null || map.Count == 0)
         {
             Debug.LogWarning("기존 맵 데이터 없음 → 새로 생성");
@@ -121,20 +121,52 @@ public class MapManager : MonoBehaviour
         }
         else
         {
-            for (int i = 0; i < nodePositions.Count; i++)
+            //Debug.Log("Map 상태 확인 (for 루프 시작 전)");
+            //foreach (List<Node> col in map)
+            //{
+            //    foreach (Node node in col)
+            //    {
+            //        Debug.Log($"Map: {node.nodeType}, {node}");
+            //    }
+            //}
+            //for (int i = 0; i < nodePositions.Count; i++)
+            //{
+            //    Vector2 nodePos = nodePositions.Keys.ElementAt(i); // 저장된 위치 가져오기
+            //    GameObject newNodeObj = Instantiate(nodePrefab, Container);
+            //    Node newNode = newNodeObj.GetComponent<Node>();
+            //    newNode.SetPosition(nodePos);
+
+            //    NodeType nodetype = nodePositions.Values.ElementAt(i);
+            //    //Debug.Log("Node type : " + nodetype);
+            //    newNode.SetNodeType(nodetype);
+
+            //}
+            int node_row = 0;
+            int node_col = 0;
+            foreach (var num in map)
             {
-                Vector2 nodePos = nodePositions.Keys.ElementAt(i); // 저장된 위치 가져오기
-                GameObject newNodeObj = Instantiate(nodePrefab, Container);
-                Node newNode = newNodeObj.GetComponent<Node>();
-                newNode.SetPosition(nodePos);
-                NodeType nodetype = nodePositions.Values.ElementAt(i);
-                newNode.SetNodeType(nodetype);
-                
+                Debug.Log($"Num Count : " + num.Count);
+                for (int i = 0; i < num.Count; i++)
+                {
+                    Vector2 nodePos = nodePositions.Keys.ElementAt(node_col); // 저장된 위치 가져오기
+                    GameObject newNodeObj = Instantiate(nodePrefab, Container);
+                    Node newNode = newNodeObj.GetComponent<Node>();
+                    newNode.SetPosition(nodePos);
+
+                    NodeType nodetype = nodePositions.Values.ElementAt(node_col);
+                    //Debug.Log("Node type : " + nodetype);
+                    newNode.SetNodeType(nodetype);
+                    map[node_row][i] = newNode;
+                    node_col++;
+                }
+                node_row++;
             }
-            for(int i = 0; i < map.Count; i++)
+            for (int i = 0; i < map.Count; i++)
             {
                 for (int j = 0; j < map[i].Count; j++)
                 {
+                    Debug.Log("map 저장 되어있나: " + map[i][j]);
+
                     map[i][j].gameObject.SetActive(true);
                     map[i][j].UpdateVisual();
 
@@ -149,6 +181,13 @@ public class MapManager : MonoBehaviour
                 }
             }
             ConnectNodes();
+            foreach (List<Node> col in map)
+            {
+                foreach (Node node in col)
+                {
+                    Debug.Log($"Map: {node.nodeType}, {node}");
+                }
+            }
             foreach (var line in lines)
             {
                 if (line == null)
@@ -161,6 +200,7 @@ public class MapManager : MonoBehaviour
                 line.SetActive(true);
             }
         }
+
     }
 
 
@@ -194,6 +234,7 @@ public class MapManager : MonoBehaviour
         List<Node> nodeInFirst = new();
         GameObject firstNode = Instantiate(nodePrefab, Container);
         Node Firstnode = firstNode.GetComponent<Node>();
+        DontDestroyOnLoad(firstNode);
         Firstnode.SetPosition(FirstNodePosition);
         Firstnode.SetNodeType(NodeType.Start);
         nodeInFirst.Add(Firstnode);
@@ -201,6 +242,7 @@ public class MapManager : MonoBehaviour
 
         Debug.Log("187line" + Firstnode);
         nodePositions.Add(FirstNodePosition, Firstnode.GetNodeType());
+        Debug.Log($"[노드 저장] 위치: {FirstNodePosition}, 타입: {Firstnode.GetNodeType()}"); //  로그 추가
         // 노드의 위치를 Dictionary에 저장
         //nodePositions[FirstNodePosition] = Firstnode;
 
@@ -221,12 +263,16 @@ public class MapManager : MonoBehaviour
 
                 GameObject nodeobj = Instantiate(nodePrefab, Container);
                 Node node = nodeobj.GetComponent<Node>();
+                DontDestroyOnLoad(nodeobj);
                 node.SetPosition(newPos);
+                node.AssignRandomType();
                 nodeInCol.Add(node);
 
                 //  노드의 위치를 Dictionary에 저장
                 //nodePositions[newPos] = node;
+
                 nodePositions.Add(newPos, node.GetNodeType());
+                //Debug.Log($"[노드 저장] 위치: {newPos}, 타입: {node.GetNodeType()}"); // 로그 추가
             }
             map.Add(nodeInCol);
         }
@@ -235,6 +281,7 @@ public class MapManager : MonoBehaviour
         List<Node> nodeInEnd = new();
         GameObject BossNode = Instantiate(nodePrefab, Container);
         Node bossNode = BossNode.GetComponent<Node>();
+        DontDestroyOnLoad(BossNode);
         bossNode.SetNodeType(NodeType.Boss);
         Vector2 bossPos;
         do
@@ -250,10 +297,9 @@ public class MapManager : MonoBehaviour
 
         // 보스 노드 위치도 저장
         nodePositions.Add(bossPos, bossNode.GetNodeType());
-
+        Debug.Log($"[노드 저장] 위치: {bossPos}, 타입: {bossNode.GetNodeType()}"); //  로그 추가
         currentNode = map[0][0];
     }
-
 
     void ConnectNodes()
     {

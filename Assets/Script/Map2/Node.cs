@@ -22,18 +22,37 @@ public class Node : MonoBehaviour
     private Vector2 position; // 노드 위치
     private bool isSelectable = false;
 
-    public bool IsTypeAssigned = false;
+    private bool IsTypeAssigned = false;
     private SpriteRenderer spriteRenderer;
     private MapManager mapManager;
+
+    //private void Start()
+    //{
+    //    spriteRenderer = GetComponent<SpriteRenderer>();
+    //    mapManager = MapManager.Instance; // 싱글턴으로 MapManager 참조
+
+    //    if (!IsTypeAssigned)
+    //    {
+    //        //Debug.Log("노드 타입 랜덤 생성 했어요!");
+    //        AssignRandomType(); // 노드 타입을 확률적으로 설정
+    //    }
+
+    //    UpdateVisual();
+    //}
 
     private void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        mapManager = MapManager.Instance; // 싱글턴으로 MapManager 참조
+        mapManager = MapManager.Instance;
 
         if (!IsTypeAssigned)
         {
-            AssignRandomType(); // 노드 타입을 확률적으로 설정
+            //AssignRandomType();
+            Debug.Log($"[Start 호출] {gameObject.name}: AssignRandomType() 실행({nodeType})");
+        }
+        else
+        {
+            Debug.Log($"[Start 호출] {gameObject.name}: 이미 타입 설정됨 ({nodeType})");
         }
 
         UpdateVisual();
@@ -100,7 +119,7 @@ public class Node : MonoBehaviour
         }
     }
 
-        private void StartBlinking()
+    private void StartBlinking()
     {
         if (transform != null)
         {
@@ -145,27 +164,32 @@ public class Node : MonoBehaviour
         TypeTXT.text = nodeType.ToString();
     }
 
-    private void AssignRandomType()
+    public void AssignRandomType()
     {
         int roll = Random.Range(0, 100); // 0~99 사이 난수
         int cumulative = 0;
 
-        if (mapManager == null) return;
-
-        if (roll < (cumulative += mapManager.battleChance))
+        if (MapManager.Instance == null)
+        {
+            Debug.Log("될거같냐?");
+            return;
+        }
+        if (roll < (cumulative += MapManager.Instance.battleChance))
         {
             SetNodeType(NodeType.Battle);
         }
-        else if (roll < (cumulative += mapManager.eventChance))
+        else if (roll < (cumulative += MapManager.Instance.eventChance))
         {
             SetNodeType(NodeType.Event);
         }
-        else if (roll < (cumulative += mapManager.shopChance))
+        else if (roll < (cumulative += MapManager.Instance.shopChance))
         {
             SetNodeType(NodeType.Shop);
         }
 
         TypeTXT.text = nodeType.ToString();
+        //Debug.Log($"[AssignRandomType] 노드 타입 지정됨 → {nodeType}");
+
     }
 
     public NodeType GetNodeType()
