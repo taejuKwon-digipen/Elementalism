@@ -34,6 +34,7 @@ public class MapManager : MonoBehaviour
     public static MapManager Instance;
 
     private static bool isInitialized = false; // 최초 실행 여부
+    private Vector2 CurrNodePosition;
 
     private void Awake()
     {
@@ -121,26 +122,6 @@ public class MapManager : MonoBehaviour
         }
         else
         {
-            //Debug.Log("Map 상태 확인 (for 루프 시작 전)");
-            //foreach (List<Node> col in map)
-            //{
-            //    foreach (Node node in col)
-            //    {
-            //        Debug.Log($"Map: {node.nodeType}, {node}");
-            //    }
-            //}
-            //for (int i = 0; i < nodePositions.Count; i++)
-            //{
-            //    Vector2 nodePos = nodePositions.Keys.ElementAt(i); // 저장된 위치 가져오기
-            //    GameObject newNodeObj = Instantiate(nodePrefab, Container);
-            //    Node newNode = newNodeObj.GetComponent<Node>();
-            //    newNode.SetPosition(nodePos);
-
-            //    NodeType nodetype = nodePositions.Values.ElementAt(i);
-            //    //Debug.Log("Node type : " + nodetype);
-            //    newNode.SetNodeType(nodetype);
-
-            //}
             int node_row = 0;
             int node_col = 0;
             foreach (var num in map)
@@ -158,9 +139,16 @@ public class MapManager : MonoBehaviour
                     newNode.SetNodeType(nodetype);
                     map[node_row][i] = newNode;
                     node_col++;
+
+                    if (nodePos == CurrNodePosition)
+                    {
+                        currentNode = newNode;
+                    }
                 }
                 node_row++;
             }
+
+
             for (int i = 0; i < map.Count; i++)
             {
                 for (int j = 0; j < map[i].Count; j++)
@@ -181,6 +169,14 @@ public class MapManager : MonoBehaviour
                 }
             }
             ConnectNodes();
+
+            List<Node> ConnectedNodeList = currentNode.connectedNodes;
+
+            for(int i = 0; i < ConnectedNodeList.Count; i++)
+            {
+                ConnectedNodeList[i].SetSelectable(true);
+            }
+
             foreach (List<Node> col in map)
             {
                 foreach (Node node in col)
@@ -268,11 +264,7 @@ public class MapManager : MonoBehaviour
                 node.AssignRandomType();
                 nodeInCol.Add(node);
 
-                //  노드의 위치를 Dictionary에 저장
-                //nodePositions[newPos] = node;
-
                 nodePositions.Add(newPos, node.GetNodeType());
-                //Debug.Log($"[노드 저장] 위치: {newPos}, 타입: {node.GetNodeType()}"); // 로그 추가
             }
             map.Add(nodeInCol);
         }
@@ -322,6 +314,7 @@ public class MapManager : MonoBehaviour
                     foreach (Node startNode in nextCol)
                     {
                         node.connectedNodes.Add(startNode);
+                        
                     }
                 }
                 else // 일반적인 경우, 각 노드를 다음 층의 2개 노드와 연결
@@ -422,13 +415,15 @@ public class MapManager : MonoBehaviour
        if(/*currentNode == null ||*/ currentNode.connectedNodes.Contains(selectedNode))
         {
             currentNode = selectedNode; // 플레이어의 현재 위치 업데이트
+            CurrNodePosition = currentNode.GetPosition();
+            //CurrNodePosition.
             Debug.Log("현재 노드: " + currentNode.name);
 
-            // 이전에 반짝이던 노드들은 정지
+            /*// 이전에 반짝이던 노드들은 정지
             foreach (Node node in map.SelectMany(nodes => nodes))
             {
                 node.StopBlinking();
-            }
+            }*/
 
             // 현재 노드의 연결된 노드들을 반짝이게 설정
             foreach (Node node in currentNode.connectedNodes)
@@ -437,6 +432,7 @@ public class MapManager : MonoBehaviour
             }
         }else if (selectedNode == map[0][0])
         {
+            CurrNodePosition = map[0][0].GetPosition();
             selectedNode.UpdateVisual();
         }
     }

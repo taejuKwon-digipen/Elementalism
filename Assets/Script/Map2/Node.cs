@@ -82,7 +82,7 @@ public class Node : MonoBehaviour
         }
 
         // 선택한 노드를 맵 매니저에 반영
-        if (mapManager != null)
+        if (MapManager.Instance != null)
         {
             mapManager.MovePlayer(this);
         }
