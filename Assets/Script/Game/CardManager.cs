@@ -76,7 +76,7 @@ public class CardManager : MonoBehaviour
         if (Inst == null)
         {
             Inst = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
             LoadCardItemSO();
             LoadInitialCards(); // 초기 카드 로드
         }

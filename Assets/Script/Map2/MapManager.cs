@@ -33,12 +33,13 @@ public class MapManager : MonoBehaviour
     public static MapManager Instance;
 
     private static bool isInitialized = false; // 최초 실행 여부
-    private Vector2 CurrNodePosition;
-    public ScrollRect scrollRect;
+    //private Vector2 CurrNodePosition;
+
+    private int CurrNodeID;
     private void Awake()
     {
         Debug.Log("MapManager Awake 호출");
-;
+        
         if (Instance == null)
         {
             Instance = this;
@@ -54,37 +55,6 @@ public class MapManager : MonoBehaviour
         }
 
         FindContainer();
-        // ScrollRect 자동으로 찾기
-        if (scrollRect == null)
-        {
-            scrollRect = FindObjectOfType<ScrollRect>(); // 현재 씬에서 ScrollRect 찾기
-        }
-
-        if (scrollRect != null)
-        {
-            scrollRect.onValueChanged.AddListener(OnScroll);
-        }
-        else
-        {
-            Debug.LogError("ScrollRect를 찾을 수 없습니다! Inspector에서 수동으로 할당해주세요.");
-        }
-    }
-
-    void OnScroll(Vector2 scrollPos)
-    {
-        UpdateNodePositions(scrollPos);
-    }
-    void UpdateNodePositions(Vector2 scrollPos)
-    {
-        Dictionary<Vector2, NodeType> updatedPositions = new(); // 갱신할 위치 저장용
-
-        foreach (var entry in nodePositions)
-        {
-            Vector2 newPos = entry.Key + scrollPos/*(Vector2)Container.localPosition*/; // 스크롤 이동 반영
-            updatedPositions[newPos] = entry.Value;
-        }
-
-        nodePositions = updatedPositions; // 갱신된 위치 정보로 업데이트
     }
 
     private void FindContainer()
@@ -170,17 +140,24 @@ public class MapManager : MonoBehaviour
                     //Debug.Log("Node type : " + nodetype);
                     newNode.SetNodeType(nodetype);
                     map[node_row][i] = newNode;
+                    newNode.SetNodeID(node_col);
                     node_col++;
-
-                    if (nodePos == CurrNodePosition)
+                    
+                    if (newNode.NodeID == currentNode.NodeID)
                     {
                         currentNode = newNode;
                     }
                 }
                 node_row++;
             }
-
-
+            //Debug.Log($"node Count : " + node_col);
+            //foreach (List<Node> col in map)
+            //{
+            //    foreach (Node node in col)
+            //    {
+            //        Debug.Log($"Map: {node.nodeType}, {node}");
+            //    }
+            //}
             for (int i = 0; i < map.Count; i++)
             {
                 for (int j = 0; j < map[i].Count; j++)
@@ -209,13 +186,6 @@ public class MapManager : MonoBehaviour
                 ConnectedNodeList[i].SetSelectable(true);
             }
 
-            foreach (List<Node> col in map)
-            {
-                foreach (Node node in col)
-                {
-                    Debug.Log($"Map: {node.nodeType}, {node}");
-                }
-            }
             foreach (var line in lines)
             {
                 if (line == null)
@@ -230,16 +200,6 @@ public class MapManager : MonoBehaviour
         }
 
     }
-
-   /* private void DeleteLine()
-    {
-        for (int i = 0; i < lines.Count; i++)
-        {
-            //Destroy(lines[i]);
-            lines.Clear
-
-        }
-    }*/
 
 
     private void Start()
@@ -272,9 +232,9 @@ public class MapManager : MonoBehaviour
         List<Node> nodeInFirst = new();
         GameObject firstNode = Instantiate(nodePrefab, Container);
         Node Firstnode = firstNode.GetComponent<Node>();
-        DontDestroyOnLoad(firstNode);
         Firstnode.SetPosition(FirstNodePosition);
         Firstnode.SetNodeType(NodeType.Start);
+        Firstnode.SetNodeID(0);
         nodeInFirst.Add(Firstnode);
         map.Add(nodeInFirst);
 
@@ -284,6 +244,7 @@ public class MapManager : MonoBehaviour
         // 노드의 위치를 Dictionary에 저장
         //nodePositions[FirstNodePosition] = Firstnode;
 
+        int nodeID = 1;
         for (int i = 1; i < row - 1; i++)
         {
             int nodeCount = Random.Range(minNodePerCol, maxNodePerCol);
@@ -301,11 +262,11 @@ public class MapManager : MonoBehaviour
 
                 GameObject nodeobj = Instantiate(nodePrefab, Container);
                 Node node = nodeobj.GetComponent<Node>();
-                DontDestroyOnLoad(nodeobj);
                 node.SetPosition(newPos);
                 node.AssignRandomType();
+                node.SetNodeID(nodeID);
                 nodeInCol.Add(node);
-
+                nodeID++;
                 nodePositions.Add(newPos, node.GetNodeType());
             }
             map.Add(nodeInCol);
@@ -315,7 +276,6 @@ public class MapManager : MonoBehaviour
         List<Node> nodeInEnd = new();
         GameObject BossNode = Instantiate(nodePrefab, Container);
         Node bossNode = BossNode.GetComponent<Node>();
-        DontDestroyOnLoad(BossNode);
         bossNode.SetNodeType(NodeType.Boss);
         Vector2 bossPos;
         do
@@ -326,12 +286,15 @@ public class MapManager : MonoBehaviour
         while (!IsPositionValid(bossPos));
 
         bossNode.SetPosition(bossPos);
+        bossNode.SetNodeID(nodeID);
         nodeInEnd.Add(bossNode);
         map.Add(nodeInEnd);
 
         // 보스 노드 위치도 저장
         nodePositions.Add(bossPos, bossNode.GetNodeType());
         Debug.Log($"[노드 저장] 위치: {bossPos}, 타입: {bossNode.GetNodeType()}"); //  로그 추가
+
+
         currentNode = map[0][0];
     }
 
@@ -457,7 +420,8 @@ public class MapManager : MonoBehaviour
        if(/*currentNode == null ||*/ currentNode.connectedNodes.Contains(selectedNode))
         {
             currentNode = selectedNode; // 플레이어의 현재 위치 업데이트
-            CurrNodePosition = currentNode.GetPosition();
+            //CurrNodePosition = currentNode.GetPosition();
+            CurrNodeID = currentNode.NodeID;
             //CurrNodePosition.
             Debug.Log("현재 노드: " + currentNode.name);
 
@@ -474,7 +438,8 @@ public class MapManager : MonoBehaviour
             }
         }else if (selectedNode == map[0][0])
         {
-            CurrNodePosition = map[0][0].GetPosition();
+            //urrNodePosition = map[0][0].GetPosition();
+            CurrNodeID = map[0][0].NodeID;
             selectedNode.UpdateVisual();
         }
     }

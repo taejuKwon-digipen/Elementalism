@@ -26,6 +26,12 @@ public class Node : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private MapManager mapManager;
 
+    public int NodeID { get; private set; }
+
+    public void SetNodeID(int id)
+    {
+        NodeID = id;
+    }
     //private void Start()
     //{
     //    spriteRenderer = GetComponent<SpriteRenderer>();
@@ -48,11 +54,11 @@ public class Node : MonoBehaviour
         if (!IsTypeAssigned)
         {
             //AssignRandomType();
-            Debug.Log($"[Start 호출] {gameObject.name}: AssignRandomType() 실행({nodeType})");
+            Debug.Log($"[Start 호출] {gameObject.name}: AssignRandomType() 실행({nodeType}) [Node ID] ({NodeID})");
         }
         else
         {
-            Debug.Log($"[Start 호출] {gameObject.name}: 이미 타입 설정됨 ({nodeType})");
+            Debug.Log($"[Start 호출] {gameObject.name}: 이미 타입 설정됨 ({nodeType}) [Node ID] ({NodeID})");
         }
 
         UpdateVisual();
@@ -121,10 +127,10 @@ public class Node : MonoBehaviour
 
     private void StartBlinking()
     {
-        if (transform != null)
+        if (this.transform != null)
         {
-            transform.DOKill(); // 기존 트윈 효과 정지
-            transform.DOScale(Vector3.one * 1.2f, 0.5f) // 크기 1.2배 증가
+            this.transform.DOKill(); // 기존 트윈 효과 정지
+            this.transform.DOScale(Vector3.one * 1.2f, 0.5f) // 크기 1.2배 증가
                 .SetLoops(-1, LoopType.Yoyo) // 무한 반복 (커졌다 줄어들기)
                 .SetEase(Ease.InOutSine); // 부드러운 애니메이션
         }
@@ -133,10 +139,10 @@ public class Node : MonoBehaviour
     public void StopBlinking()
     {
         isSelectable = false;
-        if (transform != null)
+        if (this.transform != null)
         {
-            transform.DOKill(); // 애니메이션 정지
-            transform.localScale = Vector3.one; // 원래 크기로 복귀
+            this.transform.DOKill(); // 애니메이션 정지
+            this.transform.localScale = Vector3.one; // 원래 크기로 복귀
         }
     }
     private string GetSceneNameByNodeType(NodeType type)
