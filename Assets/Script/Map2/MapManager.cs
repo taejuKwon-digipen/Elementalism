@@ -23,7 +23,6 @@ public class MapManager : MonoBehaviour
     [SerializeField] public GameObject nodePrefab; // 노드 UI 프리펩
     [SerializeField] public GameObject linePrefab; // 라인 프리펩
     public List<GameObject> lines = new();
-
     [SerializeField] public GameObject firstNodePO;
 
     public string SceneToLoad;
@@ -35,11 +34,11 @@ public class MapManager : MonoBehaviour
 
     private static bool isInitialized = false; // 최초 실행 여부
     private Vector2 CurrNodePosition;
-
+    public ScrollRect scrollRect;
     private void Awake()
     {
         Debug.Log("MapManager Awake 호출");
-        
+;
         if (Instance == null)
         {
             Instance = this;
@@ -55,6 +54,37 @@ public class MapManager : MonoBehaviour
         }
 
         FindContainer();
+        // ScrollRect 자동으로 찾기
+        if (scrollRect == null)
+        {
+            scrollRect = FindObjectOfType<ScrollRect>(); // 현재 씬에서 ScrollRect 찾기
+        }
+
+        if (scrollRect != null)
+        {
+            scrollRect.onValueChanged.AddListener(OnScroll);
+        }
+        else
+        {
+            Debug.LogError("ScrollRect를 찾을 수 없습니다! Inspector에서 수동으로 할당해주세요.");
+        }
+    }
+
+    void OnScroll(Vector2 scrollPos)
+    {
+        UpdateNodePositions(scrollPos);
+    }
+    void UpdateNodePositions(Vector2 scrollPos)
+    {
+        Dictionary<Vector2, NodeType> updatedPositions = new(); // 갱신할 위치 저장용
+
+        foreach (var entry in nodePositions)
+        {
+            Vector2 newPos = entry.Key + scrollPos/*(Vector2)Container.localPosition*/; // 스크롤 이동 반영
+            updatedPositions[newPos] = entry.Value;
+        }
+
+        nodePositions = updatedPositions; // 갱신된 위치 정보로 업데이트
     }
 
     private void FindContainer()
@@ -122,6 +152,8 @@ public class MapManager : MonoBehaviour
         }
         else
         {
+
+            lines.Clear();
             int node_row = 0;
             int node_col = 0;
             foreach (var num in map)
@@ -198,6 +230,16 @@ public class MapManager : MonoBehaviour
         }
 
     }
+
+   /* private void DeleteLine()
+    {
+        for (int i = 0; i < lines.Count; i++)
+        {
+            //Destroy(lines[i]);
+            lines.Clear
+
+        }
+    }*/
 
 
     private void Start()
