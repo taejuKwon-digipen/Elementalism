@@ -30,6 +30,20 @@ public class ShopManager : MonoBehaviour
 
     private void Start()
     {
+        // CardManager 참조 확인
+        if (cardManager == null)
+        {
+            cardManager = FindObjectOfType<CardManager>();
+            if (cardManager != null)
+            {
+                Debug.Log("[ShopManager] CardManager 참조를 찾았습니다.");
+            }
+            else
+            {
+                Debug.LogError("[ShopManager] CardManager를 찾을 수 없습니다!");
+            }
+        }
+
         shopPanel.SetActive(false);
         healButton.onClick.AddListener(OnHealButtonClicked);
         UpdateUI();
@@ -73,12 +87,18 @@ public class ShopManager : MonoBehaviour
             
             var cardObj = Instantiate(cardManager.cardPrefab, cardContainer);
             var card = cardObj.GetComponent<Card>();
+            
+            // 상점용 카드 설정
             card.Setup(cardItem, true);
+            card.enabled = false;  // Card 컴포넌트 비활성화하여 OnPointerDown 이벤트 방지
             
             // 구매 버튼 추가
             var button = cardObj.AddComponent<Button>();
             int cardIndex = i; // 클로저를 위한 변수
-            button.onClick.AddListener(() => PurchaseCard(cardIndex));
+            button.onClick.AddListener(() => {
+                Debug.Log($"[ShopManager] 상점 카드 클릭됨: {cardItem.CardName}");
+                PurchaseCard(cardIndex);
+            });
             
             shopCards.Add(card);
         }
@@ -86,26 +106,40 @@ public class ShopManager : MonoBehaviour
 
     private void PurchaseCard(int index)
     {
+        Debug.Log($"[ShopManager] 카드 구매 시도: 인덱스 {index}");
+        
         if (player.Gold >= cardCost && index < shopCards.Count)
         {
             CardItem purchasedCard = shopCards[index].carditem;
+            Debug.Log($"[ShopManager] 카드 구매 시작: {purchasedCard.CardName} (ID: {purchasedCard.ID})");
             
             // 골드 차감
             player.Gold -= cardCost;
+            Debug.Log($"[ShopManager] 골드 차감 완료. 남은 골드: {player.Gold}");
             
             // 카드를 인벤토리에 추가
-            cardManager.AddCardToInventory(purchasedCard);
-            
-            Debug.Log($"카드 구매 완료: {purchasedCard.CardName} (ID: {purchasedCard.ID})");
+            if (cardManager != null)
+            {
+                Debug.Log($"[ShopManager] CardManager 참조 확인됨. AddCardToInventory 호출 전");
+                cardManager.AddCardToInventory(purchasedCard);
+                Debug.Log($"[ShopManager] AddCardToInventory 호출 완료");
+            }
+            else
+            {
+                Debug.LogError("[ShopManager] CardManager 참조가 null입니다! Start 메서드에서 초기화되지 않았을 수 있습니다.");
+                return;
+            }
             
             // UI 정리
             Destroy(shopCards[index].gameObject);
             shopCards.RemoveAt(index);
             UpdateUI();
+            
+            Debug.Log($"[ShopManager] 카드 구매 프로세스 완료: {purchasedCard.CardName}");
         }
         else
         {
-            Debug.Log($"골드 부족! 필요: {cardCost}, 현재: {player.Gold}");
+            Debug.Log($"[ShopManager] 골드 부족 또는 잘못된 인덱스! 필요: {cardCost}, 현재: {player.Gold}, 인덱스: {index}");
         }
     }
 

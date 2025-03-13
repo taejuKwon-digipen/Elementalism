@@ -26,6 +26,19 @@ public abstract class Enemy : Entity
         base.Start();
         player = GameObject.FindWithTag("Player").GetComponentInChildren<Player>();
     }
+
+    protected virtual void Update()
+    {
+        // 0 키를 누르면 Enemy의 HP를 1로 설정 (테스트용)
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            Debug.Log($"[Enemy] 0 키가 눌렸습니다. 현재 오브젝트: {gameObject.name}");
+            Debug.Log($"[Enemy] HP 변경 전: {HP}");
+            HP = 1;
+            Debug.Log($"[Enemy] HP 변경 후: {HP}");
+        }
+    }
+
     public void SetEffectPrefab(ParticleSystem effectprefab)
     {
         effect = effectprefab;

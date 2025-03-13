@@ -42,21 +42,28 @@ public class Card : MonoBehaviour, IPointerDownHandler // 마우스 클릭 이�
             PowerLeftTMP.text = carditem.PowerLeft.ToString();
             PowerRightTMP.text = carditem.PowerRight.ToString();
             CardDescriptionTMP.text = carditem.CardDescription;
- 
 
             isUsingImage = carditem.UseImage;
 
             if (isUsingImage)
             {
                 rawImage = transform.Find("Border/ImageBorder/Image").GetComponent<RawImage>();
-                if (rawImage != null)
+                if (rawImage != null && carditem.cardImage != null)
                 {
                     rawImage.texture = carditem.cardImage;
                 }
+                else
+                {
+                    Debug.LogWarning($"[Card] {carditem.CardName}의 이미지 설정 실패");
+                }
+            }
+            else if (carditem.cardShape != null)
+            {
+                GenerateShapeFromData(carditem.cardShape);
             }
             else
             {
-                GenerateShapeFromData(carditem.cardShape); // ShapeData를 기반으로 모양 생성
+                Debug.LogWarning($"[Card] {carditem.CardName}의 cardShape가 null입니다.");
             }
         }
     }
@@ -65,6 +72,12 @@ public class Card : MonoBehaviour, IPointerDownHandler // 마우스 클릭 이�
     // ShapeData를 기반으로 원소 스프라이트로 카드 모양 생성
     private void GenerateShapeFromData(ShapeData shapeData)
     {
+        if (shapeData == null)
+        {
+            Debug.LogWarning($"[Card] {carditem.CardName}의 ShapeData가 null입니다.");
+            return;
+        }
+
         // 카드의 모양 영역 초기화 (이미 생성된 블록이 있다면 삭제)
         foreach (Transform child in transform.Find("Border/ImageBorder"))
         {

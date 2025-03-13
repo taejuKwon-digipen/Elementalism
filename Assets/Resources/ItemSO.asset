@@ -205,7 +205,7 @@ MonoBehaviour:
     UseBuff: 0
     UseDraw: 1
     UseImage: 1
-    IsUnlocked: 0
+    IsUnlocked: 1
     cardShape: {fileID: 0}
     CreatedElementType: 0
   - CardName: Card Shuffle
@@ -220,7 +220,7 @@ MonoBehaviour:
     UseBuff: 0
     UseDraw: 1
     UseImage: 1
-    IsUnlocked: 0
+    IsUnlocked: 1
     cardShape: {fileID: 11400000, guid: ac0891baae96e2d48b9395f586f74c07, type: 2}
     CreatedElementType: 0
   - CardName: Puzzel Shuffle

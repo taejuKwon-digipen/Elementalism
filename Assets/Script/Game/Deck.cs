@@ -1,59 +1,58 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Deck : MonoBehaviour
 {
     private List<CardItem> deckCards = new List<CardItem>(); // 덱에 있는 카드들
     private List<CardItem> discardPile = new List<CardItem>(); // 사용한 카드들이 쌓이는 더미
+    [SerializeField] private int maxDeckSize = 20; // 덱의 최대 크기
     
     // 덱 초기화 (인벤토리에서 카드 가져오기)
-    public void InitializeDeck(List<CardItem> inventoryCards)
+    public void InitializeDeck(List<CardItem> availableCards)
     {
+        Debug.Log("[Deck] 덱 초기화 시작");
         deckCards.Clear();
-        discardPile.Clear();
-        
-        // 인벤토리에서 카드 복사
-        foreach (var card in inventoryCards)
+
+        // 사용 가능한 카드가 없으면 초기화 중단
+        if (availableCards == null || availableCards.Count == 0)
         {
-            deckCards.Add(card);
+            Debug.LogWarning("[Deck] 사용 가능한 카드가 없습니다!");
+            return;
         }
-        
-        // 덱 섞기
-        ShuffleDeck();
+
+        // 랜덤하게 카드 선택하여 덱 구성
+        int cardsToAdd = Mathf.Min(maxDeckSize, availableCards.Count);
+        List<CardItem> shuffledCards = availableCards.OrderBy(x => Random.value).ToList();
+
+        for (int i = 0; i < cardsToAdd; i++)
+        {
+            deckCards.Add(shuffledCards[i]);
+            Debug.Log($"[Deck] 카드 추가됨: {shuffledCards[i].CardName} (ID: {shuffledCards[i].ID})");
+        }
+
+        Debug.Log($"[Deck] 덱 초기화 완료. 총 {deckCards.Count}장의 카드가 덱에 있습니다.");
     }
     
     // 덱 섞기
     public void ShuffleDeck()
     {
-        int n = deckCards.Count;
-        while (n > 1)
-        {
-            n--;
-            int k = Random.Range(0, n + 1);
-            CardItem temp = deckCards[k];
-            deckCards[k] = deckCards[n];
-            deckCards[n] = temp;
-        }
+        deckCards = deckCards.OrderBy(x => Random.value).ToList();
+        Debug.Log("[Deck] 덱이 섞였습니다.");
     }
     
     // 카드 뽑기
     public CardItem DrawCard()
     {
-        // 덱이 비어있으면 버린 카드 더미를 덱으로 이동
         if (deckCards.Count == 0)
         {
-            RefillDeckFromDiscard();
-        }
-        
-        // 그래도 덱이 비어있으면 null 반환
-        if (deckCards.Count == 0)
-        {
+            Debug.LogWarning("[Deck] 덱에 카드가 없습니다!");
             return null;
         }
-        
-        // 맨 위 카드 뽑기
+
         CardItem drawnCard = deckCards[0];
         deckCards.RemoveAt(0);
+        Debug.Log($"[Deck] 카드를 뽑았습니다: {drawnCard.CardName} (ID: {drawnCard.ID})");
         return drawnCard;
     }
     
@@ -84,5 +83,10 @@ public class Deck : MonoBehaviour
     public int GetDiscardCount()
     {
         return discardPile.Count;
+    }
+
+    public List<CardItem> GetDeckCards()
+    {
+        return new List<CardItem>(deckCards);
     }
 }

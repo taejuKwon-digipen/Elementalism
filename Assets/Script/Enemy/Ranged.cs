@@ -8,6 +8,11 @@ public class Ranged : Enemy
         base.Start();
     }
 
+    private void Update()
+    {
+        base.Update();  // 부모 클래스의 Update 메서드 호출
+    }
+
     public override IEnumerator Turn()
     {
         GameObject playerPoint = player.gameObject;

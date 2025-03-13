@@ -45,6 +45,7 @@ public class Fighter : Enemy
 
     private void Update()
     {
+        base.Update();
         Vector3 startingPoint = this.GetComponent<RectTransform>().position;
         startingPoint.y += 0.5f;
         Debug.DrawRay(startingPoint, UnityEngine.Vector3.left * 1.5f, Color.blue);
