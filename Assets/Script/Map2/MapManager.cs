@@ -6,6 +6,9 @@ using DG.Tweening;
 using System.Linq;
 using UnityEditor.Experimental.GraphView;
 using static TreeEditor.TreeEditorHelper;
+using Unity.Mathematics;
+using Random = UnityEngine.Random;
+using static UnityEditor.PlayerSettings;
 
 public class MapManager : MonoBehaviour
 {
@@ -105,7 +108,6 @@ public class MapManager : MonoBehaviour
                 RestoreMapState();
                 DrawMap();
             }
-            /*UpdateNodeColor();*/
         }
     }
 
@@ -184,32 +186,36 @@ public class MapManager : MonoBehaviour
                 }
             }
             ConnectNodes();
+            DrawNewLine();
+        }
+    }
 
-            List<Node> ConnectedNodeList = currentNode.connectedNodes;
+    private void DrawNewLine()
+    {
+        List<Node> ConnectedNodeList = currentNode.connectedNodes;
 
-            for (int i = 0; i < ConnectedNodeList.Count; i++)
+        for (int i = 0; i < ConnectedNodeList.Count; i++)
+        {
+            ConnectedNodeList[i].SetSelectable(true);
+        }
+
+        foreach (var line in lines)
+        {
+            if (line == null)
             {
-                ConnectedNodeList[i].SetSelectable(true);
+                Debug.LogWarning(" 라인이 사라짐 → 다시 생성");
+                DrawMap();
+                return;
             }
 
-            foreach (var line in lines)
-            {
-                if (line == null)
-                {
-                    Debug.LogWarning(" 라인이 사라짐 → 다시 생성");
-                    DrawMap();
-                    return;
-                }
-
-                line.SetActive(true);
-            }
+            line.SetActive(true);
         }
     }
 
 
     private void Start()
     {
-        Debug.Log($"MapManager 존재 확인: {this.gameObject.name}");
+        //Debug.Log($"MapManager 존재 확인: {this.gameObject.name}");
     }
 
     // 노드 간 최소 거리 설정
@@ -231,24 +237,32 @@ public class MapManager : MonoBehaviour
 
     private Dictionary<Vector2, NodeType> nodePositions = new(); // 노드 위치 저장용
 
-    void GenerateMap()
+   
+    private void MakePerNode(/*Vector2 pos,*/ NodeType type, int nodeid)
     {
-        Vector2 FirstNodePosition = firstNodePO.transform.position;
-        List<Node> nodeInFirst = new();
-        GameObject firstNode = Instantiate(nodePrefab, Container);
-        Node Firstnode = firstNode.GetComponent<Node>();
-        Firstnode.SetPosition(FirstNodePosition);
-        Firstnode.SetNodeType(NodeType.Start);
-        Firstnode.SetNodeID(0);
-        nodeInFirst.Add(Firstnode);
-        map.Add(nodeInFirst);
+        Vector2 pos = firstNodePO.transform.position;
+        if (type == NodeType.Boss)
+        {
+            do
+            {
+                int roll2 = Random.Range(250, 300);
+                pos = new Vector2(firstNodePO.transform.position.x + (row - 1) * roll2, firstNodePO.transform.position.y);
+            }
+            while (!IsPositionValid(pos));
+        }
+        List<Node> nodelist = new();
+        GameObject GameOJNode = Instantiate(nodePrefab, Container);
+        Node gameOJNode = GameOJNode.GetComponent<Node>();
+        gameOJNode.SetPosition(pos);
+        gameOJNode.SetNodeType(type);
+        gameOJNode.SetNodeID(nodeid);
+        nodelist.Add(gameOJNode);
+        map.Add(nodelist);
+        nodePositions.Add(pos, gameOJNode.GetNodeType());
+    }//Start와 Boss 따로 생성
 
-        Debug.Log("187line" + Firstnode);
-        nodePositions.Add(FirstNodePosition, Firstnode.GetNodeType());
-        Debug.Log($"[노드 저장] 위치: {FirstNodePosition}, 타입: {Firstnode.GetNodeType()}"); //  로그 추가
-        // 노드의 위치를 Dictionary에 저장
-        //nodePositions[FirstNodePosition] = Firstnode;
-
+    private void MakeNode(Vector2 position)
+    {
         int nodeID = 1;
         for (int i = 1; i < row - 1; i++)
         {
@@ -261,7 +275,7 @@ public class MapManager : MonoBehaviour
                 do
                 {
                     int roll = Random.Range(250, 300);
-                    newPos = new Vector2(FirstNodePosition.x + i * roll, FirstNodePosition.y + j * roll - nodeCount * 100);
+                    newPos = new Vector2(position.x + i * roll, position.y + j * roll - nodeCount * 100);
                 }
                 while (!IsPositionValid(newPos));
 
@@ -276,29 +290,14 @@ public class MapManager : MonoBehaviour
             }
             map.Add(nodeInCol);
         }
+    }
 
-        // Boss Node 추가
-        List<Node> nodeInEnd = new();
-        GameObject BossNode = Instantiate(nodePrefab, Container);
-        Node bossNode = BossNode.GetComponent<Node>();
-        bossNode.SetNodeType(NodeType.Boss);
-        Vector2 bossPos;
-        do
-        {
-            int roll2 = Random.Range(250, 300);
-            bossPos = new Vector2(FirstNodePosition.x + (row - 1) * roll2, FirstNodePosition.y);
-        }
-        while (!IsPositionValid(bossPos));
-
-        bossNode.SetPosition(bossPos);
-        bossNode.SetNodeID(nodeID);
-        nodeInEnd.Add(bossNode);
-        map.Add(nodeInEnd);
-
-        // 보스 노드 위치도 저장
-        nodePositions.Add(bossPos, bossNode.GetNodeType());
-        Debug.Log($"[노드 저장] 위치: {bossPos}, 타입: {bossNode.GetNodeType()}"); //  로그 추가
-
+    void GenerateMap()
+    {
+        Vector2 FirstNodePosition = firstNodePO.transform.position;
+        MakePerNode(NodeType.Start, 0);
+        MakeNode(FirstNodePosition);
+        MakePerNode(NodeType.Boss, nodePositions.Count);
         currentNode = map[0][0];
     }
 
@@ -421,42 +420,12 @@ public class MapManager : MonoBehaviour
 
     public void MovePlayer(Node selectedNode)
     {
-       if(currentNode.connectedNodes.Contains(selectedNode))
+        if (currentNode.connectedNodes.Contains(selectedNode))
         {
-           
-            currentNode = selectedNode; // 플레이어의 현재 위치 업데이트
+            currentNode = selectedNode;
             CurrNodeID = currentNode.NodeID;
-            Debug.Log("현재 노드: " + currentNode.name);
-
-            // 현재 노드의 연결된 노드들을 반짝이게 설정
-            foreach (Node node in currentNode.connectedNodes)
-            {
-                node.UpdateVisual();
-            }
-           /* Image NodeImage = selectedNode.GetComponentInChildren<Image>();
-            NodeImage.color = Color.gray;*/
+            currentNode.connectedNodes.ForEach(node => node.UpdateVisual());
         }
-        else if (selectedNode == map[0][0])
-        {
-            //urrNodePosition = map[0][0].GetPosition();
-            CurrNodeID = map[0][0].NodeID;
-            selectedNode.UpdateVisual();
-        }
-
-       //SelectedNodeList.Add(currentNode);
     }
-
-  /*  public void UpdateNodeColor()
-    {
-        foreach (Node node in SelectedNodeList)
-        { 
-            SpriteRenderer nodeSprite = node.GetComponent<SpriteRenderer>();
-            if(nodeSprite != null)
-            {
-                nodeSprite.color = Color.gray;
-            }
-        }
-
-    }*/
 
 }
