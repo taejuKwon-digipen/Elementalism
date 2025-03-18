@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Microsoft.Unity.VisualStudio.Editor;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -25,6 +26,7 @@ public class Node : MonoBehaviour
     private bool IsTypeAssigned = false;
     private SpriteRenderer spriteRenderer;
     private MapManager mapManager;
+    private Image nodeImage;
 
     public int NodeID { get; private set; }
 
@@ -32,19 +34,6 @@ public class Node : MonoBehaviour
     {
         NodeID = id;
     }
-    //private void Start()
-    //{
-    //    spriteRenderer = GetComponent<SpriteRenderer>();
-    //    mapManager = MapManager.Instance; // 싱글턴으로 MapManager 참조
-
-    //    if (!IsTypeAssigned)
-    //    {
-    //        //Debug.Log("노드 타입 랜덤 생성 했어요!");
-    //        AssignRandomType(); // 노드 타입을 확률적으로 설정
-    //    }
-
-    //    UpdateVisual();
-    //}
 
     private void Start()
     {
@@ -77,6 +66,7 @@ public class Node : MonoBehaviour
         if (spriteRenderer != null)
         {
             spriteRenderer.DOKill();
+            
         }
 
         string SceneToLoad = GetSceneNameByNodeType(nodeType);
@@ -90,6 +80,9 @@ public class Node : MonoBehaviour
         // 선택한 노드를 맵 매니저에 반영
         if (MapManager.Instance != null)
         {
+            Debug.Log("스프라이트렌더러 그레이");
+            /*nodeImage = GetComponent<Image>();
+            nodeImage.color*/
             mapManager.MovePlayer(this);
         }
         else

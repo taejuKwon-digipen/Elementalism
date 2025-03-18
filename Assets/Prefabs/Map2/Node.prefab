@@ -227,7 +227,6 @@ MonoBehaviour:
   TypeTXT: {fileID: 6599334376818346555}
   nodeType: 0
   connectedNodes: []
-  IsTypeAssigned: 0
 --- !u!1 &9217550360269567285
 GameObject:
   m_ObjectHideFlags: 0

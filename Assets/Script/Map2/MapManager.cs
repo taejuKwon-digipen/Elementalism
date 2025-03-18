@@ -33,7 +33,7 @@ public class MapManager : MonoBehaviour
     public static MapManager Instance;
 
     private static bool isInitialized = false; // 최초 실행 여부
-    //private Vector2 CurrNodePosition;
+    private List<int> nodeIdList = new();
 
     private int CurrNodeID;
     private void Awake()
@@ -105,7 +105,13 @@ public class MapManager : MonoBehaviour
                 RestoreMapState();
                 DrawMap();
             }
+            /*UpdateNodeColor();*/
         }
+    }
+
+    private void Update()
+    {
+        
     }
 
     private void RestoreMapState()
@@ -122,7 +128,6 @@ public class MapManager : MonoBehaviour
         }
         else
         {
-
             lines.Clear();
             int node_row = 0;
             int node_col = 0;
@@ -143,21 +148,22 @@ public class MapManager : MonoBehaviour
                     newNode.SetNodeID(node_col);
                     node_col++;
                     
+
                     if (newNode.NodeID == currentNode.NodeID)
                     {
                         currentNode = newNode;
+                        nodeIdList.Add(newNode.NodeID);
+                    }
+
+                    if (nodeIdList.Contains(newNode.NodeID))
+                    {
+                        Image image = newNode.GetComponentInChildren<Image>();
+                        image.color = Color.gray;
                     }
                 }
                 node_row++;
             }
-            //Debug.Log($"node Count : " + node_col);
-            //foreach (List<Node> col in map)
-            //{
-            //    foreach (Node node in col)
-            //    {
-            //        Debug.Log($"Map: {node.nodeType}, {node}");
-            //    }
-            //}
+           
             for (int i = 0; i < map.Count; i++)
             {
                 for (int j = 0; j < map[i].Count; j++)
@@ -181,7 +187,7 @@ public class MapManager : MonoBehaviour
 
             List<Node> ConnectedNodeList = currentNode.connectedNodes;
 
-            for(int i = 0; i < ConnectedNodeList.Count; i++)
+            for (int i = 0; i < ConnectedNodeList.Count; i++)
             {
                 ConnectedNodeList[i].SetSelectable(true);
             }
@@ -198,7 +204,6 @@ public class MapManager : MonoBehaviour
                 line.SetActive(true);
             }
         }
-
     }
 
 
@@ -293,7 +298,6 @@ public class MapManager : MonoBehaviour
         // 보스 노드 위치도 저장
         nodePositions.Add(bossPos, bossNode.GetNodeType());
         Debug.Log($"[노드 저장] 위치: {bossPos}, 타입: {bossNode.GetNodeType()}"); //  로그 추가
-
 
         currentNode = map[0][0];
     }
@@ -417,30 +421,42 @@ public class MapManager : MonoBehaviour
 
     public void MovePlayer(Node selectedNode)
     {
-       if(/*currentNode == null ||*/ currentNode.connectedNodes.Contains(selectedNode))
+       if(currentNode.connectedNodes.Contains(selectedNode))
         {
+           
             currentNode = selectedNode; // 플레이어의 현재 위치 업데이트
-            //CurrNodePosition = currentNode.GetPosition();
             CurrNodeID = currentNode.NodeID;
-            //CurrNodePosition.
             Debug.Log("현재 노드: " + currentNode.name);
-
-            /*// 이전에 반짝이던 노드들은 정지
-            foreach (Node node in map.SelectMany(nodes => nodes))
-            {
-                node.StopBlinking();
-            }*/
 
             // 현재 노드의 연결된 노드들을 반짝이게 설정
             foreach (Node node in currentNode.connectedNodes)
             {
                 node.UpdateVisual();
             }
-        }else if (selectedNode == map[0][0])
+           /* Image NodeImage = selectedNode.GetComponentInChildren<Image>();
+            NodeImage.color = Color.gray;*/
+        }
+        else if (selectedNode == map[0][0])
         {
             //urrNodePosition = map[0][0].GetPosition();
             CurrNodeID = map[0][0].NodeID;
             selectedNode.UpdateVisual();
         }
+
+       //SelectedNodeList.Add(currentNode);
     }
+
+  /*  public void UpdateNodeColor()
+    {
+        foreach (Node node in SelectedNodeList)
+        { 
+            SpriteRenderer nodeSprite = node.GetComponent<SpriteRenderer>();
+            if(nodeSprite != null)
+            {
+                nodeSprite.color = Color.gray;
+            }
+        }
+
+    }*/
+
 }
