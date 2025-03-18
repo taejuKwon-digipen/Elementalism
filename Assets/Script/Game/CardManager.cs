@@ -55,31 +55,63 @@ public class CardManager : MonoBehaviour
     int RechooseIndex = 0;
     Card OldCard = null;
 
+    [Header("Debug Info")]
+    [SerializeField] private bool showDebugInfo = true;
+    [SerializeField] private List<CardItem> debugWaitingCards = new List<CardItem>();
+    [SerializeField] private List<CardItem> debugUsingCards = new List<CardItem>();
+    [SerializeField] private List<CardItem> debugInventoryCards = new List<CardItem>();
+    [SerializeField] private List<CardItem> debugDeckCards = new List<CardItem>();
+    [SerializeField] private List<CardItem> debugUnlockedCards = new List<CardItem>();
+
     private void LoadCardItemSO()
     {
-        //Resources에서 SO 불러오기
-        CardItemSO loadedSO = Resources.Load<CardItemSO>("ItemSO");
-        Inventory loadedInventory = Resources.Load<Inventory>("Inventory");
+        carditemso = Resources.Load<CardItemSO>("ItemSO");
+        inventory = Resources.Load<Inventory>("Inventory");
+        deck = Resources.Load<Deck>("Deck");
 
-        if (loadedSO != null)
+        if (carditemso == null)
         {
-            carditemso = loadedSO;
-            Debug.Log("[CardManager] SO가 Resources에서 정상적으로 불러와짐!");
-        }
-        else
-        {
-            Debug.LogError("[CardManager] Resources에 'ItemSO'가 없습니다! 'Resources/ItemSO.asset' 위치를 확인하세요.");
+            Debug.LogError("[CardManager] ItemSO를 찾을 수 없습니다!");
+            return;
         }
 
-        if (loadedInventory != null)
+        if (inventory == null)
         {
-            inventory = loadedInventory;
-            Debug.Log("[CardManager] Inventory가 Resources에서 정상적으로 불러와짐!");
+            Debug.LogError("[CardManager] Inventory를 찾을 수 없습니다!");
+            return;
         }
-        else
+
+        if (deck == null)
         {
-            Debug.LogError("[CardManager] Resources에 'Inventory'가 없습니다! 'Resources/Inventory.asset' 위치를 확인하세요.");
+            Debug.LogError("[CardManager] Deck을 찾을 수 없습니다!");
+            return;
         }
+
+        Debug.Log("[CardManager] ItemSO, Inventory, Deck 로드 완료");
+        
+        // 카드 상태 로깅
+        foreach (var card in carditemso.items)
+        {
+            Debug.Log($"[CardManager] 카드 상태 확인: {card.CardName} (ID: {card.ID}, IsUnlocked: {card.IsUnlocked})");
+        }
+    }
+
+    // 새로운 카드 언락
+    public void UnlockCard(int cardID)
+    {
+        var card = carditemso.items.FirstOrDefault(c => c.ID == cardID);
+        if (card != null && !card.IsUnlocked)
+        {
+            card.IsUnlocked = true;
+            Debug.Log($"[CardManager] 새로운 카드 언락: {card.CardName} (ID: {card.ID})");
+        }
+    }
+
+    // 특정 카드의 언락 상태 확인
+    public bool IsCardUnlocked(int cardID)
+    {
+        var card = carditemso.items.FirstOrDefault(c => c.ID == cardID);
+        return card != null && card.IsUnlocked;
     }
 
     private void Awake()
@@ -395,7 +427,7 @@ public class CardManager : MonoBehaviour
 
     public void Update()
     {
-
+        UpdateDebugInfo();
     }
 
     public int GetUsingCardIndex(Card clickedCard) //CurrCardSwitchindex엿나 여튼 그걸위해서 있음
@@ -648,22 +680,22 @@ public class CardManager : MonoBehaviour
     {
         Debug.Log("[CardManager] LoadInitialCards 시작");
         
-        // 인벤토리가 비어있을 때만 기본 카드 추가
+        // 인벤토리가 비어있을 때만 초기화
         if (inventory.unlockedCards.Count == 0)
         {
-            Debug.Log("[CardManager] 인벤토리가 비어있어 기본 카드를 추가합니다.");
-            // 기본 카드 (ID: 1,2,3,4) 추가
+            // 기본 카드 (ID: 1,2,3,4)만 인벤토리에 추가
             for (int i = 1; i <= 4; i++)
             {
                 var card = carditemso.items.FirstOrDefault(x => x.ID == i);
                 if (card != null)
                 {
                     inventory.AddCard(card);
-                    card.IsUnlocked = true;
                     Debug.Log($"[CardManager] 기본 카드 추가됨: {card.CardName} (ID: {card.ID})");
                 }
             }
+            
             SaveScriptableObject();
+            Debug.Log($"[CardManager] 초기 카드 로드 완료. 인벤토리 카드 수: {inventory.unlockedCards.Count}");
         }
         else
         {
@@ -836,6 +868,68 @@ public class CardManager : MonoBehaviour
         card.Setup(cardItem, true);
         WaitingCard.Add(card);
         countwaitcard++;
+    }
+
+    private void UpdateDebugInfo()
+    {
+        if (!showDebugInfo) return;
+
+        // Waiting Cards 정보 업데이트
+        debugWaitingCards.Clear();
+        foreach (var card in WaitingCard)
+        {
+            if (card != null && card.carditem != null)
+            {
+                debugWaitingCards.Add(card.carditem);
+            }
+        }
+
+        // Using Cards 정보 업데이트
+        debugUsingCards.Clear();
+        foreach (var card in UsingCard)
+        {
+            if (card != null && card.carditem != null)
+            {
+                debugUsingCards.Add(card.carditem);
+            }
+        }
+
+        // Inventory Cards 정보 업데이트
+        debugInventoryCards.Clear();
+        if (inventory != null)
+        {
+            foreach (var card in inventory.unlockedCards)
+            {
+                if (card != null)
+                {
+                    debugInventoryCards.Add(card);
+                }
+            }
+        }
+
+        // Deck Cards 정보 업데이트
+        debugDeckCards.Clear();
+        if (deck != null)
+        {
+            var deckCards = deck.GetDeckCards();
+            foreach (var card in deckCards)
+            {
+                if (card != null)
+                {
+                    debugDeckCards.Add(card);
+                }
+            }
+        }
+
+        // Unlocked Cards 정보 업데이트
+        debugUnlockedCards.Clear();
+        foreach (var card in carditemso.items)
+        {
+            if (card != null && card.IsUnlocked)
+            {
+                debugUnlockedCards.Add(card);
+            }
+        }
     }
 }
 

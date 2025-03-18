@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class ShopManager : MonoBehaviour
 {
@@ -79,11 +80,20 @@ public class ShopManager : MonoBehaviour
         }
         shopCards.Clear();
 
-        // 새로운 카드 3개 생성
+        // 언락된 카드만 필터링
+        var unlockedCards = cardDatabase.items.Where(card => card.IsUnlocked).ToList();
+        
+        if (unlockedCards.Count == 0)
+        {
+            Debug.LogWarning("[ShopManager] 언락된 카드가 없습니다!");
+            return;
+        }
+
+        // 새로운 카드 3개 생성 (언락된 카드 중에서만)
         for (int i = 0; i < 3; i++)
         {
-            int randomIndex = Random.Range(0, cardDatabase.items.Length);
-            CardItem cardItem = cardDatabase.items[randomIndex];
+            int randomIndex = Random.Range(0, unlockedCards.Count);
+            CardItem cardItem = unlockedCards[randomIndex];
             
             var cardObj = Instantiate(cardManager.cardPrefab, cardContainer);
             var card = cardObj.GetComponent<Card>();
