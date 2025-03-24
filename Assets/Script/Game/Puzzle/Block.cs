@@ -1,54 +1,48 @@
-// ÀÌ ½ºÅ©¸³Æ®´Â °ÔÀÓ¿¡¼­ ¿ø¼Ò ºí·ÏÀÇ µ¿ÀÛ°ú ½Ã°¢Àû Ç¥ÇöÀ» °ü¸®ÇÕ´Ï´Ù.
-// ¿ø¼ÒÀÇ Å¸ÀÔ¿¡ µû¸¥ ÀÌ¹ÌÁö ¼³Á¤, ºí·ÏÀÇ ¼±ÅÃ ¹× È°¼ºÈ­ »óÅÂ,
-// ±×¸®°í Ãæµ¹ ½ÃÀÇ ¹İÀÀ µîÀ» Á¦¾îÇÏ¿© ÆÛÁñ °ÔÀÓÀÇ ÀÎÅÍ·¢¼ÇÀ» ±¸ÇöÇÕ´Ï´Ù.
-
 using UnityEngine;
 using UnityEngine.UI;
 
-// ¿ø¼Ò Å¸ÀÔÀ» Á¤ÀÇÇÏ´Â ¿­°ÅÇü Enum
+// ì›ì†Œ íƒ€ì…ì„ ì •ì˜í•˜ëŠ” Enum
 public enum ElementType
 {
     None,
-    Fire,   // ºÒ
-    Water,  // ¹°
-    Air,    // °ø±â
-    Earth   // Èë
+    Fire,   // ë¶ˆ
+    Water,  // ë¬¼
+    Air,    // ë°”ëŒ
+    Earth,  // ë•…
+    Void,   // ê³µí—ˆ
+    Random  // ëœë¤
 }
 
 public class Block : MonoBehaviour
 {
-    // ÀÌ¹ÌÁö ÄÄÆ÷³ÍÆ®µé
-    public Image hooverImage;    // ¸¶¿ì½º ¿À¹ö ½Ã ³ªÅ¸³ª´Â ÀÌ¹ÌÁö
-    public Image activeImage;    // È°¼ºÈ­µÈ »óÅÂÀÇ ÀÌ¹ÌÁö
-    public Image nomalImage;     // ±âº» »óÅÂÀÇ ÀÌ¹ÌÁö
-    public Image oraImage;     // ¿À¶ó »óÅÂÀÇ ÀÌ¹ÌÁö
+    // ì›ì†Œ íƒ€ì…ì— ë”°ë¥¸ ì´ë¯¸ì§€ë¥¼ ì„¤ì •í•˜ëŠ” ë©”ì„œë“œ
+    public Image hooverImage;    // ì½¤ë³´ íŒë„¬ì— ìˆëŠ” ì›ì†Œ ì´ë¯¸ì§€
+    public Image activeImage;    // í™œì„±í™”ëœ ì›ì†Œ ì´ë¯¸ì§€
+    public Image nomalImage;     // ê¸°ë³¸ ì›ì†Œ ì´ë¯¸ì§€
+    public Image oraImage;     // ì˜¤ë¼ ì›ì†Œ ì´ë¯¸ì§€
 
+    // ì›ì†Œ íƒ€ì…ì— ë”°ë¥¸ ìŠ¤í”„ë¼ì´íŠ¸ë¥¼ ì„¤ì •í•˜ëŠ” ë³€ìˆ˜
+    public Sprite fireSprite;    // ë¶ˆ ìŠ¤í”„ë¼ì´íŠ¸
+    public Sprite waterSprite;   // ë¬¼ ìŠ¤í”„ë¼ì´íŠ¸
+    public Sprite airSprite;     // ë°”ëŒ ìŠ¤í”„ë¼ì´íŠ¸
+    public Sprite earthSprite;   // ë•… ìŠ¤í”„ë¼ì´íŠ¸
 
-    // °¢ ¿ø¼Ò¿¡ ÇØ´çÇÏ´Â ½ºÇÁ¶óÀÌÆ®µé
-    public Sprite fireSprite;    // ºÒ ½ºÇÁ¶óÀÌÆ®
-    public Sprite waterSprite;   // ¹° ½ºÇÁ¶óÀÌÆ®
-    public Sprite airSprite;     // °ø±â ½ºÇÁ¶óÀÌÆ®
-    public Sprite earthSprite;   // Èë ½ºÇÁ¶óÀÌÆ®
-
-    public ElementType elementType = ElementType.None; // ¿ø¼Ò Å¸ÀÔÀ» ÀúÀåÇÏ´Â º¯¼ö (ÃÊ±âÈ­)
+    public ElementType elementType = ElementType.None; // ì›ì†Œ íƒ€ì…ì„ ì €ì¥í•˜ëŠ” ë³€ìˆ˜ (ì´ˆê¸°í™”)
     public ElementType currentCollidedBlock = ElementType.None;
 
     public ElementType originalElementType = ElementType.None;
     private bool isColliding = false;
 
-    // ÇÁ·ÎÆÛÆ¼µé
-    public bool Selected { get; set; }          // ¼±ÅÃµÇ¾ú´ÂÁö ¿©ºÎ
-    public int BlockIndex { get; set; }     // ¿ø¼ÒÀÇ ÀÎµ¦½º
-    public bool SquareOccupied { get; set; }     // ÇØ´ç Ä­ÀÌ Á¡À¯µÇ¾ú´ÂÁö ¿©ºÎ
+    // ì›ì†Œ íƒ€ì…ì— ë”°ë¥¸ ì´ë¯¸ì§€ë¥¼ ì„¤ì •í•˜ëŠ” ë©”ì„œë“œ
+    public bool Selected { get; set; }          // ì„ íƒëœ ìƒíƒœ
+    public int BlockIndex { get; set; }     // ë¸”ë¡ì˜ ì¸ë±ìŠ¤
+    public bool SquareOccupied { get; set; }     // ì‚¬ìš©ì¤‘ì¸ ë¸”ë¡ì¸ì§€ ì—¬ë¶€
 
     private void Start()
     {
-        Selected = false;       // ¼±ÅÃ »óÅÂ ÃÊ±âÈ­
-        SquareOccupied = false;  // Á¡À¯ »óÅÂ ÃÊ±âÈ­
+        Selected = false;       // ì„ íƒ ìƒíƒœ ì´ˆê¸°í™”
+        SquareOccupied = false;  // ì‚¬ìš©ì¤‘ì¸ ë¸”ë¡ì¸ì§€ ì—¬ë¶€ ì´ˆê¸°í™”
 
-        // ÃÊ±âÈ­ ½Ã ·£´ı ¿ø¼Ò Å¸ÀÔÀ¸·Î ¼³Á¤
-        elementType = (ElementType)Random.Range(1, 5);
-        SetBlockImage(elementType);
     }
 
     private void Update()
@@ -56,26 +50,26 @@ public class Block : MonoBehaviour
         SetBlockImage(elementType);
     }
 
-    // ÀÌ Ä­À» »ç¿ëÇÒ ¼ö ÀÖ´ÂÁö È®ÀÎÇÏ´Â ¸Ş¼­µå
+    // ì‚¬ìš©í•  ìˆ˜ ìˆëŠ” ë¸”ë¡ì¸ì§€ í™•ì¸í•˜ëŠ” ë©”ì„œë“œ
     public bool CanWeUseThisSquare()
     {
-        return hooverImage.gameObject.activeSelf;   // hooverImage°¡ È°¼ºÈ­µÇ¾î ÀÖÀ¸¸é true ¹İÈ¯
+        return hooverImage.gameObject.activeSelf;   // hooverImageê°€ í™œì„±í™”ë˜ì–´ ìˆìœ¼ë©´ true ë°˜í™˜
     }
 
     public void RestoreState()
     {
-        // originalElementTypeÀÌ ÀÖ´Ù¸é ±× Å¸ÀÔÀ¸·Î º¹¿ø
+        // originalElementTypeê°€ ì„¤ì •ë˜ì–´ ìˆìœ¼ë©´ ì›ì†Œ íƒ€ì… ì„¤ì •
         if (originalElementType != ElementType.None)
         {
             elementType = originalElementType;
             originalElementType = ElementType.None;
         }
 
-        // ±âÅ¸ »óÅÂ ÃÊ±âÈ­
+        // ì›ì†Œ íƒ€ì… ì´ˆê¸°í™”
         Selected = false;
         SquareOccupied = false;
         
-        // ÀÌ¹ÌÁö »óÅÂ ÃÊ±âÈ­
+        // ì´ë¯¸ì§€ ì´ˆê¸°í™”
         if (hooverImage != null)
             hooverImage.gameObject.SetActive(false);
         if (activeImage != null)
@@ -89,8 +83,7 @@ public class Block : MonoBehaviour
         ActivateSquare();
     }
 
-
-    // Ä­À» È°¼ºÈ­ÇÏ´Â ¸Ş¼­µå
+    // ë¸”ë¡ì„ í™œì„±í™”í•˜ëŠ” ë©”ì„œë“œ
     public void ActivateSquare()
     {
         if (currentCollidedBlock != ElementType.None)
@@ -100,14 +93,13 @@ public class Block : MonoBehaviour
                 originalElementType = elementType;
             }   
             
-            hooverImage.gameObject.SetActive(false);    // hooverImage ºñÈ°¼ºÈ­
-            activeImage.gameObject.SetActive(true);     // activeImage È°¼ºÈ­
-
+            hooverImage.gameObject.SetActive(false);    // hooverImage ë¹„í™œì„±í™”
+            activeImage.gameObject.SetActive(true);     // activeImage í™œì„±í™”
 
             elementType = currentCollidedBlock;
 
-            Selected = true;                            // ¼±ÅÃµÊÀ¸·Î ¼³Á¤
-            SquareOccupied = true;                       // Á¡À¯µÊÀ¸·Î ¼³Á¤
+            Selected = true;                            // ì„ íƒëœ ìƒíƒœë¡œ ì„¤ì •
+            SquareOccupied = true;                       // ì‚¬ìš©ì¤‘ì¸ ë¸”ë¡ìœ¼ë¡œ ì„¤ì •
         }
     }
 
@@ -125,7 +117,7 @@ public class Block : MonoBehaviour
         oraImage.gameObject.SetActive(false);
     }
 
-    // Ora È°¼º »óÅÂ È®ÀÎ
+    // Ora í™œì„±í™” ìƒíƒœ í™•ì¸
     public bool IsOraActive()
     {
         return oraImage != null && oraImage.gameObject.activeSelf;
@@ -136,59 +128,66 @@ public class Block : MonoBehaviour
         elementType = newType;
     }
 
-    // ¿ø¼Ò Å¸ÀÔ¿¡ µû¶ó ÀÌ¹ÌÁö ¼³Á¤ÇÏ´Â ¸Ş¼­µå
+    // ì›ì†Œ íƒ€ì…ì— ë”°ë¥¸ ì´ë¯¸ì§€ë¥¼ ì„¤ì •í•˜ëŠ” ë©”ì„œë“œ
     public void SetBlockImage(ElementType elementType)
     {
-        this.elementType = elementType; // ¿ø¼Ò Å¸ÀÔ ¼³Á¤
+        this.elementType = elementType; // ì›ì†Œ íƒ€ì… ì„¤ì •
         switch (elementType)
         {
             case ElementType.Fire:
-                nomalImage.sprite = fireSprite;     // ºÒ ½ºÇÁ¶óÀÌÆ®·Î ¼³Á¤
+                nomalImage.sprite = fireSprite;     // ë¶ˆ ìŠ¤í”„ë¼ì´íŠ¸ë¡œ ì„¤ì •
                 break;
             case ElementType.Water:
-                nomalImage.sprite = waterSprite;    // ¹° ½ºÇÁ¶óÀÌÆ®·Î ¼³Á¤
+                nomalImage.sprite = waterSprite;    // ë¬¼ ìŠ¤í”„ë¼ì´íŠ¸ë¡œ ì„¤ì •
                 break;
             case ElementType.Air:
-                nomalImage.sprite = airSprite;      // °ø±â ½ºÇÁ¶óÀÌÆ®·Î ¼³Á¤
+                nomalImage.sprite = airSprite;      // ë°”ëŒ ìŠ¤í”„ë¼ì´íŠ¸ë¡œ ì„¤ì •
                 break;
             case ElementType.Earth:
-                nomalImage.sprite = earthSprite;    // Èë ½ºÇÁ¶óÀÌÆ®·Î ¼³Á¤
+                nomalImage.sprite = earthSprite;    // ë•… ìŠ¤í”„ë¼ì´íŠ¸ë¡œ ì„¤ì •
+                break;
+            case ElementType.Void:
+                nomalImage.sprite = null;           // ê³µí—ˆëŠ” ì´ë¯¸ì§€ ì—†ìŒ
+                break;
+            case ElementType.Random:
+                // Randomì¸ ê²½ìš° ëœë¤í•œ ì›ì†Œ íƒ€ì… ì„ íƒ (Noneê³¼ Random ì œì™¸)
+                ElementType randomType = (ElementType)Random.Range(1, (int)ElementType.Random);
+                SetBlockImage(randomType);
                 break;
             default:
                 nomalImage.sprite = null;
                 break;
         }
     }
-    // Ãæµ¹ ½ÃÀÛ ½Ã È£ÃâµÇ´Â ¸Ş¼­µå
+
+    // ë¸”ë¡ì„ ì‚¬ìš©í•˜ëŠ” ì¤‘ì¼ ë•Œ í™•ì¸í•˜ëŠ” ë©”ì„œë“œ
     private void OnTriggerEnter2D(Collider2D collision)
     {
-
         Selected = true;
-        hooverImage.gameObject.SetActive(true); // hooverImage È°¼ºÈ­
+        hooverImage.gameObject.SetActive(true); // hooverImage í™œì„±í™”
         
         ShapeSquare collidedSquare = collision.GetComponent<ShapeSquare>();
 
         if (collidedSquare != null)
         {
-            currentCollidedBlock = collidedSquare.elementType; // Ãæµ¹µÈ ¿ø¼Ò Å¸ÀÔ ÀúÀå
-            isColliding = true; // Ãæµ¹ »óÅÂ ¼³Á¤
-            //Debug.Log("Ãæµ¹µÈ ¿ø¼Ò Å¸ÀÔ: " + currentCollidedBlock);
+            currentCollidedBlock = collidedSquare.elementType; // ë¸”ë¡ì˜ ì›ì†Œ íƒ€ì… ì„¤ì •
+            isColliding = true; // ë¸”ë¡ ì‚¬ìš© ì¤‘
+            //Debug.Log("ë¸”ë¡ì˜ ì›ì†Œ íƒ€ì…: " + currentCollidedBlock);
         }
     }
 
-
-    // Ãæµ¹ ÁßÀÏ ¶§ È£ÃâµÇ´Â ¸Ş¼­µå
+    // ë¸”ë¡ì„ ì‚¬ìš©í•˜ëŠ” ì¤‘ì¼ ë•Œ í™•ì¸í•˜ëŠ” ë©”ì„œë“œ
     private void OnTriggerStay2D(Collider2D collision)
     {
         Selected = true;
-        hooverImage.gameObject.SetActive(true);     // hooverImage È°¼ºÈ­
+        hooverImage.gameObject.SetActive(true);     // hooverImage í™œì„±í™”
     }
 
-    // Ãæµ¹ÀÌ Á¾·áµÇ¾úÀ» ¶§ È£ÃâµÇ´Â ¸Ş¼­µå
+    // ë¸”ë¡ì„ ì‚¬ìš©í•˜ì§€ ì•Šì„ ë•Œ í™•ì¸í•˜ëŠ” ë©”ì„œë“œ
     private void OnTriggerExit2D(Collider2D collision)
     {
         Selected = false;
         hooverImage.gameObject.SetActive(false);
-        isColliding = false; // Ãæµ¹ »óÅÂ ÇØÁ¦
+        isColliding = false; // ë¸”ë¡ ì‚¬ìš© ì¤‘
     }
 }

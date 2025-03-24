@@ -10,9 +10,7 @@ using UnityEngine;
 public class Grid : MonoBehaviour
 {
     public ShapeStorage shapeStorage;
-    // 그리드의 열과 행 수를 정의합니다.
-    public int columns = 0;                       // 열의 수
-    public int rows = 0;                          // 행의 수
+    public ShapeData currentShape;  // 현재 사용할 ShapeData
     public float squaresGap = 0.1f;               // 블록 사이의 간격
     public GameObject block;                  // 원소 블록 프리팹
     public Vector2 startPosition = new Vector2(0, 0); // 그리드 시작 위치
@@ -39,7 +37,7 @@ public class Grid : MonoBehaviour
     // 특정 행과 열에 해당하는 블록을 반환하는 메서드
     public GameObject GetBlockAt(int row, int column)
     {
-        int index = row * columns + column; // 1차원 리스트 인덱스 계산
+        int index = row * currentShape.columns + column; // 1차원 리스트 인덱스 계산
         if (index >= 0 && index < _blocks.Count)
         {
             return _blocks[index]; // 인덱스에 해당하는 블록 반환
@@ -58,7 +56,6 @@ public class Grid : MonoBehaviour
             if (shape.IsOnStartPosition() && shape.IsAnyOfShapeSquareActive())
             {
                 shapeLeft++;
-
             }
         }
 
@@ -70,20 +67,38 @@ public class Grid : MonoBehaviour
         {
             GameEvents.SetShapeInactive();
         }
-
     }
 
     void Start()
     {
+        if (currentShape == null)
+        {
+            Debug.LogError("Grid: currentShape이 할당되지 않았습니다!");
+            return;
+        }
         CreateGrid(); // 그리드를 생성합니다.
     }
 
     // 그리드를 생성하는 메서드
     private void CreateGrid()
     {
+        ClearGrid();  // 기존 그리드 제거
         SpawnBlocks();        // 원소 블록들을 생성합니다.
         SetBlocksPositions(); // 생성된 블록들의 위치를 설정합니다.
         InitializeOra(); // Ora 초기화
+    }
+
+    // 기존 그리드 제거
+    private void ClearGrid()
+    {
+        foreach (var block in _blocks)
+        {
+            if (block != null)
+            {
+                Destroy(block);
+            }
+        }
+        _blocks.Clear();
     }
 
     // 랜덤 Ora 초기화
@@ -109,31 +124,47 @@ public class Grid : MonoBehaviour
     // 원소 블록들을 생성하는 메서드
     private void SpawnBlocks()
     {
-        for (var row = 0; row < rows; row++)
+        Debug.Log($"=== 그리드 생성 시작 ===");
+        Debug.Log($"ShapeData 크기: {currentShape.rows}행 x {currentShape.columns}열");
+        
+        for (var row = 0; row < currentShape.rows; row++)
         {
-            for (var column = 0; column < columns; column++)
+            for (var column = 0; column < currentShape.columns; column++)
             {
-                // 원소 블록 프리팹을 인스턴스화하여 생성합니다.
-                GameObject newBlock = Instantiate(block) as GameObject;
-                newBlock.GetComponent<Block>().BlockIndex = _blocks.Count;
-                newBlock.transform.SetParent(this.transform); // 그리드 오브젝트를 부모로 설정
-                newBlock.transform.localScale = new Vector3(squareScale, squareScale, squareScale); // 스케일 설정
+                ElementType shapeElementType = currentShape.board[row].colum[column];
+                Debug.Log($"위치 [{row}, {column}] - ShapeData 원소 타입: {shapeElementType}");
 
-                // 랜덤으로 원소 타입을 선택하여 이미지 설정
-                ElementType randomElement = (ElementType)Random.Range(1, 5);
-                //newBlock.GetComponent<Block>().SetBlockImage(randomElement);
-                newBlock.GetComponent<Block>().SetElementType(randomElement);
+                if (shapeElementType != ElementType.None)
+                {
+                    GameObject newBlock = Instantiate(block) as GameObject;
+                    newBlock.GetComponent<Block>().BlockIndex = _blocks.Count;
+                    newBlock.transform.SetParent(this.transform);
+                    newBlock.transform.localScale = new Vector3(squareScale, squareScale, squareScale);
 
-                // 생성된 원소 블록을 리스트에 추가합니다.
-                _blocks.Add(newBlock);
+                    ElementType elementType = shapeElementType;
+                    if (elementType == ElementType.Random)
+                    {
+                        elementType = (ElementType)Random.Range(1, (int)ElementType.Void);
+                        Debug.Log($"  - Random 선택됨: {elementType}");
+                    }
+
+                    newBlock.GetComponent<Block>().SetElementType(elementType);
+                    _blocks.Add(newBlock);
+                    Debug.Log($"  - 블록 생성 완료: {elementType}");
+                }
+                else
+                {
+                    Debug.Log($"  - None 타입이므로 블록 생성하지 않음");
+                }
             }
         }
+        Debug.Log($"=== 그리드 생성 완료 (총 {_blocks.Count}개 블록) ===");
     }
 
     public ElementType GetElementTypeAt(int row, int column)
     {
         // 그리드의 해당 위치에 있는 블록을 찾고, 그 블록의 ElementType을 반환합니다.
-        int index = row * columns + column; // 1차원 리스트 인덱스 계산
+        int index = row * currentShape.columns + column; // 1차원 리스트 인덱스 계산
         if (index >= 0 && index < _blocks.Count)
         {
             Block block = _blocks[index].GetComponent<Block>();
@@ -147,7 +178,7 @@ public class Grid : MonoBehaviour
 
     public void SetElementTypeAt(int row, int column, ElementType newType)
     {
-        int index = row * columns + column; // 1차원 리스트 인덱스 계산
+        int index = row * currentShape.columns + column; // 1차원 리스트 인덱스 계산
         if (index >= 0 && index < _blocks.Count)
         {
             Block block = _blocks[index].GetComponent<Block>();
@@ -165,6 +196,7 @@ public class Grid : MonoBehaviour
         int row_number = 0;       // 현재 행 번호
         Vector2 square_gap_number = new Vector2(0.0f, 0.0f); // 블록 간의 추가 간격 계산용 변수
         bool row_moved = false;   // 행이 이동했는지 여부
+        int blockIndex = 0;       // 현재 처리 중인 블록의 인덱스
 
         var square_rect = _blocks[0].GetComponent<RectTransform>(); // 블록의 RectTransform 가져오기
 
@@ -172,52 +204,56 @@ public class Grid : MonoBehaviour
         _offset.x = square_rect.rect.width * square_rect.transform.localScale.x + everySquareOffset;
         _offset.y = square_rect.rect.height * square_rect.transform.localScale.y + everySquareOffset;
 
-        foreach (GameObject square in _blocks)
+        // ShapeData를 순회하면서 None이 아닌 위치에만 블록 배치
+        for (var row = 0; row < currentShape.rows; row++)
         {
-            // 열 번호가 최대 열 수를 넘으면 행을 증가시키고 열 번호를 초기화합니다.
-            if (column_number + 1 > columns)
+            square_gap_number.x = 0; // 각 행이 시작될 때 x 간격 초기화
+            for (var column = 0; column < currentShape.columns; column++)
             {
-                square_gap_number.x = 0;
-                column_number = 0;
-                row_number++;
-                row_moved = false;
+                if (currentShape.board[row].colum[column] != ElementType.None)
+                {
+                    if (blockIndex >= _blocks.Count) break;
+
+                    GameObject square = _blocks[blockIndex];
+
+                    // 블록의 X, Y 위치 오프셋을 계산합니다.
+                    var pos_x_offset = _offset.x * column + (square_gap_number.x * squaresGap);
+                    var pos_y_offset = _offset.y * row + (square_gap_number.y * squaresGap);
+
+                    // 특정 열마다 추가 간격을 추가하여 블록들을 그룹화합니다.
+                    if (column > 0 && column % 3 == 0)
+                    {
+                        square_gap_number.x++;
+                        pos_x_offset += squaresGap;
+                    }
+
+                    // 특정 행마다 추가 간격을 추가하여 블록들을 그룹화합니다.
+                    if (row > 0 && row % 3 == 0 && row_moved == false)
+                    {
+                        row_moved = true;
+                        square_gap_number.y++;
+                        pos_y_offset += squaresGap;
+                    }
+
+                    // 블록의 위치를 설정합니다.
+                    square.GetComponent<RectTransform>().anchoredPosition = new Vector2(
+                        startPosition.x + pos_x_offset,
+                        startPosition.y - pos_y_offset);
+
+                    square.GetComponent<RectTransform>().localPosition = new Vector3(
+                        startPosition.x + pos_x_offset,
+                        startPosition.y - pos_y_offset, 0.0f);
+
+                    blockIndex++;    // 다음 블록으로 이동
+                }
             }
-
-            // 블록의 X, Y 위치 오프셋을 계산합니다.
-            var pos_x_offset = _offset.x * column_number + (square_gap_number.x * squaresGap);
-            var pos_y_offset = _offset.y * row_number + (square_gap_number.y * squaresGap);
-
-            // 특정 열마다 추가 간격을 추가하여 블록들을 그룹화합니다.
-            if (column_number > 0 && column_number % 3 == 0)
-            {
-                square_gap_number.x++;
-                pos_x_offset += squaresGap;
-            }
-
-            // 특정 행마다 추가 간격을 추가하여 블록들을 그룹화합니다.
-            if (row_number > 0 && row_number % 3 == 0 && row_moved == false)
-            {
-                row_moved = true;
-                square_gap_number.y++;
-                pos_y_offset += squaresGap;
-            }
-
-            // 블록의 위치를 설정합니다.
-            square.GetComponent<RectTransform>().anchoredPosition = new Vector2(
-                startPosition.x + pos_x_offset,
-                startPosition.y - pos_y_offset);
-
-            square.GetComponent<RectTransform>().localPosition = new Vector3(
-                startPosition.x + pos_x_offset,
-                startPosition.y - pos_y_offset, 0.0f);
-
-            column_number++; // 열 번호를 증가시킵니다.
+            row_moved = false;
         }
     }
 
     public void UpdateGridState(int row, int column, ElementType elementType)
     {
-        int index = row * columns + column; // 인덱스 계산
+        int index = row * currentShape.columns + column; // 인덱스 계산
         if (index >= 0 && index < _blocks.Count)
         {
             Block block = _blocks[index].GetComponent<Block>();
@@ -254,7 +290,6 @@ public class Grid : MonoBehaviour
             {
                 _blocks[squareIndex].GetComponent<Block>().PlaceShapeOnBoard();
             }
-            //shapeStorage.GetCurrentSelectedShape().DeactivateShape();
 
             // 퍼즐 재생성 기능 구현
             var shapeLeft = 0;
@@ -264,17 +299,14 @@ public class Grid : MonoBehaviour
                 if (shape.IsOnStartPosition() && shape.IsAnyOfShapeSquareActive())
                 {
                     shapeLeft++;
-
                 }
             }
 
             GameEvents.SetShapeInactive();
-            
         }
         else
         {
             GameEvents.MoveShapeToStartPosition();
         }
-        
     }
 }

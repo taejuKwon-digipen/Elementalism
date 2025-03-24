@@ -1,111 +1,131 @@
-// ÀÌ ½ºÅ©¸³Æ®´Â Unity ¿¡µðÅÍ¿¡¼­ `ShapeData` °´Ã¼¸¦ À§ÇÑ Ä¿½ºÅÒ ÀÎ½ºÆåÅÍ¸¦ ±¸ÇöÇÕ´Ï´Ù.
-// °³¹ßÀÚ°¡ ÀÎ½ºÆåÅÍ¸¦ ÅëÇØ ÆÛÁñ Á¶°¢ÀÇ ÇüÅÂ¸¦ ½Ã°¢ÀûÀ¸·Î ÆíÁýÇÒ ¼ö ÀÖµµ·Ï ÇÕ´Ï´Ù.
-// Çà°ú ¿­ÀÇ ¼ö¸¦ ¼³Á¤ÇÏ°í, °¢ ¼¿À» Åä±ÛÇÏ¿© ÆÛÁñ ¸ð¾çÀ» µðÀÚÀÎÇÒ ¼ö ÀÖ½À´Ï´Ù.
+// ï¿½ï¿½ ï¿½ï¿½Å©ï¿½ï¿½Æ®ï¿½ï¿½ Unity ï¿½ï¿½ï¿½ï¿½ï¿½Í¿ï¿½ï¿½ï¿½ `ShapeData` ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ä¿ï¿½ï¿½ï¿½ï¿½ ï¿½Î½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
+// ï¿½ï¿½ï¿½ï¿½ï¿½Ú°ï¿½ ï¿½Î½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¸ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Öµï¿½ï¿½ï¿½ ï¿½Õ´Ï´ï¿½.
+// ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½, ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö½ï¿½ï¿½Ï´ï¿½.
 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(ShapeData), false)] // ShapeData¿¡ ´ëÇÑ Ä¿½ºÅÒ ¿¡µðÅÍ·Î ÁöÁ¤
+[CustomEditor(typeof(ShapeData), false)] // ShapeDataï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ä¿ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½ ï¿½ï¿½ï¿½ï¿½
 [CanEditMultipleObjects]
 [System.Serializable]
 public class ShapeDataDrawer : Editor
 {
-    // ÇöÀç ÆíÁý ÁßÀÎ ShapeData ÀÎ½ºÅÏ½º¸¦ °¡Á®¿É´Ï´Ù.
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ShapeData ï¿½Î½ï¿½ï¿½Ï½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½É´Ï´ï¿½.
     private ShapeData ShapeDataInstance => target as ShapeData;
 
-    // ÀÎ½ºÆåÅÍ GUI¸¦ ±×¸®´Â ¸Þ¼­µå
+    // ï¿½Î½ï¿½ï¿½ï¿½ï¿½ï¿½ GUIï¿½ï¿½ ï¿½×¸ï¿½ï¿½ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½
     public override void OnInspectorGUI()
     {
-        serializedObject.Update(); // Á÷·ÄÈ­µÈ °´Ã¼¸¦ ¾÷µ¥ÀÌÆ®
-        ClearBoardButton();        // "Clear Board" ¹öÆ°À» ±×¸³´Ï´Ù.
-        EditorGUILayout.Space();   // °ø°£À» Ãß°¡ÇÏ¿© ·¹ÀÌ¾Æ¿ôÀ» Á¤¸®
+        serializedObject.Update(); // ì§ë ¬í™”ëœ ê°ì²´ë¥¼ ì—…ë°ì´íŠ¸
+        ClearBoardButton();        // "Clear Board" ë²„íŠ¼ì„ ê·¸ë¦½ë‹ˆë‹¤.
+        RandomizeBoardButton();    // "Randomize Board" ë²„íŠ¼ì„ ê·¸ë¦½ë‹ˆë‹¤.
+        SetAllToRandomButton();    // "Set All To Random" ë²„íŠ¼ì„ ê·¸ë¦½ë‹ˆë‹¤.
+        EditorGUILayout.Space();   // ë²„íŠ¼ ì‚¬ì´ì— ê³µë°±ì„ ì¶”ê°€
 
-        DrawColumnsInputFields();  // Çà°ú ¿­ ÀÔ·Â ÇÊµå¸¦ ±×¸³´Ï´Ù.
-        EditorGUILayout.Space();   // °ø°£À» Ãß°¡
+        DrawColumnsInputFields();  // ì—´ê³¼ í–‰ ìž…ë ¥ í•„ë“œë¥¼ ê·¸ë¦½ë‹ˆë‹¤.
+        EditorGUILayout.Space();   // ê³µë°± ì¶”ê°€
 
-        // º¸µå°¡ Á¸ÀçÇÏ°í, ¿­°ú ÇàÀÇ ¼ö°¡ À¯È¿ÇÏ¸é º¸µå Å×ÀÌºíÀ» ±×¸³´Ï´Ù.
+        // ë³´ë“œê°€ ìƒì„±ë˜ê³ , ì—´ê³¼ í–‰ì´ ìœ íš¨í•  ë•Œë§Œ ë³´ë“œ í…Œì´ë¸”ì„ ê·¸ë¦½ë‹ˆë‹¤.
         if (ShapeDataInstance.board != null && ShapeDataInstance.columns > 0 && ShapeDataInstance.rows > 0)
         {
-            DrawBoardTable();      // º¸µåÀÇ °¢ ¼¿À» Åä±Û ¹öÆ°À¸·Î Ç¥½Ã
+            DrawBoardTable();      // ë³´ë“œ í…Œì´ë¸”ì„ ê·¸ë¦½ë‹ˆë‹¤.
         }
 
-        serializedObject.ApplyModifiedProperties(); // º¯°æµÈ ¼Ó¼ºÀ» Àû¿ë
+        serializedObject.ApplyModifiedProperties(); // ë³€ê²½ëœ ì†ì„±ì„ ì ìš©
 
-        // GUI¿¡ º¯°æÀÌ ¹ß»ýÇÏ¸é °´Ã¼¸¦ Dirty »óÅÂ·Î ¼³Á¤ÇÏ¿© ÀúÀåµÇµµ·Ï ÇÕ´Ï´Ù.
+        // GUIê°€ ë³€ê²½ë˜ì—ˆë‹¤ë©´ ê°ì²´ë¥¼ Dirty ìƒíƒœë¡œ í‘œì‹œí•˜ì—¬ ì €ìž¥ë˜ë„ë¡ í•©ë‹ˆë‹¤.
         if (GUI.changed)
         {
             EditorUtility.SetDirty(ShapeDataInstance);
         }
     }
 
-    // "Clear Board" ¹öÆ°À» »ý¼ºÇÏ´Â ¸Þ¼­µå
+    // "Clear Board" ë²„íŠ¼ì„ ê·¸ë¦¬ëŠ” ë©”ì„œë“œ
     private void ClearBoardButton()
     {
-        if (GUILayout.Button("Clear Board")) // ¹öÆ°ÀÌ Å¬¸¯µÇ¾ú´ÂÁö È®ÀÎ
+        if (GUILayout.Button("Clear Board")) // ë²„íŠ¼ì´ í´ë¦­ë˜ì—ˆëŠ”ì§€ í™•ì¸
         {
-            ShapeDataInstance.Clear();       // º¸µå¸¦ ÃÊ±âÈ­
+            ShapeDataInstance.Clear();       // ë³´ë“œë¥¼ ì´ˆê¸°í™”
         }
     }
 
-    // Çà°ú ¿­ ÀÔ·Â ÇÊµå¸¦ ±×¸®´Â ¸Þ¼­µå
+    // "Randomize Board" ë²„íŠ¼ì„ ê·¸ë¦¬ëŠ” ë©”ì„œë“œ
+    private void RandomizeBoardButton()
+    {
+        if (GUILayout.Button("Randomize Board")) // ë²„íŠ¼ì´ í´ë¦­ë˜ì—ˆëŠ”ì§€ í™•ì¸
+        {
+            ShapeDataInstance.RandomizeBoard(); // ë³´ë“œë¥¼ ëžœë¤í™”
+        }
+    }
+
+    // "Set All To Random" ë²„íŠ¼ì„ ê·¸ë¦¬ëŠ” ë©”ì„œë“œ
+    private void SetAllToRandomButton()
+    {
+        if (GUILayout.Button("Set All To Random")) // ë²„íŠ¼ì´ í´ë¦­ë˜ì—ˆëŠ”ì§€ í™•ì¸
+        {
+            ShapeDataInstance.SetAllToRandom(); // ëª¨ë“  ì›ì†Œë¥¼ Randomìœ¼ë¡œ ì„¤ì •
+        }
+    }
+
+    //   Ô· Êµå¸¦ ×¸ Þ¼
     private void DrawColumnsInputFields()
     {
-        var columnsTemp = ShapeDataInstance.columns; // ±âÁ¸ ¿­ ¼ö¸¦ ÀúÀå
-        var rowsTemp = ShapeDataInstance.rows;       // ±âÁ¸ Çà ¼ö¸¦ ÀúÀå
+        var columnsTemp = ShapeDataInstance.columns; //    
+        var rowsTemp = ShapeDataInstance.rows;       //    
 
-        // ¿­°ú ÇàÀÇ ¼ö¸¦ ÀÔ·Â¹Þ½À´Ï´Ù.
+        //    Ô·Â¹Þ½Ï´.
         ShapeDataInstance.columns = EditorGUILayout.IntField("Columns", ShapeDataInstance.columns);
         ShapeDataInstance.rows = EditorGUILayout.IntField("Rows", ShapeDataInstance.rows);
 
-        // ¿­ÀÌ³ª Çà ¼ö°¡ º¯°æµÇ¾ú°í À¯È¿ÇÑ °ªÀÌ¸é »õ·Î¿î º¸µå¸¦ »ý¼º
+        // Ì³   Ç¾ È¿ Ì¸ Î¿ å¸¦ 
         if ((ShapeDataInstance.columns != columnsTemp || ShapeDataInstance.rows != rowsTemp) &&
             ShapeDataInstance.columns > 0 && ShapeDataInstance.rows > 0)
         {
-            ShapeDataInstance.CreateNewBoard(); // »õ·Î¿î º¸µå¸¦ »ý¼º
+            ShapeDataInstance.CreateNewBoard(); // Î¿ å¸¦ 
         }
     }
 
-    // º¸µå Å×ÀÌºíÀ» ±×¸®´Â ¸Þ¼­µå
+    //  Ìº ×¸ Þ¼
     private void DrawBoardTable()
     {
-        // Å×ÀÌºíÀÇ ½ºÅ¸ÀÏÀ» ¼³Á¤ÇÕ´Ï´Ù.
+        // Ìº Å¸ Õ´Ï´.
         var tableStyle = new GUIStyle("box");
-        tableStyle.padding = new RectOffset(10, 10, 10, 10); // ³»ºÎ ¿©¹é ¼³Á¤
-        tableStyle.margin.left = 32;                         // ¿ÞÂÊ ¿©¹é ¼³Á¤
+        tableStyle.padding = new RectOffset(10, 10, 10, 10); //   
+        tableStyle.margin.left = 32;                         //   
 
-        // Çì´õ ÄÃ·³ÀÇ ½ºÅ¸ÀÏÀ» ¼³Á¤ÇÕ´Ï´Ù.
+        //  Ã· Å¸ Õ´Ï´.
         var headerColumnStyle = new GUIStyle();
-        headerColumnStyle.fixedWidth = 65;                   // °íÁ¤ ³Êºñ ¼³Á¤
-        headerColumnStyle.alignment = TextAnchor.MiddleCenter; // °¡¿îµ¥ Á¤·Ä
+        headerColumnStyle.fixedWidth = 65;                   //  Êº 
+        headerColumnStyle.alignment = TextAnchor.MiddleCenter; // îµ¥ 
 
-        // ÇàÀÇ ½ºÅ¸ÀÏÀ» ¼³Á¤ÇÕ´Ï´Ù.
+        //  Å¸ Õ´Ï´.
         var rowStyle = new GUIStyle();
-        rowStyle.fixedHeight = 25;                           // °íÁ¤ ³ôÀÌ ¼³Á¤
-        rowStyle.alignment = TextAnchor.MiddleCenter;        // °¡¿îµ¥ Á¤·Ä
+        rowStyle.fixedHeight = 25;                           //   
+        rowStyle.alignment = TextAnchor.MiddleCenter;        // îµ¥ 
 
-        // µ¥ÀÌÅÍ ÇÊµåÀÇ ½ºÅ¸ÀÏÀ» ¼³Á¤ÇÕ´Ï´Ù.
+        //  Êµ Å¸ Õ´Ï´.
         var dataFieldStyle = new GUIStyle(EditorStyles.miniButtonMid);
-        dataFieldStyle.normal.background = Texture2D.grayTexture;       // ºñÈ°¼ºÈ­ »óÅÂ ¹è°æ»ö
-        dataFieldStyle.onNormal.background = Texture2D.whiteTexture;    // È°¼ºÈ­ »óÅÂ ¹è°æ»ö
+        dataFieldStyle.normal.background = Texture2D.grayTexture;       // È°È­  
+        dataFieldStyle.onNormal.background = Texture2D.whiteTexture;    // È°È­  
 
-        // º¸µåÀÇ °¢ ÇàÀ» ¹Ýº¹ÇÕ´Ï´Ù.
+        //    ÝºÕ´Ï´.
         for (var row = 0; row < ShapeDataInstance.rows; row++)
         {
-            EditorGUILayout.BeginHorizontal(headerColumnStyle); // Çà ½ÃÀÛ
+            EditorGUILayout.BeginHorizontal(headerColumnStyle); //  
 
-            // °¢ ÇàÀÇ ¿­À» ¹Ýº¹ÇÕ´Ï´Ù.
+            //    ÝºÕ´Ï´.
             for (var column = 0; column < ShapeDataInstance.columns; column++)
             {
-                EditorGUILayout.BeginHorizontal(rowStyle); // ¿­ ½ÃÀÛ
-                                                           // EnumPopupÀ» »ç¿ëÇÏ¿© ¿ø¼Ò Å¸ÀÔ ¼±ÅÃ
+                EditorGUILayout.BeginHorizontal(rowStyle); //  
+                                                           // EnumPopup Ï¿  Å¸ 
                 var elementType = (ElementType)EditorGUILayout.EnumPopup(ShapeDataInstance.board[row].colum[column]);
                 ShapeDataInstance.board[row].colum[column] = elementType;
 
-                EditorGUILayout.EndHorizontal(); // ¿­ Á¾·á
+                EditorGUILayout.EndHorizontal(); //  
             }
-            EditorGUILayout.EndHorizontal(); // Çà Á¾·á
+            EditorGUILayout.EndHorizontal(); //  
         }
     }
 }

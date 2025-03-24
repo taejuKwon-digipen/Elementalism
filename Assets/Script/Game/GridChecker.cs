@@ -29,10 +29,10 @@ public class GridChecker : MonoBehaviour
     public void OnResetButtonPressed()
     {
         // Grid의 모든 블록을 원래 상태로 복원
-        int totalBlocks = grid.rows * grid.columns;
+        int totalBlocks = grid.currentShape.rows * grid.currentShape.columns;
         for (int i = 0; i < totalBlocks; i++)
         {
-            GameObject block = grid.GetBlockAt(i / grid.columns, i % grid.columns);
+            GameObject block = grid.GetBlockAt(i / grid.currentShape.columns, i % grid.currentShape.columns);
             if (block != null)
             {
                 Block blockScript = block.GetComponent<Block>();
@@ -60,11 +60,11 @@ public class GridChecker : MonoBehaviour
     // 버튼 클릭 시 모든 ActiveImage를 비활성화하는 메서드
     private void DisableAllActiveImages()
     {
-        int totalBlocks = grid.rows * grid.columns;
+        int totalBlocks = grid.currentShape.rows * grid.currentShape.columns;
 
         for (int i = 0; i < totalBlocks; i++)
         {
-            GameObject block = grid.GetBlockAt(i / grid.columns, i % grid.columns);
+            GameObject block = grid.GetBlockAt(i / grid.currentShape.columns, i % grid.currentShape.columns);
             if (block != null)
             {
                 Block blockScript = block.GetComponent<Block>();
@@ -80,10 +80,10 @@ public class GridChecker : MonoBehaviour
     private void ReplaceOraImages()
     {
         // 기존 Ora 비활성화
-        int totalBlocks = grid.rows * grid.columns;
+        int totalBlocks = grid.currentShape.rows * grid.currentShape.columns;
         for (int i = 0; i < totalBlocks; i++)
         {
-            GameObject block = grid.GetBlockAt(i / grid.columns, i % grid.columns);
+            GameObject block = grid.GetBlockAt(i / grid.currentShape.columns, i % grid.currentShape.columns);
             if (block != null)
             {
                 Block blockScript = block.GetComponent<Block>();
@@ -98,7 +98,7 @@ public class GridChecker : MonoBehaviour
         List<int> randomIndices = GetRandomIndices(totalBlocks, 2); // 랜덤한 2개의 인덱스 가져오기
         foreach (int index in randomIndices)
         {
-            GameObject block = grid.GetBlockAt(index / grid.columns, index % grid.columns);
+            GameObject block = grid.GetBlockAt(index / grid.currentShape.columns, index % grid.currentShape.columns);
             if (block != null)
             {
                 Block blockScript = block.GetComponent<Block>();
@@ -128,8 +128,8 @@ public class GridChecker : MonoBehaviour
     // 카드들을 순차적으로 검사하는 코루틴
     private IEnumerator ProcessCardsSequentially()
     {
-        int gridRows = grid.rows;
-        int gridColumns = grid.columns;
+        int gridRows = grid.currentShape.rows;
+        int gridColumns = grid.currentShape.columns;
         int addDamage = 0;
 
         for (int i = 0; i < 3; i++)
@@ -190,13 +190,11 @@ public class GridChecker : MonoBehaviour
                 Debug.Log($"GridChecker : Critical Hit! Blocks: {matchedBlockCount}, Ora blocks: {oraBlockCount}, Damage: {totalDamage}");
             }
             else
-
             {
                 // 일반 데미지
                 totalDamage = cardDamage * matchedBlockCount;
                 Debug.Log($"GridChecker : Normal Hit! Blocks: {matchedBlockCount}, Damage: {totalDamage}");
             }
-
 
             // 공격 실행
             if (totalDamage > 0)
@@ -355,7 +353,6 @@ public class GridChecker : MonoBehaviour
         }
     }
 
-
     // 그리드와 카드 모양이 일치하는지 확인하는 메서드
     private bool CheckIfBlocksMatch(Grid grid, ShapeData cardShape, int startRow, int startCol)
     {
@@ -389,12 +386,11 @@ public class GridChecker : MonoBehaviour
                     }
                     else
                     {
-                        grid.SetElementTypeAt(startRow + row, startCol + col, (ElementType)Random.Range(1, 5));
+                        grid.SetElementTypeAt(startRow + row, startCol + col, (ElementType)Random.Range(1, (int)ElementType.Void));
                     }
                 }
             }
         }
     }
-
 }
 

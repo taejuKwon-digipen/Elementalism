@@ -65,4 +65,30 @@ public class ShapeData : ScriptableObject
             board[i] = new Row(columns); // 각 행에 열 수를 설정하여 생성
         }
     }
+
+    // 모든 원소를 랜덤으로 설정하는 메서드
+    public void RandomizeBoard()
+    {
+        for (var i = 0; i < rows; i++)
+        {
+            for (var j = 0; j < columns; j++)
+            {
+                // None을 제외한 원소 타입 중에서 랜덤 선택 (1부터 시작)
+                int randomIndex = Random.Range(1, (int)ElementType.Random);
+                board[i].colum[j] = (ElementType)randomIndex;
+            }
+        }
+    }
+
+    // 모든 원소를 Random으로 설정하는 메서드
+    public void SetAllToRandom()
+    {
+        for (var i = 0; i < rows; i++)
+        {
+            for (var j = 0; j < columns; j++)
+            {
+                board[i].colum[j] = ElementType.Random;
+            }
+        }
+    }
 }
