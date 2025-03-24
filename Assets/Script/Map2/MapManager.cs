@@ -119,7 +119,6 @@ public class MapManager : MonoBehaviour
     private void RestoreMapState()
     {
         Debug.Log("RestoreMapState 실행: 기존 맵 복원 중...");
-        Debug.Log($"Map Count: {map.Count}, nodePosition Count: {nodePositions.Count}");
         if (map == null || map.Count == 0)
         {
             Debug.LogWarning("기존 맵 데이터 없음 → 새로 생성");
@@ -135,7 +134,6 @@ public class MapManager : MonoBehaviour
             int node_col = 0;
             foreach (var num in map)
             {
-                Debug.Log($"Num Count : " + num.Count);
                 for (int i = 0; i < num.Count; i++)
                 {
                     Vector2 nodePos = nodePositions.Keys.ElementAt(node_col); // 저장된 위치 가져오기
@@ -144,7 +142,6 @@ public class MapManager : MonoBehaviour
                     newNode.SetPosition(nodePos);
 
                     NodeType nodetype = nodePositions.Values.ElementAt(node_col);
-                    //Debug.Log("Node type : " + nodetype);
                     newNode.SetNodeType(nodetype);
                     map[node_row][i] = newNode;
                     newNode.SetNodeID(node_col);
@@ -170,8 +167,6 @@ public class MapManager : MonoBehaviour
             {
                 for (int j = 0; j < map[i].Count; j++)
                 {
-                    Debug.Log("map 저장 되어있나: " + map[i][j]);
-
                     map[i][j].gameObject.SetActive(true);
                     map[i][j].UpdateVisual();
 

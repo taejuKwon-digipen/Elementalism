@@ -39,17 +39,6 @@ public class Node : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         mapManager = MapManager.Instance;
-
-        //if (!IsTypeAssigned)
-        //{
-        //    //AssignRandomType();
-        //    Debug.Log($"[Start 호출] {gameObject.name}: AssignRandomType() 실행({nodeType}) [Node ID] ({NodeID})");
-        //}
-        //else
-        //{
-        //    Debug.Log($"[Start 호출] {gameObject.name}: 이미 타입 설정됨 ({nodeType}) [Node ID] ({NodeID})");
-        //}
-
         UpdateVisual();
     }
 
@@ -170,7 +159,6 @@ public class Node : MonoBehaviour
 
         if (MapManager.Instance == null)
         {
-            Debug.Log("될거같냐?");
             return;
         }
         if (roll < (cumulative += MapManager.Instance.battleChance))
@@ -187,8 +175,6 @@ public class Node : MonoBehaviour
         }
 
         TypeTXT.text = nodeType.ToString();
-        //Debug.Log($"[AssignRandomType] 노드 타입 지정됨 → {nodeType}");
-
     }
 
     public NodeType GetNodeType()
