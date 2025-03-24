@@ -44,6 +44,7 @@ public class Player : Entity
 
     public void Attack()
     {
+        Debug.Log($"Using Card ID {GridChecker.inst.UsingCard_ID}");
         var entity = focusManager.GetFocusedEntity();
         if (entity == null || entity.HP <= 0)
             return;
@@ -60,6 +61,7 @@ public class Player : Entity
 
     public void AttackWithDamage(int damage)
     {
+        Debug.Log($"Using Card ID {GridChecker.inst.UsingCard_ID}");
         var entity = focusManager.GetFocusedEntity();
         if (entity == null || entity.HP <= 0)
             return;

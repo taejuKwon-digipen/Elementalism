@@ -14,7 +14,6 @@ public abstract class Enemy : Entity
     protected EnemyManager em;
     protected Animator animator;
 
-    public ParticleSystem effect;
     public GameObject hubDamageText;
 
     protected void Awake() {
@@ -39,17 +38,12 @@ public abstract class Enemy : Entity
         }
     }
 
-    public void SetEffectPrefab(ParticleSystem effectprefab)
-    {
-        effect = effectprefab;
-    }
     public void SetDmgTextPrefab(GameObject hubDmgTextfab)
     {
         hubDamageText = hubDmgTextfab;
     }
     public override int Hit(Entity attacker, EntityType attackType, int damageAmount)
     {
-        effect.Play();
         GameObject hubText = Instantiate(hubDamageText);
         hubText.transform.position = this.transform.position;
         hubText.GetComponent<DamageText>().damage = damageAmount;

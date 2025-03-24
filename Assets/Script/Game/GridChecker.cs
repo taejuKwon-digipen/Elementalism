@@ -9,7 +9,13 @@ public class GridChecker : MonoBehaviour
     public Grid grid; // 그리드 스크립트 인스턴스
     public Player player;
     public List<Card> UsingCard_;
+    public int UsingCard_ID;
+    public static GridChecker inst;
 
+    private void Awake()
+    {
+        inst = this;
+    }
     // 버튼 클릭 시 호출할 검사 메서드
     public void OnCheckButtonPressed()
     {
@@ -195,6 +201,7 @@ public class GridChecker : MonoBehaviour
             // 공격 실행
             if (totalDamage > 0)
             {
+                UsingCard_ID = cardID;
                 var ability = CardAbilityManager.GetAbility(cardID);
                 ability.ExecuteAbility(player, totalDamage + addDamage, oraBlockCount);
             }

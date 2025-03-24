@@ -91,3 +91,6 @@ MonoBehaviour:
   speed: 20
   focusedEnemy: {fileID: 0}
   player: {fileID: 0}
+  damage: 0
+  hitEffect: {fileID: 1109042888843568254, guid: 701e34b9d38b33f4f86814363f8fca96, type: 3}
+  effects: {fileID: 0}

@@ -8,10 +8,16 @@ public class BallBehavior : MonoBehaviour
     public GameObject focusedEnemy;
     public Entity player;
     public int damage;
+    public GameObject hitEffect;
+
+    public ParticleSystem effects;
     // Start is called before the first frame update
     void Start()
     {
+        var enemyPosition = focusedEnemy.GetComponent<RectTransform>().position;
         transform.position = player.transform.position;
+        hitEffect = Instantiate(hitEffect, enemyPosition, Quaternion.identity, this.transform.parent);
+        effects = hitEffect.GetComponent<ParticleSystem>();
     }
 
     private void FixedUpdate() {
@@ -30,7 +36,7 @@ public class BallBehavior : MonoBehaviour
         {
             int previousHP = entity.HP;
             entity.Hit(player, player.baseEntity.Type, damage);
-            
+            effects.Play();
             // 몬스터가 죽었는지 확인
             if (previousHP > 0 && entity.HP <= 0)
             {

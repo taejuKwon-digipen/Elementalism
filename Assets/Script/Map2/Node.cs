@@ -40,15 +40,15 @@ public class Node : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         mapManager = MapManager.Instance;
 
-        if (!IsTypeAssigned)
-        {
-            //AssignRandomType();
-            Debug.Log($"[Start 호출] {gameObject.name}: AssignRandomType() 실행({nodeType}) [Node ID] ({NodeID})");
-        }
-        else
-        {
-            Debug.Log($"[Start 호출] {gameObject.name}: 이미 타입 설정됨 ({nodeType}) [Node ID] ({NodeID})");
-        }
+        //if (!IsTypeAssigned)
+        //{
+        //    //AssignRandomType();
+        //    Debug.Log($"[Start 호출] {gameObject.name}: AssignRandomType() 실행({nodeType}) [Node ID] ({NodeID})");
+        //}
+        //else
+        //{
+        //    Debug.Log($"[Start 호출] {gameObject.name}: 이미 타입 설정됨 ({nodeType}) [Node ID] ({NodeID})");
+        //}
 
         UpdateVisual();
     }
