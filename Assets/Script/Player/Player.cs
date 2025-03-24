@@ -18,6 +18,12 @@ public class Player : Entity
     public float fireballSpeed = 5f;
     private int shield = 0;
 
+    public static Player inst;
+
+    private void Awake()
+    {
+        inst = this;
+    }
     public int Shield
     {
         get => shield;
@@ -31,6 +37,10 @@ public class Player : Entity
         focusManager = FindAnyObjectByType<FocusManager>();
         CurrentHP = MaxHP;
         animator = GetComponent<Animator>();
+        if (GameManager.Instance.Player_HP != 0)
+        {
+            HP = GameManager.Instance.Player_HP;
+        }
     }
 
     // Update is called once per frame
