@@ -8,24 +8,49 @@ public class GridChecker : MonoBehaviour
 {
     public Grid grid; // 그리드 스크립트 인스턴스
     public Player player;
-    public List<Card> UsingCard_;
-    public int UsingCard_ID;
     public static GridChecker inst;
+    private List<Card> activeCards = new List<Card>();
 
     private void Awake()
     {
         inst = this;
     }
+
+    public void AddActiveCard(Card card)
+    {
+        if (!activeCards.Contains(card))
+        {
+            activeCards.Add(card);
+            Debug.Log($"GridChecker: Added card {card.carditem.CardName} to active cards");
+        }
+    }
+
+    public void RemoveActiveCard(Card card)
+    {
+        if (activeCards.Contains(card))
+        {
+            activeCards.Remove(card);
+            Debug.Log($"GridChecker: Removed card {card.carditem.CardName} from active cards");
+        }
+    }
+
+    public List<Card> GetActiveCards()
+    {
+        return activeCards;
+    }
+
     // 버튼 클릭 시 호출할 검사 메서드
     public void OnCheckButtonPressed()
     {
-        UsingCard_.Clear();
-        for (int i = 0; i < 3; i++)
-        {
-            UsingCard_.Add((CardManager.Inst.UsingCard[i]));
-        }
         StartCoroutine(ProcessCardsSequentially());
     }
+
+    // 직접 호출할 수 있는 검사 메서드
+    public void CheckGrid()
+    {
+        StartCoroutine(ProcessCardsSequentially());
+    }
+
     public void OnResetButtonPressed()
     {
         // Grid의 모든 블록을 원래 상태로 복원
@@ -132,29 +157,29 @@ public class GridChecker : MonoBehaviour
         int gridColumns = grid.currentShape.columns;
         int addDamage = 0;
 
-        for (int i = 0; i < 3; i++)
+        foreach (var card in activeCards)
         {
-            if (UsingCard_[i] == null || UsingCard_[i].carditem == null)
+            if (card == null || card.carditem == null)
             {
-                Debug.LogWarning($"GridChecker : Card at index {i} is null or has no carditem");
+                Debug.LogWarning($"GridChecker: Card is null or has no carditem");
                 continue;
             }
 
             int totalDamage = 0;
-            int matchedBlockCount = 0;  // 매칭된 블록 수
-            int oraBlockCount = 0;      // 터진 오라 블록 수
-            ShapeData cardShape = UsingCard_[i].carditem.cardShape;
+            int matchedBlockCount = 0;
+            int oraBlockCount = 0;
+            ShapeData cardShape = card.carditem.cardShape;
             
             if (cardShape == null)
             {
-                Debug.LogWarning($"GridChecker : Card at index {i} has no shape data");
+                Debug.LogWarning($"GridChecker: Card has no shape data");
                 continue;
             }
 
-            int cardDamage = UsingCard_[i].carditem.PowerLeft;      // 기본 데미지
-            int cardCritDamage = UsingCard_[i].carditem.PowerRight; // 크리티컬 데미지
-            int cardID = UsingCard_[i].carditem.ID;
-            ElementType createdElementType = UsingCard_[i].carditem.CreatedElementType;
+            int cardDamage = card.carditem.PowerLeft;
+            int cardCritDamage = card.carditem.PowerRight;
+            int cardID = card.carditem.ID;
+            ElementType createdElementType = card.carditem.CreatedElementType;
 
             // 그리드 순회하며 매칭 확인
             for (int row = 0; row <= gridRows - cardShape.rows; row++)
@@ -199,7 +224,6 @@ public class GridChecker : MonoBehaviour
             // 공격 실행
             if (totalDamage > 0)
             {
-                UsingCard_ID = cardID;
                 var ability = CardAbilityManager.GetAbility(cardID);
                 ability.ExecuteAbility(player, totalDamage + addDamage, oraBlockCount);
             }
@@ -209,6 +233,7 @@ public class GridChecker : MonoBehaviour
         
         DisableAllActiveImages();
         ReplaceOraImages();
+        activeCards.Clear();
     }
 
     // 매칭된 블록 수를 계산하는 메서드
@@ -276,11 +301,11 @@ public class GridChecker : MonoBehaviour
 
         // 현재 처리 중인 카드 찾기
         Card currentCard = null;
-        for (int i = 0; i < UsingCard_.Count; i++)
+        for (int i = 0; i < activeCards.Count; i++)
         {
-            if (UsingCard_[i] != null && UsingCard_[i].carditem != null && UsingCard_[i].carditem.cardShape == cardShape)
+            if (activeCards[i] != null && activeCards[i].carditem != null && activeCards[i].carditem.cardShape == cardShape)
             {
-                currentCard = UsingCard_[i];
+                currentCard = activeCards[i];
                 break;
             }
         }

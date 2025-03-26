@@ -1055,6 +1055,7 @@ GameObject:
   - component: {fileID: 8512948970841131489}
   - component: {fileID: 4269890238872951729}
   - component: {fileID: 8083043871518632462}
+  - component: {fileID: 6653952475438561460}
   m_Layer: 0
   m_Name: Card 1
   m_TagString: Untagged
@@ -1129,7 +1130,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -396986419
-  m_SortingLayer: 3
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1166,18 +1167,19 @@ MonoBehaviour:
   carditem:
     CardName: 
     ID: 0
+    CardDescription: 
+    cardImage: {fileID: 0}
     PowerLeft: 0
     PowerRight: 0
-    CardDescription: 
+    CreatedElementType: 0
     UseMagic: 0
     Percent: 0
-    cardImage: {fileID: 0}
     UseProp: 0
     UseBuff: 0
     UseDraw: 0
     UseImage: 0
+    IsUnlocked: 0
     cardShape: {fileID: 0}
-    CreatedElementType: 0
   isFront: 1
   IsUsingCard: 0
   isUsingImage: 0
@@ -1227,6 +1229,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!225 &6653952475438561460
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7253010570474884399}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &7339288324608686084
 GameObject:
   m_ObjectHideFlags: 0

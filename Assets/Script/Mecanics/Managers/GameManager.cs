@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     public int Player_HP;
+    public GameObject gameOverPanel;
+
     private void Awake()
     {
         if (Instance == null)
@@ -35,26 +37,36 @@ public class GameManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Debug.Log("°ÔÀÓ Á¾·á! ¸ÊÀ¸·Î µ¹¾Æ°©´Ï´Ù.");
+            Debug.Log("ê²Œì„ ì¢…ë£Œ! ë§µìœ¼ë¡œ ëŒì•„ê°‘ë‹ˆë‹¤.");
 
             if (MapManager.Instance != null)
             {
-                Debug.Log("Main ¾À¿¡¼­ MapManager°¡ »ì¾Æ ÀÖÀ½!");
+                Debug.Log("Main ì”¬ì—ì„œ MapManagerê°€ ì‚´ì•„ ìˆìŒ!");
             }
             else
             {
-                Debug.Log("Main ¾À¿¡¼­ MapManager°¡ »ç¶óÁü!");
+                Debug.Log("Main ì”¬ì—ì„œ MapManagerê°€ ì‚¬ë¼ì§!");
             }
 
             SceneManager.LoadScene("Map2");
 
-            // ¾À º¯°æ ÈÄ MapManager »óÅÂ È®ÀÎ
+            // ì”¬ ë³€ê²½ í›„ MapManager ìƒíƒœ í™•ì¸
             if (MapManager.Instance != null)
             {
-                Debug.Log("¾À º¯°æ ÈÄ¿¡µµ MapManager°¡ À¯ÁöµÊ!");
+                Debug.Log("ì”¬ ë³€ê²½ í›„ì—ë„ MapManagerê°€ ìœ ì§€ë¨!");
             }
         }
     }
 
-
+    public void GameOver()
+    {
+        Debug.Log("Game Over!");
+        // ê²Œì„ ì˜¤ë²„ UI í‘œì‹œ
+        if (gameOverPanel != null)
+        {
+            gameOverPanel.SetActive(true);
+        }
+        // ê²Œì„ ì¼ì‹œ ì •ì§€
+        Time.timeScale = 0f;
+    }
 }

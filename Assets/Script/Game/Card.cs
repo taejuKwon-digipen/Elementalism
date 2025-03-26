@@ -6,7 +6,7 @@ using System.Collections;
 using UnityEngine.UI; // UI 관련 기능을 위한 네임스페이스
 using System.Collections.Generic;
 
-public class Card : MonoBehaviour, IPointerDownHandler // 마우스 클릭 이벤트 처리 인터페이스 구현
+public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler // 드래그 앤 드롭 기능을 위한 인터페이스 구현
 {
     // UI 요소 연결 (카드 정보를 화면에 표시)
     [SerializeField] TMP_Text nameTMP; // 카드 이름 텍스트
@@ -29,6 +29,25 @@ public class Card : MonoBehaviour, IPointerDownHandler // 마우스 클릭 이�
 
     private const float deleteThresholdY = -.0f; // 카드가 삭제될 기준 Y 위치
     public Vector3 currentMousePosition; // 현재 마우스 위치를 저장하는 변수
+
+    private Canvas canvas;
+    private RectTransform rectTransform;
+    private CanvasGroup canvasGroup;
+    private Vector3 originalLocalPosition;
+    private Transform originalParent;
+    private Camera mainCamera;
+
+    // 클래스 변수 추가
+    private bool hasSetupPosition = false;
+    private Vector3 dragStartPosition; // 드래그 시작 위치 저장
+
+    private void Awake()
+    {
+        rectTransform = GetComponent<RectTransform>();
+        canvasGroup = GetComponent<CanvasGroup>();
+        canvas = FindObjectOfType<Canvas>();
+        mainCamera = Camera.main;
+    }
 
     // 카드 초기화 및 데이터와 UI 연결
     public void Setup(CardItem carditem_, bool isFront_)
@@ -65,6 +84,16 @@ public class Card : MonoBehaviour, IPointerDownHandler // 마우스 클릭 이�
             {
                 Debug.LogWarning($"[Card] {carditem.CardName}의 cardShape가 null입니다.");
             }
+        }
+        
+        // 위치 초기화를 한 번만 하도록 수정
+        if (!hasSetupPosition)
+        {
+            // 처음 위치 정보 저장 (localPosition 사용)
+            originalLocalPosition = transform.localPosition;
+            originalParent = transform.parent;
+            hasSetupPosition = true;
+            Debug.Log($"Card Setup: 초기 위치 = {originalLocalPosition}, 부모 = {originalParent?.name}");
         }
     }
 
@@ -151,23 +180,85 @@ public class Card : MonoBehaviour, IPointerDownHandler // 마우스 클릭 이�
         }
     }
 
-    // 마우스 클릭 이벤트 처리 메서드 (IPointerDownHandler 인터페이스 구현)
-    public void OnPointerDown(PointerEventData eventData)
+    public void OnBeginDrag(PointerEventData eventData)
     {
-        currentMousePosition = Input.mousePosition; // 클릭 시의 마우스 위치를 저장
-        Debug.Log(currentMousePosition.y); // 현재 마우스 Y 좌표를 디버그 로그로 출력
-        Debug.Log("OnPointerDown"); // 마우스 클릭 로그 출력
-        CardManager.Inst.NotifyCardSelection(this); // CardManager에 카드 선택 알림
+        canvasGroup.alpha = 0.6f;
+        canvasGroup.blocksRaycasts = false;
+
+        // 현재 위치와 부모 저장 (월드 위치가 아닌 로컬 위치 사용)
+        originalLocalPosition = transform.localPosition;
+        originalParent = transform.parent;
+        
+        // 드래그 시작 위치 저장
+        dragStartPosition = transform.position;
+        
+        // 카드를 캔버스의 최상위로 이동
+        transform.SetParent(canvas.transform);
+        
+        // 마우스 위치를 월드 위치로 변환
+        Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        // z 위치만 카드의 원래 z 위치로 설정
+        mouseWorldPos.z = canvas.transform.position.z;
+        
+        // 카드의 위치를 마우스 위치로 설정 (월드 위치)
+        transform.position = mouseWorldPos;
+        
+        Debug.Log($"드래그 시작: 원래 로컬 위치 = {originalLocalPosition}, 부모 = {originalParent?.name}, 마우스 월드 위치 = {mouseWorldPos}");
     }
 
-    /* 
-    // 마우스 버튼을 놓을 때 호출되는 메서드 (현재 주석 처리됨)
-    public void OnPointerUp(PointerEventData eventData)
+    public void OnDrag(PointerEventData eventData)
     {
-        currentMousePosition = Input.mousePosition; // 마우스 위치 저장
-        Debug.Log("카드 선택"); // 디버그 로그 출력
-        CardManager.Inst.ViewWaitingCard(this); // CardManager에 카드 선택 알림
-        //Destroy(gameObject); // 선택된 카드를 즉시 삭제
+        // 마우스 위치를 월드 위치로 변환
+        Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        // z 위치만 카드의 원래 z 위치로 설정
+        mouseWorldPos.z = canvas.transform.position.z;
+        
+        // 카드의 위치를 마우스 위치로 설정 (월드 위치)
+        transform.position = mouseWorldPos;
     }
-    */
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        canvasGroup.alpha = 1f;
+        canvasGroup.blocksRaycasts = true;
+
+        // 드래그 거리 계산
+        float dragDistance = Vector3.Distance(dragStartPosition, transform.position);
+        Debug.Log($"드래그 거리: {dragDistance}");
+
+        // Y 위치가 -170보다 위이고, 드래그 거리가 1.0 이상인지 확인
+        if (transform.position.y > -1f && dragDistance > 1.0f)
+        {
+            // 카드를 활성화된 카드 목록에 추가
+            GridChecker.inst.AddActiveCard(this);
+            Debug.Log($"Card: {carditem.CardName} activated at Y position {transform.position.y}");
+            
+            // 그리드 체크 실행
+            GridChecker.inst.CheckGrid();
+        }
+        else
+        {
+            Debug.Log($"카드 복귀 전 - 현재 월드 위치: {transform.position}, 원래 로컬 위치: {originalLocalPosition}");
+            
+            // 원래 위치로 복귀
+            if (originalParent != null)
+            {
+                // 원래 부모로 변경
+                transform.SetParent(originalParent);
+                
+                // 로컬 위치 설정 (무조건 원래 위치로)
+                transform.localPosition = originalLocalPosition;
+                
+                // 스케일과 회전 초기화
+                transform.localScale = Vector3.one;
+                transform.localRotation = Quaternion.identity;
+                
+                Debug.Log($"카드 복귀 후 - 로컬 위치: {transform.localPosition}, 부모: {transform.parent.name}");
+            }
+            else
+            {
+                Debug.LogError("원래 부모가 null입니다!");
+            }
+        }
+    }
 }

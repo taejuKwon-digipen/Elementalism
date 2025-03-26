@@ -1,4 +1,4 @@
-﻿// 이 스크립트는 게임 내의 그리드(격자)를 생성하고 관리합니다.
+// 이 스크립트는 게임 내의 그리드(격자)를 생성하고 관리합니다.
 // 그리드 안에 원소 블록들을 생성하고 배치하며,
 // 게임 이벤트에 따라 원소들의 상태를 업데이트합니다.
 
@@ -124,16 +124,12 @@ public class Grid : MonoBehaviour
     // 원소 블록들을 생성하는 메서드
     private void SpawnBlocks()
     {
-        Debug.Log($"=== 그리드 생성 시작 ===");
-        Debug.Log($"ShapeData 크기: {currentShape.rows}행 x {currentShape.columns}열");
-        
+
         for (var row = 0; row < currentShape.rows; row++)
         {
             for (var column = 0; column < currentShape.columns; column++)
             {
                 ElementType shapeElementType = currentShape.board[row].colum[column];
-                Debug.Log($"위치 [{row}, {column}] - ShapeData 원소 타입: {shapeElementType}");
-
                 if (shapeElementType != ElementType.None)
                 {
                     GameObject newBlock = Instantiate(block) as GameObject;
@@ -145,20 +141,16 @@ public class Grid : MonoBehaviour
                     if (elementType == ElementType.Random)
                     {
                         elementType = (ElementType)Random.Range(1, (int)ElementType.Void);
-                        Debug.Log($"  - Random 선택됨: {elementType}");
                     }
 
                     newBlock.GetComponent<Block>().SetElementType(elementType);
                     _blocks.Add(newBlock);
-                    Debug.Log($"  - 블록 생성 완료: {elementType}");
                 }
                 else
                 {
-                    Debug.Log($"  - None 타입이므로 블록 생성하지 않음");
                 }
             }
         }
-        Debug.Log($"=== 그리드 생성 완료 (총 {_blocks.Count}개 블록) ===");
     }
 
     public ElementType GetElementTypeAt(int row, int column)

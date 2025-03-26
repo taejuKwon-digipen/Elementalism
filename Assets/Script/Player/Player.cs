@@ -17,6 +17,7 @@ public class Player : Entity
     public Transform fireballSpawnPoint;
     public float fireballSpeed = 5f;
     private int shield = 0;
+    private bool isInvincible = false;
 
     public static Player inst;
 
@@ -24,6 +25,7 @@ public class Player : Entity
     {
         inst = this;
     }
+
     public int Shield
     {
         get => shield;
@@ -48,13 +50,20 @@ public class Player : Entity
     {
         if (this.HP <= 0) {
             this.HP = 0;
-            // GameOver
+            Die();
         }
     }
 
     public void Attack()
     {
-        Debug.Log($"Using Card ID {GridChecker.inst.UsingCard_ID}");
+        // 현재 활성화된 카드의 ID 가져오기
+        int currentCardID = 0;
+        if (GridChecker.inst != null && GridChecker.inst.GetActiveCards().Count > 0)
+        {
+            currentCardID = GridChecker.inst.GetActiveCards()[0].carditem.ID;
+        }
+        Debug.Log($"Using Card ID {currentCardID}");
+
         var entity = focusManager.GetFocusedEntity();
         if (entity == null || entity.HP <= 0)
             return;
@@ -71,12 +80,18 @@ public class Player : Entity
 
     public void AttackWithDamage(int damage)
     {
-        Debug.Log($"Using Card ID {GridChecker.inst.UsingCard_ID}");
+        // 현재 활성화된 카드의 ID 가져오기
+        int currentCardID = 0;
+        if (GridChecker.inst != null && GridChecker.inst.GetActiveCards().Count > 0)
+        {
+            currentCardID = GridChecker.inst.GetActiveCards()[0].carditem.ID;
+        }
+        Debug.Log($"Using Card ID {currentCardID}");
+
         var entity = focusManager.GetFocusedEntity();
         if (entity == null || entity.HP <= 0)
             return;
 
-        // 볼 생성 및 발사
         Vector3 newPosition = this.transform.position;
         newPosition.y += this.GetComponent<RectTransform>().sizeDelta.y / 2;
 
@@ -87,8 +102,6 @@ public class Player : Entity
         behavior.focusedEnemy = enemyObject;
         behavior.player = this;
         behavior.damage = damage;
-
-
     }
 
     public void HealHP(int amount)
@@ -110,13 +123,12 @@ public class Player : Entity
 
     public override int Hit(Entity attacker, EntityType attackType, int damageAmount)
     {
-        // 쉴드가 있다면 먼저 쉴드로 데미지를 막음
         if (Shield > 0)
         {
             if (Shield >= damageAmount)
             {
                 Shield -= damageAmount;
-                return 0;  // 모든 데미지를 쉴드가 막음
+                return 0;
             }
             else
             {
@@ -127,7 +139,53 @@ public class Player : Entity
             }
         }
 
-        // 쉴드가 없으면 일반적인 데미지 처리
         return base.Hit(attacker, attackType, damageAmount);
+    }
+
+    public void TakeDamage(int damage, int oraCount)
+    {
+        if (isInvincible) return;
+
+        if (oraCount > 0)
+        {
+            damage *= 2;
+            Debug.Log($"Player: Critical Hit! Damage: {damage}");
+        }
+
+        int currentCardID = 0;
+        if (GridChecker.inst != null && GridChecker.inst.GetActiveCards().Count > 0)
+        {
+            currentCardID = GridChecker.inst.GetActiveCards()[0].carditem.ID;
+        }
+
+        if (currentCardID == 9)
+        {
+            damage = Mathf.Max(1, damage - 2);
+            Debug.Log($"Player: Damage reduced by 2 due to Card ID 9. Final damage: {damage}");
+        }
+
+        if (currentCardID == 10)
+        {
+            damage *= 2;
+            Debug.Log($"Player: Damage doubled due to Card ID 10. Final damage: {damage}");
+        }
+
+        CurrentHP -= damage;
+        Debug.Log($"Player: Took {damage} damage. Current health: {CurrentHP}");
+
+        if (CurrentHP <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        Debug.Log("Player died!");
+        // 게임 오버 로직 추가
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.GameOver();
+        }
     }
 }
