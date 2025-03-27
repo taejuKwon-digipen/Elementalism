@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq; // ToList() 메서드를 사용하기 위해 추가
 
 public class GridChecker : MonoBehaviour
 {
@@ -157,7 +158,7 @@ public class GridChecker : MonoBehaviour
         int gridColumns = grid.currentShape.columns;
         int addDamage = 0;
 
-        foreach (var card in activeCards)
+        foreach (var card in activeCards.ToList()) // ToList()를 사용하여 복사본으로 순회
         {
             if (card == null || card.carditem == null)
             {
@@ -226,6 +227,14 @@ public class GridChecker : MonoBehaviour
             {
                 var ability = CardAbilityManager.GetAbility(cardID);
                 ability.ExecuteAbility(player, totalDamage + addDamage, oraBlockCount);
+            }
+
+            // 카드를 discardPile로 이동하고 파괴
+            if (Deck.Inst != null)
+            {
+                Deck.Inst.AddToDiscard(card.carditem);
+                Debug.Log($"GridChecker: Card {card.carditem.CardName} moved to discard pile");
+                Destroy(card.gameObject);
             }
 
             yield return new WaitForSeconds(0.5f);

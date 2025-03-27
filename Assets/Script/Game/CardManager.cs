@@ -26,7 +26,7 @@ public class CardManager : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private Inventory inventory; // 인벤토리 ScriptableObject 참조
-    [SerializeField] private Deck deck; // 덱 참조
+    private Deck deck; // 덱 참조
 
     [Header("Card Lists")]
     [SerializeField] public List<Card> UsingCard; // 사용 중인 카드 리스트 (오른쪽 3개)
@@ -63,7 +63,6 @@ public class CardManager : MonoBehaviour
     {
         carditemso = Resources.Load<CardItemSO>("ItemSO");
         inventory = Resources.Load<Inventory>("Inventory");
-        deck = Resources.Load<Deck>("Deck");
 
         if (carditemso == null)
         {
@@ -77,13 +76,7 @@ public class CardManager : MonoBehaviour
             return;
         }
 
-        if (deck == null)
-        {
-            Debug.LogError("[CardManager] Deck을 찾을 수 없습니다!");
-            return;
-        }
-
-        Debug.Log("[CardManager] ItemSO, Inventory, Deck 로드 완료");
+        Debug.Log("[CardManager] ItemSO, Inventory 로드 완료");
         
         // 카드 상태 로깅
         foreach (var card in carditemso.items)
@@ -120,17 +113,32 @@ public class CardManager : MonoBehaviour
             // inventory가 로드되었는지 확인
             if (inventory != null)
             {
-            LoadInitialCards(); // 초기 카드 로드
+                LoadInitialCards(); // 초기 카드 로드
             }
             else
             {
                 Debug.LogError("[CardManager] Inventory가 로드되지 않아 초기 카드를 로드할 수 없습니다.");
             }
+
+            // Deck 참조 가져오기
+            StartCoroutine(WaitForDeck());
         }
         else
         {
             Destroy(gameObject);
         }
+    }
+
+    private IEnumerator WaitForDeck()
+    {
+        // Deck이 초기화될 때까지 대기
+        while (Deck.Inst == null)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+
+        deck = Deck.Inst;
+        Debug.Log("[CardManager] Deck 연결 완료");
     }
 
     public int CurrCardIndexForSwitch = 0;
@@ -845,6 +853,34 @@ public class CardManager : MonoBehaviour
                 debugUnlockedCards.Add(card);
             }
         }
+    }
+
+    public IEnumerator RefillWaitingCards()
+    {
+        Debug.Log("[CardManager] 웨이팅 카드 리필 시작");
+        
+        // 현재 웨이팅 카드가 4장이 될 때까지 리필
+        while (WaitingCard.Count < 4)
+        {
+            CardItem cardData = PopCard();
+            if (cardData != null)
+            {
+                GameObject cardObj = Instantiate(cardPrefab, waitingCardPanel.transform);
+                Card card = cardObj.GetComponent<Card>();
+                if (card != null)
+                {
+                    card.Setup(cardData, true);
+                    RectTransform rectTransform = cardObj.GetComponent<RectTransform>();
+                    float xPos = WaitingCard.Count * cardSpacing;
+                    rectTransform.anchoredPosition = new Vector2(xPos, 0);
+                    WaitingCard.Add(card);
+                    Debug.Log($"[CardManager] 웨이팅 카드 추가: {cardData.CardName}");
+                }
+            }
+            yield return new WaitForSeconds(0.1f);
+        }
+        
+        Debug.Log("[CardManager] 웨이팅 카드 리필 완료");
     }
 }
 

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.EventSystems; // 마우스 클릭 및 이벤트 처리를 위한 네임스페이스
 using DG.Tweening; // 애니메이션 처리를 위한 DOTween 라이브러리
 using TMPro; // TextMeshPro를 사용하기 위한 네임스페이스
@@ -224,22 +224,17 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
 
         // 드래그 거리 계산
         float dragDistance = Vector3.Distance(dragStartPosition, transform.position);
-        Debug.Log($"드래그 거리: {dragDistance}");
 
         // Y 위치가 -170보다 위이고, 드래그 거리가 1.0 이상인지 확인
         if (transform.position.y > -1f && dragDistance > 1.0f)
         {
             // 카드를 활성화된 카드 목록에 추가
             GridChecker.inst.AddActiveCard(this);
-            Debug.Log($"Card: {carditem.CardName} activated at Y position {transform.position.y}");
-            
             // 그리드 체크 실행
             GridChecker.inst.CheckGrid();
         }
         else
         {
-            Debug.Log($"카드 복귀 전 - 현재 월드 위치: {transform.position}, 원래 로컬 위치: {originalLocalPosition}");
-            
             // 원래 위치로 복귀
             if (originalParent != null)
             {

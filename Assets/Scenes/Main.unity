@@ -2376,7 +2376,6 @@ MonoBehaviour:
   carditemso: {fileID: 11400000, guid: 015ed88d3a04d5e42a18bfb553c95c97, type: 2}
   cardPrefab: {fileID: 7253010570474884399, guid: 5632baa7a090d254796d49f67b8d583e, type: 3}
   inventory: {fileID: 11400000, guid: 015e693e910237a4b8959c0c23747c7e, type: 2}
-  deck: {fileID: 1460060231}
   UsingCard: []
   WaitingCard: []
   Items: []
@@ -4756,6 +4755,7 @@ GameObject:
   - component: {fileID: 1413097660}
   - component: {fileID: 1413097659}
   - component: {fileID: 1413097663}
+  - component: {fileID: 1413097664}
   m_Layer: 5
   m_Name: TurnEndButton
   m_TagString: Untagged
@@ -4841,45 +4841,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1413097659}
-        m_TargetAssemblyTypeName: GridChecker, Assembly-CSharp
-        m_MethodName: OnCheckButtonPressed
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 70329809}
-        m_TargetAssemblyTypeName: EnemyManager, Assembly-CSharp
-        m_MethodName: StartEnemyTurn
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 888368976}
-        m_TargetAssemblyTypeName: Grid, Assembly-CSharp
-        m_MethodName: OnTurnEndButton
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 132627233}
-        m_TargetAssemblyTypeName: CardManager, Assembly-CSharp
-        m_MethodName: TurnEndButton
+      - m_Target: {fileID: 1413097664}
+        m_TargetAssemblyTypeName: TurnManager, Assembly-CSharp
+        m_MethodName: OnTurnEndButtonPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4939,7 +4903,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bd626bdb585f8841ac7e135e1d40353, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  manager: {fileID: 70329809}
+--- !u!114 &1413097664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1413097657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55c826f5e2ab6aa42a44f47e0c9098fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grid: {fileID: 888368976}
+  cardManager: {fileID: 132627233}
+  enemyManager: {fileID: 70329809}
+  gridChecker: {fileID: 1413097659}
 --- !u!1 &1449660667
 GameObject:
   m_ObjectHideFlags: 0
@@ -5131,6 +5110,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxDeckSize: 20
+  debugDiscardPile: []
+  debugDeckCards: []
 --- !u!4 &1460060232
 Transform:
   m_ObjectHideFlags: 0

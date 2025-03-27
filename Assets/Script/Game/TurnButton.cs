@@ -5,18 +5,26 @@ using UnityEngine.UI;
 
 public class TurnButton : MonoBehaviour
 {
-    public EnemyManager manager;
-
     private Button button;
 
-    private void Awake()
+    void Start()
     {
-        button = this.GetComponent<Button>();
+        button = GetComponent<Button>();
+        if (button != null)
+        {
+            button.onClick.AddListener(OnTurnEndButtonClick);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnTurnEndButtonClick()
     {
-        button.interactable = !manager.isEnemyTurn;
+        if (TurnManager.Inst != null)
+        {
+            TurnManager.Inst.OnTurnEndButtonPressed();
+        }
+        else
+        {
+            Debug.LogError("[TurnButton] TurnManager를 찾을 수 없습니다!");
+        }
     }
 }
