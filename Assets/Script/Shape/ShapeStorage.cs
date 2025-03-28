@@ -13,6 +13,7 @@ public class ShapeStorage : MonoBehaviour
     public List<Shape> shapeList;     // 게임 내에 배치될 Shape 인스턴스들의 리스트
 
     private List<ShapeData> initialShapeDataList = new List<ShapeData>();
+    private List<ShapeData> currentShapeDataList = new List<ShapeData>();
 
     private void OnEnable() 
     {
@@ -30,6 +31,7 @@ public class ShapeStorage : MonoBehaviour
             var shapeIndex = UnityEngine.Random.Range(0, shapeData.Count);
             var selectedShapeData = shapeData[shapeIndex];
             initialShapeDataList.Add(selectedShapeData);
+            currentShapeDataList.Add(selectedShapeData);
             shape.CreateShape(selectedShapeData);
         }
     }
@@ -60,19 +62,23 @@ public class ShapeStorage : MonoBehaviour
         }
 
         // 새로운 Shape 생성 시 이전과 다른 모양 선택
-        foreach (var shape in shapeList)
+        for (int i = 0; i < shapeList.Count; i++)
         {
             var availableShapes = shapeData.Where(s => !previousShapes.Contains(s)).ToList();
             if (availableShapes.Count > 0)
             {
                 var shapeIndex = UnityEngine.Random.Range(0, availableShapes.Count);
-                shape.RequestNewShape(availableShapes[shapeIndex]);
+                var newShapeData = availableShapes[shapeIndex];
+                currentShapeDataList[i] = newShapeData;
+                shapeList[i].RequestNewShape(newShapeData);
             }
             else
             {
                 // 모든 모양이 사용된 경우 랜덤 선택
                 var shapeIndex = UnityEngine.Random.Range(0, shapeData.Count);
-                shape.RequestNewShape(shapeData[shapeIndex]);
+                var newShapeData = shapeData[shapeIndex];
+                currentShapeDataList[i] = newShapeData;
+                shapeList[i].RequestNewShape(newShapeData);
             }
         }
     }
@@ -84,9 +90,21 @@ public class ShapeStorage : MonoBehaviour
         {
             if (i < initialShapeDataList.Count)
             {
+                currentShapeDataList[i] = initialShapeDataList[i];
                 shapeList[i].CreateShape(initialShapeDataList[i]);
             }
         }
     }
 
+    public void ResetToCurrentShapes()
+    {
+        // 현재 Shape 데이터로 복원
+        for (int i = 0; i < shapeList.Count; i++)
+        {
+            if (i < currentShapeDataList.Count)
+            {
+                shapeList[i].CreateShape(currentShapeDataList[i]);
+            }
+        }
+    }
 }

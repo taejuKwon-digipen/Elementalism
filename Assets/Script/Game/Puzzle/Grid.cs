@@ -50,17 +50,31 @@ public class Grid : MonoBehaviour
         turnEndButton = true;
         // 퍼즐 재생성 기능 구현
         var shapeLeft = 0;
+        Shape remainingShape = null;
 
         foreach (var shape in shapeStorage.shapeList)
         {
             if (shape.IsOnStartPosition() && shape.IsAnyOfShapeSquareActive())
             {
                 shapeLeft++;
+                remainingShape = shape;
             }
         }
 
         if (shapeLeft == 0 && turnEndButton)
         {
+            GameEvents.RequestNewShapes();
+        }
+        else if (shapeLeft > 0)
+        {
+            // 남은 Shape가 있으면 다른 모든 Shape를 제거하고 새로운 Shape 생성
+            foreach (var shape in shapeStorage.shapeList)
+            {
+                if (shape != remainingShape)
+                {
+                    shape.DisableAllSquares();
+                }
+            }
             GameEvents.RequestNewShapes();
         }
         else

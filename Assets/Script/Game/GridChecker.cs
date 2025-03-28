@@ -75,11 +75,11 @@ public class GridChecker : MonoBehaviour
             shape.ResetToStartPosition();
         }
 
-        // ShapeStorage에서 초기 Shape 데이터로 재설정
+        // ShapeStorage에서 현재 Shape 데이터로 재설정
         ShapeStorage shapeStorage = FindObjectOfType<ShapeStorage>();
         if (shapeStorage != null)
         {
-            shapeStorage.ResetToInitialShapes();
+            shapeStorage.ResetToCurrentShapes();
         }
     }
 

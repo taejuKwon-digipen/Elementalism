@@ -109,6 +109,17 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
         _shapeActive = false;
     }
 
+    public void DisableAllSquares()
+    {
+        foreach(var square in _currentShape)
+        {
+            if(square != null)
+            {
+                square.SetActive(false);
+            }
+        }
+    }
+
     public void SetShapeInactive()
     {
         if(IsOnStartPosition() == false && IsAnyOfShapeSquareActive())
