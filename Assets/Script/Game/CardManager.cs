@@ -312,43 +312,49 @@ public class CardManager : MonoBehaviour
         positionOccupied[index] = true;
         
         // WaitingCard에서 제거
-        WaitingCard.Remove(card);
+        if (WaitingCard.Contains(card))
+        {
+            WaitingCard.Remove(card);
+            Destroy(card.gameObject);
+        }
     }
 
     private IEnumerator ExecuteTurnEndButton()
     {
-        Debug.Log("Waiting for 3 seconds before executing TurnEndButton...");
+        Debug.Log("[CardManager] 턴 엔드 버튼 실행 시작");
         yield return new WaitForSeconds(3.0f);
 
-        Debug.Log("Executing TurnEndButton...");
+        // 사용된 카드 수 계산
+        int usedCardCount = positionOccupied.Count(x => x);
+        Debug.Log($"[CardManager] 사용된 카드 수: {usedCardCount}");
 
-        // 사용한 카드를 버린 카드 더미로 이동
-        for (int i = 0; i < 3; i++)
+        // 사용된 카드들을 버린 카드 더미로 이동하고 WaitingCard에서 제거
+        for (int i = WaitingCard.Count - 1; i >= 0; i--)
         {
-            if (positionOccupied[i] == true)
+            if (positionOccupied[i] && WaitingCard[i] != null)
             {
+                if (deck != null)
+                {
+                    deck.AddToDiscard(WaitingCard[i].carditem);
+                    Debug.Log($"[CardManager] 카드를 버린 카드 더미로 이동: {WaitingCard[i].carditem.CardName}");
+                }
+                Destroy(WaitingCard[i].gameObject);
+                WaitingCard.RemoveAt(i);
                 positionOccupied[i] = false;
             }
         }
 
-        // 사용한 카드만 WaitingCard로 리필
-        int usedCardCount = positionOccupied.Count(x => x);
-        for (int i = 0; i < usedCardCount; i++)
+        // 덱이 비어있으면 버린 카드 더미를 덱으로 다시 만들기
+        if (deck != null && deck.GetDeckCount() == 0)
         {
-            CardItem cardData = PopCard();
-            if (cardData != null)
-            {
-                GameObject cardObj = Instantiate(cardPrefab, spawnpoints[i].transform.position, Quaternion.identity, waitingCardPanel);
-                Card card = cardObj.GetComponent<Card>();
-                if (card != null)
-                {
-                    card.Setup(cardData, true);
-                    WaitingCard.Add(card);
-                }
-            }
+            Debug.Log("[CardManager] 덱이 비어있어 버린 카드 더미를 덱으로 다시 만듭니다.");
+            deck.InitializeDeck(sessionCards);
         }
-        
-        Debug.Log("Clear Complete");
+
+        // 새로운 카드 리필
+        yield return StartCoroutine(RefillWaitingCards());
+
+        Debug.Log("[CardManager] 턴 엔드 처리 완료");
     }
 
     private void ShuffleList<T>(List<T> list)
@@ -589,7 +595,7 @@ public class CardManager : MonoBehaviour
             
             // 카드 크기 조정
             Vector3 nowLocalScale = cardObject.transform.localScale;
-            cardObject.transform.localScale = new Vector3(nowLocalScale.x * 0.014f, nowLocalScale.x * 0.014f, 1);
+            cardObject.transform.localScale = new Vector3(1, 1, 1);
 
             // BoxCollider 추가
             BoxCollider collider = cardObject.AddComponent<BoxCollider>();
@@ -799,25 +805,70 @@ public class CardManager : MonoBehaviour
     {
         Debug.Log("[CardManager] 웨이팅 카드 리필 시작");
         
+        // null이나 Missing 상태의 카드 제거
+        WaitingCard.RemoveAll(card => card == null);
+        
         // 현재 웨이팅 카드가 4장이 될 때까지 리필
         while (WaitingCard.Count < 4)
         {
             CardItem cardData = PopCard();
             if (cardData != null)
             {
+                // waitingCardPanel이 null인지 확인
+                if (waitingCardPanel == null)
+                {
+                    Debug.LogError("[CardManager] waitingCardPanel이 null입니다!");
+                    yield break;
+                }
+
+                // spawnpoints의 위치를 사용하여 카드 생성
                 GameObject cardObj = Instantiate(cardPrefab, spawnpoints[WaitingCard.Count].transform.position, Quaternion.identity, waitingCardPanel);
+                
+                // 카드 크기 조정
+                Vector3 nowLocalScale = cardObj.transform.localScale;
+                cardObj.transform.localScale = new Vector3(1, 1, 1);
+
+                // BoxCollider 추가
+                BoxCollider collider = cardObj.GetComponent<BoxCollider>();
+                if (collider == null)
+                {
+                    collider = cardObj.AddComponent<BoxCollider>();
+                }
+                collider.isTrigger = true;
+
+                // CardMouseHandler 추가
+                CardMouseHandler cardHandler = cardObj.GetComponent<CardMouseHandler>();
+                if (cardHandler == null)
+                {
+                    cardHandler = cardObj.AddComponent<CardMouseHandler>();
+                }
+                cardHandler.Initialize(1.2f, 0.2f);
+
                 Card card = cardObj.GetComponent<Card>();
                 if (card != null)
                 {
                     card.Setup(cardData, true);
                     WaitingCard.Add(card);
-                    Debug.Log($"[CardManager] 웨이팅 카드 추가: {cardData.CardName}");
+                    Debug.Log($"[CardManager] 웨이팅 카드 추가: {cardData.CardName} (현재 카드 수: {WaitingCard.Count})");
                 }
+                else
+                {
+                    Debug.LogError("[CardManager] 카드 컴포넌트를 찾을 수 없습니다!");
+                    Destroy(cardObj);
+                }
+            }
+            else
+            {
+                Debug.LogWarning("[CardManager] 카드 데이터가 null입니다!");
             }
             yield return new WaitForSeconds(0.1f);
         }
         
-        Debug.Log("[CardManager] 웨이팅 카드 리필 완료");
+        // positionOccupied 리스트 초기화
+        positionOccupied = new List<bool> { false, false, false };
+        
+        Debug.Log($"[CardManager] 웨이팅 카드 리필 완료. 최종 카드 수: {WaitingCard.Count}");
     }
 }
+
 
