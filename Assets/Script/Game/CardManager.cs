@@ -288,19 +288,53 @@ public class CardManager : MonoBehaviour
             }
         }
 
-        // 4개의 대기 카드 생성
+        // 덱이 비어있으면 초기화
+        if (deck != null && deck.GetDeckCount() == 0)
+        {
+            Debug.Log("[CardManager] 덱이 비어있어 초기화합니다.");
+            deck.InitializeDeck(sessionCards);
+        }
+
+        // 덱에서 4장의 카드를 뽑아서 생성
         for (int i = 0; i < 4; i++)
         {
-            CardItem cardData = PopCard();
+            CardItem cardData = deck.DrawCard();
             if (cardData != null)
             {
                 GameObject cardObj = Instantiate(cardPrefab, spawnpoints[i].transform.position, Quaternion.identity, waitingCardPanel);
+                
+                // 카드 크기 조정
+                Vector3 nowLocalScale = cardObj.transform.localScale;
+                cardObj.transform.localScale = new Vector3(0.95f, 0.95f, 0.95f);
+
+                // BoxCollider 추가
+                BoxCollider collider = cardObj.GetComponent<BoxCollider>();
+                if (collider == null)
+                {
+                    collider = cardObj.AddComponent<BoxCollider>();
+                }
+                collider.isTrigger = true;
+
+                // CardMouseHandler 추가 및 초기화
+                CardMouseHandler cardHandler = cardObj.GetComponent<CardMouseHandler>();
+                if (cardHandler == null)
+                {
+                    cardHandler = cardObj.AddComponent<CardMouseHandler>();
+                }
+                cardHandler.Initialize(1.5f, 0.2f);
+                cardHandler.SetCardManager(this); // CardManager 연결
+
                 Card card = cardObj.GetComponent<Card>();
                 if (card != null)
                 {
                     card.Setup(cardData, true);
                     WaitingCard.Add(card);
+                    Debug.Log($"[CardManager] 초기 카드 생성: {cardData.CardName} (덱에서 뽑음)");
                 }
+            }
+            else
+            {
+                Debug.LogError("[CardManager] 덱에서 카드를 뽑을 수 없습니다!");
             }
         }
     }
@@ -821,12 +855,38 @@ public class CardManager : MonoBehaviour
                     yield break;
                 }
 
+                // 비어있는 spawnpoint 찾기
+                int emptyIndex = -1;
+                for (int i = 0; i < spawnpoints.Count; i++)
+                {
+                    bool isOccupied = false;
+                    foreach (var existingCard in WaitingCard)
+                    {
+                        if (existingCard != null && existingCard.transform.position == spawnpoints[i].transform.position)
+                        {
+                            isOccupied = true;
+                            break;
+                        }
+                    }
+                    if (!isOccupied)
+                    {
+                        emptyIndex = i;
+                        break;
+                    }
+                }
+
+                if (emptyIndex == -1)
+                {
+                    Debug.LogError("[CardManager] 비어있는 spawnpoint를 찾을 수 없습니다!");
+                    yield break;
+                }
+
                 // spawnpoints의 위치를 사용하여 카드 생성
-                GameObject cardObj = Instantiate(cardPrefab, spawnpoints[WaitingCard.Count].transform.position, Quaternion.identity, waitingCardPanel);
+                GameObject cardObj = Instantiate(cardPrefab, spawnpoints[emptyIndex].transform.position, Quaternion.identity, waitingCardPanel);
                 
                 // 카드 크기 조정
                 Vector3 nowLocalScale = cardObj.transform.localScale;
-                cardObj.transform.localScale = new Vector3(1, 1, 1);
+                cardObj.transform.localScale = new Vector3(0.95f, 0.95f, 0.95f);
 
                 // BoxCollider 추가
                 BoxCollider collider = cardObj.GetComponent<BoxCollider>();
@@ -843,13 +903,14 @@ public class CardManager : MonoBehaviour
                     cardHandler = cardObj.AddComponent<CardMouseHandler>();
                 }
                 cardHandler.Initialize(1.2f, 0.2f);
+                cardHandler.SetCardManager(this);
 
-                Card card = cardObj.GetComponent<Card>();
-                if (card != null)
+                Card newCard = cardObj.GetComponent<Card>();
+                if (newCard != null)
                 {
-                    card.Setup(cardData, true);
-                    WaitingCard.Add(card);
-                    Debug.Log($"[CardManager] 웨이팅 카드 추가: {cardData.CardName} (현재 카드 수: {WaitingCard.Count})");
+                    newCard.Setup(cardData, true);
+                    WaitingCard.Add(newCard);
+                    Debug.Log($"[CardManager] 웨이팅 카드 추가: {cardData.CardName} (위치: {emptyIndex}, 현재 카드 수: {WaitingCard.Count})");
                 }
                 else
                 {
