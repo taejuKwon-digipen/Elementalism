@@ -22,7 +22,6 @@ public class ShopManager : MonoBehaviour
     
     [Header("References")]
     [SerializeField] private Player player;
-    [SerializeField] private CardManager cardManager;
     [SerializeField] private CardItemSO cardDatabase;
     [SerializeField] private EnemyManager enemyManager;
 
@@ -31,20 +30,6 @@ public class ShopManager : MonoBehaviour
 
     private void Start()
     {
-        // CardManager 참조 확인
-        if (cardManager == null)
-        {
-            cardManager = FindObjectOfType<CardManager>();
-            if (cardManager != null)
-            {
-                Debug.Log("[ShopManager] CardManager 참조를 찾았습니다.");
-            }
-            else
-            {
-                Debug.LogError("[ShopManager] CardManager를 찾을 수 없습니다!");
-            }
-        }
-
         shopPanel.SetActive(false);
         healButton.onClick.AddListener(OnHealButtonClicked);
         UpdateUI();
@@ -76,7 +61,10 @@ public class ShopManager : MonoBehaviour
         // 기존 카드 제거
         foreach (var card in shopCards)
         {
-            Destroy(card.gameObject);
+            if (card != null)
+            {
+                Destroy(card.gameObject);
+            }
         }
         shopCards.Clear();
 
@@ -95,7 +83,7 @@ public class ShopManager : MonoBehaviour
             int randomIndex = Random.Range(0, unlockedCards.Count);
             CardItem cardItem = unlockedCards[randomIndex];
             
-            var cardObj = Instantiate(cardManager.cardPrefab, cardContainer);
+            var cardObj = Instantiate(CardManager.Inst.cardPrefab, cardContainer);
             var card = cardObj.GetComponent<Card>();
             
             // 상점용 카드 설정
@@ -118,39 +106,43 @@ public class ShopManager : MonoBehaviour
     {
         Debug.Log($"[ShopManager] 카드 구매 시도: 인덱스 {index}");
         
-        if (player.Gold >= cardCost && index < shopCards.Count)
+        if (index >= shopCards.Count)
         {
-            CardItem purchasedCard = shopCards[index].carditem;
-            Debug.Log($"[ShopManager] 카드 구매 시작: {purchasedCard.CardName} (ID: {purchasedCard.ID})");
-            
-            // 골드 차감
-            player.Gold -= cardCost;
-            Debug.Log($"[ShopManager] 골드 차감 완료. 남은 골드: {player.Gold}");
-            
-            // 카드를 인벤토리에 추가
-            if (cardManager != null)
-            {
-                Debug.Log($"[ShopManager] CardManager 참조 확인됨. AddCardToInventory 호출 전");
-                cardManager.AddCardToInventory(purchasedCard);
-                Debug.Log($"[ShopManager] AddCardToInventory 호출 완료");
-            }
-            else
-            {
-                Debug.LogError("[ShopManager] CardManager 참조가 null입니다! Start 메서드에서 초기화되지 않았을 수 있습니다.");
-                return;
-            }
-            
-            // UI 정리
-            Destroy(shopCards[index].gameObject);
-            shopCards.RemoveAt(index);
-            UpdateUI();
-            
-            Debug.Log($"[ShopManager] 카드 구매 프로세스 완료: {purchasedCard.CardName}");
+            Debug.LogError($"[ShopManager] 잘못된 카드 인덱스: {index}");
+            return;
+        }
+
+        if (player.Gold < cardCost)
+        {
+            Debug.Log($"[ShopManager] 골드 부족! 필요: {cardCost}, 현재: {player.Gold}");
+            return;
+        }
+
+        CardItem purchasedCard = shopCards[index].carditem;
+        Debug.Log($"[ShopManager] 카드 구매 시작: {purchasedCard.CardName} (ID: {purchasedCard.ID})");
+        
+        // 골드 차감
+        player.Gold -= cardCost;
+        Debug.Log($"[ShopManager] 골드 차감 완료. 남은 골드: {player.Gold}");
+        
+        // 카드를 인벤토리에 추가
+        if (CardManager.Inst != null)
+        {
+            CardManager.Inst.AddCardToInventory(purchasedCard);
+            Debug.Log($"[ShopManager] 카드 인벤토리 추가 완료: {purchasedCard.CardName}");
         }
         else
         {
-            Debug.Log($"[ShopManager] 골드 부족 또는 잘못된 인덱스! 필요: {cardCost}, 현재: {player.Gold}, 인덱스: {index}");
+            Debug.LogError("[ShopManager] CardManager를 찾을 수 없습니다!");
+            return;
         }
+        
+        // UI 정리
+        Destroy(shopCards[index].gameObject);
+        shopCards.RemoveAt(index);
+        UpdateUI();
+        
+        Debug.Log($"[ShopManager] 카드 구매 프로세스 완료: {purchasedCard.CardName}");
     }
 
     private void OnHealButtonClicked()
@@ -160,13 +152,24 @@ public class ShopManager : MonoBehaviour
             player.Gold -= healCost;
             player.HealHP(healAmount);
             UpdateUI();
+            Debug.Log($"[ShopManager] 체력 회복 완료. 남은 골드: {player.Gold}");
+        }
+        else
+        {
+            Debug.Log($"[ShopManager] 체력 회복 실패 - 골드 부족! 필요: {healCost}, 현재: {player.Gold}");
         }
     }
 
     private void UpdateUI()
     {
-        goldText.text = $"Gold: {player.Gold}";
-        healCostText.text = $"Heal ({healAmount} HP) - {healCost} Gold";
+        if (goldText != null)
+        {
+            goldText.text = $"Gold: {player.Gold}";
+        }
+        if (healCostText != null)
+        {
+            healCostText.text = $"Heal ({healAmount} HP) - {healCost} Gold";
+        }
     }
 
     // 상점을 닫을 때 isShopOpen 리셋
@@ -178,7 +181,7 @@ public class ShopManager : MonoBehaviour
 
     private void OnWorldMapButtonClick()
     {
-        Debug.Log("Loading World Map scene...");
-        SceneManager.LoadScene("Map2");  // "WorldMap"은 맵 씬의 이름입니다
+        Debug.Log("[ShopManager] 월드맵 씬으로 이동합니다.");
+        SceneManager.LoadScene("Map2");
     }
 }

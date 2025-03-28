@@ -64,15 +64,28 @@ public class Inventory : ScriptableObject
 
     public void AddCard(CardItem card)
     {
-        if (!inventoryCards.Exists(x => x.ID == card.ID))
+        // 카드의 복사본을 생성하여 추가
+        CardItem newCard = new CardItem
         {
-            inventoryCards.Add(card);
-            Debug.Log($"[Inventory] 카드 추가됨: {card.CardName} (ID: {card.ID})");
-        }
-        else
-        {
-            Debug.Log($"[Inventory] 카드가 이미 존재함: {card.CardName} (ID: {card.ID})");
-        }
+            ID = card.ID,
+            CardName = card.CardName,
+            CardDescription = card.CardDescription,
+            cardImage = card.cardImage,
+            PowerLeft = card.PowerLeft,
+            PowerRight = card.PowerRight,
+            CreatedElementType = card.CreatedElementType,
+            UseMagic = card.UseMagic,
+            Percent = card.Percent,
+            UseProp = card.UseProp,
+            UseBuff = card.UseBuff,
+            UseDraw = card.UseDraw,
+            UseImage = card.UseImage,
+            IsUnlocked = true,
+            cardShape = card.cardShape
+        };
+
+        inventoryCards.Add(newCard);
+        Debug.Log($"[Inventory] 카드 추가됨: {card.CardName} (ID: {card.ID})");
     }
 
     public void RemoveCard(CardItem card)

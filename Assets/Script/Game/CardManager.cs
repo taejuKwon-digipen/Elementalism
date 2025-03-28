@@ -745,43 +745,35 @@ public class CardManager : MonoBehaviour
     {
         Debug.Log($"[CardManager] AddCardToInventory 호출됨: {cardItem.CardName} (ID: {cardItem.ID})");
         
-        // 인벤토리에 카드가 없을 때만 추가
-        if (!inventory.unlockedCards.Exists(x => x.ID == cardItem.ID))
+        // 인벤토리에 카드 추가
+        inventory.AddCard(cardItem);
+        Debug.Log($"[CardManager] 인벤토리에 카드 추가됨. 현재 인벤토리 카드 수: {inventory.unlockedCards.Count}");
+        
+        // 현재 세션에도 카드 추가
+        sessionCards.Add(cardItem);
+        Debug.Log($"[CardManager] 세션에 카드 추가됨. 현재 세션 카드 수: {sessionCards.Count}");
+        
+        // SO에서 카드 상태 업데이트
+        var cardInSO = carditemso.items.FirstOrDefault(x => x.ID == cardItem.ID);
+        if (cardInSO != null)
         {
-            // 인벤토리에 카드 추가
-            inventory.AddCard(cardItem);
-            Debug.Log($"[CardManager] 인벤토리에 카드 추가됨. 현재 인벤토리 카드 수: {inventory.unlockedCards.Count}");
-            
-            // 현재 세션에도 카드 추가
-            sessionCards.Add(cardItem);
-            Debug.Log($"[CardManager] 세션에 카드 추가됨. 현재 세션 카드 수: {sessionCards.Count}");
-            
-            // SO에서 카드 상태 업데이트
-            var cardInSO = carditemso.items.FirstOrDefault(x => x.ID == cardItem.ID);
-            if (cardInSO != null)
-            {
-                cardInSO.IsUnlocked = true;
-                Debug.Log($"[CardManager] SO에서 카드 상태 업데이트됨: {cardItem.CardName}");
-                SaveScriptableObject();
-            }
-            else
-            {
-                Debug.LogWarning($"[CardManager] SO에서 카드를 찾을 수 없음: {cardItem.CardName} (ID: {cardItem.ID})");
-            }
-            
-            // 덱 초기화
-            if (deck != null)
-            {
-                deck.InitializeDeck(sessionCards);
-                Debug.Log($"[CardManager] 덱이 새로 초기화됨");
-            }
-            
-            Debug.Log($"[CardManager] 카드 추가 완료: {cardItem.CardName} (ID: {cardItem.ID})");
+            cardInSO.IsUnlocked = true;
+            Debug.Log($"[CardManager] SO에서 카드 상태 업데이트됨: {cardItem.CardName}");
+            SaveScriptableObject();
         }
         else
         {
-            Debug.Log($"[CardManager] 카드가 이미 인벤토리에 존재함: {cardItem.CardName} (ID: {cardItem.ID})");
+            Debug.LogWarning($"[CardManager] SO에서 카드를 찾을 수 없음: {cardItem.CardName} (ID: {cardItem.ID})");
         }
+        
+        // 덱 초기화
+        if (deck != null)
+        {
+            deck.InitializeDeck(sessionCards);
+            Debug.Log($"[CardManager] 덱이 새로 초기화됨");
+        }
+        
+        Debug.Log($"[CardManager] 카드 추가 완료: {cardItem.CardName} (ID: {cardItem.ID})");
     }
 
     private void UpdateDebugInfo()
