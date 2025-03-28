@@ -29,7 +29,6 @@ public class CardManager : MonoBehaviour
     private Deck deck; // 덱 참조
 
     [Header("Card Lists")]
-    [SerializeField] public List<Card> UsingCard; // 사용 중인 카드 리스트 (오른쪽 3개)
     [SerializeField] public List<Card> WaitingCard; // 대기 중인 카드 리스트 (왼쪽 4개)
     private List<CardItem> sessionCards = new List<CardItem>(); // 현재 세션에서 사용 가능한 카드들
 
@@ -254,7 +253,6 @@ public class CardManager : MonoBehaviour
         positionOccupied = new List<bool> { false, false, false };
         
         // UsingCard와 WaitingCard 초기화
-        UsingCard = new List<Card>();
         WaitingCard = new List<Card>();
         
         // spawnpoints와 Wspawnpoints가 null인지 확인
@@ -268,7 +266,6 @@ public class CardManager : MonoBehaviour
             Debug.Log($"waitingCardPanel이 null이거나 요소가 부족합니다. 현재 크기: {(waitingCardPanel != null ? waitingCardPanel.childCount : 0)}");
         }
         
-        AddEmptyUsingCard();
         
         // 초기 WaitingCard 4장 생성
         InitializeWaitingCardPanel();
@@ -297,16 +294,12 @@ public class CardManager : MonoBehaviour
             CardItem cardData = PopCard();
             if (cardData != null)
             {
-                GameObject cardObj = Instantiate(cardPrefab, waitingCardPanel.transform);
+                GameObject cardObj = Instantiate(cardPrefab, spawnpoints[i].transform.position, Quaternion.identity, waitingCardPanel);
                 Card card = cardObj.GetComponent<Card>();
                 if (card != null)
                 {
-                    card.Setup(cardData, true); // isFront_ 파라미터 추가
-                    // 카드 위치 설정
-                    RectTransform rectTransform = cardObj.GetComponent<RectTransform>();
-                    float xPos = i * cardSpacing; // cardSpacing만큼 간격을 두고 배치
-                    rectTransform.anchoredPosition = new Vector2(xPos, 0);
-                    Debug.Log($"Card {i + 1} position: {xPos}");
+                    card.Setup(cardData, true);
+                    WaitingCard.Add(card);
                 }
             }
         }
@@ -314,17 +307,12 @@ public class CardManager : MonoBehaviour
 
     public void UseCard(Card card, CardSpawnPoint spawnPoint)
     {
-        // WaitingCard가 3장 이하일 때만 사용 가능
-        if (WaitingCard.Count <= 3)
-        {
-            // 카드 사용 로직
-            int index = spawnPoint.Index;
-            UsingCard[index] = card;
-            positionOccupied[index] = true;
-            
-            // WaitingCard에서 제거
-            WaitingCard.Remove(card);
-        }
+        // 카드 사용 로직
+        int index = spawnPoint.Index;
+        positionOccupied[index] = true;
+        
+        // WaitingCard에서 제거
+        WaitingCard.Remove(card);
     }
 
     private IEnumerator ExecuteTurnEndButton()
@@ -337,19 +325,6 @@ public class CardManager : MonoBehaviour
         // 사용한 카드를 버린 카드 더미로 이동
         for (int i = 0; i < 3; i++)
         {
-            if (UsingCard[i] != null && UsingCard[i].gameObject.activeSelf && UsingCard[i].carditem != null)
-            {
-                if (deck != null)
-                {
-                    deck.AddToDiscard(UsingCard[i].carditem);
-                }
-            }
-            
-            if (UsingCard[i] != null)
-            {
-                Destroy(UsingCard[i].gameObject);
-            }
-            
             if (positionOccupied[i] == true)
             {
                 positionOccupied[i] = false;
@@ -357,29 +332,23 @@ public class CardManager : MonoBehaviour
         }
 
         // 사용한 카드만 WaitingCard로 리필
-        int usedCardCount = UsingCard.Count(card => card != null);
+        int usedCardCount = positionOccupied.Count(x => x);
         for (int i = 0; i < usedCardCount; i++)
         {
             CardItem cardData = PopCard();
             if (cardData != null)
             {
-                GameObject cardObj = Instantiate(cardPrefab, waitingCardPanel.transform);
+                GameObject cardObj = Instantiate(cardPrefab, spawnpoints[i].transform.position, Quaternion.identity, waitingCardPanel);
                 Card card = cardObj.GetComponent<Card>();
                 if (card != null)
                 {
                     card.Setup(cardData, true);
-                    RectTransform rectTransform = cardObj.GetComponent<RectTransform>();
-                    float xPos = WaitingCard.Count * cardSpacing;
-                    rectTransform.anchoredPosition = new Vector2(xPos, 0);
                     WaitingCard.Add(card);
                 }
             }
         }
-
-        UsingCard.Clear();
         
         Debug.Log("Clear Complete");
-        AddEmptyUsingCard();
     }
 
     private void ShuffleList<T>(List<T> list)
@@ -406,25 +375,6 @@ public class CardManager : MonoBehaviour
     }
 
     // 오른쪽 사용 빈 카드 3개 추가 메서드
-    public void AddEmptyUsingCard()
-    {
-        // spawnpoints가 null이거나 충분한 요소가 없는지 확인
-        if (spawnpoints == null || spawnpoints.Count < 3)
-        {
-            Debug.Log($"spawnpoints가 null이거나 요소가 부족합니다. 현재 크기: {(spawnpoints != null ? spawnpoints.Count : 0)}");
-            return;
-        }
-        
-        //Using Card 선택시 positionOccupied 가 false이면 비어있으니까 카드 넣기
-        for (currenttrueindex = 0; currenttrueindex < 3; currenttrueindex++)
-        {
-            //print(PopCard(false).CardName + " - Using Card");// 카드 이름 출력
-            AddCard(true);// 사용 카드 추가
-            positionOccupied[currenttrueindex] = false;  // 위치 점유 상태 업데이트
-        }
-
-        currenttrueindex = 0;
-    }
 
 
     // 카드 선택 패널 열기/닫기
@@ -466,14 +416,14 @@ public class CardManager : MonoBehaviour
 
     public int GetUsingCardIndex(Card clickedCard) //CurrCardSwitchindex엿나 여튼 그걸위해서 있음
     {
-        for (int i = 0; i < UsingCard.Count; i++)
+        for (int i = 0; i < WaitingCard.Count; i++)
         {
-            if (UsingCard[i] == clickedCard)
+            if (WaitingCard[i] == clickedCard)
             {
                 return i; // 클릭한 카드의 인덱스 반환 (0, 1, 2 중 하나)
             }
         }
-        return -1; // 클릭한 카드가 UsingCard 리스트에 없으면 -1 반환
+        return -1; // 클릭한 카드가 WaitingCard 리스트에 없으면 -1 반환
     }
 
     public void NotifyCardSelection(Card card)
@@ -481,7 +431,7 @@ public class CardManager : MonoBehaviour
         int cardIndex = GetUsingCardIndex(card);
         if (cardIndex != -1 && positionOccupied[cardIndex] == true)
         {
-            OldCard = UsingCard[cardIndex];
+            OldCard = WaitingCard[cardIndex];
             currenttrueindex = cardIndex;
         }
         else if (cardIndex != -1 && positionOccupied[cardIndex] == false)
@@ -508,7 +458,7 @@ public class CardManager : MonoBehaviour
         //CurrCardIndexForSwitch = WaitingCardIndex
         //currenttrueindex = old usingcard index
 
-        Destroy(UsingCard[currenttrueindex].gameObject);
+        Destroy(WaitingCard[currenttrueindex].gameObject);
 
         Transform Canvas2Transform = GameObject.Find("Canvas/Background/Cards").transform;
         GameObject newCardObject = Instantiate(cardPrefab, spawnpoints[currenttrueindex].transform.position/*cardPosition[currenttrueindex]*/, Quaternion.identity, Canvas2Transform);
@@ -516,7 +466,7 @@ public class CardManager : MonoBehaviour
         var newCard = newCardObject.GetComponent<Card>();
         newCard.Setup(waitingcard.carditem, true);
 
-        UsingCard[currenttrueindex] = newCard;
+        WaitingCard[currenttrueindex] = newCard;
         positionOccupied[currenttrueindex] = true;
 
         Debug.Log($"UsingCard[{RechooseIndex}]에 새 카드 {newCard.name} 추가됨");
@@ -547,10 +497,10 @@ public class CardManager : MonoBehaviour
 
 
         //1. 기존카드 존재 -> OldCard 에 카드 저장 후 삭제
-        Card oldcard = UsingCard[currenttrueindex];
+        Card oldcard = WaitingCard[currenttrueindex];
         Debug.Log($"이전 카드: {oldcard.name} (UsingCard[{RechooseIndex}])");
 
-        Destroy(UsingCard[currenttrueindex].gameObject);
+        Destroy(WaitingCard[currenttrueindex].gameObject);
 
 
         // 2️. 새로운 카드 생성 후 삽입
@@ -560,7 +510,7 @@ public class CardManager : MonoBehaviour
         var newCard = newCardObject.GetComponent<Card>();
         newCard.Setup(waitingcard.carditem, true);
 
-        UsingCard[currenttrueindex] = newCard;
+        WaitingCard[currenttrueindex] = newCard;
         positionOccupied[currenttrueindex] = true;
 
         Debug.Log($"UsingCard[{RechooseIndex}]에 새 카드 {newCard.name} 추가됨");
@@ -617,7 +567,7 @@ public class CardManager : MonoBehaviour
             }
             
             card.Setup(cardItem, false);
-            UsingCard.Add(card); // 생성된 카드를 리스트에 추가
+            WaitingCard.Add(card); // 생성된 카드를 리스트에 추가
         }
         else //Waiting card
         {
@@ -688,7 +638,7 @@ public class CardManager : MonoBehaviour
                 rectTransform.anchoredPosition = spawnpoints[i].transform.position;
 
                 // 카드 리스트에 추가
-                UsingCard[i] = cardComponent;
+                WaitingCard[i] = cardComponent;
                 positionOccupied[i] = true;
 
                 break;
@@ -807,16 +757,6 @@ public class CardManager : MonoBehaviour
             }
         }
 
-        // Using Cards 정보 업데이트
-        debugUsingCards.Clear();
-        foreach (var card in UsingCard)
-        {
-            if (card != null && card.carditem != null)
-            {
-                debugUsingCards.Add(card.carditem);
-            }
-        }
-
         // Inventory Cards 정보 업데이트
         debugInventoryCards.Clear();
         if (inventory != null)
@@ -865,14 +805,11 @@ public class CardManager : MonoBehaviour
             CardItem cardData = PopCard();
             if (cardData != null)
             {
-                GameObject cardObj = Instantiate(cardPrefab, waitingCardPanel.transform);
+                GameObject cardObj = Instantiate(cardPrefab, spawnpoints[WaitingCard.Count].transform.position, Quaternion.identity, waitingCardPanel);
                 Card card = cardObj.GetComponent<Card>();
                 if (card != null)
                 {
                     card.Setup(cardData, true);
-                    RectTransform rectTransform = cardObj.GetComponent<RectTransform>();
-                    float xPos = WaitingCard.Count * cardSpacing;
-                    rectTransform.anchoredPosition = new Vector2(xPos, 0);
                     WaitingCard.Add(card);
                     Debug.Log($"[CardManager] 웨이팅 카드 추가: {cardData.CardName}");
                 }
