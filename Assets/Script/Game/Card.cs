@@ -230,8 +230,20 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
         {
             // 카드를 활성화된 카드 목록에 추가
             GridChecker.inst.AddActiveCard(this);
-            // 그리드 체크 실행
-            GridChecker.inst.CheckGrid();
+            
+            // 카드를 지정된 사용 위치로 이동
+            Vector3 targetPosition = CardManager.Inst.cardUsePoint.position;
+            transform.DOMove(targetPosition, 0.3f)
+                .SetEase(Ease.OutQuad)
+                .OnComplete(() => {
+                    // 크기를 1.2배로 키우기
+                    transform.DOScale(new Vector3(1.2f, 1.2f, 1.2f), 0.2f)
+                        .SetEase(Ease.OutQuad)
+                        .OnComplete(() => {
+                            // 그리드 체크 실행
+                            GridChecker.inst.CheckGrid();
+                        });
+                });
         }
         else
         {

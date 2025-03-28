@@ -14,6 +14,7 @@ public class CardManager : MonoBehaviour
     [SerializeField] List<GameObject> spawnpoints = new List<GameObject>(); //Using Card spawn points
     [SerializeField] private Transform waitingCardPanel;
     [SerializeField] private float cardSpacing = 100f;
+    [SerializeField] public Transform cardUsePoint; // 카드 사용 위치
 
     // 싱글톤 패턴: CardManager의 인스턴스
     public static CardManager Inst { get; private set; }
@@ -929,6 +930,30 @@ public class CardManager : MonoBehaviour
         positionOccupied = new List<bool> { false, false, false };
         
         Debug.Log($"[CardManager] 웨이팅 카드 리필 완료. 최종 카드 수: {WaitingCard.Count}");
+    }
+
+    public Vector3 GetNextSpawnPointPosition()
+    {
+        // 비어있는 spawnpoint 찾기
+        for (int i = 0; i < spawnpoints.Count; i++)
+        {
+            bool isOccupied = false;
+            foreach (var card in WaitingCard)
+            {
+                if (card != null && card.transform.position == spawnpoints[i].transform.position)
+                {
+                    isOccupied = true;
+                    break;
+                }
+            }
+            if (!isOccupied)
+            {
+                return spawnpoints[i].transform.position;
+            }
+        }
+        
+        // 모든 spawnpoint가 사용 중이면 마지막 위치 반환
+        return spawnpoints[spawnpoints.Count - 1].transform.position;
     }
 }
 
