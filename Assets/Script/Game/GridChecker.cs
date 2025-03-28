@@ -242,7 +242,14 @@ public class GridChecker : MonoBehaviour
         
         DisableAllActiveImages();
         ReplaceOraImages();
+        Debug.Log("[GridChecker] 모든 카드 처리가 완료되었습니다.");
+    }
+
+    // 턴이 끝날 때 호출할 메서드
+    public void OnTurnEnd()
+    {
         activeCards.Clear();
+        Debug.Log("[GridChecker] 턴이 끝났습니다. activeCards 리스트를 비웠습니다.");
     }
 
     // 매칭된 블록 수를 계산하는 메서드

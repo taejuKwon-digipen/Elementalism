@@ -228,8 +228,27 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
         // Y 위치가 -170보다 위이고, 드래그 거리가 1.0 이상인지 확인
         if (transform.position.y > -1f && dragDistance > 1.0f)
         {
+            // 활성화된 카드 수 체크
+            int currentActiveCards = GridChecker.inst.GetActiveCards().Count;
+            Debug.Log($"[Card] 현재 활성화된 카드 수: {currentActiveCards}");
+            
+            if (currentActiveCards >= 3)
+            {
+                Debug.Log("[Card] 한 턴에 최대 3장까지만 카드를 사용할 수 있습니다!");
+                // 원래 위치로 복귀
+                if (originalParent != null)
+                {
+                    transform.SetParent(originalParent);
+                    transform.localPosition = originalLocalPosition;
+                    transform.localScale = Vector3.one;
+                    transform.localRotation = Quaternion.identity;
+                }
+                return;
+            }
+
             // 카드를 활성화된 카드 목록에 추가
             GridChecker.inst.AddActiveCard(this);
+            Debug.Log($"[Card] 카드 추가됨. 현재 활성화된 카드 수: {GridChecker.inst.GetActiveCards().Count}");
             
             // 카드를 지정된 사용 위치로 이동
             Vector3 targetPosition = CardManager.Inst.cardUsePoint.position;

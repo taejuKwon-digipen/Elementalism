@@ -21,6 +21,10 @@ public class TurnButton : MonoBehaviour
         if (TurnManager.Inst != null)
         {
             TurnManager.Inst.OnTurnEndButtonPressed();
+            if (GridChecker.inst != null)
+            {
+                GridChecker.inst.OnTurnEnd();
+            }
         }
         else
         {
