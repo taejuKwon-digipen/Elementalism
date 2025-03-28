@@ -12,64 +12,65 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00c34be0526a656498cbe66c094801fa, type: 3}
   m_Name: Inventory
   m_EditorClassIdentifier: 
-  unlockedCards:
+  inventoryCards:
   - CardName: Flame Spark
     ID: 1
+    CardDescription: Low Damage
+    cardImage: {fileID: 2800000, guid: ff81e51fb26b3ff4da6cd67cdae55a04, type: 3}
     PowerLeft: 2
     PowerRight: 4
-    CardDescription: Low Damage
+    CreatedElementType: 0
     UseMagic: 0
     Percent: 3
-    cardImage: {fileID: 2800000, guid: ff81e51fb26b3ff4da6cd67cdae55a04, type: 3}
     UseProp: 1
     UseBuff: 0
     UseDraw: 0
     UseImage: 0
     IsUnlocked: 1
     cardShape: {fileID: 11400000, guid: 1776bba0fbed59d4b86c945af6c5d67b, type: 2}
-    CreatedElementType: 0
   - CardName: Aqua Splash
     ID: 2
+    CardDescription: Low Damage
+    cardImage: {fileID: 2800000, guid: bc62c7dae0fb89e44aa8e55f90063197, type: 3}
     PowerLeft: 2
     PowerRight: 4
-    CardDescription: Low Damage
+    CreatedElementType: 0
     UseMagic: 0
     Percent: 11
-    cardImage: {fileID: 2800000, guid: bc62c7dae0fb89e44aa8e55f90063197, type: 3}
     UseProp: 1
     UseBuff: 0
     UseDraw: 0
     UseImage: 0
     IsUnlocked: 1
     cardShape: {fileID: 11400000, guid: bc434b102b587314b882a6efb2de2a27, type: 2}
-    CreatedElementType: 0
   - CardName: Stone Hurl
     ID: 3
+    CardDescription: Low Damage
+    cardImage: {fileID: 2800000, guid: c1a2e8ad29173a348a47ad13042fad59, type: 3}
     PowerLeft: 2
     PowerRight: 4
-    CardDescription: Low Damage
+    CreatedElementType: 0
     UseMagic: 0
     Percent: 11
-    cardImage: {fileID: 2800000, guid: c1a2e8ad29173a348a47ad13042fad59, type: 3}
     UseProp: 1
     UseBuff: 0
     UseDraw: 0
     UseImage: 0
     IsUnlocked: 1
     cardShape: {fileID: 11400000, guid: 009803ddf1fecca4480a640fc6a288b9, type: 2}
-    CreatedElementType: 0
-  - CardName: Wind Gust
+  - CardName: Gentle Breeze
     ID: 4
+    CardDescription: Low Damage
+    cardImage: {fileID: 2800000, guid: 414341b633bfa374b87f70dadd6d4a45, type: 3}
     PowerLeft: 2
     PowerRight: 4
-    CardDescription: Low Damage
+    CreatedElementType: 0
     UseMagic: 0
     Percent: 11
-    cardImage: {fileID: 2800000, guid: 414341b633bfa374b87f70dadd6d4a45, type: 3}
     UseProp: 1
     UseBuff: 0
     UseDraw: 0
     UseImage: 0
     IsUnlocked: 1
     cardShape: {fileID: 11400000, guid: 455377b646b9aee4e82ef29b8c404a15, type: 2}
-    CreatedElementType: 0
+  cardItemSO: {fileID: 11400000, guid: 015ed88d3a04d5e42a18bfb553c95c97, type: 2}
