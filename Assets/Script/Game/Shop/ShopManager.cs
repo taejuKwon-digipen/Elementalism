@@ -92,10 +92,18 @@ public class ShopManager : MonoBehaviour
             
             // 구매 버튼 추가
             var button = cardObj.AddComponent<Button>();
-            int cardIndex = i; // 클로저를 위한 변수
+            var currentCard = card; // 현재 카드 참조 저장
             button.onClick.AddListener(() => {
-                Debug.Log($"[ShopManager] 상점 카드 클릭됨: {cardItem.CardName}");
-                PurchaseCard(cardIndex);
+                Debug.Log($"[ShopManager] 상점 카드 클릭됨: {currentCard.carditem.CardName}");
+                int cardIndex = shopCards.IndexOf(currentCard);
+                if (cardIndex != -1)
+                {
+                    PurchaseCard(cardIndex);
+                }
+                else
+                {
+                    Debug.LogError($"[ShopManager] 카드를 찾을 수 없습니다: {currentCard.carditem.CardName}");
+                }
             });
             
             shopCards.Add(card);
