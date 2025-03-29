@@ -226,6 +226,30 @@ public class CardManager : MonoBehaviour
     {
         Debug.Log($"SO 확인: {carditemso.name}");
         
+        // waitingCardPanel 참조 확인
+        if (waitingCardPanel == null)
+        {
+            waitingCardPanel = GameObject.Find("WatingCardPanel")?.transform;
+            if (waitingCardPanel == null)
+            {
+                Debug.LogError("[CardManager] WatingCardPanel을 찾을 수 없습니다!");
+                return;
+            }
+            Debug.Log("[CardManager] WatingCardPanel 참조 설정 완료");
+        }
+
+        // deck 참조 확인
+        if (deck == null)
+        {
+            deck = FindObjectOfType<Deck>();
+            if (deck == null)
+            {
+                Debug.LogError("[CardManager] Deck을 찾을 수 없습니다!");
+                return;
+            }
+            Debug.Log("[CardManager] Deck 참조 설정 완료");
+        }
+        
         // 현재 세션에서 사용할 카드 설정
         SetSessionCards();
         
@@ -235,15 +259,6 @@ public class CardManager : MonoBehaviour
             Debug.LogWarning("세션 카드가 비어 있습니다. 기본 카드를 추가합니다.");
             LoadInitialCards();
             SetSessionCards();
-        }
-        
-        // deck이 null인지 확인하고 처리
-        if (deck == null)
-        {
-            Debug.LogWarning("Deck이 할당되지 않았습니다. 새로 생성합니다.");
-            GameObject deckObject = new GameObject("Deck");
-            deck = deckObject.AddComponent<Deck>();
-            deckObject.transform.SetParent(transform);
         }
         
         // 덱 초기화
@@ -261,12 +276,6 @@ public class CardManager : MonoBehaviour
         {
             Debug.Log($"spawnpoints가 null이거나 요소가 부족합니다. 현재 크기: {(spawnpoints != null ? spawnpoints.Count : 0)}");
         }
-        
-        if (waitingCardPanel == null || waitingCardPanel.childCount < 4)
-        {
-            Debug.Log($"waitingCardPanel이 null이거나 요소가 부족합니다. 현재 크기: {(waitingCardPanel != null ? waitingCardPanel.childCount : 0)}");
-        }
-        
         
         // 초기 WaitingCard 4장 생성
         InitializeWaitingCardPanel();
@@ -341,12 +350,12 @@ public class CardManager : MonoBehaviour
     }
 
     public void UseCard(Card card, CardSpawnPoint spawnPoint)
-    {
-        // 카드 사용 로직
-        int index = spawnPoint.Index;
-        positionOccupied[index] = true;
-        
-        // WaitingCard에서 제거
+        {
+            // 카드 사용 로직
+            int index = spawnPoint.Index;
+            positionOccupied[index] = true;
+            
+            // WaitingCard에서 제거
         if (WaitingCard.Contains(card))
         {
             WaitingCard.Remove(card);
@@ -717,20 +726,36 @@ public class CardManager : MonoBehaviour
     // 현재 세션에서 사용할 카드 설정
     private void SetSessionCards()
     {
+        Debug.Log("[CardManager] SetSessionCards 시작");
         sessionCards.Clear();
         
         // 인벤토리에 있는 카드만 세션 카드에 추가
         foreach (var card in inventory.unlockedCards)
         {
             sessionCards.Add(card);
-            Debug.Log($"세션에 카드 추가: {card.CardName} (ID: {card.ID})");
+            Debug.Log($"[CardManager] 세션에 카드 추가: {card.CardName} (ID: {card.ID})");
         }
+        
+        Debug.Log($"[CardManager] 세션 카드 설정 완료. 총 {sessionCards.Count}장의 카드가 세션에 추가됨");
         
         // 덱 초기화
         if (deck != null)
         {
+            Debug.Log("[CardManager] 덱 초기화 시작");
             deck.InitializeDeck(sessionCards);
             Debug.Log($"[CardManager] 덱이 초기화됨. 카드 수: {sessionCards.Count}");
+            
+            // 덱에 있는 카드 목록 출력
+            var deckCards = deck.GetDeckCards();
+            Debug.Log("[CardManager] 덱에 있는 카드 목록:");
+            foreach (var card in deckCards)
+            {
+                Debug.Log($"[CardManager] - {card.CardName} (ID: {card.ID})");
+            }
+        }
+        else
+        {
+            Debug.LogError("[CardManager] 덱이 null입니다!");
         }
     }
 
@@ -745,35 +770,35 @@ public class CardManager : MonoBehaviour
     {
         Debug.Log($"[CardManager] AddCardToInventory 호출됨: {cardItem.CardName} (ID: {cardItem.ID})");
         
-        // 인벤토리에 카드 추가
-        inventory.AddCard(cardItem);
-        Debug.Log($"[CardManager] 인벤토리에 카드 추가됨. 현재 인벤토리 카드 수: {inventory.unlockedCards.Count}");
-        
-        // 현재 세션에도 카드 추가
-        sessionCards.Add(cardItem);
-        Debug.Log($"[CardManager] 세션에 카드 추가됨. 현재 세션 카드 수: {sessionCards.Count}");
-        
-        // SO에서 카드 상태 업데이트
-        var cardInSO = carditemso.items.FirstOrDefault(x => x.ID == cardItem.ID);
-        if (cardInSO != null)
-        {
-            cardInSO.IsUnlocked = true;
-            Debug.Log($"[CardManager] SO에서 카드 상태 업데이트됨: {cardItem.CardName}");
-            SaveScriptableObject();
-        }
-        else
-        {
-            Debug.LogWarning($"[CardManager] SO에서 카드를 찾을 수 없음: {cardItem.CardName} (ID: {cardItem.ID})");
-        }
-        
-        // 덱 초기화
-        if (deck != null)
-        {
-            deck.InitializeDeck(sessionCards);
-            Debug.Log($"[CardManager] 덱이 새로 초기화됨");
-        }
-        
-        Debug.Log($"[CardManager] 카드 추가 완료: {cardItem.CardName} (ID: {cardItem.ID})");
+            // 인벤토리에 카드 추가
+            inventory.AddCard(cardItem);
+            Debug.Log($"[CardManager] 인벤토리에 카드 추가됨. 현재 인벤토리 카드 수: {inventory.unlockedCards.Count}");
+            
+            // 현재 세션에도 카드 추가
+            sessionCards.Add(cardItem);
+            Debug.Log($"[CardManager] 세션에 카드 추가됨. 현재 세션 카드 수: {sessionCards.Count}");
+            
+            // SO에서 카드 상태 업데이트
+            var cardInSO = carditemso.items.FirstOrDefault(x => x.ID == cardItem.ID);
+            if (cardInSO != null)
+            {
+                cardInSO.IsUnlocked = true;
+                Debug.Log($"[CardManager] SO에서 카드 상태 업데이트됨: {cardItem.CardName}");
+                SaveScriptableObject();
+            }
+            else
+            {
+                Debug.LogWarning($"[CardManager] SO에서 카드를 찾을 수 없음: {cardItem.CardName} (ID: {cardItem.ID})");
+            }
+            
+            // 덱 초기화
+            if (deck != null)
+            {
+                deck.InitializeDeck(sessionCards);
+                Debug.Log($"[CardManager] 덱이 새로 초기화됨");
+            }
+            
+            Debug.Log($"[CardManager] 카드 추가 완료: {cardItem.CardName} (ID: {cardItem.ID})");
     }
 
     private void UpdateDebugInfo()

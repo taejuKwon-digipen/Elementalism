@@ -58,17 +58,24 @@ public class Deck : MonoBehaviour
             return;
         }
 
-        // 랜덤하게 카드 선택하여 덱 구성
-        int cardsToAdd = Mathf.Min(maxDeckSize, availableCards.Count);
-        List<CardItem> shuffledCards = availableCards.OrderBy(x => Random.value).ToList();
-
-        for (int i = 0; i < cardsToAdd; i++)
+        Debug.Log($"[Deck] 덱 초기화 시작. 사용 가능한 카드 수: {availableCards.Count}");
+        Debug.Log("[Deck] 덱에 추가될 카드 목록:");
+        foreach (var card in availableCards)
         {
-            deckCards.Add(shuffledCards[i]);
-            debugDeckCards.Add(shuffledCards[i]);
-            Debug.Log($"[Deck] 카드 추가됨: {shuffledCards[i].CardName} (ID: {shuffledCards[i].ID})");
+            Debug.Log($"[Deck] - {card.CardName} (ID: {card.ID})");
         }
 
+        // 모든 카드를 덱에 추가
+        foreach (var card in availableCards)
+        {
+            deckCards.Add(card);
+            debugDeckCards.Add(card);
+            Debug.Log($"[Deck] 카드 추가됨: {card.CardName} (ID: {card.ID})");
+        }
+
+        // 덱 섞기
+        ShuffleDeck();
+        
         Debug.Log($"[Deck] 덱 초기화 완료. 총 {deckCards.Count}장의 카드가 덱에 있습니다.");
     }
     
@@ -83,17 +90,17 @@ public class Deck : MonoBehaviour
     // 카드 뽑기
     public CardItem DrawCard()
     {
-        if (deckCards.Count == 0)
+        // 덱이 비어있고 버린 카드 더미가 있으면 덱을 다시 채움
+        if (deckCards.Count == 0 && discardPile.Count > 0)
         {
-            Debug.Log("[Deck] 덱이 비어있습니다. 버린 카드 더미에서 카드를 섞어 덱에 다시 넣습니다.");
+            Debug.Log("[Deck] 덱이 비어있어 버린 카드 더미에서 카드를 다시 가져옵니다.");
             RefillDeckFromDiscard();
-            
-            // 버린 카드 더미도 비어있다면 null 반환
-            if (deckCards.Count == 0)
-            {
-                Debug.LogWarning("[Deck] 덱과 버린 카드 더미가 모두 비어있습니다!");
-                return null;
-            }
+        }
+        // 덱과 버린 카드 더미가 모두 비어있으면 null 반환
+        else if (deckCards.Count == 0 && discardPile.Count == 0)
+        {
+            Debug.LogWarning("[Deck] 덱과 버린 카드 더미가 모두 비어있습니다!");
+            return null;
         }
 
         CardItem drawnCard = deckCards[0];
