@@ -182,6 +182,13 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        // 카드 처리 중이면 드래그 시작을 막음
+        if (CardManager.Inst != null && CardManager.Inst.isProcessingCard)
+        {
+            Debug.Log("[Card] 카드가 처리 중이어서 새로운 카드를 사용할 수 없습니다.");
+            return;
+        }
+
         canvasGroup.alpha = 0.6f;
         canvasGroup.blocksRaycasts = false;
 
@@ -222,6 +229,21 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
 
+        // 카드 처리 중이면 카드 사용을 막음
+        if (CardManager.Inst != null && CardManager.Inst.isProcessingCard)
+        {
+            Debug.Log("[Card] 카드가 처리 중이어서 새로운 카드를 사용할 수 없습니다.");
+            // 원래 위치로 복귀
+            if (originalParent != null)
+            {
+                transform.SetParent(originalParent);
+                transform.localPosition = originalLocalPosition;
+                transform.localScale = Vector3.one;
+                transform.localRotation = Quaternion.identity;
+            }
+            return;
+        }
+
         // 드래그 거리 계산
         float dragDistance = Vector3.Distance(dragStartPosition, transform.position);
 
@@ -250,6 +272,9 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
             GridChecker.inst.AddActiveCard(this);
             Debug.Log($"[Card] 카드 추가됨. 현재 활성화된 카드 수: {GridChecker.inst.GetActiveCards().Count}");
             
+            // 상호작용 비활성화
+            CardManager.Inst.SetInteractionsEnabled(false);
+            
             // 카드를 지정된 사용 위치로 이동
             Vector3 targetPosition = CardManager.Inst.cardUsePoint.position;
             transform.DOMove(targetPosition, 0.3f)
@@ -269,13 +294,8 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
             // 원래 위치로 복귀
             if (originalParent != null)
             {
-                // 원래 부모로 변경
                 transform.SetParent(originalParent);
-                
-                // 로컬 위치 설정 (무조건 원래 위치로)
                 transform.localPosition = originalLocalPosition;
-                
-                // 스케일과 회전 초기화
                 transform.localScale = Vector3.one;
                 transform.localRotation = Quaternion.identity;
                 

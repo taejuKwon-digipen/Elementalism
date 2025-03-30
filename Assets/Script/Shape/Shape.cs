@@ -34,6 +34,8 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     private bool _shapeActive = true;
     private bool _isSelected = false;
 
+    private bool interactionsEnabled = true;  // 상호작용 활성화 여부
+
     public void Awake()
     {
         _shapeStartScale = this.GetComponent<RectTransform>().localScale;
@@ -287,6 +289,8 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     // 드래그 시작 시 호출되는 메서드
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (!interactionsEnabled) return;
+        
         this.GetComponent<RectTransform>().localScale = shapeSelectedScale;
         _isDragging = true;
         _isSelected = true;
@@ -295,24 +299,26 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     // 드래그 중에 호출되는 메서드
     public void OnDrag(PointerEventData eventData)
     {
+        if (!interactionsEnabled) return;
+
         _transform.anchorMin = new Vector2(0, 0);
         _transform.anchorMax = new Vector2(0, 0);
         _transform.pivot = new Vector2(0, 0);
 
         Vector2 pos;
-        // 화면 좌표를 캔버스의 로컬 좌표로 변환하여 위치 설정
         RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvas.transform as RectTransform,
             eventData.position, Camera.main, out pos);
-        _transform.localPosition = pos;// + offset;
+        _transform.localPosition = pos;
     }
 
     // 드래그 종료 시 호출되는 메서드
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (!interactionsEnabled) return;
+
         this.GetComponent<RectTransform>().localScale = _shapeStartScale;
         _isDragging = false;
         
-        // 유효한 위치에 놓였는지 확인
         if (_isSelected)
         {
             cameraShakeFeedback.PlayFeedbacks();
@@ -349,5 +355,12 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     public bool IsSelected()
     {
         return _isSelected;
+    }
+
+    public void SetInteractionsEnabled(bool enabled)
+    {
+        interactionsEnabled = enabled;
+        _shapeDraggable = enabled;
+        Debug.Log($"[Shape] 상호작용 {(enabled ? "활성화" : "비활성화")} 완료");
     }
 }

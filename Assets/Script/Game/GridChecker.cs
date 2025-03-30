@@ -158,7 +158,10 @@ public class GridChecker : MonoBehaviour
         int gridColumns = grid.currentShape.columns;
         int addDamage = 0;
 
-        foreach (var card in activeCards.ToList()) // ToList()를 사용하여 복사본으로 순회
+        // activeCards의 복사본을 만들어서 순회
+        var cardsToProcess = new List<Card>(activeCards);
+
+        foreach (var card in cardsToProcess)
         {
             if (card == null || card.carditem == null)
             {
@@ -243,6 +246,12 @@ public class GridChecker : MonoBehaviour
         DisableAllActiveImages();
         ReplaceOraImages();
         Debug.Log("[GridChecker] 모든 카드 처리가 완료되었습니다.");
+
+        // 카드 처리가 완료되면 상호작용 다시 활성화
+        if (CardManager.Inst != null)
+        {
+            CardManager.Inst.SetInteractionsEnabled(true);
+        }
     }
 
     // 턴이 끝날 때 호출할 메서드

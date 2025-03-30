@@ -59,6 +59,8 @@ public class CardManager : MonoBehaviour
     [SerializeField] private List<CardItem> debugDeckCards = new List<CardItem>();
     [SerializeField] private List<CardItem> debugUnlockedCards = new List<CardItem>();
 
+    public bool isProcessingCard = false;  // 카드 처리 중인지 여부
+
     private void LoadCardItemSO()
     {
         carditemso = Resources.Load<CardItemSO>("ItemSO");
@@ -971,6 +973,35 @@ public class CardManager : MonoBehaviour
         
         // 모든 spawnpoint가 사용 중이면 마지막 위치 반환
         return spawnpoints[spawnpoints.Count - 1].transform.position;
+    }
+
+    // 상호작용 활성화/비활성화 메서드
+    public void SetInteractionsEnabled(bool enabled)
+    {
+        isProcessingCard = !enabled;
+        
+        // Shape들의 상호작용 제어
+        var shapes = FindObjectsOfType<Shape>();
+        foreach (var shape in shapes)
+        {
+            shape.SetInteractionsEnabled(enabled);
+        }
+
+        // 턴 엔드 버튼 제어
+        var turnButton = FindObjectOfType<TurnButton>();
+        if (turnButton != null)
+        {
+            turnButton.SetInteractionsEnabled(enabled);
+        }
+
+        // 그리드 상호작용 제어
+        var grid = FindObjectOfType<Grid>();
+        if (grid != null)
+        {
+            grid.SetInteractionsEnabled(enabled);
+        }
+
+        Debug.Log($"[CardManager] 상호작용 {(enabled ? "활성화" : "비활성화")} 완료");
     }
 }
 

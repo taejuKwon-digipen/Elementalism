@@ -23,6 +23,8 @@ public class Grid : MonoBehaviour
     // OraImage 활성화를 위한 추가 필드
     private List<int> oraIndices = new List<int>();
 
+    private bool interactionsEnabled = true;
+
     // 게임 이벤트에 메서드를 등록합니다.
     private void OnEnable()
     {
@@ -274,6 +276,8 @@ public class Grid : MonoBehaviour
     // 게임 이벤트에 따라 블록을 활성화하는 메서드
     private void CheckIfShapeCanBePlaced()
     {
+        if (!interactionsEnabled) return;
+
         var squareIndexes = new List<int>();
 
         foreach (var square in _blocks)
@@ -297,7 +301,6 @@ public class Grid : MonoBehaviour
                 _blocks[squareIndex].GetComponent<Block>().PlaceShapeOnBoard();
             }
 
-            // 퍼즐 재생성 기능 구현
             var shapeLeft = 0;
 
             foreach (var shape in shapeStorage.shapeList)
@@ -314,5 +317,11 @@ public class Grid : MonoBehaviour
         {
             GameEvents.MoveShapeToStartPosition();
         }
+    }
+
+    public void SetInteractionsEnabled(bool enabled)
+    {
+        interactionsEnabled = enabled;
+        Debug.Log($"[Grid] 상호작용 {(enabled ? "활성화" : "비활성화")} 완료");
     }
 }
