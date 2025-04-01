@@ -61,6 +61,8 @@ public class CardManager : MonoBehaviour
 
     public bool isProcessingCard = false;  // 카드 처리 중인지 여부
 
+    public CardUsageUI cardUsageUI;
+
     private void LoadCardItemSO()
     {
         carditemso = Resources.Load<CardItemSO>("ItemSO");
@@ -281,6 +283,12 @@ public class CardManager : MonoBehaviour
         
         // 초기 WaitingCard 4장 생성
         InitializeWaitingCardPanel();
+
+        cardUsageUI = FindObjectOfType<CardUsageUI>();
+        if (cardUsageUI == null)
+        {
+            Debug.LogError("[CardManager] CardUsageUI를 찾을 수 없습니다!");
+        }
     }
 
     private void InitializeWaitingCardPanel()
@@ -352,16 +360,28 @@ public class CardManager : MonoBehaviour
     }
 
     public void UseCard(Card card, CardSpawnPoint spawnPoint)
+    {
+        Debug.Log($"[CardManager] UseCard 호출됨 - 카드: {card.carditem.CardName}");
+        if (cardUsageUI != null)
         {
-            // 카드 사용 로직
-            int index = spawnPoint.Index;
-            positionOccupied[index] = true;
-            
-            // WaitingCard에서 제거
+            Debug.Log("[CardManager] CardUsageUI 호출");
+            cardUsageUI.OnCardUsed();
+        }
+        else
+        {
+            Debug.LogError("[CardManager] CardUsageUI가 null입니다!");
+        }
+        
+        // 카드 사용 로직
+        int index = spawnPoint.Index;
+        positionOccupied[index] = true;
+        
+        // WaitingCard에서 제거
         if (WaitingCard.Contains(card))
         {
             WaitingCard.Remove(card);
             Destroy(card.gameObject);
+            Debug.Log($"[CardManager] 카드 제거 완료 - 인덱스: {index}");
         }
     }
 

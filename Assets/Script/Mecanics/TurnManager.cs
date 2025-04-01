@@ -40,7 +40,18 @@ public class TurnManager : MonoBehaviour
             yield return StartCoroutine(cardManager.RefillWaitingCards());
         }
 
-        // 3. 적들이 앞으로 한 칸씩 이동
+        // 3. 카드 사용 카운트 초기화
+        if (cardManager != null && cardManager.cardUsageUI != null)
+        {
+            cardManager.cardUsageUI.ResetUsage();
+            Debug.Log("[TurnManager] 카드 사용 카운트 초기화 완료");
+        }
+        else
+        {
+            Debug.LogError("[TurnManager] cardUsageUI를 찾을 수 없습니다!");
+        }
+
+        // 4. 적들이 앞으로 한 칸씩 이동
         if (enemyManager != null)
         {
             enemyManager.StartEnemyTurn();

@@ -270,6 +270,14 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
 
             // 카드를 활성화된 카드 목록에 추가
             GridChecker.inst.AddActiveCard(this);
+            
+            // 카드 사용 카운트 증가
+            if (CardManager.Inst != null && CardManager.Inst.cardUsageUI != null)
+            {
+                CardManager.Inst.cardUsageUI.OnCardUsed();
+                Debug.Log("[Card] 카드 사용 카운트 증가");
+            }
+            
             Debug.Log($"[Card] 카드 추가됨. 현재 활성화된 카드 수: {GridChecker.inst.GetActiveCards().Count}");
             
             // 상호작용 비활성화
