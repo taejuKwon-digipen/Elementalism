@@ -188,4 +188,12 @@ public class Player : Entity
             GameManager.Instance.GameOver();
         }
     }
+
+    // 적 처치 시 골드 획득 메서드
+    public void GainGold(EntityBase enemyBase)
+    {
+        int goldReward = enemyBase.GetGoldReward();
+        Gold += goldReward;
+        //LogManager.Inst.LogInfo($"골드 획득: {goldReward}G (총 {Gold}G)", "Player");
+    }
 }

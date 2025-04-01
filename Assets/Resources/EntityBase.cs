@@ -36,4 +36,15 @@ public class EntityBase : ScriptableObject
     public int Agility;
 
     public int Luck;
+
+    // 골드 획득 범위
+    [Header("Gold Reward")]
+    public int minGold = 10;
+    public int maxGold = 50;
+
+    // 골드 획득 메서드
+    public int GetGoldReward()
+    {
+        return Random.Range(minGold, maxGold + 1);
+    }
 }

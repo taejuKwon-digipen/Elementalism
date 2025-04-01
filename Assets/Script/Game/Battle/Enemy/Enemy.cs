@@ -57,6 +57,12 @@ public abstract class Enemy : Entity
             // 포커스 매니저에게 적이 죽었음을 알림
             focusManager.ChangeWhenFocusedDie();
             
+            // 플레이어에게 골드 지급
+            if (attacker is Player player)
+            {
+                player.GainGold(this.baseEntity);
+            }
+            
             StartCoroutine(Fade());
         }
         return damageAmount;

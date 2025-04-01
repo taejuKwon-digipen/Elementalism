@@ -23,3 +23,5 @@ MonoBehaviour:
   Defense: 5
   Agility: 0
   Luck: 0
+  minGold: 50
+  maxGold: 100
