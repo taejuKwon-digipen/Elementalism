@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     public int Player_HP;
+    public int Player_Gold;
     public GameObject gameOverPanel;
 
     private void Awake()
@@ -15,6 +16,7 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            Player_Gold = 100; // 초기 골드 설정
         }
         else
         {
@@ -34,6 +36,7 @@ public class GameManager : MonoBehaviour
         if (Player.inst != null)
         {
             Player_HP = Player.inst.HP;
+            Player_Gold = Player.inst.Gold;
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {

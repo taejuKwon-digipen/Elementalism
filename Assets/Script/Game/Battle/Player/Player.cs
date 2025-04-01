@@ -39,9 +39,18 @@ public class Player : Entity
         focusManager = FindAnyObjectByType<FocusManager>();
         CurrentHP = MaxHP;
         animator = GetComponent<Animator>();
-        if (GameManager.Instance.Player_HP != 0)
+        
+        // GameManager에서 체력과 골드 값 가져오기
+        if (GameManager.Instance != null)
         {
-            HP = GameManager.Instance.Player_HP;
+            if (GameManager.Instance.Player_HP != 0)
+            {
+                HP = GameManager.Instance.Player_HP;
+            }
+            if (GameManager.Instance.Player_Gold != 0)
+            {
+                Gold = GameManager.Instance.Player_Gold;
+            }
         }
     }
 
@@ -112,7 +121,6 @@ public class Player : Entity
     public void OnMonsterDefeated()
     {
         defeatedMonsters++;
-        Gold += 50;
     }
 
     public void AddShield(int amount)
@@ -194,6 +202,6 @@ public class Player : Entity
     {
         int goldReward = enemyBase.GetGoldReward();
         Gold += goldReward;
-        //LogManager.Inst.LogInfo($"골드 획득: {goldReward}G (총 {Gold}G)", "Player");
+        Debug.Log($"[Player] 적 처치 보상: +{goldReward}G (총 {Gold}G)");
     }
 }
