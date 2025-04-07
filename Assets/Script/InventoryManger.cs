@@ -10,6 +10,8 @@ public class InventoryManager : MonoBehaviour
     [Header("UI References")]
     [SerializeField] private GameObject InventoryPanel;
     [SerializeField] private Transform cardContainer;
+    [SerializeField] private Button openButton;
+    [SerializeField] private Button exitButton;
 
     [Header("References")]
     [SerializeField] private Inventory inventory;
@@ -21,6 +23,8 @@ public class InventoryManager : MonoBehaviour
     {
         InventoryPanel.SetActive(false);
         inventory = Resources.Load<Inventory>("Inventory");
+        openButton.onClick.AddListener(OpenInventory);
+        exitButton.onClick.AddListener(CloseInventory);
 
         if (inventory == null)
         {
@@ -32,29 +36,31 @@ public class InventoryManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            if (InventoryPanel.activeSelf)
-            {
-                CloseInventory();
-            }
-            else
-            {
-                OpenInventory();
-            }
-        }
+        //if (Input.GetKeyDown(KeyCode.I))
+        //{
+        //    if (InventoryPanel.activeSelf)
+        //    {
+        //        //CloseInventory();
+        //    }
+        //    else
+        //    {
+        //        OpenInventory();
+        //    }
+        //}
     }
 
     void OpenInventory()
     {
         InventoryPanel.SetActive(true);
         GenerateInventoryCards();
+        openButton.interactable = false; // 인벤토리 열릴 때 버튼 비활성화
     }
 
     void CloseInventory()
     {
         InventoryPanel.SetActive(false);
         ClearInventoryCards();
+        openButton.interactable = true; // 인벤토리 닫힐 때 버튼 활성화
     }
 
     void GenerateInventoryCards()
