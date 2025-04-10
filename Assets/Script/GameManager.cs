@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public int Player_HP;
     public int Player_Gold;
     public GameObject gameOverPanel;
+    public int ChallengeLevel { get; private set; } = 1; 
 
     private void Awake()
     {
@@ -60,6 +61,29 @@ public class GameManager : MonoBehaviour
                 Debug.Log("씬 변경 후에도 MapManager가 유지됨!");
             }
         }
+    }
+
+    public void SetChallengeLevel(int level)
+    {
+        if (level >= 1)
+        {
+            ChallengeLevel = level;
+            Debug.Log($"챌린지 레벨이 {level}로 설정되었습니다. ");
+        }
+        else
+        {
+            Debug.LogWarning($"잘못된 챌린지 레벨입니다: {level}");
+        }
+    }
+
+    //Element Type을 가져오는 메서드
+    public ElementType GetModifiedElementType(ElementType originalType)
+    {
+        if (ChallengeLevel == 1 && originalType == ElementType.Earth)
+        {
+            return ElementType.Fire;
+        }
+        return originalType;
     }
 
     public void GameOver()

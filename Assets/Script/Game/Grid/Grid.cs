@@ -140,7 +140,6 @@ public class Grid : MonoBehaviour
     // 원소 블록들을 생성하는 메서드
     private void SpawnBlocks()
     {
-
         for (var row = 0; row < currentShape.rows; row++)
         {
             for (var column = 0; column < currentShape.columns; column++)
@@ -157,6 +156,13 @@ public class Grid : MonoBehaviour
                     if (elementType == ElementType.Random)
                     {
                         elementType = (ElementType)Random.Range(1, (int)ElementType.Void);
+                    }
+
+                    // ChallengeLevel이 1일 때 Earth를 Fire로 변경
+                    if (GameManager.Instance != null && GameManager.Instance.ChallengeLevel == 1 && elementType == ElementType.Earth)
+                    {
+                        elementType = ElementType.Fire;
+                        Debug.Log($"[Grid] ChallengeLevel 1: Earth Type이 Fire Type으로 변경됨 (위치: {row}, {column})");
                     }
 
                     newBlock.GetComponent<Block>().SetElementType(elementType);

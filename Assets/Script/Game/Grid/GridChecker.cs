@@ -432,11 +432,25 @@ public class GridChecker : MonoBehaviour
                 if (cardID == 15 || cardShape.board[row].colum[col] != ElementType.None) { 
                     if (createdElementType != ElementType.None)
                     {
-                        grid.SetElementTypeAt(startRow + row, startCol + col, createdElementType);
+                        // ChallengeLevel이 1일 때 Earth를 Fire로 변경
+                        ElementType modifiedType = createdElementType;
+                        if (GameManager.Instance != null && GameManager.Instance.ChallengeLevel == 1 && createdElementType == ElementType.Earth)
+                        {
+                            modifiedType = ElementType.Fire;
+                            Debug.Log($"[GridChecker] ChallengeLevel 1: Earth Type이 Fire Type으로 변경됨 (위치: {startRow + row}, {startCol + col})");
+                        }
+                        grid.SetElementTypeAt(startRow + row, startCol + col, modifiedType);
                     }
                     else
                     {
-                        grid.SetElementTypeAt(startRow + row, startCol + col, (ElementType)Random.Range(1, (int)ElementType.Void));
+                        // 랜덤 생성 시에도 Earth가 나오면 Fire로 변경
+                        ElementType randomType = (ElementType)Random.Range(1, (int)ElementType.Void);
+                        if (GameManager.Instance != null && GameManager.Instance.ChallengeLevel == 1 && randomType == ElementType.Earth)
+                        {
+                            randomType = ElementType.Fire;
+                            Debug.Log($"[GridChecker] ChallengeLevel 1: 랜덤 생성된 Earth Type이 Fire Type으로 변경됨 (위치: {startRow + row}, {startCol + col})");
+                        }
+                        grid.SetElementTypeAt(startRow + row, startCol + col, randomType);
                     }
                 }
             }
