@@ -79,7 +79,9 @@ public class InventoryManager : MonoBehaviour
             var card = cardObject.GetComponent<Card>();
 
             card.Setup(cardItem, true);
+            card.enabled = false; // 카드 컴포넌트 비활성화하여 OnPointerDown 이벤트 방지   
             activeCards.Add(card); // 활성화된 카드 목록에 추가
+
         }
     }
 
