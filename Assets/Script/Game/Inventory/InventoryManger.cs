@@ -15,10 +15,26 @@ public class InventoryManager : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private Inventory inventory;
+    public GameObject cardPrefab;
 
     private List<Card> activeCards = new List<Card>(); // 현재 활성화된 카드 목록
-
+    public static InventoryManager Instance;
     // Start is called before the first frame update
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            //DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+
     void Start()
     {
         InventoryPanel.SetActive(false);
@@ -75,7 +91,8 @@ public class InventoryManager : MonoBehaviour
 
         foreach (var cardItem in unlockedCards)
         {
-            var cardObject = Instantiate(CardManager.Inst.cardPrefab, cardContainer);
+            //var cardObject = Instantiate(CardManager.Inst.cardPrefab, cardContainer);
+            var cardObject = Instantiate(cardPrefab, cardContainer);
             var card = cardObject.GetComponent<Card>();
 
             card.Setup(cardItem, true);

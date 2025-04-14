@@ -113,7 +113,7 @@ public class CardManager : MonoBehaviour
         {
             Inst = this;
             LoadCardItemSO(); // SO와 Inventory 로드
-            
+            //DontDestroyOnLoad(gameObject);
             // inventory가 로드되었는지 확인
             if (inventory != null)
             {

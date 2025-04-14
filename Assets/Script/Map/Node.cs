@@ -134,7 +134,7 @@ public class Node : MonoBehaviour
             case NodeType.Battle: return "Main";
             case NodeType.Start: return "Main";
             case NodeType.Shop: return "Main";
-            case NodeType.Event: return "Main";
+            case NodeType.Event: return "Event";
             case NodeType.Boss: return "Main";
             default: return "";
         }
