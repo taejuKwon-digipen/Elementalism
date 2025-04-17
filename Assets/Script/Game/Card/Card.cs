@@ -283,6 +283,9 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
             // 상호작용 비활성화
             CardManager.Inst.SetInteractionsEnabled(false);
             
+            // 튜토리얼 진행
+            TutorialManager.Instance.NextStep();
+
             // 카드를 지정된 사용 위치로 이동
             Vector3 targetPosition = CardManager.Inst.cardUsePoint.position;
             transform.DOMove(targetPosition, 0.3f)

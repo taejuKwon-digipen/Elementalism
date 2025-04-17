@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
     public int Player_Gold;
     public GameObject gameOverPanel;
     public int ChallengeLevel { get; private set; } = 1; 
+    public bool IsFirstPlay { get; private set; } = true;  // 첫 플레이 여부
+    public bool IsTutorialMode { get; private set; } = false;  // 튜토리얼 모드 여부
 
     private void Awake()
     {
@@ -19,6 +21,7 @@ public class GameManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
             Player_Gold = 100; // 초기 골드 설정
+            LoadGameState(); // 게임 상태 로드
         }
         else
         {
@@ -26,41 +29,48 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-
+        StartTutorial(); // 게임 시작 시 튜토리얼 시작
     }
 
-    // Update is called once per frame
-    void Update()
+    // 게임 상태 저장
+    private void SaveGameState()
     {
-        if (Player.inst != null)
+        PlayerPrefs.SetInt("IsFirstPlay", IsFirstPlay ? 1 : 0);
+        PlayerPrefs.Save();
+    }
+
+    // 게임 상태 로드
+    private void LoadGameState()
+    {
+        // 튜토리얼 테스트를 위해 IsFirstPlay를 강제로 true로 설정
+        IsFirstPlay = true;
+        Debug.Log($"[GameManager] LoadGameState - IsFirstPlay: {IsFirstPlay}");
+    }
+
+    // 튜토리얼 시작
+    public void StartTutorial()
+    {
+        Debug.Log($"[GameManager] StartTutorial 호출됨 - IsFirstPlay: {IsFirstPlay}, ChallengeLevel: {ChallengeLevel}");
+        if (IsFirstPlay && ChallengeLevel == 1)
         {
-            Player_HP = Player.inst.HP;
-            Player_Gold = Player.inst.Gold;
+            IsTutorialMode = true;
+            Debug.Log("[GameManager] 튜토리얼 모드 시작");
         }
-        if (Input.GetKeyDown(KeyCode.Space))
+        else
         {
-            Debug.Log("게임 종료! 맵으로 돌아갑니다.");
-
-            if (MapManager.Instance != null)
-            {
-                Debug.Log("Main 씬에서 MapManager가 살아 있음!");
-            }
-            else
-            {
-                Debug.Log("Main 씬에서 MapManager가 사라짐!");
-            }
-
-            SceneManager.LoadScene("Map2");
-
-            // 씬 변경 후 MapManager 상태 확인
-            if (MapManager.Instance != null)
-            {
-                Debug.Log("씬 변경 후에도 MapManager가 유지됨!");
-            }
+            Debug.Log($"[GameManager] 튜토리얼 시작 조건 불만족 - IsFirstPlay: {IsFirstPlay}, ChallengeLevel: {ChallengeLevel}");
         }
+    }
+
+    // 튜토리얼 완료
+    public void CompleteTutorial()
+    {
+        IsTutorialMode = false;
+        IsFirstPlay = false;
+        SaveGameState();
+        Debug.Log("[GameManager] 튜토리얼 완료");
     }
 
     public void SetChallengeLevel(int level)
@@ -69,6 +79,12 @@ public class GameManager : MonoBehaviour
         {
             ChallengeLevel = level;
             Debug.Log($"챌린지 레벨이 {level}로 설정되었습니다. ");
+            
+            // 첫 플레이이고 레벨 1이면 튜토리얼 시작
+            if (IsFirstPlay && level == 1)
+            {
+                StartTutorial();
+            }
         }
         else
         {
@@ -76,7 +92,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //Element Type을 가져오는 메서드
+    // Element Type을 가져오는 메서드
     public ElementType GetModifiedElementType(ElementType originalType)
     {
         if (ChallengeLevel == 1 && originalType == ElementType.Earth)

@@ -42,9 +42,21 @@ public class ShopManager : MonoBehaviour
 
     public void OpenShop()
     {
-        shopPanel.SetActive(true);
-        GenerateShopCards();
-        UpdateUI();
+        if (shopPanel != null)
+        {
+            shopPanel.SetActive(true);
+            Debug.Log("[ShopManager] 상점이 열렸습니다.");
+
+            // 튜토리얼 진행
+            var tutorialManager = FindObjectOfType<TutorialManager>();
+            if (tutorialManager != null)
+            {
+                tutorialManager.OnShopOpened();
+            }
+
+            GenerateShopCards();
+            UpdateUI();
+        }
     }
 
     private void Update()
