@@ -48,11 +48,11 @@ public class ShopManager : MonoBehaviour
             Debug.Log("[ShopManager] 상점이 열렸습니다.");
 
             // 튜토리얼 진행
-            var tutorialManager = FindObjectOfType<TutorialManager>();
-            if (tutorialManager != null)
+            if (TutorialManager.Instance != null)
             {
-                tutorialManager.OnShopOpened();
+                TutorialManager.Instance.NextStep();
             }
+            
 
             GenerateShopCards();
             UpdateUI();
@@ -111,6 +111,11 @@ public class ShopManager : MonoBehaviour
                 if (cardIndex != -1)
                 {
                     PurchaseCard(cardIndex);
+
+                                if (TutorialManager.Instance != null)
+                {
+                TutorialManager.Instance.NextStep();
+            }
                 }
                 else
                 {

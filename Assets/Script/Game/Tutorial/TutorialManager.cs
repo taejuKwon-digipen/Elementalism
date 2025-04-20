@@ -20,6 +20,9 @@ public class TutorialManager : MonoBehaviour
     private bool[] hiddenSteps;
     private bool isWaitingForShopOpen = false;
 
+    // 현재 튜토리얼 단계를 외부에서 확인할 수 있도록 프로퍼티 추가
+    public int CurrentStep => currentStepIndex;
+
     // 튜토리얼 단계별 메시지와 위치 정의
     private readonly (string message, Vector2 position)[] tutorialSteps = new[]
     {
@@ -33,16 +36,16 @@ public class TutorialManager : MonoBehaviour
         ("카드는 한 턴에 3장만 사용 가능합니다!\n카드를 리필하고 싶으면 턴 종료 버튼을 누르세요!\n*주의 : 턴 종료시 몬스터가 앞으로 조금씩 이동합니다.", new Vector2(-650, -350)),
         
         //block
-        ("오른쪽에 블럭을 가운데 퍼즐에 넣어 모양을 만들수 있습니다!\n마우스 오른쪽을 클릭하거나 QE를 눌러 블럭을 회전할 수 있습니다.", new Vector2(0, -200)),
+        ("오른쪽에 블럭을 가운데 퍼즐에 넣어 모양을 만들수 있습니다!\n마우스 오른쪽을 클릭하거나 QE를 눌러 블럭을 회전할 수 있습니다.", new Vector2(+650, -350)),
         
         //block check
-        ("카드의 모양은 왼쪽부터 오른쪽으로, 위에서 아래 순서로 검사합니다!", new Vector2(0, -200)),
+        ("카드의 모양은 왼쪽부터 오른쪽으로, 위에서 아래 순서로 검사합니다!", new Vector2(-650, -350)),
         
         //shop
-        ("상점에서 새로운 카드를 구매하세요!\n카드를 구매하면 덱에 추가가 되어 다음 레벨에서 사용 가능합니다!", new Vector2(0, -200)),
+        ("상점에서 새로운 카드를 구매하세요!\n카드를 구매하면 덱에 추가가 되어 다음 레벨에서 사용 가능합니다!", new Vector2(650, 350)),
         
         //shop purchase
-        ("돈을 사용하여 체력을 회복 할 수도 있고, 맵을 눌러 다음 레벨로 갈 수도 있습니다.", new Vector2(0, -200))
+        ("돈을 사용하여 체력을 회복 할 수도 있고, 맵을 눌러 다음 레벨로 갈 수도 있습니다.", new Vector2(650, 350))
     };
 
     private void Awake()
@@ -165,6 +168,20 @@ public class TutorialManager : MonoBehaviour
         Debug.Log("[TutorialManager] 튜토리얼 완료");
         tutorialPanel.SetActive(false);
         GameManager.Instance.CompleteTutorial();
+    }
+
+    // 현재 튜토리얼 단계가 CardLimit인지 확인하는 메서드
+    public bool IsCurrentStepCardLimit()
+    {
+        // CardLimit은 tutorialSteps 배열의 2번 인덱스 (세 번째 항목)
+        return currentStepIndex == 2;
+    }
+
+    // 현재 튜토리얼 단계가 자동 진행을 막아야 하는 단계인지 확인
+    public bool ShouldPreventAutoProgress()
+    {
+        // CardLimit(2), Shop(5), ShopPurchase(6) 단계에서는 자동 진행 막기
+        return currentStepIndex == 2 || currentStepIndex == 5 || currentStepIndex == 6;
     }
 
     private enum TutorialStep

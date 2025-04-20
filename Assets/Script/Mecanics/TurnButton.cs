@@ -38,6 +38,12 @@ public class TurnButton : MonoBehaviour
             {
                 GridChecker.inst.OnTurnEnd();
             }
+
+            if (TutorialManager.Instance != null && TutorialManager.Instance.IsCurrentStepCardLimit())
+            {
+                Debug.Log("[TurnButton] CardLimit 튜토리얼 단계 완료, 다음 단계로 진행");
+                TutorialManager.Instance.NextStep();
+            }
         }
         else
         {

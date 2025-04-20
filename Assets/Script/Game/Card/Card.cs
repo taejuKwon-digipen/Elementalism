@@ -283,8 +283,12 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
             // 상호작용 비활성화
             CardManager.Inst.SetInteractionsEnabled(false);
             
-            // 튜토리얼 진행
-            TutorialManager.Instance.NextStep();
+            // 튜토리얼 매니저가 존재하고, 특정 단계(CardLimit=2, Shop=5, ShopPurchase=6)가 아닐 때만 다음으로 진행
+            var tutorialStep = TutorialManager.Instance?.CurrentStep ?? -1;
+            if (TutorialManager.Instance != null && tutorialStep != 2 && tutorialStep != 4 && tutorialStep != 5)
+            {
+                TutorialManager.Instance.NextStep();
+            }
 
             // 카드를 지정된 사용 위치로 이동
             Vector3 targetPosition = CardManager.Inst.cardUsePoint.position;
