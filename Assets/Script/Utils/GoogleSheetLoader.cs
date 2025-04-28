@@ -72,20 +72,48 @@ public class GoogleSheetLoader : MonoBehaviour
         }
     }
 
+    // 셀 내부 줄바꿈까지 지원하는 CSV 줄 분리 함수
+    private static List<string> ReadCsvLines(string csv)
+    {
+        var lines = new List<string>();
+        var sb = new System.Text.StringBuilder();
+        bool inQuotes = false;
+        for (int i = 0; i < csv.Length; i++)
+        {
+            char c = csv[i];
+            if (c == '"')
+            {
+                inQuotes = !inQuotes;
+            }
+            if (c == '\n' && !inQuotes)
+            {
+                lines.Add(sb.ToString());
+                sb.Clear();
+            }
+            else
+            {
+                sb.Append(c);
+            }
+        }
+        if (sb.Length > 0)
+            lines.Add(sb.ToString());
+        return lines;
+    }
+
     private void ParseCSV(string csv, int langColumn)
     {
         localizedTexts.Clear();
-        var lines = csv.Split('\n');
+        var lines = ReadCsvLines(csv);
         bool isFirstLine = true;
         foreach (var line in lines)
         {
             if (isFirstLine) { isFirstLine = false; continue; } // 첫 줄(헤더) 무시
 
-            var columns = line.Split(',');
-            if (columns.Length > langColumn && !string.IsNullOrWhiteSpace(columns[0]))
+            var columns = CsvHelper.ParseLine(line);
+            if (columns.Count > langColumn && !string.IsNullOrWhiteSpace(columns[0]))
             {
-                string key = columns[0].Trim().Trim('"');
-                string value = columns[langColumn].Trim().Trim('"');
+                string key = columns[0].Trim();
+                string value = columns[langColumn].Trim();
                 localizedTexts[key] = value;
                 Debug.Log($"[GoogleSheetLoader] {key} = {value}");
             }
