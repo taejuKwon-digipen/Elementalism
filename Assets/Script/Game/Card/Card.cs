@@ -284,8 +284,11 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
             CardManager.Inst.SetInteractionsEnabled(false);
             
             // 튜토리얼 매니저가 존재하고, 특정 단계(CardLimit=2, Shop=5, ShopPurchase=6)가 아닐 때만 다음으로 진행
-            var tutorialStep = TutorialManager.Instance?.CurrentStep ?? -1;
-            if (TutorialManager.Instance != null && tutorialStep != 2 && tutorialStep != 4 && tutorialStep != 5)
+            var tutorialStep = TutorialManager.Instance?.CurrentStep ?? TutorialManager.TutorialStep.None;
+            if (TutorialManager.Instance != null &&
+                tutorialStep != TutorialManager.TutorialStep.CardLimit &&
+                tutorialStep != TutorialManager.TutorialStep.BlockCheck &&
+                tutorialStep != TutorialManager.TutorialStep.Shop)
             {
                 TutorialManager.Instance.NextStep();
             }

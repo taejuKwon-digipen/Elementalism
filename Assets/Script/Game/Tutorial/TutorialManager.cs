@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections;
 using System;
+using System.Collections.Generic;
 
 public class TutorialManager : MonoBehaviour
 {
@@ -15,37 +16,23 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private Button nextButton;
     [SerializeField] private Button closeButton;
 
-    private int currentStepIndex = -1;
+    private TutorialStep currentStep = TutorialStep.None;
     private RectTransform tutorialPanelRect;
-    private bool[] hiddenSteps;
+    private HashSet<TutorialStep> hiddenSteps;
     private bool isWaitingForShopOpen = false;
 
-    // 현재 튜토리얼 단계를 외부에서 확인할 수 있도록 프로퍼티 추가
-    public int CurrentStep => currentStepIndex;
+    public TutorialStep CurrentStep => currentStep;
 
-    // 튜토리얼 단계별 메시지와 위치 정의
-    private readonly (string message, Vector2 position)[] tutorialSteps = new[]
+    // 튜토리얼 단계별 메시지와 위치를 Dictionary로 관리
+    private readonly Dictionary<TutorialStep, (string message, Vector2 position)> tutorialSteps = new()
     {
-        //card selection
-        ("카드를 선택하고 위로 드래그를 하여 적을 공격하세요!", new Vector2(-650, -350)),
-        
-        //card instruction
-        ("카드 왼쪽 숫자는 일반 공격이고, 오른쪽 숫자는 치명타 공격입니다.\n노란색 테두리가 있는 블록을 깨면 치명타 데미지를 받습니다.", new Vector2(-650, -350)),
-        
-        //card limit
-        ("카드는 한 턴에 3장만 사용 가능합니다!\n카드를 리필하고 싶으면 턴 종료 버튼을 누르세요!\n*주의 : 턴 종료시 몬스터가 앞으로 조금씩 이동합니다.", new Vector2(-650, -350)),
-        
-        //block
-        ("오른쪽에 블럭을 가운데 퍼즐에 넣어 모양을 만들수 있습니다!\n마우스 오른쪽을 클릭하거나 QE를 눌러 블럭을 회전할 수 있습니다.", new Vector2(+650, -350)),
-        
-        //block check
-        ("카드의 모양은 왼쪽부터 오른쪽으로, 위에서 아래 순서로 검사합니다!", new Vector2(-650, -350)),
-        
-        //shop
-        ("상점에서 새로운 카드를 구매하세요!\n카드를 구매하면 덱에 추가가 되어 다음 레벨에서 사용 가능합니다!", new Vector2(650, 350)),
-        
-        //shop purchase
-        ("돈을 사용하여 체력을 회복 할 수도 있고, 맵을 눌러 다음 레벨로 갈 수도 있습니다.", new Vector2(650, 350))
+        { TutorialStep.CardSelection, ("카드를 선택하고 위로 드래그를 하여 적을 공격하세요!", new Vector2(-650, -350)) },
+        { TutorialStep.CardInstruction, ("카드 왼쪽 숫자는 일반 공격이고, 오른쪽 숫자는 치명타 공격입니다.\n노란색 테두리가 있는 블록을 깨면 치명타 데미지를 받습니다.", new Vector2(-650, -350)) },
+        { TutorialStep.CardLimit, ("카드는 한 턴에 3장만 사용 가능합니다!\n카드를 리필하고 싶으면 턴 종료 버튼을 누르세요!\n*주의 : 턴 종료시 몬스터가 앞으로 조금씩 이동합니다.", new Vector2(-650, -350)) },
+        { TutorialStep.Block, ("오른쪽에 블럭을 가운데 퍼즐에 넣어 모양을 만들수 있습니다!\n마우스 오른쪽을 클릭하거나 QE를 눌러 블럭을 회전할 수 있습니다.", new Vector2(+650, -350)) },
+        { TutorialStep.BlockCheck, ("카드의 모양은 왼쪽부터 오른쪽으로, 위에서 아래 순서로 검사합니다!", new Vector2(-650, -350)) },
+        { TutorialStep.Shop, ("상점에서 새로운 카드를 구매하세요!\n카드를 구매하면 덱에 추가가 되어 다음 레벨에서 사용 가능합니다!", new Vector2(650, 350)) },
+        { TutorialStep.ShopPurchase, ("돈을 사용하여 체력을 회복 할 수도 있고, 맵을 눌러 다음 레벨로 갈 수도 있습니다.", new Vector2(650, 350)) }
     };
 
     private void Awake()
@@ -61,7 +48,7 @@ public class TutorialManager : MonoBehaviour
         }
 
         tutorialPanelRect = tutorialPanel.GetComponent<RectTransform>();
-        hiddenSteps = new bool[System.Enum.GetValues(typeof(TutorialStep)).Length];
+        hiddenSteps = new HashSet<TutorialStep>();
     }
 
     private void Start()
@@ -73,19 +60,13 @@ public class TutorialManager : MonoBehaviour
     private IEnumerator CheckTutorialMode()
     {
         Debug.Log("[TutorialManager] CheckTutorialMode 시작");
-        
-        // GameManager가 초기화될 때까지 대기
         while (GameManager.Instance == null)
         {
             Debug.Log("[TutorialManager] GameManager.Instance 대기 중...");
             yield return new WaitForSeconds(0.1f);
         }
-
-        // GameManager의 Start 메서드가 완료될 때까지 추가 대기
         yield return new WaitForSeconds(0.2f);
-        
         Debug.Log($"[TutorialManager] GameManager 체크 - IsTutorialMode: {GameManager.Instance.IsTutorialMode}");
-        
         if (GameManager.Instance.IsTutorialMode)
         {
             Debug.Log("[TutorialManager] 튜토리얼 시작");
@@ -99,34 +80,47 @@ public class TutorialManager : MonoBehaviour
 
     private void StartTutorial()
     {
-        currentStepIndex = -1;
-        NextStep();
+        currentStep = TutorialStep.CardSelection;
+        ShowCurrentStep();
         Debug.Log("[TutorialManager] 첫 번째 튜토리얼 단계 시작");
     }
 
-    // 다음 튜토리얼 단계로 진행하는 함수
     public void NextStep()
     {
-        currentStepIndex++;
-        
-        if (currentStepIndex >= tutorialSteps.Length)
+        currentStep = GetNextStep(currentStep);
+        if (currentStep == TutorialStep.None)
         {
             CompleteTutorial();
             return;
         }
-
         ShowCurrentStep();
+    }
+
+    private TutorialStep GetNextStep(TutorialStep step)
+    {
+        // enum 순서대로 다음 단계 반환, 마지막이면 None 반환
+        var values = (TutorialStep[])Enum.GetValues(typeof(TutorialStep));
+        int idx = Array.IndexOf(values, step);
+        if (idx + 1 < values.Length)
+        {
+            return values[idx + 1];
+        }
+        return TutorialStep.None;
     }
 
     private void ShowCurrentStep()
     {
-        var (message, position) = tutorialSteps[currentStepIndex];
-        
-        tutorialPanel.SetActive(true);
-        tutorialText.text = message;
-        SetPanelPosition(position);
-        
-        Debug.Log($"[TutorialManager] 튜토리얼 단계 {currentStepIndex} 표시");
+        if (tutorialSteps.TryGetValue(currentStep, out var data))
+        {
+            tutorialPanel.SetActive(true);
+            tutorialText.text = data.message;
+            SetPanelPosition(data.position);
+            Debug.Log($"[TutorialManager] 튜토리얼 단계 {currentStep} 표시");
+        }
+        else
+        {
+            tutorialPanel.SetActive(false);
+        }
     }
 
     private void SetPanelPosition(Vector2 position)
@@ -140,13 +134,13 @@ public class TutorialManager : MonoBehaviour
 
     public void OnCloseButtonClick()
     {
-        hiddenSteps[(int)currentStepIndex] = true;
+        hiddenSteps.Add(currentStep);
         tutorialPanel.SetActive(false);
     }
 
     public void OnCardSelected()
     {
-        if (currentStepIndex == 0)
+        if (currentStep == TutorialStep.CardSelection)
         {
             Debug.Log("[TutorialManager] 카드 선택 완료");
             NextStep();
@@ -155,7 +149,7 @@ public class TutorialManager : MonoBehaviour
 
     public void OnShopOpened()
     {
-        if (currentStepIndex == 5 && isWaitingForShopOpen)
+        if (currentStep == TutorialStep.Shop && isWaitingForShopOpen)
         {
             Debug.Log("[TutorialManager] 상점 열림");
             isWaitingForShopOpen = false;
@@ -170,21 +164,16 @@ public class TutorialManager : MonoBehaviour
         GameManager.Instance.CompleteTutorial();
     }
 
-    // 현재 튜토리얼 단계가 CardLimit인지 확인하는 메서드
-    public bool IsCurrentStepCardLimit()
-    {
-        // CardLimit은 tutorialSteps 배열의 2번 인덱스 (세 번째 항목)
-        return currentStepIndex == 2;
-    }
+    public bool IsCurrentStepCardLimit() => currentStep == TutorialStep.CardLimit;
 
-    // 현재 튜토리얼 단계가 자동 진행을 막아야 하는 단계인지 확인
     public bool ShouldPreventAutoProgress()
     {
-        // CardLimit(2), Shop(5), ShopPurchase(6) 단계에서는 자동 진행 막기
-        return currentStepIndex == 2 || currentStepIndex == 5 || currentStepIndex == 6;
+        return currentStep == TutorialStep.CardLimit ||
+               currentStep == TutorialStep.Shop ||
+               currentStep == TutorialStep.ShopPurchase;
     }
 
-    private enum TutorialStep
+    public enum TutorialStep
     {
         None,
         CardSelection,
