@@ -23,16 +23,16 @@ public class TutorialManager : MonoBehaviour
 
     public TutorialStep CurrentStep => currentStep;
 
-    // 튜토리얼 단계별 메시지와 위치를 Dictionary로 관리
-    private readonly Dictionary<TutorialStep, (string message, Vector2 position)> tutorialSteps = new()
+    // 튜토리얼 단계별 메시지 Key와 위치만 저장
+    private readonly Dictionary<TutorialStep, (string key, Vector2 position)> tutorialSteps = new()
     {
-        { TutorialStep.CardSelection, ("카드를 선택하고 위로 드래그를 하여 적을 공격하세요!", new Vector2(-650, -350)) },
-        { TutorialStep.CardInstruction, ("카드 왼쪽 숫자는 일반 공격이고, 오른쪽 숫자는 치명타 공격입니다.\n노란색 테두리가 있는 블록을 깨면 치명타 데미지를 받습니다.", new Vector2(-650, -350)) },
-        { TutorialStep.CardLimit, ("카드는 한 턴에 3장만 사용 가능합니다!\n카드를 리필하고 싶으면 턴 종료 버튼을 누르세요!\n*주의 : 턴 종료시 몬스터가 앞으로 조금씩 이동합니다.", new Vector2(-650, -350)) },
-        { TutorialStep.Block, ("오른쪽에 블럭을 가운데 퍼즐에 넣어 모양을 만들수 있습니다!\n마우스 오른쪽을 클릭하거나 QE를 눌러 블럭을 회전할 수 있습니다.", new Vector2(+650, -350)) },
-        { TutorialStep.BlockCheck, ("카드의 모양은 왼쪽부터 오른쪽으로, 위에서 아래 순서로 검사합니다!", new Vector2(-650, -350)) },
-        { TutorialStep.Shop, ("상점에서 새로운 카드를 구매하세요!\n카드를 구매하면 덱에 추가가 되어 다음 레벨에서 사용 가능합니다!", new Vector2(650, 350)) },
-        { TutorialStep.ShopPurchase, ("돈을 사용하여 체력을 회복 할 수도 있고, 맵을 눌러 다음 레벨로 갈 수도 있습니다.", new Vector2(650, 350)) }
+        { TutorialStep.CardSelection,   ("TUTORIAL_STEP1", new Vector2(-650, -350)) },
+        { TutorialStep.CardInstruction, ("TUTORIAL_STEP2", new Vector2(-650, -350)) },
+        { TutorialStep.CardLimit,       ("TUTORIAL_STEP3", new Vector2(-650, -350)) },
+        { TutorialStep.Block,           ("TUTORIAL_STEP4", new Vector2(+650, -350)) },
+        { TutorialStep.BlockCheck,      ("TUTORIAL_STEP5", new Vector2(-650, -350)) },
+        { TutorialStep.Shop,            ("TUTORIAL_STEP6", new Vector2(650, 350)) },
+        { TutorialStep.ShopPurchase,    ("TUTORIAL_STEP7", new Vector2(650, 350)) }
     };
 
     private void Awake()
@@ -40,6 +40,7 @@ public class TutorialManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -54,7 +55,28 @@ public class TutorialManager : MonoBehaviour
     private void Start()
     {
         Debug.Log("[TutorialManager] Start 호출됨");
+        if (GoogleSheetLoader.Instance != null)
+        {
+            GoogleSheetLoader.Instance.OnSheetLoaded -= OnSheetLoadedAndStartTutorial;
+            GoogleSheetLoader.Instance.OnSheetLoaded += OnSheetLoadedAndStartTutorial;
+
+            if (GoogleSheetLoader.Instance.IsLoaded)
+            {
+                Debug.Log("[TutorialManager] GoogleSheetLoader 이미 로드됨, 즉시 튜토리얼 시작");
+                OnSheetLoadedAndStartTutorial();
+            }
+        }
+        else
+        {
+            StartCoroutine(CheckTutorialMode());
+        }
+    }
+
+    private void OnSheetLoadedAndStartTutorial()
+    {
+        Debug.Log("[TutorialManager] OnSheetLoadedAndStartTutorial 콜백 호출됨");
         StartCoroutine(CheckTutorialMode());
+        ShowCurrentStep();
     }
 
     private IEnumerator CheckTutorialMode()
@@ -113,7 +135,11 @@ public class TutorialManager : MonoBehaviour
         if (tutorialSteps.TryGetValue(currentStep, out var data))
         {
             tutorialPanel.SetActive(true);
-            tutorialText.text = data.message;
+            string text = GoogleSheetLoader.Instance != null
+                ? GoogleSheetLoader.Instance.GetText(data.key)
+                : data.key;
+            Debug.Log($"[튜토리얼] key: {data.key}, value: {text}");
+            tutorialText.text = text;
             SetPanelPosition(data.position);
             Debug.Log($"[TutorialManager] 튜토리얼 단계 {currentStep} 표시");
         }

@@ -1,8 +1,14 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class MainMenuManager : MonoBehaviour
 {
+
+    private void Start()
+    {
+    }
+
     public void OnNewGameButtonClick()
     {
         SceneManager.LoadScene("Map2");
