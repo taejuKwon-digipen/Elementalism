@@ -108,4 +108,34 @@ public class CardItemSO : ScriptableObject
         EditorUtility.SetDirty(this);
     }
 #endif
+
+    public void UpdateFromSheet()
+    {
+        if (GoogleSheetLoader.Instance == null) return;
+
+        foreach (var item in items)
+        {
+            if (GoogleSheetLoader.Instance.cardDatas.TryGetValue(item.ID, out var sheetCard))
+            {
+                switch (GoogleSheetLoader.Instance.CurrentLanguage)
+                {
+                    case GoogleSheetLoader.Language.Korean:
+                        item.CardName = sheetCard.Name_KR;
+                        item.CardDescription = sheetCard.Desc_KR;
+                        break;
+                    case GoogleSheetLoader.Language.English:
+                        item.CardName = sheetCard.Name_EN;
+                        item.CardDescription = sheetCard.Desc_EN;
+                        break;
+                    case GoogleSheetLoader.Language.Japanese:
+                        item.CardName = sheetCard.Name_JP;
+                        item.CardDescription = sheetCard.Desc_JP;
+                        break;
+                }
+            }
+        }
+#if UNITY_EDITOR
+        EditorUtility.SetDirty(this);
+#endif
+    }
 }

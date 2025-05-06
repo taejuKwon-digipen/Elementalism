@@ -52,6 +52,13 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
     // 카드 초기화 및 데이터와 UI 연결
     public void Setup(CardItem carditem_, bool isFront_)
     {
+        // 카드 데이터 동기화 (언어 변경 반영)
+        var cardSO = Resources.Load<CardItemSO>("ItemSO");
+        if (cardSO != null)
+        {
+            cardSO.UpdateFromSheet();
+        }
+
         carditem = carditem_;
         isFront = isFront_;
 

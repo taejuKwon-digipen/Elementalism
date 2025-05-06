@@ -151,7 +151,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c4501d39c2717547aa62d8634ec195e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sheetUrl: https://docs.google.com/spreadsheets/d/1X1JrZBPwUKbbxhx_HtsJhCrLJG801lTCF4C6bTe9nJQ/gviz/tq?tqx=out:csv
+  languageSheetUrl: 'https://docs.google.com/spreadsheets/d/1X1JrZBPwUKbbxhx_HtsJhCrLJG801lTCF4C6bTe9nJQ/export?format=csv&gid=0 '
+  cardSheetUrl: https://docs.google.com/spreadsheets/d/1X1JrZBPwUKbbxhx_HtsJhCrLJG801lTCF4C6bTe9nJQ/export?format=csv&gid=957487257
+  dbSheetUrl: https://docs.google.com/spreadsheets/d/1X1JrZBPwUKbbxhx_HtsJhCrLJG801lTCF4C6bTe9nJQ/export?format=csv&gid=638941911
   CurrentLanguage: 1
   IsLoaded: 0
 --- !u!4 &101327953
