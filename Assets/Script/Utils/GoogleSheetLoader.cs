@@ -9,7 +9,9 @@ public class GoogleSheetLoader : MonoBehaviour
 
     // 구글 시트 CSV 주소 (예시)
     [Header("구글 시트 CSV 주소")]
-    public string sheetUrl = "https://docs.google.com/spreadsheets/d/1X1JrZBPwUKbbxhx_HtsJhCrLJG801lTCF4C6bTe9nJQ/gviz/tq?tqx=out:csv";
+    public string languageSheetUrl;
+    public string cardSheetUrl;
+    public string dbSheetUrl;
 
     // 언어별 텍스트 저장 (Key: string, Value: string)
     private Dictionary<string, string> localizedTexts = new Dictionary<string, string>();
@@ -20,6 +22,20 @@ public class GoogleSheetLoader : MonoBehaviour
 
     public System.Action OnSheetLoaded; // 데이터 로드 완료 콜백
     public bool IsLoaded = false;
+
+    // 카드 데이터 및 DB 데이터 저장용
+    public class CardData
+    {
+        public int CardID;
+        public string Name_KR;
+        public string Desc_KR;
+        public string Name_EN;
+        public string Desc_EN;
+        public string Name_JP;
+        public string Desc_JP;
+    }
+    public Dictionary<int, CardData> cardDatas = new();
+    public Dictionary<string, string> dbValues = new();
 
     private void Awake()
     {
@@ -38,36 +54,106 @@ public class GoogleSheetLoader : MonoBehaviour
 
     private void Start()
     {
-        LoadSheetForLanguage(CurrentLanguage);
+        StartCoroutine(LoadAllSheets());
     }
 
-    public void LoadSheetForLanguage(Language lang)
+    private IEnumerator LoadAllSheets()
     {
-        langColumn = (int)lang;
-        StartCoroutine(LoadSheet());
+        yield return StartCoroutine(LoadLanguageSheet());
+        yield return StartCoroutine(LoadCardSheet());
+        yield return StartCoroutine(LoadDBSheet());
+        IsLoaded = true;
+        OnSheetLoaded?.Invoke();
     }
 
-    private IEnumerator LoadSheet()
+    private IEnumerator LoadLanguageSheet()
     {
-        Debug.Log("[GoogleSheetLoader] 구글 시트 데이터 요청 시작: " + sheetUrl);
-        UnityWebRequest www = UnityWebRequest.Get(sheetUrl);
+        Debug.Log("[GoogleSheetLoader] 언어 시트 데이터 요청 시작: " + languageSheetUrl);
+        UnityWebRequest www = UnityWebRequest.Get(languageSheetUrl);
         yield return www.SendWebRequest();
-
         if (www.result == UnityWebRequest.Result.Success)
         {
-            Debug.Log("[GoogleSheetLoader] 구글 시트 데이터 다운로드 성공");
+            Debug.Log("[GoogleSheetLoader] 언어 시트 데이터 다운로드 성공");
             ParseCSV(www.downloadHandler.text, langColumn);
-            Debug.Log($"구글 시트 로드 성공 (언어: {CurrentLanguage})");
-            IsLoaded = true;
-            yield return null; // 혹시라도 프레임을 넘기고 싶으면 추가
-            OnSheetLoaded?.Invoke(); // 데이터 로드 완료 시 콜백 호출
         }
         else
         {
-            Debug.LogError($"[GoogleSheetLoader] 구글 시트 로드 실패: {www.error}\nURL: {sheetUrl}");
-            if (!string.IsNullOrEmpty(www.downloadHandler.text))
+            Debug.LogError($"[GoogleSheetLoader] 언어 시트 로드 실패: {www.error}\nURL: {languageSheetUrl}");
+        }
+    }
+
+    private IEnumerator LoadCardSheet()
+    {
+        Debug.Log("[GoogleSheetLoader] 카드 시트 데이터 요청 시작: " + cardSheetUrl);
+        UnityWebRequest www = UnityWebRequest.Get(cardSheetUrl);
+        yield return www.SendWebRequest();
+        if (www.result == UnityWebRequest.Result.Success)
+        {
+            Debug.Log("[GoogleSheetLoader] 카드 시트 데이터 다운로드 성공");
+            ParseCardCSV(www.downloadHandler.text);
+        }
+        else
+        {
+            Debug.LogError($"[GoogleSheetLoader] 카드 시트 로드 실패: {www.error}\nURL: {cardSheetUrl}");
+        }
+    }
+
+    private IEnumerator LoadDBSheet()
+    {
+        Debug.Log("[GoogleSheetLoader] DB 시트 데이터 요청 시작: " + dbSheetUrl);
+        UnityWebRequest www = UnityWebRequest.Get(dbSheetUrl);
+        yield return www.SendWebRequest();
+        if (www.result == UnityWebRequest.Result.Success)
+        {
+            Debug.Log("[GoogleSheetLoader] DB 시트 데이터 다운로드 성공");
+            ParseDBCSV(www.downloadHandler.text);
+        }
+        else
+        {
+            Debug.LogError($"[GoogleSheetLoader] DB 시트 로드 실패: {www.error}\nURL: {dbSheetUrl}");
+        }
+    }
+
+    private void ParseCardCSV(string csv)
+    {
+        cardDatas.Clear();
+        var lines = ReadCsvLines(csv);
+        bool isFirstLine = true;
+        foreach (var line in lines)
+        {
+            if (isFirstLine) { isFirstLine = false; continue; }
+            var columns = CsvHelper.ParseLine(line);
+            if (columns.Count > 6)
             {
-                Debug.LogError($"[GoogleSheetLoader] 응답 내용: {www.downloadHandler.text}");
+                CardData card = new CardData();
+                int.TryParse(columns[0].Trim(), out card.CardID);
+                card.Name_KR = columns[1].Trim();
+                card.Desc_KR = columns[2].Trim();
+                card.Name_EN = columns[3].Trim();
+                card.Desc_EN = columns[4].Trim();
+                card.Name_JP = columns[5].Trim();
+                card.Desc_JP = columns[6].Trim();
+                cardDatas[card.CardID] = card;
+                Debug.Log($"[GoogleSheetLoader][Card] ID={card.CardID}, KR={card.Name_KR}, EN={card.Name_EN}, JP={card.Name_JP}");
+            }
+        }
+    }
+
+    private void ParseDBCSV(string csv)
+    {
+        dbValues.Clear();
+        var lines = ReadCsvLines(csv);
+        bool isFirstLine = true;
+        foreach (var line in lines)
+        {
+            if (isFirstLine) { isFirstLine = false; continue; }
+            var columns = CsvHelper.ParseLine(line);
+            if (columns.Count > 1)
+            {
+                string key = columns[0].Trim();
+                string value = columns[1].Trim();
+                dbValues[key] = value;
+                Debug.Log($"[GoogleSheetLoader][DB] {key} = {value}");
             }
         }
     }
@@ -139,7 +225,7 @@ public class GoogleSheetLoader : MonoBehaviour
         if (CurrentLanguage != lang)
         {
             CurrentLanguage = lang;
-            LoadSheetForLanguage(lang);
+            StartCoroutine(LoadAllSheets());
         }
     }
 
