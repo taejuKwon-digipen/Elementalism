@@ -154,168 +154,106 @@ public class GridChecker : MonoBehaviour
     // 카드들을 순차적으로 검사하는 코루틴
     private IEnumerator ProcessCardsSequentially()
     {
-        int gridRows = grid.currentShape.rows;
-        int gridColumns = grid.currentShape.columns;
-        int addDamage = 0;
-
-        // activeCards의 복사본을 만들어서 순회
-        var cardsToProcess = new List<Card>(activeCards);
+        var cardsToProcess = new List<Card>(activeCards); // 안전한 순회를 위해 복사본 사용
 
         foreach (var card in cardsToProcess)
         {
             if (card == null || card.carditem == null)
             {
-                Debug.LogWarning($"GridChecker: Card is null or has no carditem");
+                Debug.LogWarning("GridChecker: Card is null or has no carditem. 리스트에서 제거합니다.");
+                if (card != null) activeCards.Remove(card); // 원본 리스트에서도 제거 시도
+                if (card != null && card.gameObject != null) Destroy(card.gameObject);
                 continue;
             }
-
-            int totalDamage = 0;
-            int matchedBlockCount = 0;
-            int oraBlockCount = 0;
-            ShapeData cardShape = card.carditem.cardShape;
-            
-            if (cardShape == null)
-            {
-                Debug.LogWarning($"GridChecker: Card has no shape data");
-                continue;
-            }
-
-            int cardDamage = card.carditem.PowerLeft;
-            int cardCritDamage = card.carditem.PowerRight;
-            int cardID = card.carditem.ID;
-            ElementType createdElementType = card.carditem.CreatedElementType;
-
-            // 그리드 순회하며 매칭 확인
-            for (int row = 0; row <= gridRows - cardShape.rows; row++)
-            {
-                for (int col = 0; col <= gridColumns - cardShape.columns; col++)
-                {
-                    if (CheckIfBlocksMatch(grid, cardShape, row, col))
-                    {
-                        yield return StartCoroutine(HighlightMatchedBlocks(grid, cardShape, row, col));
-                        
-                        // 매칭된 블록 수 계산
-                        int currentMatchedBlocks = CountMatchedBlocks(cardShape);
-                        matchedBlockCount += currentMatchedBlocks;
-                        
-                        // 오라 블록 수 계산
-                        oraBlockCount += CountOraBlocks(grid, cardShape, row, col);
-                        
-                        // 블록 변경
-                        ChangeBlocksAfterMatch(grid, cardShape, row, col, createdElementType, cardID);
-                    }
-                }
-            }
-
-            // ID 9 카드의 특수 효과
-            if (cardID == 9)
-                addDamage = matchedBlockCount;
-
-            // 데미지 계산
-            if (oraBlockCount > 0)
-            {
-                // 오라 블록이 있으면 크리티컬 데미지
-                totalDamage = cardCritDamage * matchedBlockCount;
-                Debug.Log($"GridChecker : Critical Hit! Blocks: {matchedBlockCount}, Ora blocks: {oraBlockCount}, Damage: {totalDamage}");
-            }
-            else
-            {
-                // 일반 데미지
-                totalDamage = cardDamage * matchedBlockCount;
-                Debug.Log($"GridChecker : Normal Hit! Blocks: {matchedBlockCount}, Damage: {totalDamage}");
-            }
-
-            // 공격 실행
-            if (totalDamage > 0)
-            {
-                var ability = CardAbilityManager.GetAbility(cardID);
-                ability.ExecuteAbility(player, totalDamage + addDamage, oraBlockCount);
-            }
-
-            // 카드를 discardPile로 이동하고 파괴
-            if (Deck.Inst != null)
-            {
-                Deck.Inst.AddToDiscard(card.carditem);
-                Debug.Log($"GridChecker: Card {card.carditem.CardName} moved to discard pile");
-                Destroy(card.gameObject);
-            }
-
-            yield return new WaitForSeconds(0.5f);
+            yield return StartCoroutine(ProcessSingleCard(card));
         }
         
-        DisableAllActiveImages();
-        ReplaceOraImages();
-        Debug.Log("[GridChecker] 모든 카드 처리가 완료되었습니다.");
+        PostProcessGridActions();
+    }
 
-        // 카드 처리가 완료되면 상호작용 다시 활성화
-        if (CardManager.Inst != null)
+    private IEnumerator ProcessSingleCard(Card card)
+    {
+        ShapeData cardShape = card.carditem.cardShape;
+        if (cardShape == null)
         {
-            CardManager.Inst.SetInteractionsEnabled(true);
+            Debug.LogWarning($"GridChecker: 카드 '{card.carditem.CardName}'에 ShapeData가 없습니다. 이 카드를 건너뜁니다.");
+            DiscardAndDestroyCard(card, false); // 매칭 없이 카드 제거
+            yield break; 
         }
-    }
 
-    // 턴이 끝날 때 호출할 메서드
-    public void OnTurnEnd()
-    {
-        activeCards.Clear();
-        Debug.Log("[GridChecker] 턴이 끝났습니다. activeCards 리스트를 비웠습니다.");
-    }
+        int cardID = card.carditem.ID;
+        ElementType createdElementType = card.carditem.CreatedElementType;
+        int gridRows = grid.currentShape.rows;
+        int gridColumns = grid.currentShape.columns;
 
-    // 매칭된 블록 수를 계산하는 메서드
-    private int CountMatchedBlocks(ShapeData cardShape)
-    {
-        int count = 0;
-        for (int row = 0; row < cardShape.rows; row++)
+        int totalMatchedBlocksThisCard = 0;
+        int totalOraBlocksThisCard = 0;
+        
+        // 그리드를 순회하며 매칭 확인 및 즉시 처리
+        for (int r = 0; r <= gridRows - cardShape.rows; r++)
         {
-            for (int col = 0; col < cardShape.columns; col++)
+            for (int c = 0; c <= gridColumns - cardShape.columns; c++)
             {
-                if (cardShape.board[row].colum[col] != ElementType.None)
+                if (CheckIfBlocksMatch(grid, cardShape, r, c))
                 {
-                    count++;
-                }
-            }
-        }
-        return count;
-    }
+                    // 매치 발견!
+                    // HighlightMatchedBlocks 호출 시 currentCard 전달
+                    yield return StartCoroutine(HighlightMatchedBlocks(grid, cardShape, r, c, card)); 
+                    
+                    int currentShapeMatchedBlocks = CountMatchedBlocksInShape(cardShape);
+                    totalMatchedBlocksThisCard += currentShapeMatchedBlocks;
+                    totalOraBlocksThisCard += CountOraBlocksInMatch(grid, cardShape, r, c);
 
-    // Ora 활성화된 블록 수 계산
-    private int CountOraBlocks(Grid grid, ShapeData shape, int startRow, int startCol)
-    {
-        int oraCount = 0;
-
-        for (int row = 0; row < shape.rows; row++)
-        {
-            for (int col = 0; col < shape.columns; col++)
-            {
-                if (shape.board[row].colum[col] != ElementType.None)
-                {
-                    var block = grid.GetBlockAt(startRow + row, startCol + col).GetComponent<Block>();
-                    if (block != null && block.IsOraActive())
-                    {
-                        oraCount++;
-                    }
+                    // 그리드 상태 변경 (즉시 적용)
+                    ChangeBlocksAfterMatch(grid, cardShape, r, c, createdElementType, cardID);
                 }
             }
         }
 
-        return oraCount;
+        // 해당 카드의 모든 매칭 처리 후 효과 적용
+        if (totalMatchedBlocksThisCard > 0)
+        {
+            ApplyCardEffect(card, totalMatchedBlocksThisCard, totalOraBlocksThisCard);
+        }
+        
+        DiscardAndDestroyCard(card, true); // 카드 사용 처리
+
+        yield return new WaitForSeconds(0.5f); // 카드 처리 간 딜레이
+    }
+    
+    // FindAllMatchLocationsForCard 메소드는 ProcessSingleCard에서 직접 사용되지 않으므로,
+    // 다른 곳에서 필요하지 않다면 제거하거나 주석 처리할 수 있습니다.
+    private List<(int r, int c)> FindAllMatchLocationsForCard(Grid currentGrid, ShapeData cardShape, int gridRows, int gridColumns)
+    {
+        List<(int r, int c)> locations = new List<(int r, int c)>();
+        for (int r = 0; r <= gridRows - cardShape.rows; r++)
+        {
+            for (int c = 0; c <= gridColumns - cardShape.columns; c++)
+            {
+                if (CheckIfBlocksMatch(currentGrid, cardShape, r, c))
+                {
+                    locations.Add((r, c));
+                }
+            }
+        }
+        return locations; // 항상 리스트를 반환하도록 수정
     }
 
-    private IEnumerator HighlightMatchedBlocks(Grid grid, ShapeData cardShape, int startRow, int startCol)
+    private IEnumerator HighlightMatchedBlocks(Grid currentGrid, ShapeData cardShape, int startRow, int startCol, Card currentCard)
     {
-        List<GameObject> matchedBlocks = new List<GameObject>();
+        List<GameObject> matchedBlockObjects = new List<GameObject>();
 
         // 매칭된 블록들을 찾아 리스트에 추가
         for (int row = 0; row < cardShape.rows; row++)
         {
             for (int col = 0; col < cardShape.columns; col++)
             {
-                GameObject block = grid.GetBlockAt(startRow + row, startCol + col);
+                GameObject block = currentGrid.GetBlockAt(startRow + row, startCol + col);
                 if (block != null)
                 {
                     // cardShape에 그 부분이 None이 아닐시 추가
                     if (cardShape.board[row].colum[col] != ElementType.None)
-                        matchedBlocks.Add(block);                    
+                        matchedBlockObjects.Add(block);                    
                 }
             }
         }
@@ -324,21 +262,10 @@ public class GridChecker : MonoBehaviour
         int blinkCount = 3;
         float blinkDuration = 0.1f; // 각 점멸의 지속 시간
 
-        // 현재 처리 중인 카드 찾기
-        Card currentCard = null;
-        for (int i = 0; i < activeCards.Count; i++)
-        {
-            if (activeCards[i] != null && activeCards[i].carditem != null && activeCards[i].carditem.cardShape == cardShape)
-            {
-                currentCard = activeCards[i];
-                break;
-            }
-        }
-
         for (int i = 0; i < blinkCount; i++)
         {
             // 블록을 반투명으로 설정
-            foreach (var block in matchedBlocks)
+            foreach (var block in matchedBlockObjects)
             {
                 Transform normalImageTransform = block.transform.Find("NormalImage");
                 if (normalImageTransform != null)
@@ -366,11 +293,11 @@ public class GridChecker : MonoBehaviour
                 }
             }
 
-            if (matchedBlocks.Count != 1)
+            if (matchedBlockObjects.Count != 1)
                 yield return new WaitForSeconds(blinkDuration);
 
             // 블록을 다시 불투명으로 설정
-            foreach (var block in matchedBlocks)
+            foreach (var block in matchedBlockObjects)
             {
                 Transform normalImageTransform = block.transform.Find("NormalImage");
                 if (normalImageTransform != null)
@@ -398,7 +325,7 @@ public class GridChecker : MonoBehaviour
                 }
             }
 
-            if (matchedBlocks.Count != 1)
+            if (matchedBlockObjects.Count != 1)
                 yield return new WaitForSeconds(blinkDuration);
         }
     }
@@ -454,6 +381,215 @@ public class GridChecker : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+
+    private void SetAlphaForGameObjects(List<GameObject> gameObjects, float alpha, Card cardToAffect)
+    {
+        foreach (var blockObj in gameObjects)
+        {
+            // Block.cs에 public Image normalImage; 가 있고 연결되어 있다고 가정.
+            // Block blockScript = blockObj.GetComponent<Block>();
+            // if (blockScript != null && blockScript.normalImage != null) 
+            // {
+            //     Color color = blockScript.normalImage.color;
+            //     color.a = alpha;
+            //     blockScript.normalImage.color = color;
+            // }
+            // else 
+            // {
+                // 임시로 Find 사용 (Block.cs 수정 권장)
+                Transform normalImageTransform = blockObj.transform.Find("NormalImage");
+                if (normalImageTransform != null)
+                {
+                    Image blockImage = normalImageTransform.GetComponent<Image>();
+                    if (blockImage != null)
+                    {
+                        Color currentColor = blockImage.color;
+                        currentColor.a = alpha;
+                        blockImage.color = currentColor;
+                    }
+                }
+            // }
+        }
+
+        if (cardToAffect != null && cardToAffect.gameObject != null)
+        {
+            Image cardImageComponent = cardToAffect.GetComponent<Image>(); 
+            // if (cardImageComponent == null) cardImageComponent = cardToAffect.GetComponentInChildren<Image>(true); // 비활성화된 자식 포함 주석 처리
+
+            if (cardImageComponent != null)
+            {
+                Color currentColor = cardImageComponent.color;
+                currentColor.a = alpha;
+                cardImageComponent.color = currentColor;
+            }
+        }
+    }
+
+    // 턴이 끝날 때 호출할 메서드
+    public void OnTurnEnd()
+    {
+        activeCards.Clear();
+        Debug.Log("[GridChecker] 턴이 끝났습니다. activeCards 리스트를 비웠습니다.");
+    }
+
+    // 매칭된 블록 수를 계산하는 메서드
+    private int CountMatchedBlocks(ShapeData cardShape)
+    {
+        int count = 0;
+        for (int row = 0; row < cardShape.rows; row++)
+        {
+            for (int col = 0; col < cardShape.columns; col++)
+            {
+                if (cardShape.board[row].colum[col] != ElementType.None)
+                {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    // Ora 활성화된 블록 수 계산
+    private int CountOraBlocks(Grid grid, ShapeData shape, int startRow, int startCol)
+    {
+        int oraCount = 0;
+
+        for (int row = 0; row < shape.rows; row++)
+        {
+            for (int col = 0; col < shape.columns; col++)
+            {
+                if (shape.board[row].colum[col] != ElementType.None)
+                {
+                    var block = grid.GetBlockAt(startRow + row, startCol + col).GetComponent<Block>();
+                    if (block != null && block.IsOraActive())
+                    {
+                        oraCount++;
+                    }
+                }
+            }
+        }
+
+        return oraCount;
+    }
+
+    private void PostProcessGridActions()
+    {
+        DisableAllActiveImages();
+        ReplaceOraImages();
+        Debug.Log("[GridChecker] 모든 카드 처리가 완료되었습니다.");
+
+        // 카드 처리가 완료되면 상호작용 다시 활성화
+        if (CardManager.Inst != null)
+        {
+            CardManager.Inst.SetInteractionsEnabled(true);
+        }
+    }
+
+    private void DiscardAndDestroyCard(Card card, bool discard)
+    {
+        if (discard)
+        {
+            if (Deck.Inst != null)
+            {
+                Deck.Inst.AddToDiscard(card.carditem);
+                Debug.Log($"GridChecker: Card {card.carditem.CardName} moved to discard pile");
+            }
+        }
+        else
+        {
+            Debug.Log($"GridChecker: Card {card.carditem.CardName} discarded");
+        }
+
+        if (card != null && card.gameObject != null)
+        {
+            Destroy(card.gameObject);
+        }
+    }
+
+    // 누락된 헬퍼 메소드들 추가
+    private int CountMatchedBlocksInShape(ShapeData cardShape)
+    {
+        int count = 0;
+        for (int row = 0; row < cardShape.rows; row++)
+        {
+            for (int col = 0; col < cardShape.columns; col++)
+            {
+                if (cardShape.board[row].colum[col] != ElementType.None)
+                {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    private int CountOraBlocksInMatch(Grid currentGrid, ShapeData shape, int startRow, int startCol)
+    {
+        int oraCount = 0;
+        for (int row = 0; row < shape.rows; row++)
+        {
+            for (int col = 0; col < shape.columns; col++)
+            {
+                if (shape.board[row].colum[col] != ElementType.None)
+                {
+                    GameObject blockObj = currentGrid.GetBlockAt(startRow + row, startCol + col);
+                    if (blockObj != null)
+                    {
+                        Block blockScript = blockObj.GetComponent<Block>();
+                        if (blockScript != null && blockScript.IsOraActive())
+                        {
+                            oraCount++;
+                        }
+                    }
+                }
+            }
+        }
+        return oraCount;
+    }
+
+    private void ApplyCardEffect(Card card, int matchedBlockCount, int oraBlockCount)
+    {
+        int cardID = card.carditem.ID;
+        int baseDamage = card.carditem.PowerLeft;
+        int critDamage = card.carditem.PowerRight;
+
+        int additionalDamageFromEffect = CalculateCardSpecificAdditionalDamage(cardID, matchedBlockCount);
+        int finalDamage = CalculateFinalDamage(baseDamage, critDamage, matchedBlockCount, oraBlockCount);
+        
+        var ability = CardAbilityManager.GetAbility(cardID);
+        if (ability != null)
+        {
+            ability.ExecuteAbility(player, finalDamage + additionalDamageFromEffect, oraBlockCount);
+        }
+        else
+        {
+            Debug.LogWarning($"[GridChecker] ID: {cardID} 카드의 Ability를 찾을 수 없습니다. 기본 공격을 수행합니다.");
+            // 예: player.AttackTarget(finalDamage + additionalDamageFromEffect); 
+        }
+    }
+
+    private int CalculateCardSpecificAdditionalDamage(int cardID, int matchedBlockCount)
+    {
+        if (cardID == 9) // 매직 넘버: 특수 효과 카드 ID
+        {
+            return matchedBlockCount;
+        }
+        return 0;
+    }
+
+    private int CalculateFinalDamage(int baseDamage, int critDamage, int matchedBlockCount, int oraBlockCount)
+    {
+        if (oraBlockCount > 0)
+        {
+            Debug.Log($"GridChecker : Critical Hit! Blocks: {matchedBlockCount}, Ora blocks: {oraBlockCount}, Damage: {critDamage * matchedBlockCount}");
+            return critDamage * matchedBlockCount;
+        }
+        else
+        {
+            Debug.Log($"GridChecker : Normal Hit! Blocks: {matchedBlockCount}, Damage: {baseDamage * matchedBlockCount}");
+            return baseDamage * matchedBlockCount;
         }
     }
 }
