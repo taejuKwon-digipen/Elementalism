@@ -155,6 +155,7 @@ public class GridChecker : MonoBehaviour
     private IEnumerator ProcessCardsSequentially()
     {
         var cardsToProcess = new List<Card>(activeCards); // 안전한 순회를 위해 복사본 사용
+        // activeCards.Clear(); // 카드를 처리하는 동안에는 activeCards를 유지하고, 모든 처리가 끝난 후 PostProcessGridActions에서 OnTurnEnd를 통해 비우도록 합니다.
 
         foreach (var card in cardsToProcess)
         {
@@ -168,6 +169,9 @@ public class GridChecker : MonoBehaviour
             yield return StartCoroutine(ProcessSingleCard(card));
         }
         
+        // 모든 카드 처리 후, 모든 공격 애니메이션이 끝날 때까지 대기
+        yield return new WaitUntil(() => BallBehavior.activeAttackAnimations == 0);
+
         PostProcessGridActions();
     }
 
@@ -480,7 +484,17 @@ public class GridChecker : MonoBehaviour
         ReplaceOraImages();
         Debug.Log("[GridChecker] 모든 카드 처리가 완료되었습니다.");
 
-        // 카드 처리가 완료되면 상호작용 다시 활성화
+        // activeCards 리스트를 여기서 비웁니다. (OnTurnEnd는 외부에서 턴 종료 시 호출될 수 있으므로 여기서 직접 처리)
+        // activeCards.Clear(); // ProcessCardsSequentially 시작 시점에 activeCards를 복사해서 사용하고, 원본은 여기서 비우거나, CardManager에서 턴 종료 시 호출
+        // OnTurnEnd() 메서드는 턴이 완전히 종료될 때 CardManager 등 외부에서 호출되도록 유지하는 것이 좋을 수 있습니다.
+        // 여기서는 단순히 카드 처리 사이클이 끝났음을 의미하므로, activeCards는 CardManager가 관리하도록 둘 수 있습니다.
+        // 또는, GridChecker가 activeCards를 독자적으로 관리한다면 여기서 Clear하는 것이 맞습니다.
+        // 현재 Card.cs에서 GridChecker.inst.AddActiveCard(this)를 통해 카드가 추가되므로,
+        // GridChecker에서 처리 완료 후 비워주는 것이 적절해 보입니다.
+        activeCards.Clear();
+        Debug.Log("[GridChecker] activeCards 리스트를 비웠습니다. (PostProcessGridActions)");
+
+        // 카드 처리가 완료되고 모든 애니메이션이 끝나면 상호작용 다시 활성화
         if (CardManager.Inst != null)
         {
             CardManager.Inst.SetInteractionsEnabled(true);

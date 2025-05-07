@@ -11,9 +11,11 @@ public class BallBehavior : MonoBehaviour
     public GameObject hitEffect;
 
     public ParticleSystem effects;
+    public static int activeAttackAnimations = 0; // 활성화된 공격 애니메이션 수 추적
     // Start is called before the first frame update
     void Start()
     {
+        activeAttackAnimations++; // 애니메이션 시작 시 카운트 증가
         var enemyPosition = focusedEnemy.GetComponent<RectTransform>().position;
         transform.position = player.transform.position;
         hitEffect = Instantiate(hitEffect, enemyPosition, Quaternion.identity, this.transform.parent);
@@ -24,7 +26,11 @@ public class BallBehavior : MonoBehaviour
         //var currentPosition = transform.position;
 
         if (focusedEnemy == null)
+        {
+            activeAttackAnimations--; // 적이 사라지면 애니메이션 카운트 감소
+            Destroy(this.gameObject);
             return;
+        }
 
         var enemyPosition = focusedEnemy.GetComponent<RectTransform>().position;
         var entity = focusedEnemy.GetComponentInChildren<Entity>();
@@ -47,6 +53,7 @@ public class BallBehavior : MonoBehaviour
                 }
             }
             
+            activeAttackAnimations--; // 애니메이션 완료 시 카운트 감소
             Destroy(this.gameObject);
         }
     }
