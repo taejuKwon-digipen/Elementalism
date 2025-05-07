@@ -71,7 +71,7 @@ public class TutorialManager : MonoBehaviour
     private void Start()
     {
         Debug.Log("[TutorialManager] Start 호출됨");
-        FindUIReferences(); // 첫 씬 로드 시에도 UI 찾아보기
+        // FindUIReferences(); // 첫 씬 로드 시에도 UI 찾아보기 -> OnSceneLoaded에서 처리하므로 중복 호출 방지
 
         if (GoogleSheetLoader.Instance != null)
         {
@@ -92,7 +92,7 @@ public class TutorialManager : MonoBehaviour
         {
             Debug.LogWarning("[TutorialManager] GoogleSheetLoader.Instance가 null입니다. 튜토리얼 텍스트 로드에 문제가 있을 수 있습니다.");
             // GoogleSheetLoader가 없는 경우에도 CheckTutorialMode는 진행하도록 함 (GameManager의 상태에 따라)
-            StartCoroutine(CheckTutorialMode()); 
+            StartCoroutine(CheckTutorialMode());
         }
     }
 
@@ -113,37 +113,61 @@ public class TutorialManager : MonoBehaviour
 
     private void FindUIReferences()
     {
-        Debug.Log("[TutorialManager] UI 요소 찾기 시도...");
+        Debug.Log("[TutorialManager] FindUIReferences 시작");
         GameObject panelObj = GameObject.Find(tutorialPanelName);
         if (panelObj != null)
         {
             tutorialPanel = panelObj;
             tutorialPanelRect = tutorialPanel.GetComponent<RectTransform>();
-            Debug.Log("[TutorialManager] TutorialPanel 찾음");
+            Debug.Log($"[TutorialManager] '{tutorialPanelName}' (TutorialPanel) 찾음: {tutorialPanel != null}");
 
-            Transform textTr = tutorialPanel.transform.Find(tutorialTextName); // 패널의 자식으로 가정
-            if (textTr != null) tutorialText = textTr.GetComponent<TextMeshProUGUI>();
+            Transform textTr = tutorialPanel.transform.Find(tutorialTextName); 
+            if (textTr != null) 
+            {
+                tutorialText = textTr.GetComponent<TextMeshProUGUI>();
+                Debug.Log($"[TutorialManager] '{tutorialTextName}' (TutorialText) Transform 찾음: {textTr != null}, TextMeshProUGUI 컴포넌트 유효성: {tutorialText != null}");
+            }
+            else
+            {
+                Debug.LogWarning($"[TutorialManager] '{tutorialTextName}' (TutorialText) Transform을 '{tutorialPanelName}' 자식에서 찾을 수 없습니다.");
+                tutorialText = null; // 명시적으로 null 처리
+            }
             
-            Transform nextBtnTr = tutorialPanel.transform.Find(nextButtonName); // 패널의 자식으로 가정
-            if (nextBtnTr != null) nextButton = nextBtnTr.GetComponent<Button>();
+            Transform nextBtnTr = tutorialPanel.transform.Find(nextButtonName); 
+            if (nextBtnTr != null)
+            {
+                nextButton = nextBtnTr.GetComponent<Button>();
+                Debug.Log($"[TutorialManager] '{nextButtonName}' (NextButton) Transform 찾음: {nextBtnTr != null}, Button 컴포넌트 유효성: {nextButton != null}");
+            }
+            else
+            {
+                Debug.LogWarning($"[TutorialManager] '{nextButtonName}' (NextButton) Transform을 '{tutorialPanelName}' 자식에서 찾을 수 없습니다.");
+                nextButton = null; // 명시적으로 null 처리
+            }
             
-            Transform closeBtnTr = tutorialPanel.transform.Find(closeButtonName); // 패널의 자식으로 가정
-            if (closeBtnTr != null) closeButton = closeBtnTr.GetComponent<Button>();
-
-            if (tutorialText == null) Debug.LogWarning($"[TutorialManager] '{tutorialTextName}' TextMeshProUGUI를 TutorialPanel 자식에서 찾을 수 없습니다.");
-            if (nextButton == null) Debug.LogWarning($"[TutorialManager] '{nextButtonName}' Button을 TutorialPanel 자식에서 찾을 수 없습니다.");
-            if (closeButton == null) Debug.LogWarning($"[TutorialManager] '{closeButtonName}' Button을 TutorialPanel 자식에서 찾을 수 없습니다.");
-            else closeButton.onClick.AddListener(OnCloseButtonClick); // 리스너는 여기서 추가
+            Transform closeBtnTr = tutorialPanel.transform.Find(closeButtonName); 
+            if (closeBtnTr != null)
+            {
+                closeButton = closeBtnTr.GetComponent<Button>();
+                Debug.Log($"[TutorialManager] '{closeButtonName}' (CloseButton) Transform 찾음: {closeBtnTr != null}, Button 컴포넌트 유효성: {closeButton != null}");
+                if (closeButton != null) closeButton.onClick.AddListener(OnCloseButtonClick); // 리스너는 여기서 추가
+            }
+            else
+            {
+                Debug.LogWarning($"[TutorialManager] '{closeButtonName}' (CloseButton) Transform을 '{tutorialPanelName}' 자식에서 찾을 수 없습니다.");
+                closeButton = null; // 명시적으로 null 처리
+            }
         }
         else
         {
-            Debug.LogWarning($"[TutorialManager] '{tutorialPanelName}'을 찾을 수 없습니다. 이 씬에는 튜토리얼 UI가 없을 수 있습니다.");
+            Debug.LogWarning($"[TutorialManager] '{tutorialPanelName}' (TutorialPanel)을 찾을 수 없습니다. 이 씬에는 튜토리얼 UI가 없거나 이름이 다를 수 있습니다.");
             tutorialPanel = null; // 참조 초기화
+            tutorialPanelRect = null;
             tutorialText = null;
             nextButton = null;
             closeButton = null;
-            tutorialPanelRect = null;
         }
+        Debug.Log("[TutorialManager] FindUIReferences 종료");
     }
 
     private void OnSheetLoadedAndStartTutorial()
@@ -169,15 +193,15 @@ public class TutorialManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(0.2f); // GameManager의 Start 이후 IsTutorialMode가 설정될 시간을 줌
-        Debug.Log($"[TutorialManager] GameManager 체크 - IsTutorialMode: {GameManager.Instance.IsTutorialMode}");
+        Debug.Log($"[TutorialManager] GameManager.Instance.IsTutorialMode 체크: {GameManager.Instance.IsTutorialMode}");
         if (GameManager.Instance.IsTutorialMode)
         {
-            Debug.Log("[TutorialManager] 튜토리얼 시작 조건 충족");
+            Debug.Log("[TutorialManager] 튜토리얼 시작 조건 충족 (GameManager.IsTutorialMode is true). StartTutorial() 호출 시도.");
             StartTutorial(); 
         }
         else
         {
-            Debug.Log("[TutorialManager] 튜토리얼 모드가 아님. 패널 비활성화 시도.");
+            Debug.Log("[TutorialManager] 튜토리얼 모드가 아님 (GameManager.IsTutorialMode is false). 패널 비활성화 시도.");
             if (tutorialPanel != null) tutorialPanel.SetActive(false);
             currentStep = TutorialStep.None; // 튜토리얼 모드가 아니면 현재 스텝도 초기화
         }
@@ -185,10 +209,11 @@ public class TutorialManager : MonoBehaviour
 
     private void StartTutorial()
     {
+        Debug.Log("[TutorialManager] StartTutorial 메서드 진입.");
         // UI 참조가 유효한지 먼저 확인
         if (tutorialPanel == null || tutorialText == null)
         {
-            Debug.LogWarning("[TutorialManager] StartTutorial 호출되었으나, UI 참조가 없어 튜토리얼을 시작할 수 없습니다. FindUIReferences가 먼저 성공해야 합니다.");
+            Debug.LogWarning($"[TutorialManager] StartTutorial 호출되었으나, UI 참조가 없어 튜토리얼을 시작할 수 없습니다. tutorialPanel is null: {tutorialPanel == null}, tutorialText is null: {tutorialText == null}. FindUIReferences가 먼저 성공해야 합니다.");
             currentStep = TutorialStep.None;
             return;
         }

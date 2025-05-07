@@ -360,29 +360,23 @@ public class GridChecker : MonoBehaviour
         {
             for (int col = 0; col < cardShape.columns; col++)
             {
-                if (cardID == 15 || cardShape.board[row].colum[col] != ElementType.None) { 
+                // cardID == 15 (특수 카드) 또는 카드 모양이 None이 아닌 부분만 변경
+                if (cardID == 15 || cardShape.board[row].colum[col] != ElementType.None) 
+                { 
+                    ElementType typeToSet;
                     if (createdElementType != ElementType.None)
                     {
-                        // ChallengeLevel이 1일 때 Earth를 Fire로 변경
-                        ElementType modifiedType = createdElementType;
-                        if (GameManager.Instance != null && GameManager.Instance.ChallengeLevel == 1 && createdElementType == ElementType.Earth)
-                        {
-                            modifiedType = ElementType.Fire;
-                            Debug.Log($"[GridChecker] ChallengeLevel 1: Earth Type이 Fire Type으로 변경됨 (위치: {startRow + row}, {startCol + col})");
-                        }
-                        grid.SetElementTypeAt(startRow + row, startCol + col, modifiedType);
+                        typeToSet = createdElementType;
                     }
                     else
                     {
-                        // 랜덤 생성 시에도 Earth가 나오면 Fire로 변경
-                        ElementType randomType = (ElementType)Random.Range(1, (int)ElementType.Void);
-                        if (GameManager.Instance != null && GameManager.Instance.ChallengeLevel == 1 && randomType == ElementType.Earth)
-                        {
-                            randomType = ElementType.Fire;
-                            Debug.Log($"[GridChecker] ChallengeLevel 1: 랜덤 생성된 Earth Type이 Fire Type으로 변경됨 (위치: {startRow + row}, {startCol + col})");
-                        }
-                        grid.SetElementTypeAt(startRow + row, startCol + col, randomType);
+                        // 랜덤 생성 (None과 Random 제외)
+                        // Void도 제외하려면 (int)ElementType.Void
+                        typeToSet = (ElementType)Random.Range(1, (int)ElementType.Void); 
                     }
+                    // ElementType 변환은 Block.cs의 SetElementType 또는 SetBlockImage 내부에서 GameManager 규칙에 따라 처리됨
+                    // 따라서 GridChecker에서는 변환된 타입을 직접 계산할 필요 없이, Grid에 원본 또는 의도된 타입을 전달
+                    grid.SetElementTypeAt(startRow + row, startCol + col, typeToSet);
                 }
             }
         }
@@ -491,8 +485,8 @@ public class GridChecker : MonoBehaviour
         // 또는, GridChecker가 activeCards를 독자적으로 관리한다면 여기서 Clear하는 것이 맞습니다.
         // 현재 Card.cs에서 GridChecker.inst.AddActiveCard(this)를 통해 카드가 추가되므로,
         // GridChecker에서 처리 완료 후 비워주는 것이 적절해 보입니다.
-        activeCards.Clear();
-        Debug.Log("[GridChecker] activeCards 리스트를 비웠습니다. (PostProcessGridActions)");
+        // activeCards.Clear(); // <- 이 부분을 주석 처리합니다.
+        // Debug.Log("[GridChecker] activeCards 리스트를 비웠습니다. (PostProcessGridActions)"); // <- 관련 로그도 주석 처리
 
         // 카드 처리가 완료되고 모든 애니메이션이 끝나면 상호작용 다시 활성화
         if (CardManager.Inst != null)

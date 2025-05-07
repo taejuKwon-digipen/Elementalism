@@ -61,9 +61,17 @@ public class Block : MonoBehaviour
         // originalElementType가 설정되어 있으면 원소 타입 설정
         if (originalElementType != ElementType.None)
         {
-            elementType = originalElementType;
+            // 복원 시점에도 GameManager의 규칙을 적용할지 여부 결정 필요
+            // 여기서는 원본 그대로 복원한다고 가정, 필요시 GetModifiedElementType 적용
+            SetElementType(originalElementType, true); // isOriginalSetup 플래그 추가하여 무한 루프 방지
             originalElementType = ElementType.None;
         }
+        else if (elementType != ElementType.None) // originalElementType가 없을 경우 현재 elementType을 기반으로 초기화
+        {
+             // 초기화 시에도 GameManager 규칙 적용
+            SetElementType(elementType, true);
+        }
+
 
         // 원소 타입 초기화
         Selected = false;
@@ -123,16 +131,35 @@ public class Block : MonoBehaviour
         return oraImage != null && oraImage.gameObject.activeSelf;
     }
 
-    public void SetElementType(ElementType newType)
+    public void SetElementType(ElementType newType, bool isOriginalSetup = false)
     {
-        elementType = newType;
+        ElementType finalType = newType;
+        if (!isOriginalSetup && GameManager.Instance != null) // isOriginalSetup으로 무한 재귀 호출 방지
+        {
+            finalType = GameManager.Instance.GetModifiedElementType(newType);
+        }
+        
+        elementType = finalType;
+        // SetBlockImage를 직접 호출하기보다 elementType만 설정하고 Update에서 처리하도록 유도할 수 있으나,
+        // 즉각적인 반영을 위해 여기서도 이미지 설정을 호출 (Update와 중복될 수 있으므로 주의)
+        // 또는 SetBlockImage 내부에서만 GameManager 규칙을 적용하고, 여기서는 elementType = newType; 만 수행
+        // 현재는 SetBlockImage가 Update에서 호출되므로, 여기서는 elementType만 변경.
+        // 만약 즉시 이미지가 바뀌어야 한다면 SetBlockImage(finalType) 호출.
+        // 혼란을 줄이기 위해 SetBlockImage 내부에서만 GameManager 규칙을 적용하도록 변경
     }
 
     // 원소 타입에 따른 이미지를 설정하는 메서드
-    public void SetBlockImage(ElementType elementType)
+    public void SetBlockImage(ElementType typeToSet)
     {
-        this.elementType = elementType; // 원소 타입 설정
-        switch (elementType)
+        ElementType finalType = typeToSet;
+        if (GameManager.Instance != null)
+        {
+            finalType = GameManager.Instance.GetModifiedElementType(typeToSet);
+        }
+
+        this.elementType = finalType; // 실제 블록의 타입을 최종 타입으로 설정
+
+        switch (finalType) // 최종 변환된 타입으로 이미지 설정
         {
             case ElementType.Fire:
                 nomalImage.sprite = fireSprite;     // 불 스프라이트로 설정
@@ -143,7 +170,7 @@ public class Block : MonoBehaviour
             case ElementType.Air:
                 nomalImage.sprite = airSprite;      // 바람 스프라이트로 설정
                 break;
-            case ElementType.Earth:
+            case ElementType.Earth: // ChallengeLevel 1에서는 Fire로 이미 변환되었을 것임
                 nomalImage.sprite = earthSprite;    // 땅 스프라이트로 설정
                 break;
             case ElementType.Void:
@@ -151,9 +178,14 @@ public class Block : MonoBehaviour
                 break;
             case ElementType.Random:
                 // Random인 경우 랜덤한 원소 타입 선택 (None과 Random 제외)
-                ElementType randomType = (ElementType)Random.Range(1, (int)ElementType.Random);
-                SetBlockImage(randomType);
-                break;
+                ElementType randomType = (ElementType)Random.Range(1, (int)ElementType.Void); // Void도 제외하려면 (int)ElementType.Void
+                // 랜덤 생성된 타입에도 GameManager 규칙 적용
+                if (GameManager.Instance != null)
+                {
+                    randomType = GameManager.Instance.GetModifiedElementType(randomType);
+                }
+                SetBlockImage(randomType); // 재귀 호출로 최종 타입 이미지 설정
+                return; // 중요: 재귀 호출 후 현재 호출 종료
             default:
                 nomalImage.sprite = null;
                 break;

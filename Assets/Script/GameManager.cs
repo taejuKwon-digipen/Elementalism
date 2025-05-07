@@ -10,7 +10,13 @@ public class GameManager : MonoBehaviour
     public int Player_HP;
     public int Player_Gold;
     public GameObject gameOverPanel;
-    public int ChallengeLevel { get; private set; } = 1; 
+    [SerializeField]
+    private int challengeLevel = 1;
+    public int ChallengeLevel
+    {
+        get => challengeLevel;
+        set => challengeLevel = value;
+    }
     public bool IsFirstPlay { get; private set; } = true;  // 첫 플레이 여부
     public bool IsTutorialMode { get; private set; } = false;  // 튜토리얼 모드 여부
 
@@ -56,11 +62,12 @@ public class GameManager : MonoBehaviour
         if (IsFirstPlay && ChallengeLevel == 1)
         {
             IsTutorialMode = true;
-            Debug.Log("[GameManager] 튜토리얼 모드 시작");
+            Debug.Log($"[GameManager] 튜토리얼 모드 시작. IsTutorialMode: {IsTutorialMode}");
         }
         else
         {
-            Debug.Log($"[GameManager] 튜토리얼 시작 조건 불만족 - IsFirstPlay: {IsFirstPlay}, ChallengeLevel: {ChallengeLevel}");
+            IsTutorialMode = false; // 명시적으로 false로 설정
+            Debug.Log($"[GameManager] 튜토리얼 시작 조건 불만족 - IsFirstPlay: {IsFirstPlay}, ChallengeLevel: {ChallengeLevel}. IsTutorialMode: {IsTutorialMode}");
         }
     }
 

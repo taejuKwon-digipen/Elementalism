@@ -91,4 +91,13 @@ public class ShapeData : ScriptableObject
             }
         }
     }
+
+    // ShapeData 인스턴스를 복제하는 메서드
+    public ShapeData Clone()
+    {
+        // ScriptableObject.Instantiate를 사용하여 현재 인스턴스의 복사본을 만듭니다.
+        // 이렇게 하면 모든 직렬화된 필드 (columns, rows, board 배열 포함)가 자동으로 복사됩니다.
+        ShapeData newInstance = Instantiate(this);
+        return newInstance;
+    }
 }

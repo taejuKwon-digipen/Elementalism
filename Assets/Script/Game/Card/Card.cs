@@ -52,51 +52,64 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
     // 카드 초기화 및 데이터와 UI 연결
     public void Setup(CardItem carditem_, bool isFront_)
     {
-        // 카드 데이터 동기화 (언어 변경 반영)
         var cardSO = Resources.Load<CardItemSO>("ItemSO");
-        if (cardSO != null)
-        {
-            cardSO.UpdateFromSheet();
-        }
+        if (cardSO != null) cardSO.UpdateFromSheet();
 
-        carditem = carditem_;
+        // 원본 CardItem을 기반으로 변환된 CardItem 생성
+        CardItem itemToUse = carditem_.Clone(); // 먼저 복제
+        if (GameManager.Instance != null)
+        {
+            itemToUse.CreatedElementType = GameManager.Instance.GetModifiedElementType(carditem_.CreatedElementType);
+            if (itemToUse.cardShape != null && itemToUse.cardShape.board != null)
+            {
+                // cardShape도 변환해야 하므로, cardShape의 복제본에 작업
+                itemToUse.cardShape = carditem_.cardShape.Clone(); // cardShape도 복제
+                for (int r = 0; r < itemToUse.cardShape.rows; r++)
+                {
+                    for (int c = 0; c < itemToUse.cardShape.columns; c++)
+                    {
+                        itemToUse.cardShape.board[r].colum[c] = 
+                            GameManager.Instance.GetModifiedElementType(carditem_.cardShape.board[r].colum[c]);
+                    }
+                }
+            }
+        }
+        
+        this.carditem = itemToUse; // 클래스 멤버인 carditem을 변환된 버전으로 교체!
         isFront = isFront_;
 
         if (isFront)
         {
-            nameTMP.text = carditem.CardName;
-            PowerLeftTMP.text = carditem.PowerLeft.ToString();
-            PowerRightTMP.text = carditem.PowerRight.ToString();
-            CardDescriptionTMP.text = carditem.CardDescription;
-
-            isUsingImage = carditem.UseImage;
+            nameTMP.text = this.carditem.CardName; // 이제 this.carditem은 변환된 데이터를 가짐 (단, CardName 등은 원본 유지)
+            PowerLeftTMP.text = this.carditem.PowerLeft.ToString();
+            PowerRightTMP.text = this.carditem.PowerRight.ToString();
+            CardDescriptionTMP.text = this.carditem.CardDescription;
+            isUsingImage = this.carditem.UseImage;
 
             if (isUsingImage)
             {
                 rawImage = transform.Find("Border/ImageBorder/Image").GetComponent<RawImage>();
-                if (rawImage != null && carditem.cardImage != null)
+                if (rawImage != null && this.carditem.cardImage != null)
                 {
-                    rawImage.texture = carditem.cardImage;
+                    rawImage.texture = this.carditem.cardImage;
                 }
                 else
                 {
-                    Debug.LogWarning($"[Card] {carditem.CardName}의 이미지 설정 실패");
+                    Debug.LogWarning($"[Card] {this.carditem.CardName}의 이미지 설정 실패");
                 }
             }
-            else if (carditem.cardShape != null)
+            else if (this.carditem.cardShape != null) 
             {
-                GenerateShapeFromData(carditem.cardShape);
+                GenerateShapeFromData(this.carditem.cardShape); // 변환된 cardShape 사용
             }
             else
             {
-                Debug.LogWarning($"[Card] {carditem.CardName}의 cardShape가 null입니다.");
+                Debug.LogWarning($"[Card] {this.carditem.CardName}의 cardShape가 null입니다.");
             }
         }
         
-        // 위치 초기화를 한 번만 하도록 수정
         if (!hasSetupPosition)
         {
-            // 처음 위치 정보 저장 (localPosition 사용)
             originalLocalPosition = transform.localPosition;
             originalParent = transform.parent;
             hasSetupPosition = true;
@@ -104,86 +117,59 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
         }
     }
 
-
     // ShapeData를 기반으로 원소 스프라이트로 카드 모양 생성
     private void GenerateShapeFromData(ShapeData shapeData)
     {
         if (shapeData == null)
         {
-            Debug.LogWarning($"[Card] {carditem.CardName}의 ShapeData가 null입니다.");
+            Debug.LogWarning($"[Card] ShapeData가 null입니다. (GenerateShapeFromData)");
             return;
         }
-
-        // 카드의 모양 영역 초기화 (이미 생성된 블록이 있다면 삭제)
-        foreach (Transform child in transform.Find("Border/ImageBorder"))
+        Transform imageBorderTransform = transform.Find("Border/ImageBorder");
+        if (imageBorderTransform == null)
         {
-            Destroy(child.gameObject);
+            Debug.LogError($"[Card] {this.carditem.CardName}: Border/ImageBorder transform을 찾을 수 없습니다.");
+            return;
         }
+        foreach (Transform child in imageBorderTransform) Destroy(child.gameObject);
 
-        // ShapeData를 순회하며 원소에 따라 블록 생성
-        var parentTransform = transform.Find("Border/ImageBorder"); // 부모 오브젝트
-        var blockPrefab = Resources.Load<GameObject>("BlockPrefab"); // 블록 프리팹 로드
-
-        List<Vector2> blockPositions = new List<Vector2>(); // 블록 위치를 저장할 리스트
-
+        var blockPrefab = Resources.Load<GameObject>("BlockPrefab");
+        if (blockPrefab == null)
+        {
+            Debug.LogError("[Card] BlockPrefab을 Resources에서 로드할 수 없습니다.");
+            return;
+        }
+        List<Vector2> blockPositions = new List<Vector2>();
         for (int row = 0; row < shapeData.rows; row++)
         {
             for (int column = 0; column < shapeData.columns; column++)
             {
-                ElementType elementType = shapeData.board[row].colum[column];
+                ElementType elementType = shapeData.board[row].colum[column]; // 이미 변환된 타입
                 if (elementType != ElementType.None)
                 {
-                    // 블록 인스턴스 생성
-                    var block = Instantiate(blockPrefab, parentTransform);
+                    var block = Instantiate(blockPrefab, imageBorderTransform);
                     var rectTransform = block.GetComponent<RectTransform>();
-                    Vector2 position = new Vector2(column * 45, -row * 45); // 블록 위치 계산
-                    rectTransform.anchoredPosition = position; // 블록 위치 설정
-                    blockPositions.Add(position); // 블록 위치 리스트에 추가
-
+                    Vector2 position = new Vector2(column * 45, -row * 45);
+                    rectTransform.anchoredPosition = position;
+                    blockPositions.Add(position);
                     var image = block.GetComponent<Image>();
-
-                    // 원소 타입에 따라 스프라이트 설정
+                    if (image == null) continue;
                     switch (elementType)
                     {
-                        case ElementType.Fire:
-                            image.sprite = fireSprite;
-                            break;
-                        case ElementType.Water:
-                            image.sprite = waterSprite;
-                            break;
-                        case ElementType.Air:
-                            image.sprite = airSprite;
-                            break;
-                        case ElementType.Earth:
-                            image.sprite = earthSprite;
-                            break;
+                        case ElementType.Fire: image.sprite = fireSprite; break;
+                        case ElementType.Water: image.sprite = waterSprite; break;
+                        case ElementType.Air: image.sprite = airSprite; break;
+                        case ElementType.Earth: image.sprite = earthSprite; break; // 규칙에 따라 Fire로 변환되었어야 함
                     }
                 }
             }
         }
-
-        // 배열 중심 계산
         if (blockPositions.Count > 0)
         {
-            float minX = float.MaxValue, maxX = float.MinValue;
-            float minY = float.MaxValue, maxY = float.MinValue;
-
-            foreach (var pos in blockPositions)
-            {
-                if (pos.x < minX) minX = pos.x;
-                if (pos.x > maxX) maxX = pos.x;
-                if (pos.y < minY) minY = pos.y;
-                if (pos.y > maxY) maxY = pos.y;
-            }
-
+            float minX = float.MaxValue, maxX = float.MinValue, minY = float.MaxValue, maxY = float.MinValue;
+            foreach (var pos in blockPositions) { minX = Mathf.Min(minX, pos.x); maxX = Mathf.Max(maxX, pos.x); minY = Mathf.Min(minY, pos.y); maxY = Mathf.Max(maxY, pos.y); }
             Vector2 center = new Vector2((minX + maxX) / 2, (minY + maxY) / 2);
-
-            // 블록들의 중심이 (0,0)이 되도록 이동
-            foreach (Transform block in parentTransform)
-            {
-                var rectTransform = block.GetComponent<RectTransform>();
-                rectTransform.anchoredPosition -= center; // 중심점 만큼 이동
-            }
+            foreach (Transform block in imageBorderTransform) { var rt = block.GetComponent<RectTransform>(); if (rt != null) rt.anchoredPosition -= center; }
         }
     }
 

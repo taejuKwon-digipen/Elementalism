@@ -92,6 +92,38 @@ public class CardItem
          }
      }*/
 
+    // CardItem 인스턴스를 복제하는 메서드
+    public CardItem Clone()
+    {
+        CardItem newItem = new CardItem();
+        newItem.CardName = this.CardName;
+        newItem.ID = this.ID;
+        newItem.CardDescription = this.CardDescription;
+        newItem.cardImage = this.cardImage; // Texture2D는 참조 복사로 충분할 수 있음
+        newItem.PowerLeft = this.PowerLeft;
+        newItem.PowerRight = this.PowerRight;
+        newItem.CreatedElementType = this.CreatedElementType;
+        newItem.UseMagic = this.UseMagic;
+        newItem.Percent = this.Percent;
+        newItem.UseProp = this.UseProp;
+        newItem.UseBuff = this.UseBuff;
+        newItem.UseDraw = this.UseDraw;
+        newItem.UseImage = this.UseImage;
+        newItem.IsUnlocked = this.IsUnlocked; // IsUnlocked 상태도 복사
+        
+        // ShapeData는 ScriptableObject이므로, 복제본을 사용하는 것이 안전합니다.
+        // ShapeData.Clone() 메서드가 구현되어 있다고 가정합니다.
+        if (this.cardShape != null)
+        {
+            newItem.cardShape = this.cardShape.Clone(); 
+        }
+        else
+        {
+            newItem.cardShape = null;
+        }
+
+        return newItem;
+    }
 }
 
 
