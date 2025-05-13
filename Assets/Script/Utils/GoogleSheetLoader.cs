@@ -12,6 +12,7 @@ public class GoogleSheetLoader : MonoBehaviour
     public string languageSheetUrl;
     public string cardSheetUrl;
     public string dbSheetUrl;
+    public string eventSheetUrl; // 이벤트 시트 URL
 
     // 언어별 텍스트 저장 (Key: string, Value: string)
     private Dictionary<string, string> localizedTexts = new Dictionary<string, string>();
@@ -36,6 +37,18 @@ public class GoogleSheetLoader : MonoBehaviour
     }
     public Dictionary<int, CardData> cardDatas = new();
     public Dictionary<string, string> dbValues = new();
+
+    // 이벤트 데이터 저장용
+    public class EventData
+    {
+        public int id;
+        public string content;
+        public string choice1_text;
+        public string choice1_effect;
+        public string choice2_text;
+        public string choice2_effect;
+    }
+    public Dictionary<int, EventData> eventDatas = new();
 
     private void Awake()
     {
@@ -62,6 +75,7 @@ public class GoogleSheetLoader : MonoBehaviour
         yield return StartCoroutine(LoadLanguageSheet());
         yield return StartCoroutine(LoadCardSheet());
         yield return StartCoroutine(LoadDBSheet());
+        yield return StartCoroutine(LoadEventSheet());
         IsLoaded = true;
         OnSheetLoaded?.Invoke();
     }
@@ -232,5 +246,44 @@ public class GoogleSheetLoader : MonoBehaviour
     public List<string> GetAllKeys()
     {
         return new List<string>(localizedTexts.Keys);
+    }
+
+    private IEnumerator LoadEventSheet()
+    {
+        Debug.Log("[GoogleSheetLoader] 이벤트 시트 데이터 요청 시작: " + eventSheetUrl);
+        UnityWebRequest www = UnityWebRequest.Get(eventSheetUrl);
+        yield return www.SendWebRequest();
+        if (www.result == UnityWebRequest.Result.Success)
+        {
+            Debug.Log("[GoogleSheetLoader] 이벤트 시트 데이터 다운로드 성공");
+            ParseEventCSV(www.downloadHandler.text);
+        }
+        else
+        {
+            Debug.LogError($"[GoogleSheetLoader] 이벤트 시트 로드 실패: {www.error}\nURL: {eventSheetUrl}");
+        }
+    }
+
+    private void ParseEventCSV(string csv)
+    {
+        eventDatas.Clear();
+        var lines = ReadCsvLines(csv);
+        bool isFirstLine = true;
+        foreach (var line in lines)
+        {
+            if (isFirstLine) { isFirstLine = false; continue; }
+            var columns = CsvHelper.ParseLine(line);
+            if (columns.Count > 5)
+            {
+                EventData data = new EventData();
+                int.TryParse(columns[0].Trim(), out data.id);
+                data.content = columns[1].Trim();
+                data.choice1_text = columns[2].Trim();
+                data.choice1_effect = columns[3].Trim();
+                data.choice2_text = columns[4].Trim();
+                data.choice2_effect = columns[5].Trim();
+                eventDatas[data.id] = data;
+            }
+        }
     }
 } 

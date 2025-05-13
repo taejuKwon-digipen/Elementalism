@@ -51,6 +51,10 @@ public class Player : Entity
             {
                 Gold = GameManager.Instance.Player_Gold;
             }
+            if(GameManager.Instance.Player_MaxHP != 0)
+            {
+                MaxHP = GameManager.Instance.Player_MaxHP;
+            }
         }
     }
 
@@ -60,6 +64,9 @@ public class Player : Entity
         if (this.HP <= 0) {
             this.HP = 0;
             Die();
+        }else if(this.HP > MaxHP)
+        {
+            this.HP = MaxHP;
         }
     }
 

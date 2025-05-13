@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: ItemSO
   m_EditorClassIdentifier: 
   items:
-  - CardName: "\uBD88\uAF43\uBFCC\uB9AC\uAE30"
+  - CardName: "\uBD88\uC528 \uB358\uC9C0\uAE30"
     ID: 1
-    CardDescription: "\uB0AE\uC740 \uB370\uBBF8\uC9C0\uB97C \uC90D\uB2C8\uB2E4."
+    CardDescription: "\uC801\uC5D0\uAC8C \uB0AE\uC740 \uB370\uBBF8\uC9C0\uB97C \uC90D\uB2C8\uB2E4."
     cardImage: {fileID: 2800000, guid: ff81e51fb26b3ff4da6cd67cdae55a04, type: 3}
     PowerLeft: 2
     PowerRight: 4
@@ -28,13 +28,9 @@ MonoBehaviour:
     UseImage: 0
     IsUnlocked: 1
     cardShape: {fileID: 11400000, guid: 1776bba0fbed59d4b86c945af6c5d67b, type: 2}
-  - CardName: "2\uC774\uB984"
+  - CardName: "\uBB3C \uBFCC\uB9AC\uAE30"
     ID: 2
-    CardDescription: "\uCD5C\uB300\uD55C \uB9CE\uC740 \uD14D\uC2A4\uD2B8\uAC00 \uC788\uC744\uB54C
-      \uC5B4\uB5BB\uAC8C \uCC98\uB9AC\uD558\uB294\uC9C0 \uD14C\uC2A4\uD2B8 \uD558\uAE30
-      \uC704\uD55C \uC124\uBA85\uC785\uB2C8\uB2E4!\uCD5C\uB300\uD55C \uB9CE\uC740
-      \uD14D\uC2A4\uD2B8\uAC00 \uC788\uC744\uB54C \uC5B4\uB5BB\uAC8C \uCC98\uB9AC\uD558\uB294\uC9C0
-      \uD14C\uC2A4\uD2B8 \uD558\uAE30 \uC704\uD55C \uC124\uBA85\uC785\uB2C8\uB2E4!"
+    CardDescription: "\uC801\uC5D0\uAC8C \uB0AE\uC740 \uB370\uBBF8\uC9C0\uB97C \uC90D\uB2C8\uB2E4."
     cardImage: {fileID: 2800000, guid: bc62c7dae0fb89e44aa8e55f90063197, type: 3}
     PowerLeft: 2
     PowerRight: 4
@@ -47,9 +43,9 @@ MonoBehaviour:
     UseImage: 0
     IsUnlocked: 1
     cardShape: {fileID: 11400000, guid: bc434b102b587314b882a6efb2de2a27, type: 2}
-  - CardName: "3\uC774\uB984"
+  - CardName: "\uB3CC \uB358\uC9C0\uAE30"
     ID: 3
-    CardDescription: "\uB0AE\uC740 \uB370\uBBF8\uC9C0\uB97C \uC90D\uB2C8\uB2E4."
+    CardDescription: "\uC801\uC5D0\uAC8C \uB0AE\uC740 \uB370\uBBF8\uC9C0\uB97C \uC90D\uB2C8\uB2E4."
     cardImage: {fileID: 2800000, guid: c1a2e8ad29173a348a47ad13042fad59, type: 3}
     PowerLeft: 2
     PowerRight: 4
@@ -62,9 +58,9 @@ MonoBehaviour:
     UseImage: 0
     IsUnlocked: 1
     cardShape: {fileID: 11400000, guid: 009803ddf1fecca4480a640fc6a288b9, type: 2}
-  - CardName: "4\uC774\uB984"
+  - CardName: "\uC0B0\uB4E4 \uBC14\uB78C"
     ID: 4
-    CardDescription: "\uB0AE\uC740 \uB370\uBBF8\uC9C0\uB97C \uC90D\uB2C8\uB2E4."
+    CardDescription: "\uC801\uC5D0\uAC8C \uB0AE\uC740 \uB370\uBBF8\uC9C0\uB97C \uC90D\uB2C8\uB2E4."
     cardImage: {fileID: 2800000, guid: 414341b633bfa374b87f70dadd6d4a45, type: 3}
     PowerLeft: 2
     PowerRight: 4
@@ -77,9 +73,10 @@ MonoBehaviour:
     UseImage: 0
     IsUnlocked: 1
     cardShape: {fileID: 11400000, guid: 455377b646b9aee4e82ef29b8c404a15, type: 2}
-  - CardName: "5\uC774\uB984"
+  - CardName: "\uC6A9\uC554 \uBD84\uCD9C"
     ID: 5
-    CardDescription: "5\uC124\uBA85"
+    CardDescription: "\uC801\uC5D0\uAC8C \uB370\uBBF8\uC9C0\uB97C \uC8FC\uB294 \uC7A5\uD310\uC744
+      \uC804\uBC29\uC5D0 \uB9CC\uB4ED\uB2C8\uB2E4."
     cardImage: {fileID: 2800000, guid: 56048745d570b794693890cc9a04d43c, type: 3}
     PowerLeft: 4
     PowerRight: 6
@@ -92,9 +89,10 @@ MonoBehaviour:
     UseImage: 0
     IsUnlocked: 1
     cardShape: {fileID: 11400000, guid: 8c4423c7e2c83a24e98ad4b25f8c979a, type: 2}
-  - CardName: "6\uC774\uB984"
+  - CardName: "\uC9C4\uD759 \uAC11\uC637"
     ID: 6
-    CardDescription: "6\uC124\uBA85"
+    CardDescription: "\uD50C\uB808\uC774\uC5B4\uC5D0\uAC8C \uBC29\uC5B4\uB9C9\uC744
+      \uC81C\uACF5\uD569\uB2C8\uB2E4."
     cardImage: {fileID: 2800000, guid: 588a4861d2f07a243aa8e28b3bc578fc, type: 3}
     PowerLeft: 3
     PowerRight: 5
@@ -107,9 +105,9 @@ MonoBehaviour:
     UseImage: 0
     IsUnlocked: 1
     cardShape: {fileID: 11400000, guid: d4cf2d68076e81d4599835b9c2cc39df, type: 2}
-  - CardName: "7\uC774\uB984"
+  - CardName: "\uC5BC\uC74C \uBC14\uB78C"
     ID: 7
-    CardDescription: "7\uC124\uBA85"
+    CardDescription: "\uC804\uCCB4 \uC801\uC5D0\uAC8C \uB370\uBBF8\uC9C0\uB97C \uC90D\uB2C8\uB2E4."
     cardImage: {fileID: 2800000, guid: 0e420161712bf374a84877d6ba5bb6e6, type: 3}
     PowerLeft: 1
     PowerRight: 2
@@ -122,9 +120,9 @@ MonoBehaviour:
     UseImage: 0
     IsUnlocked: 1
     cardShape: {fileID: 11400000, guid: 8433066de5eb0fc4ba16b26b1c7bcb41, type: 2}
-  - CardName: "8\uC774\uB984"
+  - CardName: "\uC5F4\uD48D"
     ID: 8
-    CardDescription: "8\uC124\uBA85"
+    CardDescription: "\uC804\uCCB4 \uC801\uC5D0\uAC8C \uB370\uBBF8\uC9C0\uB97C \uC90D\uB2C8\uB2E4."
     cardImage: {fileID: 2800000, guid: dcc9235fa6c513f4baf7c293e3d2ea35, type: 3}
     PowerLeft: 5
     PowerRight: 10
@@ -137,9 +135,10 @@ MonoBehaviour:
     UseImage: 0
     IsUnlocked: 1
     cardShape: {fileID: 11400000, guid: ebd5f25102aae52449054a519e3dae38, type: 2}
-  - CardName: "9\uC774\uB984"
+  - CardName: "\uAC00\uC18D"
     ID: 9
-    CardDescription: "9\uC124\uBA85"
+    CardDescription: "\uD50C\uB808\uC774\uC5B4\uC758 \uB2E4\uC74C \uACF5\uACA9\uC758
+      \uB370\uBBF8\uC9C0\uAC00 \uC99D\uAC00\uD569\uB2C8\uB2E4."
     cardImage: {fileID: 2800000, guid: 8ddd4071397dc66468480f4f5a8da138, type: 3}
     PowerLeft: 0
     PowerRight: 0
@@ -152,9 +151,9 @@ MonoBehaviour:
     UseImage: 0
     IsUnlocked: 1
     cardShape: {fileID: 11400000, guid: 9b120312862a52949a5c24f9824549cc, type: 2}
-  - CardName: "10\uC774\uB984"
+  - CardName: "\uCE58\uC720"
     ID: 10
-    CardDescription: "10\uC124\uBA85"
+    CardDescription: "\uD50C\uB808\uC774\uC5B4\uC758 \uCCB4\uB825\uC744 \uD68C\uBCF5\uD569\uB2C8\uB2E4."
     cardImage: {fileID: 2800000, guid: b0073eace33cfd846902e47a30c87725, type: 3}
     PowerLeft: 1
     PowerRight: 2
@@ -167,9 +166,10 @@ MonoBehaviour:
     UseImage: 0
     IsUnlocked: 1
     cardShape: {fileID: 11400000, guid: f13a577dfde784745a7826ad66d92337, type: 2}
-  - CardName: "11\uC774\uB984"
+  - CardName: "\uC778\uB0B4"
     ID: 11
-    CardDescription: "11\uC124\uBA85"
+    CardDescription: "\uD50C\uB808\uC774\uC5B4\uC5D0\uAC8C \uBC29\uC5B4\uB9C9\uC744
+      \uC81C\uACF5\uD569\uB2C8\uB2E4."
     cardImage: {fileID: 2800000, guid: fee189d840148bd4db3e61314d327c06, type: 3}
     PowerLeft: 2
     PowerRight: 3
@@ -182,9 +182,10 @@ MonoBehaviour:
     UseImage: 0
     IsUnlocked: 1
     cardShape: {fileID: 11400000, guid: 41163a0720d3bc44ea6b1c8a8ccfb9e7, type: 2}
-  - CardName: "12\uC774\uB984"
+  - CardName: "\uC21C\uD48D"
     ID: 12
-    CardDescription: "12\uC124\uBA85"
+    CardDescription: "\uD50C\uB808\uC774\uC5B4\uC758 \uB2E4\uC74C \uCE58\uBA85\uD0C0
+      \uACF5\uACA9\uC758 \uB370\uBBF8\uC9C0\uAC00 \uC99D\uAC00\uD569\uB2C8\uB2E4."
     cardImage: {fileID: 2800000, guid: 4b02e7fb390e70c4c929ced5b4cfb151, type: 3}
     PowerLeft: 1
     PowerRight: 2
@@ -197,9 +198,9 @@ MonoBehaviour:
     UseImage: 0
     IsUnlocked: 1
     cardShape: {fileID: 11400000, guid: 3434211979a93664d9bbc0d5bfc7a134, type: 2}
-  - CardName: "13\uC774\uB984"
+  - CardName: "\uCE74\uB4DC \uBF51\uAE30"
     ID: 13
-    CardDescription: "13\uC124\uBA85"
+    CardDescription: "\uCE74\uB4DC\uB97C \uC0C8\uB85C \uBF51\uC2B5\uB2C8\uB2E4."
     cardImage: {fileID: 2800000, guid: c32675664d97ecb4083f50bddbd610b0, type: 3}
     PowerLeft: 0
     PowerRight: 0
@@ -212,9 +213,9 @@ MonoBehaviour:
     UseImage: 1
     IsUnlocked: 0
     cardShape: {fileID: 0}
-  - CardName: "14\uC774\uB984"
+  - CardName: "\uCE74\uB4DC \uC11E\uAE30"
     ID: 14
-    CardDescription: "14\uC124\uBA85"
+    CardDescription: "\uBAA8\uB4E0 \uCE74\uB4DC\uB97C \uC11E\uC2B5\uB2C8\uB2E4."
     cardImage: {fileID: 2800000, guid: 94ec2eaac6657c1409886921db8ffef5, type: 3}
     PowerLeft: 0
     PowerRight: 0
@@ -227,9 +228,9 @@ MonoBehaviour:
     UseImage: 1
     IsUnlocked: 0
     cardShape: {fileID: 11400000, guid: ac0891baae96e2d48b9395f586f74c07, type: 2}
-  - CardName: "15\uC774\uB984"
+  - CardName: "\uD37C\uC990 \uC11E\uAE30"
     ID: 15
-    CardDescription: "15\uC124\uBA85"
+    CardDescription: "\uD37C\uC990\uC758 \uBAA8\uC591\uC744 \uC11E\uC2B5\uB2C8\uB2E4."
     cardImage: {fileID: 2800000, guid: 9bbb39842240eff4ea35872260968f9d, type: 3}
     PowerLeft: 0
     PowerRight: 0

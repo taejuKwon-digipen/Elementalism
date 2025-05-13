@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     public int Player_HP;
     public int Player_Gold;
+    public int Player_MaxHP;
     public GameObject gameOverPanel;
     [SerializeField]
     private int challengeLevel = 1;
@@ -27,6 +28,7 @@ public class GameManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
             Player_Gold = 100; // 초기 골드 설정
+            Player_MaxHP = 100; // 초기 최대체력 설정
             LoadGameState(); // 게임 상태 로드
         }
         else
