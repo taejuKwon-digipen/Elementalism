@@ -17,8 +17,9 @@ MonoBehaviour:
     ID: 1
     CardDescription: "\uC801\uC5D0\uAC8C \uB0AE\uC740 \uB370\uBBF8\uC9C0\uB97C \uC90D\uB2C8\uB2E4."
     cardImage: {fileID: 2800000, guid: ff81e51fb26b3ff4da6cd67cdae55a04, type: 3}
-    PowerLeft: 2
-    PowerRight: 4
+    CurrentLevel: 1
+    PowerLeftByLevel: 020000000300000005000000
+    PowerRightByLevel: 040000000500000008000000
     CreatedElementType: 0
     UseMagic: 0
     Percent: 3
@@ -32,8 +33,9 @@ MonoBehaviour:
     ID: 2
     CardDescription: "\uC801\uC5D0\uAC8C \uB0AE\uC740 \uB370\uBBF8\uC9C0\uB97C \uC90D\uB2C8\uB2E4."
     cardImage: {fileID: 2800000, guid: bc62c7dae0fb89e44aa8e55f90063197, type: 3}
-    PowerLeft: 2
-    PowerRight: 4
+    CurrentLevel: 1
+    PowerLeftByLevel: 020000000300000005000000
+    PowerRightByLevel: 040000000500000008000000
     CreatedElementType: 0
     UseMagic: 0
     Percent: 11
@@ -47,8 +49,9 @@ MonoBehaviour:
     ID: 3
     CardDescription: "\uC801\uC5D0\uAC8C \uB0AE\uC740 \uB370\uBBF8\uC9C0\uB97C \uC90D\uB2C8\uB2E4."
     cardImage: {fileID: 2800000, guid: c1a2e8ad29173a348a47ad13042fad59, type: 3}
-    PowerLeft: 2
-    PowerRight: 4
+    CurrentLevel: 1
+    PowerLeftByLevel: 020000000300000005000000
+    PowerRightByLevel: 040000000500000008000000
     CreatedElementType: 0
     UseMagic: 0
     Percent: 11
@@ -62,8 +65,9 @@ MonoBehaviour:
     ID: 4
     CardDescription: "\uC801\uC5D0\uAC8C \uB0AE\uC740 \uB370\uBBF8\uC9C0\uB97C \uC90D\uB2C8\uB2E4."
     cardImage: {fileID: 2800000, guid: 414341b633bfa374b87f70dadd6d4a45, type: 3}
-    PowerLeft: 2
-    PowerRight: 4
+    CurrentLevel: 1
+    PowerLeftByLevel: 020000000300000005000000
+    PowerRightByLevel: 040000000500000008000000
     CreatedElementType: 0
     UseMagic: 0
     Percent: 11
@@ -78,8 +82,9 @@ MonoBehaviour:
     CardDescription: "\uC801\uC5D0\uAC8C \uB370\uBBF8\uC9C0\uB97C \uC8FC\uB294 \uC7A5\uD310\uC744
       \uC804\uBC29\uC5D0 \uB9CC\uB4ED\uB2C8\uB2E4."
     cardImage: {fileID: 2800000, guid: 56048745d570b794693890cc9a04d43c, type: 3}
-    PowerLeft: 4
-    PowerRight: 6
+    CurrentLevel: 1
+    PowerLeftByLevel: 000000000000000000000000
+    PowerRightByLevel: 000000000000000000000000
     CreatedElementType: 1
     UseMagic: 1
     Percent: 4.75
@@ -94,8 +99,9 @@ MonoBehaviour:
     CardDescription: "\uD50C\uB808\uC774\uC5B4\uC5D0\uAC8C \uBC29\uC5B4\uB9C9\uC744
       \uC81C\uACF5\uD569\uB2C8\uB2E4."
     cardImage: {fileID: 2800000, guid: 588a4861d2f07a243aa8e28b3bc578fc, type: 3}
-    PowerLeft: 3
-    PowerRight: 5
+    CurrentLevel: 1
+    PowerLeftByLevel: 000000000000000000000000
+    PowerRightByLevel: 000000000000000000000000
     CreatedElementType: 0
     UseMagic: 1
     Percent: 4.75
@@ -109,8 +115,9 @@ MonoBehaviour:
     ID: 7
     CardDescription: "\uC804\uCCB4 \uC801\uC5D0\uAC8C \uB370\uBBF8\uC9C0\uB97C \uC90D\uB2C8\uB2E4."
     cardImage: {fileID: 2800000, guid: 0e420161712bf374a84877d6ba5bb6e6, type: 3}
-    PowerLeft: 1
-    PowerRight: 2
+    CurrentLevel: 1
+    PowerLeftByLevel: 000000000000000000000000
+    PowerRightByLevel: 000000000000000000000000
     CreatedElementType: 0
     UseMagic: 1
     Percent: 4.75
@@ -124,8 +131,9 @@ MonoBehaviour:
     ID: 8
     CardDescription: "\uC804\uCCB4 \uC801\uC5D0\uAC8C \uB370\uBBF8\uC9C0\uB97C \uC90D\uB2C8\uB2E4."
     cardImage: {fileID: 2800000, guid: dcc9235fa6c513f4baf7c293e3d2ea35, type: 3}
-    PowerLeft: 5
-    PowerRight: 10
+    CurrentLevel: 1
+    PowerLeftByLevel: 000000000000000000000000
+    PowerRightByLevel: 000000000000000000000000
     CreatedElementType: 0
     UseMagic: 1
     Percent: 4.75
@@ -140,8 +148,9 @@ MonoBehaviour:
     CardDescription: "\uD50C\uB808\uC774\uC5B4\uC758 \uB2E4\uC74C \uACF5\uACA9\uC758
       \uB370\uBBF8\uC9C0\uAC00 \uC99D\uAC00\uD569\uB2C8\uB2E4."
     cardImage: {fileID: 2800000, guid: 8ddd4071397dc66468480f4f5a8da138, type: 3}
-    PowerLeft: 0
-    PowerRight: 0
+    CurrentLevel: 1
+    PowerLeftByLevel: 000000000000000000000000
+    PowerRightByLevel: 000000000000000000000000
     CreatedElementType: 0
     UseMagic: 0
     Percent: 5
@@ -155,8 +164,9 @@ MonoBehaviour:
     ID: 10
     CardDescription: "\uD50C\uB808\uC774\uC5B4\uC758 \uCCB4\uB825\uC744 \uD68C\uBCF5\uD569\uB2C8\uB2E4."
     cardImage: {fileID: 2800000, guid: b0073eace33cfd846902e47a30c87725, type: 3}
-    PowerLeft: 1
-    PowerRight: 2
+    CurrentLevel: 1
+    PowerLeftByLevel: 000000000000000000000000
+    PowerRightByLevel: 000000000000000000000000
     CreatedElementType: 0
     UseMagic: 0
     Percent: 5
@@ -171,8 +181,9 @@ MonoBehaviour:
     CardDescription: "\uD50C\uB808\uC774\uC5B4\uC5D0\uAC8C \uBC29\uC5B4\uB9C9\uC744
       \uC81C\uACF5\uD569\uB2C8\uB2E4."
     cardImage: {fileID: 2800000, guid: fee189d840148bd4db3e61314d327c06, type: 3}
-    PowerLeft: 2
-    PowerRight: 3
+    CurrentLevel: 1
+    PowerLeftByLevel: 000000000000000000000000
+    PowerRightByLevel: 000000000000000000000000
     CreatedElementType: 0
     UseMagic: 0
     Percent: 5
@@ -187,8 +198,9 @@ MonoBehaviour:
     CardDescription: "\uD50C\uB808\uC774\uC5B4\uC758 \uB2E4\uC74C \uCE58\uBA85\uD0C0
       \uACF5\uACA9\uC758 \uB370\uBBF8\uC9C0\uAC00 \uC99D\uAC00\uD569\uB2C8\uB2E4."
     cardImage: {fileID: 2800000, guid: 4b02e7fb390e70c4c929ced5b4cfb151, type: 3}
-    PowerLeft: 1
-    PowerRight: 2
+    CurrentLevel: 1
+    PowerLeftByLevel: 000000000000000000000000
+    PowerRightByLevel: 000000000000000000000000
     CreatedElementType: 0
     UseMagic: 0
     Percent: 5
@@ -202,8 +214,9 @@ MonoBehaviour:
     ID: 13
     CardDescription: "\uCE74\uB4DC\uB97C \uC0C8\uB85C \uBF51\uC2B5\uB2C8\uB2E4."
     cardImage: {fileID: 2800000, guid: c32675664d97ecb4083f50bddbd610b0, type: 3}
-    PowerLeft: 0
-    PowerRight: 0
+    CurrentLevel: 1
+    PowerLeftByLevel: 000000000000000000000000
+    PowerRightByLevel: 000000000000000000000000
     CreatedElementType: 0
     UseMagic: 0
     Percent: 3
@@ -217,8 +230,9 @@ MonoBehaviour:
     ID: 14
     CardDescription: "\uBAA8\uB4E0 \uCE74\uB4DC\uB97C \uC11E\uC2B5\uB2C8\uB2E4."
     cardImage: {fileID: 2800000, guid: 94ec2eaac6657c1409886921db8ffef5, type: 3}
-    PowerLeft: 0
-    PowerRight: 0
+    CurrentLevel: 1
+    PowerLeftByLevel: 000000000000000000000000
+    PowerRightByLevel: 000000000000000000000000
     CreatedElementType: 0
     UseMagic: 0
     Percent: 0
@@ -232,8 +246,9 @@ MonoBehaviour:
     ID: 15
     CardDescription: "\uD37C\uC990\uC758 \uBAA8\uC591\uC744 \uC11E\uC2B5\uB2C8\uB2E4."
     cardImage: {fileID: 2800000, guid: 9bbb39842240eff4ea35872260968f9d, type: 3}
-    PowerLeft: 0
-    PowerRight: 0
+    CurrentLevel: 1
+    PowerLeftByLevel: 000000000000000000000000
+    PowerRightByLevel: 000000000000000000000000
     CreatedElementType: 0
     UseMagic: 0
     Percent: 3

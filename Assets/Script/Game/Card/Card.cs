@@ -81,8 +81,30 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
         if (isFront)
         {
             nameTMP.text = this.carditem.CardName; // 이제 this.carditem은 변환된 데이터를 가짐 (단, CardName 등은 원본 유지)
-            PowerLeftTMP.text = this.carditem.PowerLeft.ToString();
-            PowerRightTMP.text = this.carditem.PowerRight.ToString();
+            // PowerLeftTMP.text = this.carditem.PowerLeft.ToString();
+            // PowerRightTMP.text = this.carditem.PowerRight.ToString();
+
+            // 현재 레벨에 맞는 공격력 표시 (리스트 인덱스 주의: CurrentLevel은 1부터 시작)
+            if (this.carditem.PowerLeftByLevel != null && this.carditem.PowerLeftByLevel.Count >= this.carditem.CurrentLevel)
+            {
+                PowerLeftTMP.text = this.carditem.PowerLeftByLevel[this.carditem.CurrentLevel - 1].ToString();
+            }
+            else
+            {
+                PowerLeftTMP.text = "N/A"; // 데이터 오류 또는 레벨 범위 초과
+                Debug.LogWarning($"[Card] {this.carditem.CardName} (Level {this.carditem.CurrentLevel}): PowerLeftByLevel 데이터 오류 또는 범위 초과.");
+            }
+
+            if (this.carditem.PowerRightByLevel != null && this.carditem.PowerRightByLevel.Count >= this.carditem.CurrentLevel)
+            {
+                PowerRightTMP.text = this.carditem.PowerRightByLevel[this.carditem.CurrentLevel - 1].ToString();
+            }
+            else
+            {
+                PowerRightTMP.text = "N/A"; // 데이터 오류 또는 레벨 범위 초과
+                Debug.LogWarning($"[Card] {this.carditem.CardName} (Level {this.carditem.CurrentLevel}): PowerRightByLevel 데이터 오류 또는 범위 초과.");
+            }
+
             CardDescriptionTMP.text = this.carditem.CardDescription;
             isUsingImage = this.carditem.UseImage;
 

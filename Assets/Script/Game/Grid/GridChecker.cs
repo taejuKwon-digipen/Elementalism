@@ -560,8 +560,30 @@ public class GridChecker : MonoBehaviour
     private void ApplyCardEffect(Card card, int matchedBlockCount, int oraBlockCount)
     {
         int cardID = card.carditem.ID;
-        int baseDamage = card.carditem.PowerLeft;
-        int critDamage = card.carditem.PowerRight;
+        // int baseDamage = card.carditem.PowerLeft;
+        // int critDamage = card.carditem.PowerRight;
+
+        int baseDamage = 0;
+        int critDamage = 0;
+        int currentLevelIndex = card.carditem.CurrentLevel - 1; // 0-indexed
+
+        if (card.carditem.PowerLeftByLevel != null && card.carditem.PowerLeftByLevel.Count > currentLevelIndex && currentLevelIndex >= 0)
+        {
+            baseDamage = card.carditem.PowerLeftByLevel[currentLevelIndex];
+        }
+        else
+        {
+            Debug.LogWarning($"[GridChecker] {card.carditem.CardName} (Level {card.carditem.CurrentLevel}): PowerLeftByLevel 데이터 오류 또는 범위 초과. 기본값 0 사용.");
+        }
+
+        if (card.carditem.PowerRightByLevel != null && card.carditem.PowerRightByLevel.Count > currentLevelIndex && currentLevelIndex >= 0)
+        {
+            critDamage = card.carditem.PowerRightByLevel[currentLevelIndex];
+        }
+        else
+        {
+            Debug.LogWarning($"[GridChecker] {card.carditem.CardName} (Level {card.carditem.CurrentLevel}): PowerRightByLevel 데이터 오류 또는 범위 초과. 기본값 0 사용.");
+        }
 
         int additionalDamageFromEffect = CalculateCardSpecificAdditionalDamage(cardID, matchedBlockCount);
         int finalDamage = CalculateFinalDamage(baseDamage, critDamage, matchedBlockCount, oraBlockCount);

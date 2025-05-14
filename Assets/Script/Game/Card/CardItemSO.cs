@@ -39,12 +39,17 @@ public class CardItem
     public Texture2D cardImage;
     
     [TabGroup("능력치")]
-    [LabelText("기본 공격력")]
-    public int PowerLeft;
+    [LabelText("현재 레벨")]
+    [Range(1, 3)]
+    public int CurrentLevel = 1;
     
     [TabGroup("능력치")]
-    [LabelText("크리티컬 공격력")]
-    public int PowerRight;
+    [LabelText("레벨별 기본 공격력")]
+    public List<int> PowerLeftByLevel = new List<int> { 0, 0, 0 };
+    
+    [TabGroup("능력치")]
+    [LabelText("레벨별 크리티컬 공격력")]
+    public List<int> PowerRightByLevel = new List<int> { 0, 0, 0 };
     
     [TabGroup("능력치")]
     [LabelText("원소")]
@@ -100,8 +105,9 @@ public class CardItem
         newItem.ID = this.ID;
         newItem.CardDescription = this.CardDescription;
         newItem.cardImage = this.cardImage; // Texture2D는 참조 복사로 충분할 수 있음
-        newItem.PowerLeft = this.PowerLeft;
-        newItem.PowerRight = this.PowerRight;
+        newItem.CurrentLevel = this.CurrentLevel;
+        newItem.PowerLeftByLevel = new List<int>(this.PowerLeftByLevel);
+        newItem.PowerRightByLevel = new List<int>(this.PowerRightByLevel);
         newItem.CreatedElementType = this.CreatedElementType;
         newItem.UseMagic = this.UseMagic;
         newItem.Percent = this.Percent;

@@ -34,25 +34,10 @@ public class Inventory : ScriptableObject
                 var cardData = cardItemSO.items.FirstOrDefault(card => card.ID == i);
                 if (cardData != null)
                 {
-                    inventoryCards.Add(new CardItem 
-                    { 
-                        ID = cardData.ID,
-                        CardName = cardData.CardName,
-                        CardDescription = cardData.CardDescription,
-                        cardImage = cardData.cardImage,
-                        PowerLeft = cardData.PowerLeft,
-                        PowerRight = cardData.PowerRight,
-                        CreatedElementType = cardData.CreatedElementType,
-                        UseMagic = cardData.UseMagic,
-                        Percent = cardData.Percent,
-                        UseProp = cardData.UseProp,
-                        UseBuff = cardData.UseBuff,
-                        UseDraw = cardData.UseDraw,
-                        UseImage = cardData.UseImage,
-                        IsUnlocked = true,
-                        cardShape = cardData.cardShape
-                    });
-                    Debug.Log($"[Inventory] 기본 카드 추가됨: {cardData.CardName} (ID: {cardData.ID})");
+                    CardItem newInventoryCard = cardData.Clone();
+                    newInventoryCard.IsUnlocked = true;
+                    inventoryCards.Add(newInventoryCard);
+                    Debug.Log($"[Inventory] 기본 카드 추가됨: {newInventoryCard.CardName} (ID: {newInventoryCard.ID}, Level: {newInventoryCard.CurrentLevel})");
                 }
                 else
                 {
@@ -65,27 +50,11 @@ public class Inventory : ScriptableObject
     public void AddCard(CardItem card)
     {
         // 카드의 복사본을 생성하여 추가
-        CardItem newCard = new CardItem
-        {
-            ID = card.ID,
-            CardName = card.CardName,
-            CardDescription = card.CardDescription,
-            cardImage = card.cardImage,
-            PowerLeft = card.PowerLeft,
-            PowerRight = card.PowerRight,
-            CreatedElementType = card.CreatedElementType,
-            UseMagic = card.UseMagic,
-            Percent = card.Percent,
-            UseProp = card.UseProp,
-            UseBuff = card.UseBuff,
-            UseDraw = card.UseDraw,
-            UseImage = card.UseImage,
-            IsUnlocked = true,
-            cardShape = card.cardShape
-        };
+        CardItem newCard = card.Clone();
+        newCard.IsUnlocked = true;
 
         inventoryCards.Add(newCard);
-        Debug.Log($"[Inventory] 카드 추가됨: {card.CardName} (ID: {card.ID})");
+        Debug.Log($"[Inventory] 카드 추가됨: {newCard.CardName} (ID: {newCard.ID}, Level: {newCard.CurrentLevel})");
     }
 
     public void RemoveCard(CardItem card)
