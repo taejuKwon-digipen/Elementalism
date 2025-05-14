@@ -19,8 +19,8 @@ public class Node : MonoBehaviour
     [SerializeField] TMP_Text TypeTXT;
 
     public NodeType nodeType;
-    public List<Node> connectedNodes = new(); // ¿¬°áµÈ ³ëµå ¸®½ºÆ®
-    private Vector2 position; // ³ëµå À§Ä¡
+    public List<Node> connectedNodes = new(); // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
+    private Vector2 position; // ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡
     private bool isSelectable = false;
 
     private bool IsTypeAssigned = false;
@@ -46,11 +46,11 @@ public class Node : MonoBehaviour
     {
         if (!isSelectable)
         {
-            Debug.Log("ÀÌ ³ëµå´Â ¼±ÅÃÇÒ ¼ö ¾ø½À´Ï´Ù.");
+            Debug.Log("ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
             return;
         }
 
-        Debug.Log($"[Å¬¸¯] {nodeType} ³ëµå ¼±ÅÃµÊ");
+        Debug.Log($"[Å¬ï¿½ï¿½] {nodeType} ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ãµï¿½");
 
         if (spriteRenderer != null)
         {
@@ -58,25 +58,39 @@ public class Node : MonoBehaviour
             
         }
 
+        // Battle ë˜ëŠ” Boss ë…¸ë“œì¼ ê²½ìš°, ë‹¤ìŒ ì „íˆ¬ë¥¼ ìœ„í•œ Shapeì„ MapStorageì— ì„¤ì • ìš”ì²­
+        if (nodeType == NodeType.Battle || nodeType == NodeType.Boss)
+        {
+            if (MapStorage.Instance != null)
+            {
+                MapStorage.Instance.SetShapesForNextBattle(null); // nullì„ ì „ë‹¬í•˜ì—¬ ëœë¤ ì„ íƒ
+                Debug.Log($"[Node] {nodeType} æˆ¦é—˜æº–å‚™ï¼šMapStorageã«ãƒ©ãƒ³ãƒ€ãƒ Shapeè¨­å®šã‚’ãƒªã‚¯ã‚¨ã‚¹ãƒˆã—ã¾ã—ãŸã€‚");
+            }
+            else
+            {
+                Debug.LogError("[Node] MapStorage.Instanceê°€ nullì…ë‹ˆë‹¤.");
+            }
+        }
+
         string SceneToLoad = GetSceneNameByNodeType(nodeType);
         if (!string.IsNullOrEmpty(SceneToLoad))
         {
             StopAllCoroutines();
-            Debug.Log($"¾À {SceneToLoad} ·Îµå Áß...");
+            Debug.Log($"ï¿½ï¿½ {SceneToLoad} ï¿½Îµï¿½ ï¿½ï¿½...");
             SceneManager.LoadScene(SceneToLoad);
         }
 
-        // ¼±ÅÃÇÑ ³ëµå¸¦ ¸Ê ¸Å´ÏÀú¿¡ ¹İ¿µ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½å¸¦ ï¿½ï¿½ ï¿½Å´ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½İ¿ï¿½
         if (MapManager.Instance != null)
         {
-            Debug.Log("½ºÇÁ¶óÀÌÆ®·»´õ·¯ ±×·¹ÀÌ");
+            Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×·ï¿½ï¿½ï¿½");
             /*nodeImage = GetComponent<Image>();
             nodeImage.color*/
             mapManager.MovePlayer(this);
         }
         else
         {
-            Debug.LogError("mapManager°¡ nullÀÔ´Ï´Ù! MapManager.Instance°¡ Á¤»óÀûÀ¸·Î ¼³Á¤µÇ¾ú´ÂÁö È®ÀÎÇÏ¼¼¿ä.");
+            Debug.LogError("mapManagerï¿½ï¿½ nullï¿½Ô´Ï´ï¿½! MapManager.Instanceï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½.");
         }
 
         foreach (var node in connectedNodes)
@@ -99,7 +113,7 @@ public class Node : MonoBehaviour
     {
         if (isSelectable)
         {
-            StartBlinking(); // ¼±ÅÃ °¡´ÉÇÒ ¶§ ¹İÂ¦ÀÌ´Â È¿°ú
+            StartBlinking(); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Â¦ï¿½Ì´ï¿½ È¿ï¿½ï¿½
         }
         else
         {
@@ -111,10 +125,10 @@ public class Node : MonoBehaviour
     {
         if (this.transform != null)
         {
-            this.transform.DOKill(); // ±âÁ¸ Æ®À© È¿°ú Á¤Áö
-            this.transform.DOScale(Vector3.one * 1.2f, 0.5f) // Å©±â 1.2¹è Áõ°¡
-                .SetLoops(-1, LoopType.Yoyo) // ¹«ÇÑ ¹İº¹ (Ä¿Á³´Ù ÁÙ¾îµé±â)
-                .SetEase(Ease.InOutSine); // ºÎµå·¯¿î ¾Ö´Ï¸ŞÀÌ¼Ç
+            this.transform.DOKill(); // ï¿½ï¿½ï¿½ï¿½ Æ®ï¿½ï¿½ È¿ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+            this.transform.DOScale(Vector3.one * 1.2f, 0.5f) // Å©ï¿½ï¿½ 1.2ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+                .SetLoops(-1, LoopType.Yoyo) // ï¿½ï¿½ï¿½ï¿½ ï¿½İºï¿½ (Ä¿ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¾ï¿½ï¿½ï¿½)
+                .SetEase(Ease.InOutSine); // ï¿½Îµå·¯ï¿½ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½
         }
     }
 
@@ -123,8 +137,8 @@ public class Node : MonoBehaviour
         isSelectable = false;
         if (this.transform != null)
         {
-            this.transform.DOKill(); // ¾Ö´Ï¸ŞÀÌ¼Ç Á¤Áö
-            this.transform.localScale = Vector3.one; // ¿ø·¡ Å©±â·Î º¹±Í
+            this.transform.DOKill(); // ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½ï¿½
+            this.transform.localScale = Vector3.one; // ï¿½ï¿½ï¿½ï¿½ Å©ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         }
     }
     private string GetSceneNameByNodeType(NodeType type)
@@ -154,7 +168,7 @@ public class Node : MonoBehaviour
 
     public void AssignRandomType()
     {
-        int roll = Random.Range(0, 100); // 0~99 »çÀÌ ³­¼ö
+        int roll = Random.Range(0, 100); // 0~99 ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         int cumulative = 0;
 
         if (MapManager.Instance == null)
@@ -192,13 +206,13 @@ public class Node : MonoBehaviour
     {
         if (mapManager == null) return;
 
-        // ¸ğµç ¶óÀÎ ºñÈ°¼ºÈ­
+        // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È°ï¿½ï¿½È­
         foreach (GameObject line in mapManager.lines)
         {
             line.SetActive(false);
         }
 
-        // ¿¬°áµÈ ³ëµåµéÀÇ ¶óÀÎ È°¼ºÈ­
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È°ï¿½ï¿½È­
         foreach (Node connectedNode in connectedNodes)
         {
             foreach (GameObject line in mapManager.lines)

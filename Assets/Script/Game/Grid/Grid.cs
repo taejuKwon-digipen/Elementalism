@@ -87,12 +87,46 @@ public class Grid : MonoBehaviour
 
     void Start()
     {
+        // MapStorage에서 다음 전투를 위한 Shape 데이터 가져오기
+        if (MapStorage.Instance != null)
+        {
+            List<ShapeData> shapesFromStorage = MapStorage.Instance.GetShapesForBattle();
+            if (shapesFromStorage != null && shapesFromStorage.Count > 0)
+            {
+                currentShape = shapesFromStorage[0]; // 첫 번째 Shape 사용
+                Debug.Log($"[Grid] MapStorage로부터 Shape '{currentShape.name}' 로드됨.");
+            }
+            else
+            {
+                Debug.LogWarning("[Grid] MapStorage에 다음 전투를 위한 Shape이 설정되어 있지 않습니다.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("[Grid] MapStorage.Instance가 null입니다.");
+        }
+
+        // MapStorage에서 Shape을 가져오지 못했고, 기존 shapeStorage가 있다면 폴백으로 사용
+        if (currentShape == null && shapeStorage != null && shapeStorage.shapeData != null && shapeStorage.shapeData.Count > 0)
+        {
+            currentShape = shapeStorage.shapeData[0];
+            Debug.LogWarning($"[Grid] MapStorage에 Shape이 없어 기존 shapeStorage의 첫번째 Shape '{currentShape.name}' 로드됨.");
+        }
+
         if (currentShape == null)
         {
-            Debug.LogError("Grid: currentShape이 할당되지 않았습니다!");
+            Debug.LogError("[Grid] currentShape이 할당되지 않았습니다! 그리드를 생성할 수 없습니다.");
             return;
         }
+
         CreateGrid(); // 그리드를 생성합니다.
+
+        // 사용한 Shape 정보 정리
+        if (MapStorage.Instance != null)
+        {
+            MapStorage.Instance.ClearShapesForBattle();
+            Debug.Log("[Grid] MapStorage의 전투 Shape 정보 정리 완료.");
+        }
     }
 
     // 그리드를 생성하는 메서드

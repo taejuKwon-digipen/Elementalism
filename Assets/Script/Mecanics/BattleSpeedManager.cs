@@ -58,8 +58,8 @@ public class BattleSpeedManager : MonoBehaviour
         if (speedButtonObj != null)
         {
             speedButton = speedButtonObj.GetComponent<Button>();
-            if (speedButton != null)
-            {
+        if (speedButton != null)
+        {
                 Debug.Log("[BattleSpeedManager] SpeedButton 찾음 및 할당됨");
                 speedButton.onClick.RemoveAllListeners();
                 speedButton.onClick.AddListener(ToggleSpeed);
@@ -132,8 +132,8 @@ public class BattleSpeedManager : MonoBehaviour
         if (Instance == this) // 자기 자신이 Instance일 때만 초기화
         {
             if (Time.timeScale != 1f) // 불필요한 초기화를 방지하기 위해 현재 배속이 1이 아닐 때만 실행
-            {
-                Time.timeScale = 1f; // 정상 속도로 복원
+        {
+             Time.timeScale = 1f; // 정상 속도로 복원
                 Debug.Log("[BattleSpeedManager] 배속 초기화 (1x) - OnDestroy");
             }
         }

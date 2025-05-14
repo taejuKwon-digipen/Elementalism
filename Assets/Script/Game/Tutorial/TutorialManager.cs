@@ -183,7 +183,7 @@ public class TutorialManager : MonoBehaviour
         while (GameManager.Instance == null) // GameManager 로드 대기
         {
             Debug.Log("[TutorialManager] GameManager.Instance 대기 중...");
-            yield return new WaitForSeconds(0.1f); 
+            yield return new WaitForSeconds(0.1f);
         }
         // GoogleSheetLoader도 여기서 로드 완료되었는지 확인하는 것이 안전할 수 있음
         while (GoogleSheetLoader.Instance == null || !GoogleSheetLoader.Instance.IsLoaded)
@@ -197,7 +197,7 @@ public class TutorialManager : MonoBehaviour
         if (GameManager.Instance.IsTutorialMode)
         {
             Debug.Log("[TutorialManager] 튜토리얼 시작 조건 충족 (GameManager.IsTutorialMode is true). StartTutorial() 호출 시도.");
-            StartTutorial(); 
+            StartTutorial();
         }
         else
         {

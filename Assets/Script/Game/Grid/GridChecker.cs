@@ -171,7 +171,7 @@ public class GridChecker : MonoBehaviour
         
         // 모든 카드 처리 후, 모든 공격 애니메이션이 끝날 때까지 대기
         yield return new WaitUntil(() => BallBehavior.activeAttackAnimations == 0);
-
+        
         PostProcessGridActions();
     }
 
