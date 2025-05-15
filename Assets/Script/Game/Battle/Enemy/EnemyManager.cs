@@ -74,29 +74,70 @@ public class EnemyManager : MonoBehaviour
             return;
 
         ResetSpawnPoints();
-        int numberToSpawn = numbers[UnityEngine.Random.Range(0, numbers.Length)];
 
-        for (int i = 0; i < numberToSpawn; i++)
+        List<GameObject> enemiesFromMapStorage = MapStorage.Instance?.GetEnemiesForBattle();
+
+        if (enemiesFromMapStorage != null && enemiesFromMapStorage.Count > 0)
         {
-            var entityToSpawn = spawnableEnemies[UnityEngine.Random.Range(0, spawnableEnemies.Count)];
-            var spawn = GetNewSpawn();
-            var newEntity = Instantiate(entityToSpawn, spawn, Quaternion.identity, canvas.transform);
-
-            var enemyComponent = newEntity.GetComponentInChildren<Enemy>();
-            newEntity.GetComponentInChildren<ImageClickHandler>().Canva = canvas;
-            enemyComponent.SetEnemyManager(this);
-
-            onFieldEntities.Add(newEntity);
-
-            if(hubDmgTextfab != null)
+            Debug.Log("[EnemyManager] MapStorage에서 적 정보를 가져와 스폰합니다.");
+            for (int i = 0; i < spawnPoints.Count; i++)
             {
-                enemyComponent.SetDmgTextPrefab(hubDmgTextfab);
-            }
+                if (i < enemiesFromMapStorage.Count && enemiesFromMapStorage[i] != null)
+                {
+                    GameObject entityToSpawn = enemiesFromMapStorage[i];
+                    Transform spawnPointTransform = spawnPoints[i].transform;
 
+                    var newEntity = Instantiate(entityToSpawn, spawnPointTransform.position, Quaternion.identity, canvas.transform);
+                    var enemyComponent = newEntity.GetComponentInChildren<Enemy>();
+                    newEntity.GetComponentInChildren<ImageClickHandler>().Canva = canvas;
+                    enemyComponent.SetEnemyManager(this);
+                    onFieldEntities.Add(newEntity);
+
+                    if (hubDmgTextfab != null)
+                    {
+                        enemyComponent.SetDmgTextPrefab(hubDmgTextfab);
+                    }
+                    Debug.Log($"[EnemyManager] {entityToSpawn.name}을(를) 스폰 포인트 {i} ({spawnPointTransform.name})에 스폰했습니다.");
+                }
+                else
+                {
+                    Debug.Log($"[EnemyManager] 스폰 포인트 {i} ({spawnPoints[i].transform.name})에 지정된 적이 없거나 null입니다. 스킵합니다.");
+                }
+            }
+        }
+        else
+        {
+            Debug.Log("[EnemyManager] MapStorage에 적 정보가 없습니다. 기존 랜덤 스폰 로직을 실행합니다.");
+            int numberToSpawn = numbers[UnityEngine.Random.Range(0, numbers.Length)];
+            for (int i = 0; i < numberToSpawn; i++)
+            {
+                var entityToSpawn = spawnableEnemies[UnityEngine.Random.Range(0, spawnableEnemies.Count)];
+                var spawnPosition = GetNewSpawn();
+                var newEntity = Instantiate(entityToSpawn, spawnPosition, Quaternion.identity, canvas.transform);
+
+                var enemyComponent = newEntity.GetComponentInChildren<Enemy>();
+                newEntity.GetComponentInChildren<ImageClickHandler>().Canva = canvas;
+                enemyComponent.SetEnemyManager(this);
+                onFieldEntities.Add(newEntity);
+
+                if (hubDmgTextfab != null)
+                {
+                    enemyComponent.SetDmgTextPrefab(hubDmgTextfab);
+                }
+            }
         }
 
-        onFieldEntities.Sort((a, b) => Convert.ToInt32(a.GetComponent<Transform>().position.x.CompareTo(b.GetComponent<Transform>().position.x)));
-        onFieldEntities[0].GetComponentInChildren<Enemy>().NotifyClickToLockManager();
+        if (onFieldEntities.Count > 0)
+        {
+            onFieldEntities.Sort((a, b) => Convert.ToInt32(a.GetComponent<Transform>().position.x.CompareTo(b.GetComponent<Transform>().position.x)));
+            onFieldEntities[0].GetComponentInChildren<Enemy>().NotifyClickToLockManager();
+        }
+        else
+        {
+            Debug.LogWarning("[EnemyManager] 스폰된 적이 없습니다.");
+            // 예: 모든 적이 스폰되지 않았을 경우 게임 매니저에게 알리거나 다음 단계로 진행
+            // GameManager.Instance?.CheckBattleEnd(); // GameManager에 해당 메서드가 없으므로 주석 처리합니다.
+        }
     }
     /**
       * <summary>Set together spawn point and their availability</summary>

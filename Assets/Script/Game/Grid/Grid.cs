@@ -124,8 +124,8 @@ public class Grid : MonoBehaviour
         // 사용한 Shape 정보 정리
         if (MapStorage.Instance != null)
         {
-            MapStorage.Instance.ClearShapesForBattle();
-            Debug.Log("[Grid] MapStorage의 전투 Shape 정보 정리 완료.");
+            MapStorage.Instance.ClearBattleConfiguration();
+            Debug.Log("[Grid] MapStorage의 전투 Shape 및 Enemy 정보 정리 완료.");
         }
     }
 

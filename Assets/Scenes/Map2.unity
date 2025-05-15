@@ -956,11 +956,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f04d878c9a415c45b1af0aabb9c06bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shapesForNextBattle: []
-  allPossibleShapes:
-  - {fileID: 11400000, guid: d73906940698fc5409797aad372907fc, type: 2}
-  - {fileID: 11400000, guid: 305b0997fb1af1044a0a684ca719c2a9, type: 2}
-  - {fileID: 11400000, guid: ee1f47e429486354ea1b20d1a99a8596, type: 2}
+  battleConfigurations:
+  - configName: Start Battle
+    shapeForThisConfig: {fileID: 11400000, guid: d73906940698fc5409797aad372907fc, type: 2}
+    enemyPrefabsPerSpawnPoint:
+    - {fileID: 4252167804875577219, guid: 1fddf91cca188ff4ab4d597211122905, type: 3}
+    - {fileID: 4252167804875577219, guid: 1fddf91cca188ff4ab4d597211122905, type: 3}
+    - {fileID: 0}
+    - {fileID: 4252167804875577219, guid: 1fddf91cca188ff4ab4d597211122905, type: 3}
+  - configName: Map2
+    shapeForThisConfig: {fileID: 11400000, guid: 305b0997fb1af1044a0a684ca719c2a9, type: 2}
+    enemyPrefabsPerSpawnPoint:
+    - {fileID: 4252167804875577219, guid: ce55e0f85d2fa004e84425d726be85f5, type: 3}
+    - {fileID: 4252167804875577219, guid: 1fddf91cca188ff4ab4d597211122905, type: 3}
+  - configName: Map3
+    shapeForThisConfig: {fileID: 11400000, guid: ee1f47e429486354ea1b20d1a99a8596, type: 2}
+    enemyPrefabsPerSpawnPoint:
+    - {fileID: 4252167804875577219, guid: ce55e0f85d2fa004e84425d726be85f5, type: 3}
+    - {fileID: 4252167804875577219, guid: ce55e0f85d2fa004e84425d726be85f5, type: 3}
+    - {fileID: 4252167804875577219, guid: ce55e0f85d2fa004e84425d726be85f5, type: 3}
 --- !u!1 &762030256
 GameObject:
   m_ObjectHideFlags: 0

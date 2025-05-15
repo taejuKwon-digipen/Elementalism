@@ -63,8 +63,8 @@ public class Node : MonoBehaviour
         {
             if (MapStorage.Instance != null)
             {
-                MapStorage.Instance.SetShapesForNextBattle(null); // null을 전달하여 랜덤 선택
-                Debug.Log($"[Node] {nodeType} 戦闘準備：MapStorageにランダムShape設定をリクエストしました。");
+                MapStorage.Instance.PrepareRandomBattleConfiguration(); // SetShapesForNextBattle(null) 대신 PrepareRandomBattleConfiguration 호출
+                Debug.Log($"[Node] {nodeType} 전투 준비: MapStorage에 무작위 전투 구성을 요청했습니다.");
             }
             else
             {
