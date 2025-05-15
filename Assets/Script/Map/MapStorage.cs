@@ -59,7 +59,7 @@ public class MapStorage : MonoBehaviour
         ShapeSpecificBattleConfig selectedConfig = battleConfigurations.FirstOrDefault(c => c.configName == configName);
 
         if (selectedConfig != null)
-        {
+    {
             currentShapeForNextBattle = selectedConfig.shapeForThisConfig;
             currentEnemiesForNextBattle = new List<GameObject>(selectedConfig.enemyPrefabsPerSpawnPoint ?? new List<GameObject>());
             lastSelectedConfigIndex = battleConfigurations.IndexOf(selectedConfig);
@@ -136,7 +136,7 @@ public class MapStorage : MonoBehaviour
         PrepareBattleConfiguration(availableIndices[randomIndex]);
         // lastSelectedConfigIndex는 PrepareBattleConfiguration(int) 내부에서 업데이트됨
         Debug.Log($"[MapStorage] 무작위 전투 구성 (인덱스 {lastSelectedConfigIndex}) '{battleConfigurations[lastSelectedConfigIndex].configName}' 준비 완료.");
-    }
+        }
 
 
     /// <summary>

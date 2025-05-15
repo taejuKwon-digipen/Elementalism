@@ -59,12 +59,22 @@ public class Node : MonoBehaviour
         }
 
         // Battle 또는 Boss 노드일 경우, 다음 전투를 위한 Shape을 MapStorage에 설정 요청
-        if (nodeType == NodeType.Battle || nodeType == NodeType.Boss)
+        if (nodeType == NodeType.Battle || nodeType == NodeType.Boss || nodeType == NodeType.Start)
         {
             if (MapStorage.Instance != null)
             {
-                MapStorage.Instance.PrepareRandomBattleConfiguration(); // SetShapesForNextBattle(null) 대신 PrepareRandomBattleConfiguration 호출
-                Debug.Log($"[Node] {nodeType} 전투 준비: MapStorage에 무작위 전투 구성을 요청했습니다.");
+                if (nodeType == NodeType.Start)
+                {
+                    // "Start Battle"이라는 이름으로 Shape을 설정하도록 MapStorage에 요청
+                    // MapStorage.cs에 PrepareBattleConfiguration(string configName)와 같은 메서드가 필요합니다.
+                    MapStorage.Instance.PrepareBattleConfiguration("Start Battle"); 
+                    Debug.Log($"[Node] {nodeType} 시작: MapStorage에 'Start Battle' 설정을 요청했습니다.");
+                }
+                else
+                {
+                    MapStorage.Instance.PrepareRandomBattleConfiguration(); // SetShapesForNextBattle(null) 대신 PrepareRandomBattleConfiguration 호출
+                    Debug.Log($"[Node] {nodeType} 전투 준비: MapStorage에 무작위 전투 구성을 요청했습니다.");
+                }
             }
             else
             {

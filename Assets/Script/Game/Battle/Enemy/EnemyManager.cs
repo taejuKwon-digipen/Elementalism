@@ -108,29 +108,29 @@ public class EnemyManager : MonoBehaviour
         else
         {
             Debug.Log("[EnemyManager] MapStorage에 적 정보가 없습니다. 기존 랜덤 스폰 로직을 실행합니다.");
-            int numberToSpawn = numbers[UnityEngine.Random.Range(0, numbers.Length)];
-            for (int i = 0; i < numberToSpawn; i++)
-            {
-                var entityToSpawn = spawnableEnemies[UnityEngine.Random.Range(0, spawnableEnemies.Count)];
+        int numberToSpawn = numbers[UnityEngine.Random.Range(0, numbers.Length)];
+        for (int i = 0; i < numberToSpawn; i++)
+        {
+            var entityToSpawn = spawnableEnemies[UnityEngine.Random.Range(0, spawnableEnemies.Count)];
                 var spawnPosition = GetNewSpawn();
                 var newEntity = Instantiate(entityToSpawn, spawnPosition, Quaternion.identity, canvas.transform);
 
-                var enemyComponent = newEntity.GetComponentInChildren<Enemy>();
-                newEntity.GetComponentInChildren<ImageClickHandler>().Canva = canvas;
-                enemyComponent.SetEnemyManager(this);
-                onFieldEntities.Add(newEntity);
+            var enemyComponent = newEntity.GetComponentInChildren<Enemy>();
+            newEntity.GetComponentInChildren<ImageClickHandler>().Canva = canvas;
+            enemyComponent.SetEnemyManager(this);
+            onFieldEntities.Add(newEntity);
 
                 if (hubDmgTextfab != null)
-                {
-                    enemyComponent.SetDmgTextPrefab(hubDmgTextfab);
+            {
+                enemyComponent.SetDmgTextPrefab(hubDmgTextfab);
                 }
             }
         }
 
         if (onFieldEntities.Count > 0)
         {
-            onFieldEntities.Sort((a, b) => Convert.ToInt32(a.GetComponent<Transform>().position.x.CompareTo(b.GetComponent<Transform>().position.x)));
-            onFieldEntities[0].GetComponentInChildren<Enemy>().NotifyClickToLockManager();
+        onFieldEntities.Sort((a, b) => Convert.ToInt32(a.GetComponent<Transform>().position.x.CompareTo(b.GetComponent<Transform>().position.x)));
+        onFieldEntities[0].GetComponentInChildren<Enemy>().NotifyClickToLockManager();
         }
         else
         {
