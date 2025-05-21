@@ -13,7 +13,7 @@ public class Ranged : Enemy
         base.Update();  // 부모 클래스의 Update 메서드 호출
     }
 
-    public override IEnumerator Turn()
+    protected override IEnumerator EnemySpecificActions()
     {
         GameObject playerPoint = player.gameObject;
         float xDistance = Mathf.Abs(this.transform.position.x - playerPoint.transform.position.x);

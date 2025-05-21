@@ -201,6 +201,33 @@ public class Player : Entity
         Debug.Log($"Shield added: {amount}, Total shield: {Shield}");
     }
 
+    // 현재 포커스된 적에게 빙결 효과를 적용하는 메서드
+    public void ApplyFreezeToFocusedEnemy(int turns)
+    {
+        if (focusManager == null)
+        {
+            Debug.LogError("[Player] FocusManager가 할당되지 않았습니다.");
+            return;
+        }
+
+        var focusedEntity = focusManager.GetFocusedEntity();
+        if (focusedEntity != null && focusedEntity is Enemy enemyToFreeze)
+        {
+            if (enemyToFreeze.HP > 0) // 살아있는 적만 빙결
+            {
+                enemyToFreeze.Freeze(turns);
+            }
+            else
+            {
+                Debug.LogWarning($"[Player] Attempted to freeze a defeated enemy: {enemyToFreeze.gameObject.name}");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("[Player] 빙결할 적을 찾을 수 없거나 대상이 Enemy 타입이 아닙니다.");
+        }
+    }
+
     public override int Hit(Entity attacker, EntityType attackType, int damageAmount)
     {
         if (Shield > 0)
@@ -277,3 +304,4 @@ public class Player : Entity
         Debug.Log($"[Player] 적 처치 보상: +{goldReward}G (총 {Gold}G)");
     }
 }
+

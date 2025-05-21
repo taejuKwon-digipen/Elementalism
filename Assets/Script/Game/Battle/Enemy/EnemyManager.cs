@@ -185,17 +185,23 @@ public class EnemyManager : MonoBehaviour
 
     private IEnumerator EnemyTurn()
     {
-        yield return new WaitForSecondsRealtime(1);
-        for (int i = 0; i < onFieldEntities.Count; i += 1) {
-            if (i >= onFieldEntities.Count) {
+        yield return new WaitForSecondsRealtime(1); // 턴 시작 전 잠시 대기 (애니메이션 등 고려)
+        // onFieldEntities 리스트를 복사하여 순회 중 리스트 변경에 대한 문제를 방지합니다.
+        List<GameObject> enemiesToProcess = new List<GameObject>(onFieldEntities);
+
+        foreach (var enemyGO in enemiesToProcess) 
+        {
+            if (enemyGO == null) continue; // 중간에 파괴된 경우 스킵
+
+            Enemy enemy = enemyGO.GetComponentInChildren<Enemy>();
+            if (enemy == null || enemy.HP <= 0) // Enemy 컴포넌트가 없거나 이미 죽었으면 스킵
                 continue;
-            }
-            Enemy enemy = onFieldEntities[i].GetComponentInChildren<Enemy>();
-            if (enemy.HP <= 0)
-                continue;
-            yield return StartCoroutine(enemy.Turn());
+            
+            // yield return StartCoroutine(enemy.Turn()); // 기존 호출 방식
+            yield return StartCoroutine(enemy.ProcessTurn()); // 변경된 메서드 호출
         }
         isEnemyTurn = false;
+        Debug.Log("[EnemyManager] 모든 적 턴 행동 완료");
     }
 
     public void DestroyEnemy(GameObject enemy)

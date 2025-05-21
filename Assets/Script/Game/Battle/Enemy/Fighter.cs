@@ -9,7 +9,7 @@ public class Fighter : Enemy
         base.Start();
     }
 
-    public override IEnumerator Turn()
+    protected override IEnumerator EnemySpecificActions()
     {
         GameObject playerPoint = player.gameObject;
         float xDistance = Mathf.Abs(this.transform.position.x - playerPoint.transform.position.x);
