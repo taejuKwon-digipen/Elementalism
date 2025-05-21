@@ -130,6 +130,13 @@ MonoBehaviour:
   HP: 0
   MP: 0
   ball: {fileID: 1734053737078160166, guid: 2e5e28cdf7dc19749b94d468feea34cb, type: 3}
+  shopManager: {fileID: 0}
+  totalMonsters: 1
+  MaxHP: 100
+  fireballPrefab: {fileID: 0}
+  fireballSpawnPoint: {fileID: 0}
+  fireballSpeed: 5
+  shieldUIPrefab: {fileID: 0}
 --- !u!95 &3223487298873140950
 Animator:
   serializedVersion: 5

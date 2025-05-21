@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class Player : Entity
 {
@@ -19,6 +21,10 @@ public class Player : Entity
     private int shield = 0;
     private bool isInvincible = false;
 
+    public GameObject shieldUIPrefab;
+    private GameObject shieldUIInstance;
+    private TextMeshProUGUI shieldText;
+
     public static Player inst;
 
     private void Awake()
@@ -29,7 +35,11 @@ public class Player : Entity
     public int Shield
     {
         get => shield;
-        private set => shield = Mathf.Max(0, value);
+        private set
+        {
+            shield = Mathf.Max(0, value);
+            UpdateShieldUI();
+        }
     }
 
     // Start is called before the first frame update
@@ -56,6 +66,8 @@ public class Player : Entity
                 MaxHP = GameManager.Instance.Player_MaxHP;
             }
         }
+
+        InitializeShieldUI();
     }
 
     // Update is called once per frame
@@ -67,6 +79,59 @@ public class Player : Entity
         }else if(this.HP > MaxHP)
         {
             this.HP = MaxHP;
+        }
+    }
+
+    private void InitializeShieldUI()
+    {
+        if (shieldUIPrefab != null)
+        {
+            shieldUIInstance = Instantiate(shieldUIPrefab, transform); 
+            shieldUIInstance.transform.localPosition = new Vector3(-45, 45, 0);
+
+            // Shield Count라는 특정 이름을 가진 자식 오브젝트에서 TextMeshProUGUI 컴포넌트를 찾습니다.
+            Transform shieldCountTransform = shieldUIInstance.transform.Find("Shield Count");
+            if (shieldCountTransform != null)
+            {
+                shieldText = shieldCountTransform.GetComponent<TextMeshProUGUI>();
+            }
+
+            if (shieldText == null)
+            {
+                // 좀 더 자세한 오류 메시지를 위해 GetComponentInChildren도 시도해봅니다.
+                shieldText = shieldUIInstance.GetComponentInChildren<TextMeshProUGUI>();
+                if (shieldText == null)
+                {
+                    Debug.LogError("Shield UI 프리팹 또는 그 자식 중 'Shield Count' 오브젝트에 TextMeshProUGUI 컴포넌트가 없습니다.");
+                }
+                else
+                {
+                    Debug.LogWarning("Shield UI 프리팹의 'Shield Count' 자식 오브젝트에서 TextMeshProUGUI 컴포넌트를 찾았지만, 직접 Find하는 것을 권장합니다.");
+                }
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Shield UI 프리팹이 할당되지 않았습니다.");
+        }
+        UpdateShieldUI();
+    }
+
+    private void UpdateShieldUI()
+    {
+        if (shieldUIInstance == null) return;
+
+        if (Shield > 0)
+        {
+            shieldUIInstance.SetActive(true);
+            if (shieldText != null)
+            {
+                shieldText.text = Shield.ToString();
+            }
+        }
+        else
+        {
+            shieldUIInstance.SetActive(false);
         }
     }
 

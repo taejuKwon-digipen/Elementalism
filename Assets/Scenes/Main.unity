@@ -8256,6 +8256,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player_HP: 0
   Player_Gold: 0
+  Player_MaxHP: 0
   gameOverPanel: {fileID: 0}
   challengeLevel: 1
 --- !u!4 &1974145148
@@ -8562,6 +8563,10 @@ PrefabInstance:
       propertyPath: shopManager
       value: 
       objectReference: {fileID: 143156545}
+    - target: {fileID: 2895639217669315632, guid: 1ded03112ab2ac44296a46d7d785e107, type: 3}
+      propertyPath: shieldUIPrefab
+      value: 
+      objectReference: {fileID: 1275421654831286506, guid: 2b1d8da515f221e44bc9b6bf22b83911, type: 3}
     - target: {fileID: 4022652852466214142, guid: 1ded03112ab2ac44296a46d7d785e107, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 2.4300003
@@ -8603,7 +8608,8 @@ PrefabInstance:
       value: -5.279499
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 6431159666264351774, guid: 1ded03112ab2ac44296a46d7d785e107, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1ded03112ab2ac44296a46d7d785e107, type: 3}
