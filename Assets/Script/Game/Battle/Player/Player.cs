@@ -228,33 +228,6 @@ public class Player : Entity
         }
     }
 
-    // 현재 포커스된 적에게 화상 효과를 적용하는 메서드
-    public void ApplyBurnToFocusedEnemy(int stacks)
-    {
-        if (focusManager == null)
-        {
-            Debug.LogError("[Player] FocusManager가 할당되지 않았습니다.");
-            return;
-        }
-
-        var focusedEntity = focusManager.GetFocusedEntity();
-        if (focusedEntity != null && focusedEntity is Enemy enemyToBurn)
-        {
-            if (enemyToBurn.HP > 0) // 살아있는 적만 화상
-            {
-                enemyToBurn.ApplyBurn(stacks);
-            }
-            else
-            {
-                Debug.LogWarning($"[Player] Attempted to apply burn to a defeated enemy: {enemyToBurn.gameObject.name}");
-            }
-        }
-        else
-        {
-            Debug.LogWarning("[Player] 화상을 적용할 적을 찾을 수 없거나 대상이 Enemy 타입이 아닙니다.");
-        }
-    }
-
     public override int Hit(Entity attacker, EntityType attackType, int damageAmount)
     {
         if (Shield > 0)

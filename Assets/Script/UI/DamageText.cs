@@ -11,19 +11,12 @@ public class DamageText : MonoBehaviour
     TextMeshPro text;
     Color alpha;
     public int damage;
-    public bool isCritical = false;
 
     void Start()
     {
         text = GetComponent<TextMeshPro>();
         text.text = damage.ToString();
         alpha = text.color;
-
-        if (isCritical)
-        {
-            text.color = Color.yellow;
-        }
-
         Invoke("DestroyObject", destroyTime);
     }
     void Update()
