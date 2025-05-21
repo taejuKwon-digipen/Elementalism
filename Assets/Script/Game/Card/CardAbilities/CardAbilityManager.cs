@@ -4,6 +4,7 @@ public class CardAbilityManager
 {
     private static readonly Dictionary<int, ICardAbility> cardAbilities = new()
     {
+        { 5, new BurnAndAttackAbility() },
         { 6, new ShieldAbility() },
         { 7, new FreezeAndAttackAbility() },
         { 8, new AllEnemyAttackAbility() },
