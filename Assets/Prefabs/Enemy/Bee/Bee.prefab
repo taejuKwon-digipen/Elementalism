@@ -93,9 +93,10 @@ MonoBehaviour:
   baseEntity: {fileID: 11400000, guid: 828f1c1b0a57a984ba14527ee2e71b0c, type: 2}
   HP: 0
   MP: 0
-  durationFadeOut: 5
+  durationFadeOut: 1
   focusManager: {fileID: 0}
-  effect: {fileID: 0}
+  hubDamageText: {fileID: 0}
+  burnStatusUIPrefab: {fileID: 1275421654831286506, guid: b49fb874ce2c814479669208876ad2b2, type: 3}
 --- !u!95 &9062103568006288483
 Animator:
   serializedVersion: 5

@@ -1,0 +1,398 @@
+fileFormatVersion: 2
+guid: cf23a7bfa8767b94db56e5279dd96710
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Enemy promo_0
+      rect:
+        serializedVersion: 2
+        x: 59
+        y: 2067
+        width: 123
+        height: 133
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 36f28a5006175ec418fb17abccefa12b
+      internalID: -1687589186
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Enemy promo_15
+      rect:
+        serializedVersion: 2
+        x: 609
+        y: 1793
+        width: 1411
+        height: 228
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 447c4134da4509945adbd987d8643867
+      internalID: -1172657107
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Enemy promo_17
+      rect:
+        serializedVersion: 2
+        x: 1557
+        y: 1378
+        width: 349
+        height: 163
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 85b12c8447c231546abaa6036ef0e4fd
+      internalID: -169569260
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Enemy promo_20
+      rect:
+        serializedVersion: 2
+        x: 1393
+        y: 1379
+        width: 82
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 273bdd9618ab687459db315e314e71b3
+      internalID: -107813375
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Enemy promo_24
+      rect:
+        serializedVersion: 2
+        x: 1516
+        y: 1188
+        width: 441
+        height: 153
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 35fd247d342f1984e9114b9efe7d9d35
+      internalID: -624650659
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Enemy promo_29
+      rect:
+        serializedVersion: 2
+        x: 1548
+        y: 1000
+        width: 543
+        height: 143
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7d588f323990fab4d895edd22c772d76
+      internalID: -1890595501
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Enemy promo_35
+      rect:
+        serializedVersion: 2
+        x: 1540
+        y: 804
+        width: 628
+        height: 158
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: af3ffe12ad8750146b2abccc0891d258
+      internalID: -1294157978
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Enemy promo_42
+      rect:
+        serializedVersion: 2
+        x: 1547
+        y: 592
+        width: 216
+        height: 180
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b6458b6daa53eb047b39bef1cb212cd4
+      internalID: 811818114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Enemy promo_44
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 122
+        width: 2074
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5f7c03ad113438146ac220515f826e9c
+      internalID: -1737286661
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Enemy promo_50
+      rect:
+        serializedVersion: 2
+        x: 603
+        y: 118
+        width: 4
+        height: 4
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: beb4412ee0a5de24f844cafc248567c5
+      internalID: 1726521656
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Enemy promo_51
+      rect:
+        serializedVersion: 2
+        x: 1168
+        y: 120
+        width: 5
+        height: 4
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 58cb973321892b840a206aa27472a78c
+      internalID: -550454036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Enemy promo_0: -1687589186
+      Enemy promo_1: 124532172
+      Enemy promo_10: -1670154352
+      Enemy promo_11: -792072338
+      Enemy promo_12: 2144527069
+      Enemy promo_13: -1928619872
+      Enemy promo_14: 591779903
+      Enemy promo_15: -1172657107
+      Enemy promo_16: -1622390815
+      Enemy promo_17: -169569260
+      Enemy promo_18: -448546344
+      Enemy promo_19: 1220513905
+      Enemy promo_2: 2043928825
+      Enemy promo_20: -107813375
+      Enemy promo_21: -345241438
+      Enemy promo_22: -199317715
+      Enemy promo_23: 696348183
+      Enemy promo_24: -624650659
+      Enemy promo_25: 1455183695
+      Enemy promo_26: -593522177
+      Enemy promo_27: 2070825307
+      Enemy promo_28: 2019410754
+      Enemy promo_29: -1890595501
+      Enemy promo_3: 433245235
+      Enemy promo_30: -513158716
+      Enemy promo_31: 272625648
+      Enemy promo_32: -550249634
+      Enemy promo_33: 1640996383
+      Enemy promo_34: -206860597
+      Enemy promo_35: -1294157978
+      Enemy promo_36: 368153061
+      Enemy promo_37: 1236402794
+      Enemy promo_38: 145277152
+      Enemy promo_39: -1279632180
+      Enemy promo_4: 21590124
+      Enemy promo_40: -778549641
+      Enemy promo_41: 1871468619
+      Enemy promo_42: 811818114
+      Enemy promo_43: 583091866
+      Enemy promo_44: -1737286661
+      Enemy promo_45: 200536910
+      Enemy promo_46: -382598010
+      Enemy promo_47: 120479323
+      Enemy promo_48: -1452997980
+      Enemy promo_49: -1493974667
+      Enemy promo_5: -351813706
+      Enemy promo_50: 1726521656
+      Enemy promo_51: -550454036
+      Enemy promo_52: -535127459
+      Enemy promo_6: -1432305519
+      Enemy promo_7: 1370216214
+      Enemy promo_8: 1364693675
+      Enemy promo_9: -883172044
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

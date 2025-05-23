@@ -550,7 +550,8 @@ MonoBehaviour:
   MP: 0
   durationFadeOut: 2
   focusManager: {fileID: 0}
-  effect: {fileID: 0}
+  hubDamageText: {fileID: 0}
+  burnStatusUIPrefab: {fileID: 1275421654831286506, guid: b49fb874ce2c814479669208876ad2b2, type: 3}
 --- !u!114 &255894264840811693
 MonoBehaviour:
   m_ObjectHideFlags: 0

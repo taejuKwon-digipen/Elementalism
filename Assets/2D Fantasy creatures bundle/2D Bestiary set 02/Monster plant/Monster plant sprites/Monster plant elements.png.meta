@@ -1,0 +1,620 @@
+fileFormatVersion: 2
+guid: b580d9052aad972488c526b7d42b46a6
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Monster plant elements_0
+      rect:
+        serializedVersion: 2
+        x: 214
+        y: 2040
+        width: 232
+        height: 227
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5bfead62c9495a34aaae637f80a76135
+      internalID: -1273624177
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster plant elements_1
+      rect:
+        serializedVersion: 2
+        x: 502
+        y: 2051
+        width: 184
+        height: 237
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 92, y: -27.180647}
+        - {x: 92, y: 16.534197}
+        - {x: 71.06849, y: 102.81349}
+        - {x: 18.136982, y: 118.5}
+        - {x: -9.479455, y: 118.5}
+        - {x: -71.61644, y: 102.81349}
+        - {x: -92, y: 71.752945}
+        - {x: -92, y: -1.8720529}
+        - {x: -85.42466, y: -77.79784}
+        - {x: -60.109592, y: -116.91111}
+        - {x: -44.000004, y: -118.0615}
+        - {x: -9.479455, y: -118.0615}
+        - {x: 42.301365, y: -92.75291}
+        - {x: 44.602734, y: -87.00095}
+        - {x: 69.9178, y: -53.63963}
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7eb3172b1de27bf42b46e2e4060fc2cb
+      internalID: -1339013776
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster plant elements_2
+      rect:
+        serializedVersion: 2
+        x: 634
+        y: 1954
+        width: 177
+        height: 215
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 88.5, y: 13.290999}
+        - {x: 88.5, y: 59.306625}
+        - {x: 75.34247, y: 107.5}
+        - {x: 60.383568, y: 107.5}
+        - {x: 33.917812, y: 82.31444}
+        - {x: -31.671225, y: 75.412094}
+        - {x: -88.05479, y: -13.167984}
+        - {x: -88.05479, y: -47.679703}
+        - {x: -68.49314, y: -87.943375}
+        - {x: -32.82191, y: -107.5}
+        - {x: 52.328773, y: -107.5}
+        - {x: 60.383568, y: -44.22853}
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a5651a90a5070ef43b03746afa028a4c
+      internalID: -555737104
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster plant elements_3
+      rect:
+        serializedVersion: 2
+        x: 912
+        y: 2087
+        width: 143
+        height: 127
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ec31856739aef244088d38937c51981e
+      internalID: -549097110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster plant elements_4
+      rect:
+        serializedVersion: 2
+        x: 1220
+        y: 2032
+        width: 193
+        height: 220
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 96be4edaef684e34fa2f3e1fd94bd07b
+      internalID: 1370695581
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster plant elements_5
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 1536
+        width: 323
+        height: 356
+      alignment: 9
+      pivot: {x: 0.8053657, y: 0.417631}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a87120aaa03c310488f11c5fa4a3a933
+      internalID: -397854166
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster plant elements_7
+      rect:
+        serializedVersion: 2
+        x: 1127
+        y: 1558
+        width: 302
+        height: 312
+      alignment: 9
+      pivot: {x: 0.49117294, y: 0.17532387}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 09877e652c03ea14cb21f66af127aaf8
+      internalID: -1098507071
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster plant elements_8
+      rect:
+        serializedVersion: 2
+        x: 368
+        y: 1512
+        width: 347
+        height: 202
+      alignment: 9
+      pivot: {x: 0.49999982, y: 0.288851}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ee9a376304ab675428a298c0749fe09f
+      internalID: 2081533291
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster plant elements_11
+      rect:
+        serializedVersion: 2
+        x: 452
+        y: 1273
+        width: 414
+        height: 238
+      alignment: 9
+      pivot: {x: 0.53863406, y: 0.24238445}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dc19b818819536c4cbe654b92bba943d
+      internalID: 388112447
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster plant elements_12
+      rect:
+        serializedVersion: 2
+        x: 992
+        y: 1220
+        width: 321
+        height: 259
+      alignment: 9
+      pivot: {x: 0.40864995, y: 0.3353196}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 40984572d3b5a1c49ae07ce9d0de57cb
+      internalID: 1835841697
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster plant elements_13
+      rect:
+        serializedVersion: 2
+        x: 238
+        y: 892
+        width: 232
+        height: 227
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fa7348f013f1da4479a23b07a8c8fe5e
+      internalID: 1941326739
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster plant elements_14
+      rect:
+        serializedVersion: 2
+        x: 526
+        y: 903
+        width: 185
+        height: 236
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 28.328768, y: 118}
+        - {x: -24.602737, y: 118}
+        - {x: -92.49315, y: 93.70024}
+        - {x: -92.49315, y: -43.19624}
+        - {x: -87.8904, y: -75.40718}
+        - {x: -80.9863, y: -117.97163}
+        - {x: 11.068495, y: -117.97163}
+        - {x: 92.5, y: -28.241163}
+        - {x: 92.5, y: 25.827196}
+        - {x: 70.904106, y: 98.3018}
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3e9ebecb2fc8064439c1f5f9a4a3dea9
+      internalID: 135879088
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster plant elements_15
+      rect:
+        serializedVersion: 2
+        x: 658
+        y: 806
+        width: 177
+        height: 215
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 88.5, y: 12.230483}
+        - {x: 88.5, y: 68.599625}
+        - {x: 79.78087, y: 107.5}
+        - {x: 24.54799, y: 107.5}
+        - {x: -29.5, y: 78.5}
+        - {x: -88.21913, y: -8.476547}
+        - {x: -88.21913, y: -59.093735}
+        - {x: -39.89036, y: -107.41014}
+        - {x: 48.712376, y: -107.41014}
+        - {x: 59.06854, y: -41.837875}
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 04eaa9ab6f5796f4485c13ee8bd1e3e9
+      internalID: -665048374
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster plant elements_16
+      rect:
+        serializedVersion: 2
+        x: 936
+        y: 939
+        width: 143
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cb699a4955771de4ca4b0d2337d7010b
+      internalID: 983583974
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster plant elements_17
+      rect:
+        serializedVersion: 2
+        x: 1233
+        y: 884
+        width: 194
+        height: 220
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 43dbb98a450ef924bbefc1d3f77633e7
+      internalID: -157293072
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster plant elements_18
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 379
+        width: 323
+        height: 359
+      alignment: 9
+      pivot: {x: 0.84312063, y: 0.38220164}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a0fc680d8af17774bab64a3f6a127881
+      internalID: -378715949
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster plant elements_20
+      rect:
+        serializedVersion: 2
+        x: 1135
+        y: 402
+        width: 301
+        height: 310
+      alignment: 9
+      pivot: {x: 0.48546633, y: 0.13778637}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b04b7aa8886774040af2f8c510d5a670
+      internalID: 373550398
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster plant elements_21
+      rect:
+        serializedVersion: 2
+        x: 373
+        y: 355
+        width: 349
+        height: 202
+      alignment: 9
+      pivot: {x: 0.520892, y: 0.2040165}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 76cfaf6349a482f4cbf19dbd27f74ff7
+      internalID: 86870561
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster plant elements_24
+      rect:
+        serializedVersion: 2
+        x: 456
+        y: 116
+        width: 419
+        height: 234
+      alignment: 9
+      pivot: {x: 0.42691296, y: 0.19463733}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 362bc0cd318f41045a7b872b8fe59a41
+      internalID: -1035037483
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster plant elements_25
+      rect:
+        serializedVersion: 2
+        x: 999
+        y: 63
+        width: 321
+        height: 259
+      alignment: 9
+      pivot: {x: 0.5636002, y: 0.26915509}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 081fa7b92a50d6b418f72fb6f2bce7c1
+      internalID: 553123664
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Monster plant elements_0: -1273624177
+      Monster plant elements_1: -1339013776
+      Monster plant elements_10: -1201317815
+      Monster plant elements_11: 388112447
+      Monster plant elements_12: 1835841697
+      Monster plant elements_13: 1941326739
+      Monster plant elements_14: 135879088
+      Monster plant elements_15: -665048374
+      Monster plant elements_16: 983583974
+      Monster plant elements_17: -157293072
+      Monster plant elements_18: -378715949
+      Monster plant elements_19: 257010646
+      Monster plant elements_2: -555737104
+      Monster plant elements_20: 373550398
+      Monster plant elements_21: 86870561
+      Monster plant elements_22: 889260145
+      Monster plant elements_23: 1461551802
+      Monster plant elements_24: -1035037483
+      Monster plant elements_25: 553123664
+      Monster plant elements_3: -549097110
+      Monster plant elements_4: 1370695581
+      Monster plant elements_5: -397854166
+      Monster plant elements_6: 1586556473
+      Monster plant elements_7: -1098507071
+      Monster plant elements_8: 2081533291
+      Monster plant elements_9: 377192563
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

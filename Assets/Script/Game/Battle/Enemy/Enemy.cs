@@ -6,7 +6,7 @@ using TMPro;
 public abstract class Enemy : Entity 
 {
     [SerializeField]
-    protected float durationFadeOut = 5f;
+    protected float durationFadeOut = 1f;
 
     [SerializeField]
     protected FocusManager focusManager;
@@ -254,6 +254,7 @@ public abstract class Enemy : Entity
         }
         else if (player != null) // 화상 등 다른 요인으로 죽었을 때, 필드에 있는 플레이어가 골드를 얻도록 할 수도 있음 (선택적)
         {
+            playerAttacker.GainGold(this.baseEntity);
             // 예: player.GainGold(this.baseEntity); // 또는 상태이상으로 죽었을땐 골드 X 등의 규칙 적용
         }
         
