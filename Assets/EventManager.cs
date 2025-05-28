@@ -10,7 +10,7 @@ public class EventManager : MonoBehaviour
 {
     public Canvas canvas;
     public GameObject buttonPrefab;
-    public GameObject content; // Content ¿µ¿ªÀÇ ÅØ½ºÆ®
+    public GameObject content; // Content ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ø½ï¿½Æ®
 
     [SerializeField] private CardItemSO cardDatabase;
     [SerializeField] private Inventory inventory;
@@ -20,14 +20,14 @@ public class EventManager : MonoBehaviour
     [SerializeField] private Transform cardContainer;
     public GameObject cardPrefab;
     private List<Card> activeCards = new List<Card>();
-    //private int currentEventId = 1; // ½ÃÀÛ ÀÌº¥Æ® id
+    //private int currentEventId = 1; // ï¿½ï¿½ï¿½ï¿½ ï¿½Ìºï¿½Æ® id
 
     void Start()
     {
         inventory = Resources.Load<Inventory>("Inventory");
         if (inventory == null)
         {
-            Debug.LogError("[InventoryManager] Inventory¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù!");
+            Debug.LogError("[InventoryManager] Inventoryï¿½ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½!");
             return;
         }
         if (GoogleSheetLoader.Instance != null)
@@ -48,33 +48,33 @@ public class EventManager : MonoBehaviour
         var eventDatas = GoogleSheetLoader.Instance.eventDatas;
         if (eventDatas.Count == 0)
         {
-            Debug.LogError("ÀÌº¥Æ® µ¥ÀÌÅÍ°¡ ¾ø½À´Ï´Ù!");
+            Debug.LogError("ï¿½Ìºï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½!");
             return;
         }
 
         int minEventId = eventDatas.Keys.Min();
         int maxEventId = eventDatas.Keys.Max();
 
-        // ·£´ýÀ¸·Î ÀÌº¥Æ® ID ¼±ÅÃ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìºï¿½Æ® ID ï¿½ï¿½ï¿½ï¿½
         int[] allIds = eventDatas.Keys.ToArray();
         int currentEventId = allIds[UnityEngine.Random.Range(0, allIds.Length)];
 
-        Debug.Log($"[EventManager] ÀÌº¥Æ® ID ¹üÀ§: {minEventId} ~ {maxEventId}, ·£´ý ¼±ÅÃ: {currentEventId}");
+        Debug.Log($"[EventManager] ï¿½Ìºï¿½Æ® ID ï¿½ï¿½ï¿½ï¿½: {minEventId} ~ {maxEventId}, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½: {currentEventId}");
         ShowEvent(currentEventId);
     }
 
     private void Update()
     {
-        Debug.Log("ÇÃ·¹ÀÌ¾î Ã¼·Â: "  + GameManager.Instance.Player_HP);
-        Debug.Log("ÇÃ·¹ÀÌ¾î °ñµå: " + GameManager.Instance.Player_Gold); 
-        Debug.Log("ÇÃ·¹ÀÌ¾î ÃÖ´ëÃ¼·Â: " + GameManager.Instance.Player_MaxHP);
+        Debug.Log("ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ Ã¼ï¿½ï¿½: "  + GameManager.Instance.Player_HP);
+        Debug.Log("ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½: " + GameManager.Instance.Player_Gold); 
+        Debug.Log("ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½Ö´ï¿½Ã¼ï¿½ï¿½: " + GameManager.Instance.Player_MaxHP);
     }
     void ShowEvent(int eventId)
     {
-        Debug.Log("ÀÌº¥Æ® Ç¥½Ã: " + eventId);
+        Debug.Log("ï¿½Ìºï¿½Æ® Ç¥ï¿½ï¿½: " + eventId);
         if (!GoogleSheetLoader.Instance.eventDatas.TryGetValue(eventId, out var data))
         {
-            Debug.LogError("ÀÌº¥Æ® µ¥ÀÌÅÍ ¾øÀ½: " + eventId);
+            Debug.LogError("ï¿½Ìºï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½: " + eventId);
             return;
         }
         GameObject btnObj = Instantiate(content, canvas.transform);
@@ -82,9 +82,9 @@ public class EventManager : MonoBehaviour
         RectTransform rectTransform = content.GetComponent<RectTransform>();
         rectTransform.anchoredPosition = new Vector2(0, -15);
 
-        // ¹öÆ°1
+        // ï¿½ï¿½Æ°1
         CreateButton(data.choice1_text, data.choice1_effect, new Vector2(0, -310));
-        // ¹öÆ°2
+        // ï¿½ï¿½Æ°2
         CreateButton(data.choice2_text, data.choice2_effect, new Vector2(0, -450));
     }
 
@@ -99,7 +99,7 @@ public class EventManager : MonoBehaviour
 
     void OnChoice(string effect)
     {
-        // È¿°ú ÆÄ½Ì ¹× ½ÇÇà
+        // È¿ï¿½ï¿½ ï¿½Ä½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         var effects = effect.Split(',');
         System.Random rand = new System.Random();
         bool needWaitForCard = false;
@@ -112,20 +112,20 @@ public class EventManager : MonoBehaviour
             {
                 string value = e.Substring(5).Trim();
 
-                // 1. "¼ýÀÚ~¼ýÀÚ" ÇüÅÂÀÎÁö È®ÀÎ
+                // 1. "ï¿½ï¿½ï¿½ï¿½~ï¿½ï¿½ï¿½ï¿½" ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½
                 if (value.Contains("~"))
                 {
                     var parts = value.Split('~');
                     int min = int.Parse(parts[0]);
                     int max = int.Parse(parts[1]);
 
-                    // 10´ÜÀ§ ·£´ý °ª »ý¼º
+                    // 10ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                     int count = (max - min) / 10 + 1;
                     int gold = min + rand.Next(0, count) * 10;
                     GameManager.Instance.Player_Gold += gold;
-                    Debug.Log(min + " ~ " + max + " »çÀÌÀÇ ·£´ý °ñµå: " + gold);
+                    Debug.Log(min + " ~ " + max + " ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½: " + gold);
                 }
-                // 2. ÀÏ¹Ý ¼ýÀÚ Ã³¸®
+                // 2. ï¿½Ï¹ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½
                 else
                 {
                     GameManager.Instance.Player_Gold += int.Parse(value);
@@ -144,31 +144,31 @@ public class EventManager : MonoBehaviour
             }
             else if (e.StartsWith("S_Card-"))
             {
-                // Ä«µå Ãß°¡ ÈÄ ¾À ÀÌµ¿ ÄÝ¹é Àü´Þ
+                // Ä«ï¿½ï¿½ ï¿½ß°ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½Ìµï¿½ ï¿½Ý¹ï¿½ ï¿½ï¿½ï¿½ï¿½
                 AddCards(() => SceneManager.LoadScene("Map2"));
                 needWaitForCard = true;
             }
             else if (e.StartsWith("S_Card-"))
             {
-                // Ä«µå »èÁ¦ ÈÄ ¾À ÀÌµ¿ ÄÝ¹é Àü´Þ
+                // Ä«ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½Ìµï¿½ ï¿½Ý¹ï¿½ ï¿½ï¿½ï¿½ï¿½
                 DeleteCards(() => SceneManager.LoadScene("Map2"));
                 needWaitForCard = true;
             }
             else if (e.StartsWith("Random_Card"))
             {
-                float randomValue = UnityEngine.Random.value; // 0.0 ~ 1.0 »çÀÌÀÇ float
+                float randomValue = UnityEngine.Random.value; // 0.0 ~ 1.0 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ float
                 if (randomValue < 0.5f)
                 {
-                    Debug.Log("50% È®·ü·Î ·£´ýÄ«µå Ãß°¡!");
+                    Debug.Log("50% È®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ä«ï¿½ï¿½ ï¿½ß°ï¿½!");
                     AddrandomCard();
                 }
                 else
                 {
-                    Debug.Log("50% È®·ü·Î ·£´ýÄ«µå »èÁ¦!");
+                    Debug.Log("50% È®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ä«ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½!");
                     DeleterandomCard();
                 }
             }
-            // Ãß°¡ È¿°ú ±¸Çö °¡´É
+            // ï¿½ß°ï¿½ È¿ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         }
 
         if (!needWaitForCard)
@@ -182,7 +182,7 @@ public class EventManager : MonoBehaviour
         var unlockedCards = cardDatabase.items.Where(card => card.IsUnlocked).ToList();
         if (unlockedCards.Count == 0)
         {
-            Debug.LogWarning("[EventManager] ¾ð¶ôµÈ Ä«µå°¡ ¾ø½À´Ï´Ù!");
+            Debug.LogWarning("[EventManager] ï¿½ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½å°¡ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½!");
             return;
         }
 
@@ -195,7 +195,7 @@ public class EventManager : MonoBehaviour
         var unlockedCards = inventory.unlockedCards;
         if (unlockedCards.Count == 0)
         {
-            Debug.LogWarning("[EventManager] ¾ð¶ôµÈ Ä«µå°¡ ¾ø½À´Ï´Ù!");
+            Debug.LogWarning("[EventManager] ï¿½ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½å°¡ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½!");
             return;
         }
 
@@ -210,7 +210,7 @@ public class EventManager : MonoBehaviour
 
         if (unlockedCards.Count == 0)
         {
-            Debug.LogWarning("[InventoryManager] ¾ð¶ôµÈ Ä«µå°¡ ¾ø½À´Ï´Ù!");
+            Debug.LogWarning("[InventoryManager] ï¿½ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½å°¡ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½!");
             return;
         }
 
@@ -225,11 +225,11 @@ public class EventManager : MonoBehaviour
             var button = cardObject.AddComponent<Button>();
             button.onClick.AddListener(() =>
             {
-                Debug.Log(cardItem.CardName + " Ä«µå Å¬¸¯µÊ");
+                Debug.Log(cardItem.CardName + " Ä«ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½");
                 inventory.AddCard(cardItem);
                 InventoryPanel.SetActive(false);
 
-                // Ä«µå Ãß°¡ ÈÄ ÄÝ¹é ½ÇÇà
+                // Ä«ï¿½ï¿½ ï¿½ß°ï¿½ ï¿½ï¿½ ï¿½Ý¹ï¿½ ï¿½ï¿½ï¿½ï¿½
                 onCardAdd?.Invoke();
             });
         }
@@ -241,7 +241,7 @@ public class EventManager : MonoBehaviour
 
         if (unlockedCards.Count == 0)
         {
-            Debug.LogWarning("[InventoryManager] ¾ð¶ôµÈ Ä«µå°¡ ¾ø½À´Ï´Ù!");
+            Debug.LogWarning("[InventoryManager] ï¿½ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½å°¡ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½!");
             return;
         }
 
@@ -256,11 +256,11 @@ public class EventManager : MonoBehaviour
             var button = cardObject.AddComponent<Button>();
             button.onClick.AddListener(() =>
             {
-                Debug.Log(cardItem.CardName + " Ä«µå Å¬¸¯µÊ");
+                Debug.Log(cardItem.CardName + " Ä«ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½");
                 inventory.RemoveCard(cardItem);
                 InventoryPanel.SetActive(false);
 
-                // Ä«µå »èÁ¦ ÈÄ ÄÝ¹é ½ÇÇà
+                // Ä«ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ý¹ï¿½ ï¿½ï¿½ï¿½ï¿½
                 onCardDeleted?.Invoke();
             });
         }
