@@ -27,7 +27,7 @@ public class Node : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private MapManager mapManager;
     private Image nodeImage;
-
+    private TempleManager templeManager;
     public int NodeID { get; private set; }
 
     public void SetNodeID(int id)
@@ -39,6 +39,7 @@ public class Node : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         mapManager = MapManager.Instance;
+        templeManager = TempleManager.Instance;
         UpdateVisual();
     }
 
@@ -87,7 +88,14 @@ public class Node : MonoBehaviour
         {
             StopAllCoroutines();
             Debug.Log($"�� {SceneToLoad} �ε� ��...");
-            SceneManager.LoadScene(SceneToLoad);
+            if (SceneToLoad == "Shop")
+            {
+                templeManager.OpenTemple();
+            }
+            else
+            {
+                SceneManager.LoadScene(SceneToLoad);
+            }
         }
 
         // ������ ��带 �� �Ŵ����� �ݿ�
@@ -157,7 +165,7 @@ public class Node : MonoBehaviour
         {
             case NodeType.Battle: return "Main";
             case NodeType.Start: return "Main";
-            case NodeType.Shop: return "Main";
+            case NodeType.Shop: return "Shop";
             case NodeType.Event: return "Event";
             case NodeType.Boss: return "Main";
             default: return "";

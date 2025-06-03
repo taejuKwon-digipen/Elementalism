@@ -45,8 +45,10 @@ public class GoogleSheetLoader : MonoBehaviour
         public string content;
         public string choice1_text;
         public string choice1_effect;
+        public string choice1_result;
         public string choice2_text;
         public string choice2_effect;
+        public string choice2_result;
     }
     public Dictionary<int, EventData> eventDatas = new();
 

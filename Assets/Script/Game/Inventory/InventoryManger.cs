@@ -20,7 +20,7 @@ public class InventoryManager : MonoBehaviour
     private List<Card> activeCards = new List<Card>(); // 현재 활성화된 카드 목록
     public static InventoryManager Instance;
     // Start is called before the first frame update
-
+    private TempleManager templeManager;
     private void Awake()
     {
         if (Instance == null)
@@ -37,6 +37,7 @@ public class InventoryManager : MonoBehaviour
 
     void Start()
     {
+        templeManager = TempleManager.Instance;
         InventoryPanel.SetActive(false);
         inventory = Resources.Load<Inventory>("Inventory");
         openButton.onClick.AddListener(OpenInventory);
@@ -63,6 +64,11 @@ public class InventoryManager : MonoBehaviour
         //        OpenInventory();
         //    }
         //}
+
+        if (templeManager != null && templeManager.TemplePanel != null)
+        {
+            openButton.interactable = !templeManager.TemplePanel.activeSelf;
+        }
     }
 
     void OpenInventory()
