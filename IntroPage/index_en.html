@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elementalism - Deck-building Roguelike Puzzle Game</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Rubik:wght@400;600;700&display=swap');
+        
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --secondary: #f59e0b;
+            --dark: #1e293b;
+            --light: #f8fafc;
+        }
+        
+        body {
+            font-family: 'Rubik', sans-serif;
+            background-color: #0f172a;
+            color: var(--light);
+            scroll-behavior: smooth;
+        }
+        
+        .title-font {
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
+        }
+        
+        .element-icon {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+            margin: 0 auto;
+        }
+        
+        .card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+        
+        .slider {
+            animation: slide 50s linear infinite;
+            white-space: nowrap;
+        }
+        
+        @keyframes slide {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+        
+        .grid-demo {
+            display: grid;
+            grid-template-columns: repeat(9, 1fr);
+            grid-template-rows: repeat(9, 1fr);
+            gap: 2px;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+        }
+        
+        .grid-cell {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-slate-900/80 backdrop-blur-md z-50 border-b border-slate-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="#" class="title-font text-blue-400 text-xl md:text-2xl flex items-center">
+                        <i class="fas fa-fire mr-2 text-orange-400"></i>ELEMENTALISM
+                    </a>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#about" class="text-slate-300 hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition duration-300">About</a>
+                        <a href="#features" class="text-slate-300 hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition duration-300">Features</a>
+                        <a href="#gameplay" class="text-slate-300 hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition duration-300">Gameplay</a>
+                        <a href="#screenshots" class="text-slate-300 hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition duration-300">Screenshots</a>
+                        <a href="#news" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md text-sm font-medium transition duration-300 text-white">Wishlist</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button class="mobile-menu-button p-2 rounded-md text-slate-400 hover:text-white focus:outline-none">
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile menu -->
+        <div class="mobile-menu hidden md:hidden bg-slate-800">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#about" class="text-slate-300 hover:bg-slate-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">About</a>
+                <a href="#features" class="text-slate-300 hover:bg-slate-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Features</a>
+                <a href="#gameplay" class="text-slate-300 hover:bg-slate-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Gameplay</a>
+                <a href="#screenshots" class="text-slate-300 hover:bg-slate-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Screenshots</a>
+                <a href="#news" class="bg-blue-600 hover:bg-blue-700 text-white block px-3 py-2 rounded-md text-base font-medium">Wishlist</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient pt-32 pb-20 md:pt-40 md:pb-32 px-4">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-10 md:mb-0 md:pr-10">
+                <h1 class="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white mb-6 leading-tight">MASTER THE ELEMENTS <span class="text-blue-400">CONQUER THE PUZZLE!</span></h1>
+                <p class="text-lg text-slate-300 mb-8">A strategic fusion of deck-building, roguelike progression, and Tetris-style puzzle mechanics. Combine elemental blocks to trigger powerful card abilities and defeat your enemies!</p>
+                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300 transform hover:scale-105">
+                        <i class="fas fa-heart mr-2"></i> Wishlist Now
+                    </button>
+                    <button class="bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 transform hover:scale-105">
+                        <i class="fas fa-play-circle mr-2"></i> Watch Trailer
+                    </button>
+                </div>
+            </div>
+            <div class="md:w-1/2">
+                <div class="relative rounded-xl overflow-hidden border-4 border-slate-700 shadow-2xl transform rotate-1 hover:rotate-0 transition duration-500">
+                    <img src="https://via.placeholder.com/800x450/1e293b/64748b?text=Main+Menu+Screenshot" alt="Elementalism Main Menu" class="w-full h-auto">
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+                            <i class="fas fa-play text-white text-2xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 px-4 bg-slate-900">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="title-font text-3xl md:text-4xl text-white mb-4">ABOUT ELEMENTALISM</h2>
+                <div class="w-20 h-1 bg-blue-500 mx-auto"></div>
+            </div>
+            
+            <div class="flex flex-col lg:flex-row items-center">
+                <div class="lg:w-1/2 mb-10 lg:mb-0 lg:pr-10">
+                    <p class="text-lg text-slate-300 mb-6">
+                        Elementalism is an innovative deck-building roguelike puzzle game where players strategically place elemental blocks on a 9x9 grid to activate powerful card abilities. Inspired by hits like Slay the Spire and Peglin, it combines tactical combat with engaging puzzle mechanics for a fresh gaming experience.
+                    </p>
+                    <p class="text-lg text-slate-300 mb-8">
+                        Your journey takes you through procedurally generated battles, events, and rewards. Collect relics to enhance your abilities, build the perfect elemental deck, and defeat the final boss to claim victory!
+                    </p>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="p-4 bg-slate-800 rounded-lg border-l-4 border-blue-500">
+                            <h3 class="font-bold text-white mb-2">Genre</h3>
+                            <p class="text-slate-400">Deck-building Roguelike Puzzle</p>
+                        </div>
+                        <div class="p-4 bg-slate-800 rounded-lg border-l-4 border-blue-500">
+                            <h3 class="font-bold text-white mb-2">Platform</h3>
+                            <p class="text-slate-400">Windows (PC)</p>
+                        </div>
+                        <div class="p-4 bg-slate-800 rounded-lg border-l-4 border-blue-500">
+                            <h3 class="font-bold text-white mb-2">Game View</h3>
+                            <p class="text-slate-400">2D Side-scrolling</p>
+                        </div>
+                        <div class="p-4 bg-slate-800 rounded-lg border-l-4 border-blue-500">
+                            <h3 class="font-bold text-white mb-2">Release Date</h3>
+                            <p class="text-slate-400">Coming Soon</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="lg:w-1/2">
+                    <div class="bg-slate-800/50 p-6 rounded-xl border border-slate-700">
+                        <h3 class="text-xl font-bold text-white mb-4 flex items-center">
+                            <i class="fas fa-fire text-orange-500 mr-2"></i> The Four Elements
+                        </h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="p-4 bg-slate-700/50 rounded-lg flex flex-col items-center">
+                                <div class="element-icon bg-red-500/20 text-red-400">
+                                    <i class="fas fa-fire"></i>
+                                </div>
+                                <h4 class="mt-3 font-bold text-white">Fire</h4>
+                                <p class="text-sm text-slate-400 mt-1 text-center">Powerful offensive abilities</p>
+                            </div>
+                            <div class="p-4 bg-slate-700/50 rounded-lg flex flex-col items-center">
+                                <div class="element-icon bg-blue-500/20 text-blue-400">
+                                    <i class="fas fa-tint"></i>
+                                </div>
+                                <h4 class="mt-3 font-bold text-white">Water</h4>
+                                <p class="text-sm text-slate-400 mt-1 text-center">Defensive and healing effects</p>
+                            </div>
+                            <div class="p-4 bg-slate-700/50 rounded-lg flex flex-col items-center">
+                                <div class="element-icon bg-green-500/20 text-green-400">
+                                    <i class="fas fa-leaf"></i>
+                                </div>
+                                <h4 class="mt-3 font-bold text-white">Earth</h4>
+                                <p class="text-sm text-slate-400 mt-1 text-center">Defensive and summoning powers</p>
+                            </div>
+                            <div class="p-4 bg-slate-700/50 rounded-lg flex flex-col items-center">
+                                <div class="element-icon bg-yellow-500/20 text-yellow-400">
+                                    <i class="fas fa-wind"></i>
+                                </div>
+                                <h4 class="mt-3 font-bold text-white">Air</h4>
+                                <p class="text-sm text-slate-400 mt-1 text-center">Movement and utility abilities</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 px-4 bg-slate-950">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="title-font text-3xl md:text-4xl text-white mb-4">GAME FEATURES</h2>
+                <div class="w-20 h-1 bg-blue-500 mx-auto"></div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Feature 1 -->
+                <div class="card p-6 rounded-xl hover:bg-slate-800">
+                    <div class="w-14 h-14 bg-blue-500/10 rounded-full flex items-center justify-center text-blue-400 mb-4 mx-auto">
+                        <i class="fas fa-puzzle-piece text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3 text-center">Elemental Puzzle Battles</h3>
+                    <p class="text-slate-400 text-center">
+                        Place Tetris-like blocks on the 9x9 grid to match shapes on your cards. Each element (Fire, Water, Earth, Air) has unique properties that influence your strategy.
+                    </p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="card p-6 rounded-xl hover:bg-slate-800">
+                    <div class="w-14 h-14 bg-purple-500/10 rounded-full flex items-center justify-center text-purple-400 mb-4 mx-auto">
+                        <i class="fas fa-layer-group text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3 text-center">Strategic Deck-Building</h3>
+                    <p class="text-slate-400 text-center">
+                        Collect and upgrade cards with diverse abilities. Craft a synergistic deck that complements your playstyle and the elemental blocks you'll encounter.
+                    </p>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="card p-6 rounded-xl hover:bg-slate-800">
+                    <div class="w-14 h-14 bg-amber-500/10 rounded-full flex items-center justify-center text-amber-auto mb-4 mx-auto">
+                        <i class="fas fa-gem text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3 text-center">Powerful Relics</h3>
+                    <p class="text-slate-400 text-center">
+                        Discover artifacts that dramatically alter your capabilities. Each relic provides unique bonuses that can turn the tide of battle in your favor.
+                    </p>
+                </div>
+                
+                <!-- Feature 4 -->
+                <div class="card p-6 rounded-xl hover:bg-slate-800">
+                    <div class="w-14 h-14 bg-emerald-500/10 rounded-full flex items-center justify-center text-emerald-400 mb-4 mx-auto">
+                        <i class="fas fa-redo text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3 text-center">Endless Replayability</h3>
+                    <p class="text-slate-400 text-center">
+                        Randomized elements, events, and enemy encounters ensure no two playthroughs are the same. Adapt your strategy each time you play!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gameplay Section -->
+    <section id="gameplay" class="py-20 px-4 bg-slate-900">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="title-font text-3xl md:text-4xl text-white mb-4">GAMEPLAY MECHANICS</h2>
+                <div class="w-20 h-1 bg-blue-500 mx-auto"></div>
+            </div>
+            
+            <div class="flex flex-col lg:flex-row items-center">
+                <div class="lg:w-1/2 mb-10 lg:mb-0 lg:pr-10">
+                    <div class="mb-8">
+                        <h3 class="text-2xl font-bold text-white mb-4 flex items-center">
+                            <i class="fas fa-dice mr-2 text-blue-400"></i> Turn Structure
+                        </h3>
+                        <ol class="space-y-3 text-slate-300">
+                            <li class="flex items-start">
+                                <span class="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-1 text-sm flex-shrink-0">1</span>
+                                <span>Choose one of three elemental blocks (Fire, Water, Earth, Air)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-1 text-sm flex-shrink-0">2</span>
+                                <span>Place the block on the 12x5 puzzle grid (similar to Tetris mechanics)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-1 text-sm flex-shrink-0">3</span>
+                                <span>Any cards that match the placed block's pattern are activated, triggering their effects</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-1 text-sm flex-shrink-0">4</span>
+                                <span>Enemies perform their actions (attacking, special abilities, or approaching)</span>
+                            </li>
+                        </ol>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <h3 class="text-2xl font-bold text-white mb-4 flex items-center">
+                            <i class="fas fa-map-marked-alt mr-2 text-blue-400"></i> Progression System
+                        </h3>
+                        <p class="text-slate-300 mb-4">
+                            Between battles, you'll navigate through nodes on a world map, choosing your path strategically:
+                        </p>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-slate-800 p-4 rounded-lg">
+                                <i class="fas fa-crosshairs text-red-400 mb-2 text-lg"></i>
+                                <h4 class="font-bold text-white mb-1">Battles</h4>
+                                <p class="text-slate-400 text-sm">Defeat enemies to earn new cards and relics</p>
+                            </div>
+                            <div class="bg-slate-800 p-4 rounded-lg">
+                                <i class="fas fa-store text-blue-400 mb-2 text-lg"></i>
+                                <h4 class="font-bold text-white mb-1">Shops</h4>
+                                <p class="text-slate-400 text-sm">Spend collected currency on upgrades</p>
+                            </div>
+                            <div class="bg-slate-800 p-4 rounded-lg">
+                                <i class="fas fa-question text-yellow-400 mb-2 text-lg"></i>
+                                <h4 class="font-bold text-white mb-1">Events</h4>
+                                <p class="text-slate-400 text-sm">Make choices with lasting consequences</p>
+                            </div>
+                            <div class="bg-slate-800 p-4 rounded-lg">
+                                <i class="fas fa-skull text-purple-400 mb-2 text-lg"></i>
+                                <h4 class="font-bold text-white mb-1">Boss</h4>
+                                <p class="text-slate-400 text-sm">Test your skills against powerful foes</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="lg:w-1/2">
+                    <div class="bg-slate-800/50 p-6 rounded-xl border border-slate-700 mb-8">
+                        <h3 class="text-xl font-bold text-white mb-4">12x5 Puzzle Grid Demo</h3>
+                        <div class="grid-demo">
+                            <!-- Generate 81 cells for the grid -->
+                            <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell bg-blue-500/30"></div><div class="grid-cell bg-blue-500/30"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                            <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell bg-red-500/30"></div><div class="grid-cell bg-blue-500/30"></div><div class="grid-cell bg-blue-500/30"></div><div class="grid-cell bg-red-500/30"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                            <div class="grid-cell"></div><div class="grid-cell bg-red-500/30"></div><div class="grid-cell bg-red-500/30"></div><div class="grid-cell bg-blue-500/30"></div><div class="grid-cell bg-blue-500/30"></div><div class="grid-cell bg-red-500/30"></div><div class="grid-cell bg-red-500/30"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                            <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell bg-blue-500/30"></div><div class="grid-cell bg-blue-500/30"></div><div class="grid-cell "></div><div class="grid-cell bg-blue-500/30"></div><div class="grid-cell bg-blue-500/30"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                            <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell bg-yellow-500/30"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                            <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell bg-green-500/30"></div><div class="grid-cell bg-green-500/30"></div><div class="grid-cell bg-yellow-500/30"></div><div class="grid-cell bg-green-500/30"></div><div class="grid-cell bg-green-500/30"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                            <div class="grid-cell"></div><div class="grid-cell bg-green-500/30"></div><div class="grid-cell bg-green-500/30"></div><div class="grid-cell bg-green-500/30"></div><div class="grid-cell bg-yellow-500/30"></div><div class="grid-cell bg-green-500/30"></div><div class="grid-cell bg-green-500/30"></div><div class="grid-cell bg-green-500/30"></div><div class="grid-cell"></div>
+                            <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell bg-green-500/30"></div><div class="grid-cell bg-green-500/30"></div><div class="grid-cell bg-yellow-500/30"></div><div class="grid-cell bg-green-500/30"></div><div class="grid-cell bg-green-500/30"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                            <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell bg-yellow-500/30"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                        </div>
+                        <p class="text-slate-400 mt-4 text-center">
+                            Example of an active game board with different elemental blocks placed (hover to see full image)
+                        </p>
+                    </div>
+                    
+                    <div class="bg-blue-900/20 p-6 rounded-xl border border-blue-700">
+                        <h3 class="text-xl font-bold text-white mb-4 flex items-center">
+                            <i class="fas fa-lightbulb mr-2 text-yellow-400"></i> Strategy Tips
+                        </h3>
+                        <ul class="text-slate-300 space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-400 mr-2 mt-1"></i>
+                                <span>Plan several moves ahead to chain powerful card combos</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-400 mr-2 mt-1"></i>
+                                <span>Balance your deck between different elements for flexibility</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-400 mr-2 mt-1"></i>
+                                <span>Pay attention to enemy patterns and position blocks to counter them</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-400 mr-2 mt-1"></i>
+                                <span>Some relics synergize perfectly with specific elemental cards</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Screenshots Section -->
+    <section id="screenshots" class="py-20 px-4 bg-slate-950">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="title-font text-3xl md:text-4xl text-white mb-4">GAME SCREENSHOTS</h2>
+                <div class="w-20 h-1 bg-blue-500 mx-auto"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Screenshot 1 -->
+                <div class="group relative rounded-xl overflow-hidden border-2 border-slate-700 shadow-xl transition duration-500 hover:border-blue-500 hover:scale-105">
+                    <img src="https://via.placeholder.com/800x450/1e293b/64748b?text=Gameplay+Screenshot" alt="Elementalism Gameplay" class="w-full h-auto">
+                    <div class="absolute inset-0 bg-black/70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
+                        <p class="text-white text-lg font-bold text-center px-4">Main gameplay screen showing the puzzle grid, cards, and enemies</p>
+                    </div>
+                </div>
+                
+                <!-- Screenshot 2 -->
+                <div class="group relative rounded-xl overflow-hidden border-2 border-slate-700 shadow-xl transition duration-500 hover:border-blue-500 hover:scale-105">
+                    <img src="https://via.placeholder.com/800x450/1e293b/64748b?text=Card+Shop+Screenshot" alt="Elementalism Card Shop" class="w-full h-auto">
+                    <div class="absolute inset-0 bg-black/70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
+                        <p class="text-white text-lg font-bold text-center px-4">Card shop where players can purchase new abilities</p>
+                    </div>
+                </div>
+                
+                <!-- Screenshot 3 -->
+                <div class="group relative rounded-xl overflow-hidden border-2 border-slate-700 shadow-xl transition duration-500 hover:border-blue-500 hover:scale-105">
+                    <img src="https://via.placeholder.com/800x450/1e293b/64748b?text=World+Map+Screenshot" alt="Elementalism World Map" class="w-full h-auto">
+                    <div class="absolute inset-0 bg-black/70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
+                        <p class="text-white text-lg font-bold text-center px-4">World map showing route options between battles</p>
+                    </div>
+                </div>
+                
+                <!-- Screenshot 4 -->
+                <div class="group relative rounded-xl overflow-hidden border-2 border-slate-700 shadow-xl transition duration-500 hover:border-blue-500 hover:scale-105">
+                    <img src="https://via.placeholder.com/800x450/1e293b/64748b?text=Event+Screenshot" alt="Elementalism Event Screen" class="w-full h-auto">
+                    <div class="absolute inset-0 bg-black/70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
+                        <p class="text-white text-lg font-bold text-center px-4">Encounter screen with narrative choices</p>
+                    </div>
+                </div>
+                
+                <!-- Screenshot 5 -->
+                <div class="group relative rounded-xl overflow-hidden border-2 border-slate-700 shadow-xl transition duration-500 hover:border-blue-500 hover:scale-105">
+                    <img src="https://via.placeholder.com/800x450/1e293b/64748b?text=Battle+Screenshot" alt="Elementalism Battle Screen" class="w-full h-auto">
+                    <div class="absolute inset-0 bg-black/70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
+                        <p class="text-white text-lg font-bold text-center px-4">Intense boss battle with special effects</p>
+                    </div>
+                </div>
+                
+                <!-- Screenshot 6 - placeholder for trailer/asset -->
+                <div class="group relative rounded-xl overflow-hidden border-2 border-slate-700 shadow-xl transition duration-500 hover:border-blue-500 hover:scale-105">
+                    <div class="aspect-w-16 aspect-h-9 bg-slate-800 flex items-center justify-center">
+                        <i class="fas fa-play-circle text-6xl text-white opacity-70"></i>
+                    </div>
+                    <div class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
+                        <p class="text-white text-lg font-bold text-center px-4">Watch Gameplay Trailer</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- News/Wishlist Section -->
+    <section id="news" class="py-20 px-4 bg-gradient-to-br from-blue-900/50 to-purple-900/50">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="title-font text-3xl md:text-4xl text-white mb-6">GET READY TO PLAY</h2>
+            <p class="text-xl text-slate-300 mb-10 max-w-2xl mx-auto">
+                Elementalism is coming soon to PC! Wishlist now to be notified when the game launches.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-lg text-lg transition duration-300 transform hover:scale-105 flex items-center justify-center">
+                    <i class="fab fa-steam text-2xl mr-3"></i>
+                    <span>WISHLIST ON STEAM</span>
+                </button>
+                <button class="bg-slate-800 hover:bg-slate-700 text-white font-bold py-4 px-8 rounded-lg text-lg transition duration-300 transform hover:scale-105 flex items-center justify-center">
+                    <i class="fab fa-discord text-2xl mr-3"></i>
+                    <span>JOIN DISCORD</span>
+                </button>
+            </div>
+            
+            <div class="mt-12">
+                <h3 class="text-xl font-bold text-white mb-4">STAY UPDATED</h3>
+                <div class="flex justify-center space-x-6">
+                    <a href="#" class="w-12 h-12 rounded-full bg-slate-800 hover:bg-blue-600 flex items-center justify-center text-white text-xl transition duration-300">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="w-12 h-12 rounded-full bg-slate-800 hover:bg-red-500 flex items-center justify-center text-white text-xl transition duration-300">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                    <a href="#" class="w-12 h-12 rounded-full bg-slate-800 hover:bg-purple-600 flex items-center justify-center text-white text-xl transition duration-300">
+                        <i class="fab fa-twitch"></i>
+                    </a>
+                    <a href="#" class="w-12 h-12 rounded-full bg-slate-800 hover:bg-blue-400 flex items-center justify-center text-white text-xl transition duration-300">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 py-10 px-4 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <a href="#" class="title-font text-blue-400 text-xl flex items-center">
+                        <i class="fas fa-fire mr-2 text-orange-400"></i>ELEMENTALISM
+                    </a>
+                    <p class="text-slate-500 text-sm mt-2">© 2025 Elementalism Team. All rights reserved.</p>
+                </div>
+                
+                <div class="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6">
+                    <a href="#about" class="text-slate-400 hover:text-white transition duration-300">About</a>
+                    <a href="#features" class="text-slate-400 hover:text-white transition duration-300">Features</a>
+                    <a href="#gameplay" class="text-slate-400 hover:text-white transition duration-300">Gameplay</a>
+                    <a href="#news" class="text-slate-400 hover:text-white transition duration-300">News</a>
+                    <a href="#" class="text-slate-400 hover:text-white transition duration-300">Privacy Policy</a>
+                    <a href="#" class="text-slate-400 hover:text-white transition duration-300">Terms</a>
+                </div>
+            </div>
+            
+            <div class="mt-8 pt-8 border-t border-slate-800 text-center text-slate-600 text-sm">
+                <p>Elementalism is a registered trademark. All other trademarks are property of their respective owners.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button class="fixed bottom-6 right-6 w-12 h-12 bg-blue-600/80 hover:bg-blue-700 rounded-full flex items-center justify-center text-white text-xl shadow-lg transition duration-300 opacity-0 invisible back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.querySelector('.mobile-menu-button');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                // Close mobile menu if open
+                mobileMenu.classList.add('hidden');
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Show/hide back to top button based on scroll position
+        const backToTopButton = document.querySelector('.back-to-top');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.remove('opacity-0', 'invisible');
+                backToTopButton.classList.add('opacity-100', 'visible');
+            } else {
+                backToTopButton.classList.remove('opacity-100', 'visible');
+                backToTopButton.classList.add('opacity-0', 'invisible');
+            }
+        });
+        
+        // Back to top button functionality
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+</html>
