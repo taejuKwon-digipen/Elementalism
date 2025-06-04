@@ -14,45 +14,52 @@ public class MapManager : MonoBehaviour
 {
     [SerializeField] public int col;
     [SerializeField] public int row;
-    //colº° ³ëµå °¹¼ö ¹üÀ§
+    //colï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     [SerializeField] public int minNodePerCol;
     [SerializeField] public int maxNodePerCol;
 
-    //100ÀÌ ³ÑÁö¾Ê°Ô ¼³Á¤ÇÏ±â
+    //100% ë„˜ì§€ì•Šê²Œ ì„¤ì •í•˜ê¸°
     [SerializeField] public int battleChance;
     [SerializeField] public int eventChance;
     [SerializeField] public int shopChance;
 
-    [SerializeField] public GameObject nodePrefab; // ³ëµå UI ÇÁ¸®Æé
-    [SerializeField] public GameObject linePrefab; // ¶óÀÎ ÇÁ¸®Æé
+    [Header("Node Prefabs")]
+    [SerializeField] public GameObject battleNodePrefab; // ë°°í‹€ ë…¸ë“œ í”„ë¦¬íŒ¹
+    [SerializeField] public GameObject shopNodePrefab;   // ìƒì  ë…¸ë“œ í”„ë¦¬íŒ¹
+    [SerializeField] public GameObject eventNodePrefab;  // ì´ë²¤íŠ¸ ë…¸ë“œ í”„ë¦¬íŒ¹
+    [SerializeField] public GameObject startNodePrefab;  // ì‹œì‘ ë…¸ë“œ í”„ë¦¬íŒ¹
+    [SerializeField] public GameObject bossNodePrefab;   // ë³´ìŠ¤ ë…¸ë“œ í”„ë¦¬íŒ¹
+    [SerializeField] public GameObject defaultNodePrefab; // ê¸°ë³¸ ë…¸ë“œ í”„ë¦¬íŒ¹ (ëŒ€ì²´ìš©)
+    
+    [SerializeField] public GameObject linePrefab; // ì„ ë¶„ í”„ë¦¬íŒ¹
     public List<GameObject> lines = new();
     [SerializeField] public GameObject firstNodePO;
 
     public string SceneToLoad;
-    public Transform Container; // ¸Ê ³ëµå°¡ µé¾î°¥ ºÎ¸ğ ¿ÀºêÁ§Æ®
-    private static List<List<Node>> map = new(); //Ãşº° ³ëµå¸®½ºÆ®
-    private Node currentNode; //ÇöÀç ÇÃ·¹ÀÌ¾î°¡ À§Ä¡ÇÑ ³ëµå
+    public Transform Container; // ï¿½ï¿½ ï¿½ï¿½å°¡ ï¿½ï¿½î°¥ ï¿½Î¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
+    private static List<List<Node>> map = new(); //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½å¸®ï¿½ï¿½Æ®
+    private Node currentNode; //ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½
 
     public static MapManager Instance;
 
-    private static bool isInitialized = false; // ÃÖÃÊ ½ÇÇà ¿©ºÎ
+    private static bool isInitialized = false; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     private List<int> nodeIdList = new();
 
     private int CurrNodeID;
     private void Awake()
     {
-        Debug.Log("MapManager Awake È£Ãâ");
+        Debug.Log("MapManager Awake È£ï¿½ï¿½");
         
         if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
             SceneManager.sceneLoaded += OnSceneLoaded;
-            Debug.Log("MapManager ÀÎ½ºÅÏ½º »ı¼ºµÊ");
+            Debug.Log("MapManager ï¿½Î½ï¿½ï¿½Ï½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
         }
         else
         {
-            Debug.Log("MapManager Áßº¹ »ı¼ºµÊ ¡æ »õ °´Ã¼ »èÁ¦");
+            Debug.Log("MapManager ï¿½ßºï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½");
             Destroy(gameObject);
             return;
         }
@@ -62,38 +69,38 @@ public class MapManager : MonoBehaviour
 
     private void FindContainer()
     {
-        //Content ÇÏÀ§¿¡¼­ NodemapContainer¸¦ Ã£À½
+        //Content ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ NodemapContainerï¿½ï¿½ Ã£ï¿½ï¿½
         GameObject containerObj = GameObject.Find("Content");
         if (containerObj != null)
         {
             Container = containerObj.transform;
-            Debug.Log("NodemapContainer ÇÒ´ç ¿Ï·á");
+            Debug.Log("NodemapContainer ï¿½Ò´ï¿½ ï¿½Ï·ï¿½");
         }
         else
         {
-            Debug.LogError("NodemapContainer¸¦ Ã£À» ¼ö ¾øÀ½!");
+            Debug.LogError("NodemapContainerï¿½ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½!");
         }
 
-        //Content ÇÏÀ§¿¡¼­ LinemapContainer¸¦ Ã£À½
+        //Content ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ LinemapContainerï¿½ï¿½ Ã£ï¿½ï¿½
         GameObject lineContainerObj = GameObject.Find("Content");
         if (lineContainerObj != null)
         {
             Container = lineContainerObj.transform;
-            Debug.Log("LinemapContainer ÇÒ´ç ¿Ï·á");
+            Debug.Log("LinemapContainer ï¿½Ò´ï¿½ ï¿½Ï·ï¿½");
         }
         else
         {
-            Debug.LogError("LinemapContainer¸¦ Ã£À» ¼ö ¾øÀ½!");
+            Debug.LogError("LinemapContainerï¿½ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½!");
         }
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "Map2") // ¸Ê ¾ÀÀÏ ¶§ ½ÇÇà
+        if (scene.name == "Map2") // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         {
-            if (map.Count == 0) // ¸ÊÀÌ ¾øÀ¸¸é ´Ù½Ã »ı¼º (¿¹¿Ü Ã³¸®)
+            if (map.Count == 0) // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½)
             {
-                Debug.LogWarning("¸Ê µ¥ÀÌÅÍ ¾øÀ½ ¡æ »õ·Î »ı¼º");
+                Debug.LogWarning("ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
                 GenerateMap();
                 ConnectNodes();
                 DrawMap();
@@ -103,7 +110,7 @@ public class MapManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("¸Ê ¾ÀÀ¸·Î µ¹¾Æ¿È, ±âÁ¸ ¸Ê º¹¿ø Áß...");
+                Debug.Log("ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Æ¿ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½...");
                 FindContainer();
                 RestoreMapState();
                 DrawMap();
@@ -118,10 +125,10 @@ public class MapManager : MonoBehaviour
 
     private void RestoreMapState()
     {
-        Debug.Log("RestoreMapState ½ÇÇà: ±âÁ¸ ¸Ê º¹¿ø Áß...");
+        Debug.Log("RestoreMapState ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½...");
         if (map == null || map.Count == 0)
         {
-            Debug.LogWarning("±âÁ¸ ¸Ê µ¥ÀÌÅÍ ¾øÀ½ ¡æ »õ·Î »ı¼º");
+            Debug.LogWarning("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
             GenerateMap();
             ConnectNodes();
             DrawMap();
@@ -136,17 +143,20 @@ public class MapManager : MonoBehaviour
             {
                 for (int i = 0; i < num.Count; i++)
                 {
-                    Vector2 nodePos = nodePositions.Keys.ElementAt(node_col); // ÀúÀåµÈ À§Ä¡ °¡Á®¿À±â
+                    Vector2 nodePos = nodePositions.Keys.ElementAt(node_col); // ë…¸ë“œì˜ ìœ„ì¹˜ ì •ë³´ê°€ì ¸ì˜¤ê¸°
+                    NodeType nodetype = nodePositions.Values.ElementAt(node_col);
+                    GameObject nodePrefab = GetPrefabForNodeType(nodetype); // íƒ€ì…ì— ë§ëŠ” í”„ë¦¬íŒ¹ ì„ íƒ
                     GameObject newNodeObj = Instantiate(nodePrefab, Container);
                     Node newNode = newNodeObj.GetComponent<Node>();
                     newNode.SetPosition(nodePos);
 
-                    NodeType nodetype = nodePositions.Values.ElementAt(node_col);
                     newNode.SetNodeType(nodetype);
                     map[node_row][i] = newNode;
                     newNode.SetNodeID(node_col);
                     node_col++;
                     
+                    // ë…¸ë“œë¥¼ ì„ ë“¤ë³´ë‹¤ ìœ„ì— ë Œë”ë§ë˜ë„ë¡ ë§¨ ë’¤ë¡œ ì´ë™
+                    newNodeObj.transform.SetAsLastSibling();
 
                     if (newNode.NodeID == currentNode.NodeID)
                     {
@@ -182,6 +192,15 @@ public class MapManager : MonoBehaviour
             }
             ConnectNodes();
             DrawNewLine();
+            
+            // ëª¨ë“  ì„ ë“¤ì„ í•˜ì´ì–´ë¼í‚¤ ë§¨ ìœ„ë¡œ ë³´ë‚´ì„œ ë…¸ë“œë“¤ë³´ë‹¤ ë’¤ì— ë Œë”ë§
+            foreach (var line in lines)
+            {
+                if (line != null)
+                {
+                    line.transform.SetAsFirstSibling();
+                }
+            }
         }
     }
 
@@ -198,7 +217,7 @@ public class MapManager : MonoBehaviour
         {
             if (line == null)
             {
-                Debug.LogWarning(" ¶óÀÎÀÌ »ç¶óÁü ¡æ ´Ù½Ã »ı¼º");
+                Debug.LogWarning(" ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½");
                 DrawMap();
                 return;
             }
@@ -210,11 +229,11 @@ public class MapManager : MonoBehaviour
 
     private void Start()
     {
-        //Debug.Log($"MapManager Á¸Àç È®ÀÎ: {this.gameObject.name}");
+        //Debug.Log($"MapManager ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½: {this.gameObject.name}");
     }
 
-    // ³ëµå °£ ÃÖ¼Ò °Å¸® ¼³Á¤
-    float minDistance = 150f; // ¿¹½Ã°ª (³Ê¹« ÀÛÀº °ªÀ» ¼³Á¤ÇÏ¸é ³ëµåµéÀÌ °ãÄ¥ ¼ö ÀÖÀ½)
+    // ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö¼ï¿½ ï¿½Å¸ï¿½ ï¿½ï¿½ï¿½ï¿½
+    float minDistance = 150f; // ï¿½ï¿½ï¿½Ã°ï¿½ (ï¿½Ê¹ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¥ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
     bool IsPositionValid(Vector2 newPos)
     {
         foreach (var col in map)
@@ -230,7 +249,7 @@ public class MapManager : MonoBehaviour
         return true;
     }
 
-    private Dictionary<Vector2, NodeType> nodePositions = new(); // ³ëµå À§Ä¡ ÀúÀå¿ë
+    private Dictionary<Vector2, NodeType> nodePositions = new(); // ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ï¿½
 
    
     private void MakePerNode(/*Vector2 pos,*/ NodeType type, int nodeid)
@@ -246,15 +265,20 @@ public class MapManager : MonoBehaviour
             while (!IsPositionValid(pos));
         }
         List<Node> nodelist = new();
+        GameObject nodePrefab = GetPrefabForNodeType(type); // íƒ€ì…ì— ë§ëŠ” í”„ë¦¬íŒ¹ ì„ íƒ
         GameObject GameOJNode = Instantiate(nodePrefab, Container);
         Node gameOJNode = GameOJNode.GetComponent<Node>();
         gameOJNode.SetPosition(pos);
         gameOJNode.SetNodeType(type);
         gameOJNode.SetNodeID(nodeid);
+        
+        // ë…¸ë“œë¥¼ ì„ ë“¤ë³´ë‹¤ ìœ„ì— ë Œë”ë§ë˜ë„ë¡ ë§¨ ë’¤ë¡œ ì´ë™
+        GameOJNode.transform.SetAsLastSibling();
+        
         nodelist.Add(gameOJNode);
         map.Add(nodelist);
         nodePositions.Add(pos, gameOJNode.GetNodeType());
-    }//Start¿Í Boss µû·Î »ı¼º
+    }//Startì™€ Boss ë…¸ë“œ ìƒì„±
 
     private void MakeNode(Vector2 position)
     {
@@ -274,11 +298,19 @@ public class MapManager : MonoBehaviour
                 }
                 while (!IsPositionValid(newPos));
 
+                // ë¨¼ì € ë…¸ë“œ íƒ€ì…ì„ ê²°ì •
+                NodeType nodeType = GetRandomNodeType();
+                GameObject nodePrefab = GetPrefabForNodeType(nodeType); // íƒ€ì…ì— ë§ëŠ” í”„ë¦¬íŒ¹ ì„ íƒ
+                
                 GameObject nodeobj = Instantiate(nodePrefab, Container);
                 Node node = nodeobj.GetComponent<Node>();
                 node.SetPosition(newPos);
-                node.AssignRandomType();
+                node.SetNodeType(nodeType); // ë¯¸ë¦¬ ê²°ì •ëœ íƒ€ì… ì„¤ì •
                 node.SetNodeID(nodeID);
+                
+                // ë…¸ë“œë¥¼ ì„ ë“¤ë³´ë‹¤ ìœ„ì— ë Œë”ë§ë˜ë„ë¡ ë§¨ ë’¤ë¡œ ì´ë™
+                nodeobj.transform.SetAsLastSibling();
+                
                 nodeInCol.Add(node);
                 nodeID++;
                 nodePositions.Add(newPos, node.GetNodeType());
@@ -300,19 +332,19 @@ public class MapManager : MonoBehaviour
     {
         for (int i = 0; i < row - 1; i++)
         {
-            List<Node> currentCol = map[i]; // ÇöÀç ÃşÀÇ ³ëµå ¸®½ºÆ®
-            List<Node> nextCol = map[i + 1]; // ´ÙÀ½ ÃşÀÇ ³ëµå ¸®½ºÆ®
+            List<Node> currentCol = map[i]; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
+            List<Node> nextCol = map[i + 1]; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
 
             foreach (Node node in currentCol)
             {
-                if (i == row - 2) // ¸¶Áö¸· ÃşÀÌ¸é ¸ğµç ³ëµå¸¦ º¸½º ³ëµå¿¡ ¿¬°á
+                if (i == row - 2) // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½å¸¦ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½å¿¡ ï¿½ï¿½ï¿½ï¿½
                 {
                     foreach (Node bossNode in nextCol)
                     {
                         node.connectedNodes.Add(bossNode);
                     }
                 }
-                else if (i == 0) // Ã¹ ¹øÂ° ÃşÀÌ¸é ¸ğµç ³ëµå¸¦ ½ÃÀÛ ³ëµå¿¡ ¿¬°á
+                else if (i == 0) // Ã¹ ï¿½ï¿½Â° ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½å¸¦ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½å¿¡ ï¿½ï¿½ï¿½ï¿½
                 {
                     foreach (Node startNode in nextCol)
                     {
@@ -320,9 +352,9 @@ public class MapManager : MonoBehaviour
                         
                     }
                 }
-                else // ÀÏ¹İÀûÀÎ °æ¿ì, °¢ ³ëµå¸¦ ´ÙÀ½ ÃşÀÇ 2°³ ³ëµå¿Í ¿¬°á
+                else // ï¿½Ï¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½, ï¿½ï¿½ ï¿½ï¿½å¸¦ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 2ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                 {
-                    // °¢ ³ëµå°¡ µÎ °³ÀÇ ³ëµå¿Í¸¸ ¿¬°áµÇµµ·Ï Ã³¸®
+                    // ï¿½ï¿½ ï¿½ï¿½å°¡ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½Çµï¿½ï¿½ï¿½ Ã³ï¿½ï¿½
                     List<Node> sortedNextCol = new List<Node>(nextCol);
                     sortedNextCol.Sort((a, b) => Vector3.Distance(node.transform.position, a.transform.position)
                                                 .CompareTo(Vector3.Distance(node.transform.position, b.transform.position)));
@@ -335,21 +367,21 @@ public class MapManager : MonoBehaviour
             }
         }
 
-        // ¸ğµç Ãş¿¡¼­ ¿¬°áÀÌ Àß µÇ¾ú´ÂÁö È®ÀÎÇÏ°í, ¿¬°áµÇÁö ¾ÊÀº ³ëµåµé³¢¸®µµ ¿¬°á Ã³¸®
+        // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï°ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½é³¢ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½
         EnsureAllNodesConnected();
     }
 
     void EnsureAllNodesConnected()
     {
-        // ¸ğµç ³ëµå¸¦ Ã¼Å©ÇÏ¿© ¿¬°áµÇÁö ¾ÊÀº ³ëµå°¡ ÀÖ´Ù¸é, ÀÌ¸¦ ÇØ°á
+        // ï¿½ï¿½ï¿½ ï¿½ï¿½å¸¦ Ã¼Å©ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½å°¡ ï¿½Ö´Ù¸ï¿½, ï¿½Ì¸ï¿½ ï¿½Ø°ï¿½
         for (int i = 0; i < row - 1; i++)
         {
-            List<Node> currentCol = map[i]; // ÇöÀç ÃşÀÇ ³ëµå ¸®½ºÆ®
-            List<Node> nextCol = map[i + 1]; // ´ÙÀ½ ÃşÀÇ ³ëµå ¸®½ºÆ®
+            List<Node> currentCol = map[i]; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
+            List<Node> nextCol = map[i + 1]; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
 
             foreach (Node node in currentCol)
             {
-                // ¿¬°áµÈ ³ëµå°¡ ¾øÀ¸¸é, ´ÙÀ½ ÃşÀÇ ³ëµå Áß ÇÏ³ª¿Í ¿¬°á
+                // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½å°¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ï³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                 if (node.connectedNodes.Count == 0)
                 {
                     Node fallbackNode = nextCol[Random.Range(0, nextCol.Count)];
@@ -359,7 +391,7 @@ public class MapManager : MonoBehaviour
 
             foreach (Node nextNode in nextCol)
             {
-                // ¿¬°áµÈ ³ëµå°¡ ¾øÀ¸¸é, ÀÌÀü ÃşÀÇ ³ëµå Áß ÇÏ³ª¿Í ¿¬°á
+                // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½å°¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ï³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                 bool isConnected = false;
                 foreach (Node node in map[i])
                 {
@@ -391,25 +423,88 @@ public class MapManager : MonoBehaviour
                 }
             }
         }
+        
+        // ëª¨ë“  ì„ ë“¤ì„ í•˜ì´ì–´ë¼í‚¤ ë§¨ ìœ„ë¡œ ë³´ë‚´ì„œ ë…¸ë“œë“¤ë³´ë‹¤ ë’¤ì— ë Œë”ë§
+        foreach (var line in lines)
+        {
+            if (line != null)
+            {
+                line.transform.SetAsFirstSibling();
+            }
+        }
     }
 
     void CreateLineBetweenNodes(Node nodeA, Node nodeB)
     {
-        GameObject lineObj = Instantiate(linePrefab, Container);
-        LineRenderer line = lineObj.GetComponent<LineRenderer>();
-
-        line.useWorldSpace = false; // World Space »ç¿ë ¾È ÇÔ (ºÎ¸ğ ±âÁØÀ¸·Î ¿òÁ÷ÀÌ°Ô)
-
-        // ºÎ¸ğ(Content) ±âÁØÀ¸·Î »ó´ëÀûÀÎ ÁÂÇ¥¸¦ Àû¿ëÇØ¾ß ÇÔ
-        Vector3 localPosA = Container.InverseTransformPoint(nodeA.transform.position);
-        Vector3 localPosB = Container.InverseTransformPoint(nodeB.transform.position);
-
-        line.positionCount = 2;
-        line.SetPosition(0, localPosA);
-        line.SetPosition(1, localPosB);
-
-        lines.Add(lineObj);
-        lineObj.transform.SetSiblingIndex(0);
+        // ì ì„  íš¨ê³¼ë¥¼ ìœ„í•´ ì—¬ëŸ¬ ê°œì˜ ì‘ì€ ì„ ë¶„ìœ¼ë¡œ ë‚˜ëˆ„ì–´ ê·¸ë¦¬ê¸°
+        Vector3 posA = nodeA.transform.position;
+        Vector3 posB = nodeB.transform.position;
+        float totalDistance = Vector3.Distance(posA, posB);
+        
+        // ì ì„  ì„¤ì •
+        float dashLength = 20f; // ê° ì„ ë¶„ì˜ ê¸¸ì´
+        float gapLength = 10f;  // ì„ ë¶„ ì‚¬ì´ì˜ ê°„ê²©
+        float dashThickness = 5f; // ì„ ì˜ ë‘ê»˜
+        
+        Vector3 direction = (posB - posA).normalized;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        
+        float currentDistance = 0f;
+        bool isDash = true; // ì„ ë¶„ì„ ê·¸ë¦´ì§€ ë§ì§€ ê²°ì •
+        
+        while (currentDistance < totalDistance)
+        {
+            if (isDash)
+            {
+                // ì„ ë¶„ ê·¸ë¦¬ê¸°
+                float segmentLength = Mathf.Min(dashLength, totalDistance - currentDistance);
+                Vector3 startPos = posA + direction * currentDistance;
+                Vector3 endPos = posA + direction * (currentDistance + segmentLength);
+                Vector3 midPoint = (startPos + endPos) / 2f;
+                
+                GameObject lineObj = Instantiate(linePrefab, Container);
+                
+                // LineRendererê°€ ìˆë‹¤ë©´ UIì—ì„œëŠ” ì‚¬ìš©í•˜ì§€ ì•Šê³  Imageë¡œ ë³€ê²½
+                LineRenderer line = lineObj.GetComponent<LineRenderer>();
+                if (line != null)
+                {
+                    // LineRenderer ë°©ì‹ (ì ì„  íš¨ê³¼ ì œí•œì )
+                    line.useWorldSpace = false;
+                    Vector3 localPosA = Container.InverseTransformPoint(startPos);
+                    Vector3 localPosB = Container.InverseTransformPoint(endPos);
+                    line.positionCount = 2;
+                    line.SetPosition(0, localPosA);
+                    line.SetPosition(1, localPosB);
+                    line.sortingLayerName = "Default";
+                    line.sortingOrder = -100;
+                    line.startWidth = dashThickness / 100f; // LineRendererëŠ” ì›”ë“œ ë‹¨ìœ„
+                    line.endWidth = dashThickness / 100f;
+                }
+                else
+                {
+                    // UI Image ë°©ì‹ (ì„ í˜¸ë˜ëŠ” ë°©ë²•)
+                    RectTransform lineRect = lineObj.GetComponent<RectTransform>();
+                    if (lineRect != null)
+                    {
+                        lineRect.position = midPoint;
+                        lineRect.sizeDelta = new Vector2(segmentLength, dashThickness);
+                        lineRect.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+                    }
+                }
+                
+                lines.Add(lineObj);
+                lineObj.transform.SetAsFirstSibling();
+                
+                currentDistance += segmentLength;
+            }
+            else
+            {
+                // ê°„ê²© ê±´ë„ˆë›°ê¸°
+                currentDistance += gapLength;
+            }
+            
+            isDash = !isDash; // ì„ ë¶„ê³¼ ê°„ê²©ì„ ë²ˆê°ˆì•„ ê°€ë©°
+        }
     }
 
 
@@ -421,6 +516,56 @@ public class MapManager : MonoBehaviour
             CurrNodeID = currentNode.NodeID;
             currentNode.connectedNodes.ForEach(node => node.UpdateVisual());
         }
+    }
+
+    /// <summary>
+    /// ë…¸ë“œ íƒ€ì…ì— ë”°ë¼ ì ì ˆí•œ í”„ë¦¬íŒ¹ì„ ë°˜í™˜
+    /// </summary>
+    /// <param name="nodeType">ë…¸ë“œ íƒ€ì…</param>
+    /// <returns>í•´ë‹¹í•˜ëŠ” í”„ë¦¬íŒ¹ GameObject</returns>
+    private GameObject GetPrefabForNodeType(NodeType nodeType)
+    {
+        switch (nodeType)
+        {
+            case NodeType.Battle:
+                return battleNodePrefab != null ? battleNodePrefab : defaultNodePrefab;
+            case NodeType.Shop:
+                return shopNodePrefab != null ? shopNodePrefab : defaultNodePrefab;
+            case NodeType.Event:
+                return eventNodePrefab != null ? eventNodePrefab : defaultNodePrefab;
+            case NodeType.Start:
+                return startNodePrefab != null ? startNodePrefab : defaultNodePrefab;
+            case NodeType.Boss:
+                return bossNodePrefab != null ? bossNodePrefab : defaultNodePrefab;
+            default:
+                return defaultNodePrefab;
+        }
+    }
+
+    /// <summary>
+    /// í™•ë¥ ì— ë”°ë¼ ëœë¤í•œ ë…¸ë“œ íƒ€ì…ì„ ë°˜í™˜
+    /// </summary>
+    /// <returns>ëœë¤í•˜ê²Œ ì„ íƒëœ ë…¸ë“œ íƒ€ì…</returns>
+    private NodeType GetRandomNodeType()
+    {
+        int roll = Random.Range(0, 100);
+        int cumulative = 0;
+
+        if (roll < (cumulative += battleChance))
+        {
+            return NodeType.Battle;
+        }
+        else if (roll < (cumulative += eventChance))
+        {
+            return NodeType.Event;
+        }
+        else if (roll < (cumulative += shopChance))
+        {
+            return NodeType.Shop;
+        }
+        
+        // ê¸°ë³¸ê°’ìœ¼ë¡œ ë°°í‹€ ë°˜í™˜
+        return NodeType.Battle;
     }
 
 }
