@@ -281,6 +281,12 @@ public class EventManager : MonoBehaviour
             return;
         }
 
+        if (resultTexts.Count == 0)
+        {
+            SceneManager.LoadScene("Map2");
+            return;
+        }
+
         if (!needWaitForCard)
         {
             ShowResultAndWait(() => SceneManager.LoadScene("Map2"));
