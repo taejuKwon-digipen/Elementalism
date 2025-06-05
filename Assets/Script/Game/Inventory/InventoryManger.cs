@@ -69,6 +69,11 @@ public class InventoryManager : MonoBehaviour
         {
             openButton.interactable = !templeManager.TemplePanel.activeSelf;
         }
+
+        if(InventoryPanel.activeSelf)
+        {
+            openButton.interactable = !InventoryPanel.activeSelf;
+        }
     }
 
     void OpenInventory()

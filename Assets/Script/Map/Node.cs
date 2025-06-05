@@ -116,7 +116,7 @@ public class Node : MonoBehaviour
             node.SetSelectable(true);
         }
 
-        ShowConnectedLines();
+        //ShowConnectedLines();
     }
 
 
@@ -220,29 +220,29 @@ public class Node : MonoBehaviour
         transform.position = new Vector3(position.x, position.y, 0);
     }
 
-    private void ShowConnectedLines()
-    {
-        if (mapManager == null) return;
+    //private void ShowConnectedLines()
+    //{
+    //    if (mapManager == null) return;
 
-        // ��� ���� ��Ȱ��ȭ
-        foreach (GameObject line in mapManager.lines)
-        {
-            line.SetActive(false);
-        }
+    //    // ��� ���� ��Ȱ��ȭ
+    //    foreach (GameObject line in mapManager.lines)
+    //    {
+    //        line.SetActive(false);
+    //    }
 
-        // ����� ������ ���� Ȱ��ȭ
-        foreach (Node connectedNode in connectedNodes)
-        {
-            foreach (GameObject line in mapManager.lines)
-            {
-                LineRenderer lr = line.GetComponent<LineRenderer>();
-                if ((lr.GetPosition(0) == transform.position && lr.GetPosition(1) == connectedNode.transform.position) ||
-                    (lr.GetPosition(1) == transform.position && lr.GetPosition(0) == connectedNode.transform.position))
-                {
-                    line.SetActive(true);
-                }
-            }
-            connectedNode.SetSelectable(true);
-        }
-    }
+    //    // ����� ������ ���� Ȱ��ȭ
+    //    foreach (Node connectedNode in connectedNodes)
+    //    {
+    //        foreach (GameObject line in mapManager.lines)
+    //        {
+    //            LineRenderer lr = line.GetComponent<LineRenderer>();
+    //            if ((lr.GetPosition(0) == transform.position && lr.GetPosition(1) == connectedNode.transform.position) ||
+    //                (lr.GetPosition(1) == transform.position && lr.GetPosition(0) == connectedNode.transform.position))
+    //            {
+    //                line.SetActive(true);
+    //            }
+    //        }
+    //        connectedNode.SetSelectable(true);
+    //    }
+    //}
 }
