@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elementalism - 덱 빌딩 로그라이크 퍼즐 게임</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Rubik:wght@400;600;700&display=swap');
+        
+        :root {
+            --primary: #8b5a3c;
+            --primary-dark: #6b4423;
+            --secondary: #d4af37;
+            --dark: #2d1810;
+            --light: #f4e4bc;
+            --wood: #8b6f47;
+            --forest: #1a3a1a;
+        }
+        
+        body {
+            font-family: 'Rubik', sans-serif;
+            background: linear-gradient(135deg, #3d3426 0%, #2d2419 50%, #3d3426 100%);
+            color: var(--light);
+            scroll-behavior: smooth;
+            min-height: 100vh;
+        }
+        
+        .title-font, .font-bold {
+            font-family: 'Do Hyeon', sans-serif;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #3d3426 0%, #2d2419 50%, #3d3426 100%);
+            position: relative;
+        }
+        
+        .hero-gradient::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(139, 90, 60, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        .element-icon {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+            margin: 0 auto;
+        }
+        
+        .card {
+            background: rgba(139, 111, 71, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(45, 24, 16, 0.5);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(45, 24, 16, 0.4);
+            background: rgba(139, 111, 71, 0.4);
+            border-color: rgba(212, 175, 55, 0.4);
+        }
+        
+        .slider {
+            animation: slide 50s linear infinite;
+            white-space: nowrap;
+        }
+        
+        @keyframes slide {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+        
+
+        
+        .screenshot-hover:hover {
+            border-color: #d4af37 !important;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-amber-900/80 backdrop-blur-md z-50 border-b border-yellow-600/30" style="background: rgba(139, 90, 60, 0.8)">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="#" class="title-font text-yellow-300 text-xl md:text-2xl flex items-center">
+                        <i class="fas fa-fire mr-2 text-orange-300"></i>ELEMENTALISM
+                    </a>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#about" class="text-amber-100 hover:text-yellow-300 px-3 py-2 rounded-md text-sm font-medium transition duration-300">소개</a>
+                        <a href="#features" class="text-amber-100 hover:text-yellow-300 px-3 py-2 rounded-md text-sm font-medium transition duration-300">특징</a>
+                        <a href="#gameplay" class="text-amber-100 hover:text-yellow-300 px-3 py-2 rounded-md text-sm font-medium transition duration-300">게임플레이</a>
+                        <a href="#screenshots" class="text-amber-100 hover:text-yellow-300 px-3 py-2 rounded-md text-sm font-medium transition duration-300">스크린샷</a>
+                        <a href="#news" class="px-4 py-2 rounded-md text-sm font-medium transition duration-300 text-white" style="background: #d4af37;">위시리스트</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button class="mobile-menu-button p-2 rounded-md text-amber-300 hover:text-yellow-200 focus:outline-none">
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile menu -->
+        <div class="mobile-menu hidden md:hidden" style="background: rgba(139, 90, 60, 0.9)">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#about" class="text-amber-100 hover:bg-amber-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">소개</a>
+                <a href="#features" class="text-amber-100 hover:bg-amber-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">특징</a>
+                <a href="#gameplay" class="text-amber-100 hover:bg-amber-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">게임플레이</a>
+                <a href="#screenshots" class="text-amber-100 hover:bg-amber-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">스크린샷</a>
+                <a href="#news" class="text-white block px-3 py-2 rounded-md text-base font-medium" style="background: #d4af37;">위시리스트</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient pt-32 pb-20 md:pt-40 md:pb-32 px-4">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-10 md:mb-0 md:pr-10">
+                <h1 class="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-amber-50 mb-6 leading-tight">원소를 지배하고<br><span class="text-yellow-300">퍼즐을 정복하라!</span></h1>
+                <p class="text-lg text-amber-100 mb-8">덱 빌딩, 로그라이크 진행, 테트리스 스타일 퍼즐 메커니즘의 전략적 융합! <br> 원소 블록을 조합하여 강력한 카드 능력을 발동시키고 적들을 물리치세요!</p>
+                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                    <button class="text-white font-bold py-3 px-6 rounded-lg transition duration-300 transform hover:scale-105" style="background: #d4af37; box-shadow: 0 4px 6px rgba(45, 24, 16, 0.3);">
+                        <i class="fas fa-heart mr-2"></i> 위시리스트 추가
+                    </button>
+                    <button class="text-amber-50 font-bold py-3 px-6 rounded-lg transition duration-300 transform hover:scale-105" style="background: rgba(139, 90, 60, 0.8); border: 2px solid #d4af37;">
+                        <i class="fas fa-play-circle mr-2"></i> 트레일러 보기
+                    </button>
+                </div>
+            </div>
+            <div class="md:w-1/2">
+                <div class="relative rounded-xl overflow-hidden border-4 shadow-2xl transform rotate-1 hover:rotate-0 transition duration-500" style="border-color: rgba(139, 90, 60, 0.8)">
+                    <img src="img/MainMenu.png" alt="Elementalism Main Menu" class="w-full h-auto">
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+                            <i class="fas fa-play text-white text-2xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 px-4" style="background: linear-gradient(135deg, #2d2419 0%, #3d3426 100%)">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="title-font text-3xl md:text-4xl text-amber-50 mb-4">ELEMENTALISM 소개</h2>
+                <div class="w-20 h-1 mx-auto" style="background: #d4af37"></div>
+            </div>
+            
+            <div class="flex flex-col lg:flex-row items-center">
+                <div class="lg:w-1/2 mb-10 lg:mb-0 lg:pr-10">
+                    <p class="text-lg text-amber-100 mb-6">
+                        Elementalism은 플레이어가 12x5 격자에 원소 블록을 전략적으로 배치하여 강력한 카드 능력을 활성화하는 혁신적인 덱 빌딩 로그라이크 퍼즐 게임입니다. 전술적 전투와 매력적인 퍼즐 메커니즘을 결합하여 새로운 게임 경험을 제공합니다.
+                    </p>
+                    <p class="text-lg text-amber-100 mb-8">
+                        여러분의 여정은 절차적으로 생성된 전투, 이벤트, 보상을 통해 진행됩니다. 유물을 수집하여 능력을 강화하고, 완벽한 원소 덱을 구축하여 최종 보스를 물리치고 승리를 차지하세요!
+                    </p>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="p-4 rounded-lg border-l-4" style="background: rgba(139, 90, 60, 0.3); border-color: #d4af37;">
+                            <h3 class="font-bold text-amber-50 mb-2">장르</h3>
+                            <p class="text-amber-200">덱 빌딩 로그라이크 퍼즐</p>
+                        </div>
+                        <div class="p-4 rounded-lg border-l-4" style="background: rgba(139, 90, 60, 0.3); border-color: #d4af37;">
+                            <h3 class="font-bold text-amber-50 mb-2">플랫폼</h3>
+                            <p class="text-amber-200">Windows (PC)</p>
+                        </div>
+                        <div class="p-4 rounded-lg border-l-4" style="background: rgba(139, 90, 60, 0.3); border-color: #d4af37;">
+                            <h3 class="font-bold text-amber-50 mb-2">게임 뷰</h3>
+                            <p class="text-amber-200">2D 사이드 스크롤링</p>
+                        </div>
+                        <div class="p-4 rounded-lg border-l-4" style="background: rgba(139, 90, 60, 0.3); border-color: #d4af37;">
+                            <h3 class="font-bold text-amber-50 mb-2">출시일</h3>
+                            <p class="text-amber-200">출시 예정</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="lg:w-1/2">
+                    <div style="background: rgba(139, 90, 60, 0.3); border: 1px solid rgba(212, 175, 55, 0.3)" class="p-6 rounded-xl">
+                        <h3 class="text-xl font-bold text-white mb-4 flex items-center">
+                            <i class="fas fa-fire text-orange-500 mr-2"></i> 네 가지 원소
+                        </h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="p-4 rounded-lg flex flex-col items-center" style="background: rgba(139, 111, 71, 0.3)">
+                                <div class="element-icon bg-red-500/20 text-red-400">
+                                    <i class="fas fa-fire"></i>
+                                </div>
+                                <h4 class="mt-3 font-bold text-white">불</h4>
+                            </div>
+                            <div class="p-4 rounded-lg flex flex-col items-center" style="background: rgba(139, 111, 71, 0.3)">
+                                <div class="element-icon bg-blue-500/20 text-blue-400">
+                                    <i class="fas fa-tint"></i>
+                                </div>
+                                <h4 class="mt-3 font-bold text-white">물</h4>                            </div>
+                            <div class="p-4 rounded-lg flex flex-col items-center" style="background: rgba(139, 111, 71, 0.3)">
+                                <div class="element-icon bg-green-500/20 text-green-400">
+                                    <i class="fas fa-leaf"></i>
+                                </div>
+                                <h4 class="mt-3 font-bold text-white">땅</h4>                            </div>
+                            <div class="p-4 rounded-lg flex flex-col items-center" style="background: rgba(139, 111, 71, 0.3)">
+                                <div class="element-icon bg-yellow-500/20 text-yellow-400">
+                                    <i class="fas fa-wind"></i>
+                                </div>
+                                <h4 class="mt-3 font-bold text-white">바람</h4>                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 px-4" style="background: linear-gradient(135deg, #3d3426 0%, #2d2419 100%)">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="title-font text-3xl md:text-4xl text-amber-50 mb-4">게임 특징</h2>
+                <div class="w-20 h-1 mx-auto" style="background: #d4af37"></div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Feature 1 -->
+                <div class="card p-6 rounded-xl">
+                    <div class="w-14 h-14 bg-amber-500/10 rounded-full flex items-center justify-center text-amber-400 mb-4 mx-auto">
+                        <i class="fas fa-puzzle-piece text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-amber-50 mb-3 text-center">원소 퍼즐 전투</h3>
+                    <p class="text-amber-200 text-center">
+                        12x5 격자에 테트리스와 같은 블록을 배치하여 카드의 모양과 일치시키세요. 각 원소(불, 물, 땅, 바람)는 전략에 영향을 미치는 고유한 특성을 가지고 있습니다.
+                    </p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="card p-6 rounded-xl">
+                    <div class="w-14 h-14 bg-amber-600/10 rounded-full flex items-center justify-center text-amber-600 mb-4 mx-auto">
+                        <i class="fas fa-layer-group text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-amber-50 mb-3 text-center">전략적 덱 빌딩</h3>
+                    <p class="text-amber-200 text-center">
+                        다양한 능력을 가진 카드를 수집하고 업그레이드하세요. 플레이 스타일과 만나게 될 원소 블록을 보완하는 시너지 덱을 만드세요.
+                    </p>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="card p-6 rounded-xl">
+                    <div class="w-14 h-14 bg-amber-500/10 rounded-full flex items-center justify-center text-amber-400 mb-4 mx-auto">
+                        <i class="fas fa-gem text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-amber-50 mb-3 text-center">강력한 유물</h3>
+                    <p class="text-amber-200 text-center">
+                        능력을 극적으로 변화시키는 유물을 발견하세요. 각 유물은 전투에서 유리하게 작용할 수 있는 고유한 보너스를 제공합니다.
+                    </p>
+                </div>
+                
+                <!-- Feature 4 -->
+                <div class="card p-6 rounded-xl">
+                    <div class="w-14 h-14 bg-yellow-500/10 rounded-full flex items-center justify-center text-yellow-400 mb-4 mx-auto">
+                        <i class="fas fa-redo text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-amber-50 mb-3 text-center">무한한 재플레이성</h3>
+                    <p class="text-amber-200 text-center">
+                        무작위 원소, 이벤트, 적 조우는 동일한 플레이스루가 없음을 보장합니다. 플레이할 때마다 전략을 적응시키세요!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gameplay Section -->
+    <section id="gameplay" class="py-20 px-4" style="background: linear-gradient(135deg, #2d2419 0%, #3d3426 100%)">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="title-font text-3xl md:text-4xl text-white mb-4">게임플레이 메커니즘</h2>
+                <div class="w-20 h-1 mx-auto" style="background: #d4af37"></div>
+            </div>
+            
+            <div class="flex flex-col lg:flex-row items-center">
+                <div class="lg:w-1/2 mb-10 lg:mb-0 lg:pr-10">
+                    <div class="mb-8">
+                        <h3 class="text-2xl font-bold text-white mb-4 flex items-center">
+                            <i class="fas fa-dice mr-2 text-amber-400"></i> 턴 구조
+                        </h3>
+                        <ol class="space-y-3 text-amber-200">
+                            <li class="flex items-start">
+                                <span style="background: #d4af37" class="text-white rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-1 text-sm flex-shrink-0">1</span>
+                                <span>네 개의 원소 블록 중 하나를 선택 (불, 물, 땅, 바람)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span style="background: #d4af37" class="text-white rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-1 text-sm flex-shrink-0">2</span>
+                                <span>12x5 퍼즐 격자에 블록을 배치 (테트리스 메커니즘과 유사)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span style="background: #d4af37" class="text-white rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-1 text-sm flex-shrink-0">3</span>
+                                <span>배치된 블록의 패턴과 일치하는 모든 카드가 활성화되어 효과 발동</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span style="background: #d4af37" class="text-white rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-1 text-sm flex-shrink-0">4</span>
+                                <span>적들이 행동 수행 (공격, 특수 능력 또는 접근)</span>
+                            </li>
+                        </ol>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <h3 class="text-2xl font-bold text-white mb-4 flex items-center">
+                            <i class="fas fa-map-marked-alt mr-2 text-amber-400"></i> 진행 시스템
+                        </h3>
+                        <p class="text-amber-200 mb-4">
+                            전투 사이에는 월드 맵의 노드를 탐색하며 전략적으로 경로를 선택합니다:
+                        </p>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div style="background: rgba(139, 90, 60, 0.3)" class="p-4 rounded-lg">
+                                <i class="fas fa-crosshairs text-red-400 mb-2 text-lg"></i>
+                                <h4 class="font-bold text-white mb-1">전투</h4>
+                                <p class="text-amber-200 text-sm">적을 물리쳐 새로운 카드와 유물을 획득</p>
+                            </div>
+                            <div style="background: rgba(139, 90, 60, 0.3)" class="p-4 rounded-lg">
+                                <i class="fas fa-store text-amber-400 mb-2 text-lg"></i>
+                                <h4 class="font-bold text-white mb-1">상점</h4>
+                                <p class="text-amber-200 text-sm">수집한 화폐로 업그레이드 구매</p>
+                            </div>
+                            <div style="background: rgba(139, 90, 60, 0.3)" class="p-4 rounded-lg">
+                                <i class="fas fa-question text-yellow-400 mb-2 text-lg"></i>
+                                <h4 class="font-bold text-white mb-1">이벤트</h4>
+                                <p class="text-amber-200 text-sm">지속적인 영향을 미치는 선택</p>
+                            </div>
+                            <div style="background: rgba(139, 90, 60, 0.3)" class="p-4 rounded-lg">
+                                <i class="fas fa-skull text-red-400 mb-2 text-lg"></i>
+                                <h4 class="font-bold text-white mb-1">보스</h4>
+                                <p class="text-amber-200 text-sm">강력한 적과의 실력 시험</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="lg:w-1/2">
+                    <!-- 핵심 메커니즘 -->
+                    <div style="background: rgba(139, 90, 60, 0.2); border: 1px solid rgba(212, 175, 55, 0.3)" class="p-6 rounded-xl mb-8">
+                        <h3 class="text-xl font-bold text-white mb-4 flex items-center">
+                            <i class="fas fa-cogs mr-2 text-amber-400"></i> 핵심 메커니즘
+                        </h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 rounded-full flex items-center justify-center mr-3 mt-1" style="background: rgba(212, 175, 55, 0.2)">
+                                    <i class="fas fa-th text-yellow-400 text-sm"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-amber-50 mb-1">패턴 매칭</h4>
+                                    <p class="text-amber-200 text-sm">카드의 모양과 격자의 배치된 블록이 일치하면 능력 발동</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 rounded-full flex items-center justify-center mr-3 mt-1" style="background: rgba(212, 175, 55, 0.2)">
+                                    <i class="fas fa-layer-group text-yellow-400 text-sm"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-amber-50 mb-1">원소 시너지</h4>
+                                    <p class="text-amber-200 text-sm">같은 원소끼리 조합하면 더 강력한 효과 발생</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 rounded-full flex items-center justify-center mr-3 mt-1" style="background: rgba(212, 175, 55, 0.2)">
+                                    <i class="fas fa-bolt text-yellow-400 text-sm"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-amber-50 mb-1">콤보 시스템</h4>
+                                    <p class="text-amber-200 text-sm">여러 카드를 연쇄적으로 발동하여 거대한 데미지 창출</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 전략 팁 -->
+                    <div style="background: rgba(139, 90, 60, 0.2); border: 1px solid rgba(212, 175, 55, 0.3)" class="p-6 rounded-xl">
+                        <h3 class="text-xl font-bold text-white mb-4 flex items-center">
+                            <i class="fas fa-lightbulb mr-2 text-yellow-400"></i> 전략 팁
+                        </h3>
+                        <ul class="text-amber-200 space-y-3">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-yellow-400 mr-2 mt-1"></i>
+                                <span>강력한 카드 콤보를 연쇄하기 위해 여러 수를 미리 계획하세요</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-yellow-400 mr-2 mt-1"></i>
+                                <span>유연성을 위해 다양한 원소 간의 덱 균형을 맞추세요</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-yellow-400 mr-2 mt-1"></i>
+                                <span>적의 패턴에 주의를 기울이고 이를 대응하는 블록을 배치하세요</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-yellow-400 mr-2 mt-1"></i>
+                                <span>일부 유물은 특정 원소 카드와 완벽하게 시너지를 이룹니다</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Screenshots Section -->
+    <section id="screenshots" class="py-20 px-4" style="background: linear-gradient(135deg, #3d3426 0%, #2d2419 100%)">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="title-font text-3xl md:text-4xl text-white mb-4">게임 스크린샷</h2>
+                <div class="w-20 h-1 mx-auto" style="background: #d4af37"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Screenshot 1 -->
+                <div class="group relative rounded-xl overflow-hidden border-2 shadow-xl transition duration-500 hover:scale-105 screenshot-hover" style="border-color: rgba(139, 90, 60, 0.6)">
+                    <img src="img/GamePlay.png" alt="Elementalism Gameplay" class="w-full h-auto">
+                    <div class="absolute inset-0 bg-black/70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
+                        <p class="text-white text-lg font-bold text-center px-4">퍼즐 격자, 카드, 적들을 보여주는 메인 게임플레이 화면</p>
+                    </div>
+                </div>
+                
+                <!-- Screenshot 2 -->
+                <div class="group relative rounded-xl overflow-hidden border-2 shadow-xl transition duration-500 hover:scale-105 screenshot-hover" style="border-color: rgba(139, 90, 60, 0.6)">
+                    <img src="img/CardShop.png" alt="Elementalism Card Shop" class="w-full h-auto">
+                    <div class="absolute inset-0 bg-black/70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
+                        <p class="text-white text-lg font-bold text-center px-4">플레이어가 새로운 능력을 구매할 수 있는 카드 상점</p>
+                    </div>
+                </div>
+                
+                <!-- Screenshot 3 -->
+                <div class="group relative rounded-xl overflow-hidden border-2 shadow-xl transition duration-500 hover:scale-105 screenshot-hover" style="border-color: rgba(139, 90, 60, 0.6)">
+                    <img src="img/Map.png" class="w-full h-auto">
+                    <div class="absolute inset-0 bg-black/70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
+                        <p class="text-white text-lg font-bold text-center px-4">전투 간 경로 옵션을 보여주는 월드 맵</p>
+                    </div>
+                </div>
+                
+                <!-- Screenshot 4 -->
+                <div class="group relative rounded-xl overflow-hidden border-2 shadow-xl transition duration-500 hover:scale-105 screenshot-hover" style="border-color: rgba(139, 90, 60, 0.6)">
+                    <img src="https://via.placeholder.com/800x450/1e293b/64748b?text=Event+Screenshot" alt="Elementalism Event Screen" class="w-full h-auto">
+                    <div class="absolute inset-0 bg-black/70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
+                        <p class="text-white text-lg font-bold text-center px-4">내러티브 선택이 포함된 인카운터 화면</p>
+                    </div>
+                </div>
+                
+                <!-- Screenshot 5 -->
+                <div class="group relative rounded-xl overflow-hidden border-2 shadow-xl transition duration-500 hover:scale-105 screenshot-hover" style="border-color: rgba(139, 90, 60, 0.6)">
+                    <img src="https://via.placeholder.com/800x450/1e293b/64748b?text=Battle+Screenshot" alt="Elementalism Battle Screen" class="w-full h-auto">
+                    <div class="absolute inset-0 bg-black/70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
+                        <p class="text-white text-lg font-bold text-center px-4">특수 효과가 포함된 치열한 보스 전투</p>
+                    </div>
+                </div>
+                
+                <!-- Screenshot 6 - placeholder for trailer/asset -->
+                <div class="group relative rounded-xl overflow-hidden border-2 shadow-xl transition duration-500 hover:scale-105 screenshot-hover" style="border-color: rgba(139, 90, 60, 0.6)">
+                    <div class="aspect-w-16 aspect-h-9 flex items-center justify-center" style="background: rgba(139, 90, 60, 0.5)">
+                        <i class="fas fa-play-circle text-6xl text-white opacity-70"></i>
+                    </div>
+                    <div class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
+                        <p class="text-white text-lg font-bold text-center px-4">게임플레이 트레일러 보기</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- News/Wishlist Section -->
+    <section id="news" class="py-20 px-4" style="background: linear-gradient(135deg, rgba(139, 90, 60, 0.6) 0%, rgba(26, 58, 26, 0.6) 100%)">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="title-font text-3xl md:text-4xl text-white mb-6">플레이 준비 완료</h2>
+            <p class="text-xl text-amber-200 mb-10 max-w-2xl mx-auto">
+                Elementalism이 곧 PC에 출시됩니다!<br>게임 출시 알림을 받으려면 지금 위시리스트에 추가하세요.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                <button class="text-white font-bold py-4 px-8 rounded-lg text-lg transition duration-300 transform hover:scale-105 flex items-center justify-center" style="background: #d4af37;">
+                    <i class="fab fa-steam text-2xl mr-3"></i>
+                    <span>스팀에서 위시리스트 추가</span>
+                </button>
+                <button style="background: rgba(139, 90, 60, 0.8)" class="text-white font-bold py-4 px-8 rounded-lg text-lg transition duration-300 transform hover:scale-105 flex items-center justify-center">
+                    <i class="fab fa-discord text-2xl mr-3"></i>
+                    <span>디스코드 참여</span>
+                </button>
+            </div>
+            
+            <div class="mt-12">
+                <h3 class="text-xl font-bold text-white mb-4">업데이트 소식 받기</h3>
+                <div class="flex justify-center space-x-6">
+                    <a href="#" style="background: rgba(139, 90, 60, 0.8)" class="w-12 h-12 rounded-full flex items-center justify-center text-white text-xl transition duration-300 hover:opacity-80">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" style="background: rgba(139, 90, 60, 0.8)" class="w-12 h-12 rounded-full flex items-center justify-center text-white text-xl transition duration-300 hover:opacity-80">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                    <a href="#" style="background: rgba(139, 90, 60, 0.8)" class="w-12 h-12 rounded-full flex items-center justify-center text-white text-xl transition duration-300 hover:opacity-80">
+                        <i class="fab fa-twitch"></i>
+                    </a>
+                    <a href="#" style="background: rgba(139, 90, 60, 0.8)" class="w-12 h-12 rounded-full flex items-center justify-center text-white text-xl transition duration-300 hover:opacity-80">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-10 px-4 border-t" style="background: #3d3426; border-color: rgba(212, 175, 55, 0.3)">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <a href="#" class="title-font text-yellow-300 text-xl flex items-center">
+                        <i class="fas fa-fire mr-2 text-orange-300"></i>ELEMENTALISM
+                    </a>
+                    <p class="text-amber-400 text-sm mt-2">© 2025 Trojan Horse Team. All rights reserved.</p>
+                </div>
+                
+                <div class="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6">
+                    <a href="#about" class="text-amber-300 hover:text-yellow-200 transition duration-300">소개</a>
+                    <a href="#features" class="text-amber-300 hover:text-yellow-200 transition duration-300">특징</a>
+                    <a href="#gameplay" class="text-amber-300 hover:text-yellow-200 transition duration-300">게임플레이</a>
+                    <a href="#news" class="text-amber-300 hover:text-yellow-200 transition duration-300">뉴스</a>
+                    <a href="#" class="text-amber-300 hover:text-yellow-200 transition duration-300">개인정보 정책</a>
+                    <a href="#" class="text-amber-300 hover:text-yellow-200 transition duration-300">이용약관</a>
+                </div>
+            </div>
+            
+            <div class="mt-8 pt-8 text-center text-amber-400 text-sm" style="border-top: 1px solid rgba(139, 90, 60, 0.5)">
+                <p>Elementalism은 등록 상표입니다. 기타 모든 상표는 해당 소유자의 자산입니다.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button class="fixed bottom-6 right-6 w-12 h-12 rounded-full flex items-center justify-center text-white text-xl shadow-lg transition duration-300 opacity-0 invisible back-to-top" style="background: rgba(212, 175, 55, 0.8);">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.querySelector('.mobile-menu-button');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                // Close mobile menu if open
+                mobileMenu.classList.add('hidden');
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Show/hide back to top button based on scroll position
+        const backToTopButton = document.querySelector('.back-to-top');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.remove('opacity-0', 'invisible');
+                backToTopButton.classList.add('opacity-100', 'visible');
+            } else {
+                backToTopButton.classList.remove('opacity-100', 'visible');
+                backToTopButton.classList.add('opacity-0', 'invisible');
+            }
+        });
+        
+        // Back to top button functionality
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+</html>
