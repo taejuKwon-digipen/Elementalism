@@ -27,8 +27,9 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            Player_HP = 200;
             Player_Gold = 100; // 초기 골드 설정
-            Player_MaxHP = 100; // 초기 최대체력 설정
+            Player_MaxHP = 250; // 초기 최대체력 설정
             LoadGameState(); // 게임 상태 로드
         }
         else

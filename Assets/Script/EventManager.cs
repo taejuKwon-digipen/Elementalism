@@ -74,7 +74,7 @@ public class EventManager : MonoBehaviour
         // 랜덤으로 이벤트 ID 선택
         int[] allIds = eventDatas.Keys.ToArray();
         int currentEventId = allIds[UnityEngine.Random.Range(0, allIds.Length)];
-        //currentEventId = 8; // 테스트용으로 2번 이벤트로 고정
+        currentEventId = 1; // 테스트용으로 2번 이벤트로 고정
         Debug.Log($"[EventManager] 이벤트 ID 범위: {minEventId} ~ {maxEventId}, 랜덤 선택: {currentEventId}");
         ShowEvent(currentEventId);
     }
