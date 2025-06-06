@@ -422,7 +422,14 @@ public class SettingsUI : MonoBehaviour
             // Resume game if this was in-game settings
             if (pauseGameOnSettings)
             {
+                // 안전한 timeScale 복원
+                if (originalTimeScale <= 0f)
+                {
+                    originalTimeScale = 1f; // 기본값으로 복원
+                    Debug.LogWarning("[SettingsUI] originalTimeScale이 비정상적입니다. 1.0으로 복원합니다.");
+                }
                 Time.timeScale = originalTimeScale;
+                Debug.Log($"[SettingsUI] Time.timeScale을 {originalTimeScale}로 복원했습니다.");
             }
 
             Debug.Log("[SettingsUI] Settings closed");
