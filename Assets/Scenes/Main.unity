@@ -4324,7 +4324,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 679208801}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 90}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.009259259, y: 0.009259259, z: 0.009259259}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -8895,7 +8895,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2810203057477724362, guid: 1ded03112ab2ac44296a46d7d785e107, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 2810203057477724362, guid: 1ded03112ab2ac44296a46d7d785e107, type: 3}
       propertyPath: m_LocalRotation.w
@@ -8937,6 +8937,34 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2895639217669315632, guid: 1ded03112ab2ac44296a46d7d785e107, type: 3}
+      propertyPath: Ball
+      value: 
+      objectReference: {fileID: 3136813695458481944, guid: 54148cd8f7d7be64b976b7859e03c73a, type: 3}
+    - target: {fileID: 2895639217669315632, guid: 1ded03112ab2ac44296a46d7d785e107, type: 3}
+      propertyPath: ball
+      value: 
+      objectReference: {fileID: 3136813695458481944, guid: 54148cd8f7d7be64b976b7859e03c73a, type: 3}
+    - target: {fileID: 2895639217669315632, guid: 1ded03112ab2ac44296a46d7d785e107, type: 3}
+      propertyPath: ball2
+      value: 
+      objectReference: {fileID: 7266867321039263997, guid: df0e74ff8abda6f46ae2c924843c6e98, type: 3}
+    - target: {fileID: 2895639217669315632, guid: 1ded03112ab2ac44296a46d7d785e107, type: 3}
+      propertyPath: ball3
+      value: 
+      objectReference: {fileID: 1734053737078160166, guid: 2e5e28cdf7dc19749b94d468feea34cb, type: 3}
+    - target: {fileID: 2895639217669315632, guid: 1ded03112ab2ac44296a46d7d785e107, type: 3}
+      propertyPath: AirBall
+      value: 
+      objectReference: {fileID: 7180918455190229007, guid: d9897998b48e71146aaa4f25030c462f, type: 3}
+    - target: {fileID: 2895639217669315632, guid: 1ded03112ab2ac44296a46d7d785e107, type: 3}
+      propertyPath: FireBall
+      value: 
+      objectReference: {fileID: 4305094256947007182, guid: fbeced03b5f08934f825f2b9e62694ef, type: 3}
+    - target: {fileID: 2895639217669315632, guid: 1ded03112ab2ac44296a46d7d785e107, type: 3}
+      propertyPath: WaterBall
+      value: 
+      objectReference: {fileID: 7266867321039263997, guid: df0e74ff8abda6f46ae2c924843c6e98, type: 3}
     - target: {fileID: 2895639217669315632, guid: 1ded03112ab2ac44296a46d7d785e107, type: 3}
       propertyPath: shopManager
       value: 

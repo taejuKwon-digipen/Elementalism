@@ -6,25 +6,30 @@ using TMPro;
 
 public class Player : Entity
 {
-    public GameObject ball;
+
     private FocusManager focusManager;
     public ShopManager shopManager;
-    public int totalMonsters = 1;    
+    public int totalMonsters = 1;
     private int defeatedMonsters = 0;
     public int Gold { get; set; } = 100;
     public int MaxHP = 100;
     public int CurrentHP { get; private set; }
     private Animator animator;
-    public GameObject fireballPrefab;
-    public Transform fireballSpawnPoint;
-    public float fireballSpeed = 5f;
+    //public GameObject fireballPrefab;
+    //public Transform fireballSpawnPoint;
+    //public float fireballSpeed = 5f;
     private int shield = 0;
     private bool isInvincible = false;
+
+    [Header("Ball prefab")]
+    [SerializeField] public GameObject FireBall;
+    [SerializeField] public GameObject WaterBall;
+    [SerializeField] public GameObject AirBall;
 
     public GameObject shieldUIPrefab;
     private GameObject shieldUIInstance;
     private TextMeshProUGUI shieldText;
-
+    [SerializeField] public GameObject Ball;
     public static Player inst;
 
     private void Awake()
@@ -152,7 +157,7 @@ public class Player : Entity
         Vector3 newPosition = this.transform.position;
         newPosition.y += this.GetComponent<RectTransform>().sizeDelta.y / 2;
         GameObject enemyObject = focusManager.GetFocusedEntity().transform.parent.gameObject;
-        GameObject newBall = Instantiate(ball, newPosition, Quaternion.identity, this.transform.parent.parent);
+        GameObject newBall = Instantiate(Ball, newPosition, Quaternion.identity, this.transform.parent.parent);
         BallBehavior behavior = newBall.GetComponent<BallBehavior>();
 
         behavior.focusedEnemy = enemyObject;
@@ -177,7 +182,7 @@ public class Player : Entity
         newPosition.y += this.GetComponent<RectTransform>().sizeDelta.y / 2;
 
         GameObject enemyObject = focusManager.GetFocusedEntity().transform.parent.gameObject;
-        GameObject newBall = Instantiate(ball, newPosition, Quaternion.identity, this.transform.parent.parent);
+        GameObject newBall = Instantiate(Ball, newPosition, Quaternion.identity, this.transform.parent.parent);
         BallBehavior behavior = newBall.GetComponent<BallBehavior>();
 
         behavior.focusedEnemy = enemyObject;
@@ -185,6 +190,31 @@ public class Player : Entity
         behavior.damage = damage;
     }
 
+    public void AttackWithDamage(int damage, GameObject ball_sprite)
+    {
+        // 현재 활성화된 카드의 ID 가져오기
+        int currentCardID = 0;
+        if (GridChecker.inst != null && GridChecker.inst.GetActiveCards().Count > 0)
+        {
+            currentCardID = GridChecker.inst.GetActiveCards()[0].carditem.ID;
+        }
+        Debug.Log($"Using Card ID {currentCardID}");
+
+        var entity = focusManager.GetFocusedEntity();
+        if (entity == null || entity.HP <= 0)
+            return;
+
+        Vector3 newPosition = this.transform.position;
+        newPosition.y += this.GetComponent<RectTransform>().sizeDelta.y / 2;
+
+        GameObject enemyObject = focusManager.GetFocusedEntity().transform.parent.gameObject;
+        GameObject newBall = Instantiate(ball_sprite, newPosition, Quaternion.identity, this.transform.parent.parent);
+        BallBehavior behavior = newBall.GetComponent<BallBehavior>();
+
+        behavior.focusedEnemy = enemyObject;
+        behavior.player = this;
+        behavior.damage = damage;
+    }
     public void HealHP(int amount)
     {
         CurrentHP = Mathf.Min(CurrentHP + amount, MaxHP);

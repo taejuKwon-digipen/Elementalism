@@ -39,9 +39,15 @@ public class MatchDamageAbility : ICardAbility
 
 public class DefaultAbility : ICardAbility
 {
+    private int CardID;
+    public DefaultAbility(int i) { CardID = i; }
     public void ExecuteAbility(Player player, int damage, int oraBlockCount)
     {
-        player.AttackWithDamage(damage);
+        if (CardID == 1) { player.AttackWithDamage(damage, player.FireBall); }
+        else if (CardID == 2) { player.AttackWithDamage(damage, player.WaterBall); }
+        else if (CardID == 3) { player.AttackWithDamage(damage, player.FireBall); }
+        else if (CardID == 4) { player.AttackWithDamage(damage, player.AirBall); }
+        else { player.AttackWithDamage(damage); }
     }
 }
 

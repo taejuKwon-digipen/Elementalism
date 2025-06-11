@@ -17,6 +17,6 @@ public class CardAbilityManager
         {
             return ability;
         }
-        return new DefaultAbility();
+        return new DefaultAbility(cardId);
     }
 } 
