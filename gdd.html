@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elementalism - 게임 디자인 도큐먼트</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Rubik:wght@400;600;700&display=swap');
+        
+        :root {
+            --primary: #8b5a3c;
+            --primary-dark: #6b4423;
+            --secondary: #d4af37;
+            --dark: #2d1810;
+            --light: #f4e4bc;
+            --wood: #8b6f47;
+            --forest: #1a3a1a;
+        }
+        
+        body {
+            font-family: 'Rubik', sans-serif;
+            background: linear-gradient(135deg, #3d3426 0%, #2d2419 50%, #3d3426 100%);
+            color: var(--light);
+            scroll-behavior: smooth;
+            min-height: 100vh;
+        }
+        
+        .title-font, .font-bold {
+            font-family: 'Do Hyeon', sans-serif;
+        }
+        
+        .card {
+            background: rgba(139, 111, 71, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(45, 24, 16, 0.5);
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(45, 24, 16, 0.4);
+            background: rgba(139, 111, 71, 0.4);
+            border-color: rgba(212, 175, 55, 0.4);
+        }
+
+        .section-header {
+            border-left: 4px solid #d4af37;
+            padding-left: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .element-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+            margin: 0 auto;
+        }
+
+        .mechanic-box {
+            background: rgba(139, 90, 60, 0.3);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .sidebar-nav {
+            position: sticky;
+            top: 100px;
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 0.5rem 1rem;
+            color: rgba(244, 228, 188, 0.8);
+            text-decoration: none;
+            border-left: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: #d4af37;
+            border-left-color: #d4af37;
+            background: rgba(139, 90, 60, 0.2);
+        }
+
+        .content-section {
+            padding: 2rem 0;
+            border-bottom: 1px solid rgba(139, 90, 60, 0.3);
+        }
+
+        .content-section:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-amber-900/80 backdrop-blur-md z-50 border-b border-yellow-600/30" style="background: rgba(139, 90, 60, 0.8)">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="title-font text-yellow-300 text-xl md:text-2xl flex items-center">
+                        <i class="fas fa-fire mr-2 text-orange-300"></i>ELEMENTALISM
+                    </a>
+                    <span class="ml-4 text-amber-200 text-sm">게임 디자인 도큐먼트</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="index.html" class="text-amber-100 hover:text-yellow-300 px-3 py-2 rounded-md text-sm font-medium transition duration-300">홈페이지</a>
+                        <a href="#overview" class="text-amber-100 hover:text-yellow-300 px-3 py-2 rounded-md text-sm font-medium transition duration-300">개요</a>
+                        <a href="#mechanics" class="text-amber-100 hover:text-yellow-300 px-3 py-2 rounded-md text-sm font-medium transition duration-300">메커니즘</a>
+                        <a href="#systems" class="text-amber-100 hover:text-yellow-300 px-3 py-2 rounded-md text-sm font-medium transition duration-300">시스템</a>
+                        <a href="#technical" class="text-amber-100 hover:text-yellow-300 px-3 py-2 rounded-md text-sm font-medium transition duration-300">기술</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 px-4" style="background: linear-gradient(135deg, #3d3426 0%, #2d2419 50%, #3d3426 100%);">
+        <div class="max-w-7xl mx-auto text-center">
+            <h1 class="title-font text-4xl md:text-6xl text-amber-50 mb-6">ELEMENTALISM</h1>
+            <h2 class="text-2xl md:text-3xl text-yellow-300 mb-4">게임 디자인 도큐먼트</h2>
+            <p class="text-lg text-amber-100 mb-8 max-w-3xl mx-auto">
+                덱 빌딩 × 로그라이크 × 퍼즐의 완벽한 융합<br>
+                전략적 사고와 창의적 문제 해결이 만나는 게임
+            </p>
+            <div class="flex justify-center space-x-8 text-amber-200">
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-yellow-300">1.0</div>
+                    <div class="text-sm">버전</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-yellow-300">PC</div>
+                    <div class="text-sm">플랫폼</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-yellow-300">2025</div>
+                    <div class="text-sm">출시년도</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Sidebar Navigation -->
+            <div class="lg:w-1/4">
+                <div class="sidebar-nav">
+                    <div class="card p-4">
+                        <h3 class="font-bold text-amber-50 mb-4">목차</h3>
+                        <nav class="space-y-1">
+                            <a href="#overview" class="nav-link">1. 게임 개요</a>
+                            <a href="#mechanics" class="nav-link">2. 핵심 메커니즘</a>
+                            <a href="#elements" class="nav-link">3. 원소 시스템</a>
+                            <a href="#progression" class="nav-link">4. 진행 시스템</a>
+                            <a href="#combat" class="nav-link">5. 전투 시스템</a>
+                            <a href="#ui-ux" class="nav-link">6. UI/UX 디자인</a>
+                            <a href="#art" class="nav-link">7. 아트 스타일</a>
+                            <a href="#audio" class="nav-link">8. 오디오 디자인</a>
+                            <a href="#technical" class="nav-link">9. 기술적 요구사항</a>
+                            <a href="#balancing" class="nav-link">10. 밸런싱</a>
+                            <a href="#platform" class="nav-link">11. 플랫폼 & 출시</a>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="lg:w-3/4 space-y-8">
+                <!-- 1. Game Overview -->
+                <section id="overview" class="content-section">
+                    <div class="section-header">
+                        <h2 class="title-font text-3xl text-amber-50">1. 게임 개요</h2>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-6 mb-8">
+                        <div class="mechanic-box">
+                            <h3 class="text-xl font-bold text-amber-50 mb-3">핵심 컨셉트</h3>
+                            <p class="text-amber-200">
+                                Elementalism은 12x5 격자에서 원소 블록을 배치하여 카드 능력을 활성화하는 혁신적인 덱 빌딩 로그라이크 퍼즐 게임입니다. 
+                                플레이어는 전략적 사고와 창의적 문제 해결을 통해 적을 물리치고 강력한 덱을 구축해야 합니다.
+                            </p>
+                        </div>
+                        
+                        <div class="mechanic-box">
+                            <h3 class="text-xl font-bold text-amber-50 mb-3">타겟 오디언스</h3>
+                            <ul class="text-amber-200 space-y-2">
+                                <li><i class="fas fa-check text-yellow-400 mr-2"></i>덱 빌딩 게임 애호가</li>
+                                <li><i class="fas fa-check text-yellow-400 mr-2"></i>퍼즐 게임 매니아</li>
+                                <li><i class="fas fa-check text-yellow-400 mr-2"></i>로그라이크 팬</li>
+                                <li><i class="fas fa-check text-yellow-400 mr-2"></i>전략 게임 플레이어</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="card p-4">
+                            <h4 class="font-bold text-amber-50 mb-2">플레이 시간</h4>
+                            <p class="text-amber-200">30-60분 (1런)</p>
+                        </div>
+                        <div class="card p-4">
+                            <h4 class="font-bold text-amber-50 mb-2">난이도</h4>
+                            <p class="text-amber-200">중간-어려움</p>
+                        </div>
+                        <div class="card p-4">
+                            <h4 class="font-bold text-amber-50 mb-2">재플레이성</h4>
+                            <p class="text-amber-200">매우 높음</p>
+                        </div>
+                        <div class="card p-4">
+                            <h4 class="font-bold text-amber-50 mb-2">장르</h4>
+                            <p class="text-amber-200">덱빌딩/퍼즐/로그라이크</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. Core Mechanics -->
+                <section id="mechanics" class="content-section">
+                    <div class="section-header">
+                        <h2 class="title-font text-3xl text-amber-50">2. 핵심 메커니즘</h2>
+                    </div>
+
+                    <div class="mechanic-box">
+                        <h3 class="text-xl font-bold text-amber-50 mb-4">12x5 격자 퍼즐 시스템</h3>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="font-bold text-amber-50 mb-2">블록 배치</h4>
+                                <ul class="text-amber-200 space-y-1 text-sm">
+                                    <li>• 테트리스 스타일의 원소 블록</li>
+                                    <li>• 4가지 원소: 불, 물, 땅, 바람</li>
+                                    <li>• 블록 회전 및 이동 가능</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-amber-50 mb-2">패턴 매칭</h4>
+                                <ul class="text-amber-200 space-y-1 text-sm">
+                                    <li>• 카드의 모양과 격자 패턴 일치</li>
+                                    <li>• 매칭 시 카드 능력 발동</li>
+                                    <li>• 원소별 특수 효과 적용</li>
+                                    <li>• 콤보 시스템으로 연쇄 반응</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mechanic-box">
+                        <h3 class="text-xl font-bold text-amber-50 mb-4">덱 빌딩 시스템</h3>
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <div>
+                                <h4 class="font-bold text-amber-50 mb-2">카드 획득</h4>
+                                <p class="text-amber-200 text-sm">전투 승리, 상점 구매, 이벤트 보상을 통해 새로운 카드 획득</p>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-amber-50 mb-2">카드 강화</h4>
+                                <p class="text-amber-200 text-sm">같은 카드 합성이나 특수 재료로 카드 업그레이드</p>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-amber-50 mb-2">덱 관리</h4>
+                                <p class="text-amber-200 text-sm">불필요한 카드 제거, 최적화된 덱 구성</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mechanic-box">
+                        <h3 class="text-xl font-bold text-amber-50 mb-4">턴 기반 전투</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 rounded-full flex items-center justify-center mr-3 mt-1" style="background: #d4af37">
+                                    <span class="text-white text-sm font-bold">1</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-amber-50">블록 배치 단계</h4>
+                                    <p class="text-amber-200 text-sm">원소 블록을 12x5 격자에 전략적으로 배치</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 rounded-full flex items-center justify-center mr-3 mt-1" style="background: #d4af37">
+                                    <span class="text-white text-sm font-bold">2</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-amber-50">카드 사용 단계</h4>
+                                    <p class="text-amber-200 text-sm">손패의 카드를 선택하여 사용</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 rounded-full flex items-center justify-center mr-3 mt-1" style="background: #d4af37">
+                                    <span class="text-white text-sm font-bold">3</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-amber-50">패턴 매칭 단계</h4>
+                                    <p class="text-amber-200 text-sm">격자의 패턴과 카드 모양이 일치하면 능력 발동</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 rounded-full flex items-center justify-center mr-3 mt-1" style="background: #d4af37">
+                                    <span class="text-white text-sm font-bold">4</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-amber-50">적 행동 단계</h4>
+                                    <p class="text-amber-200 text-sm">적이 공격하거나 특수 능력 사용</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. Elements System -->
+                <section id="elements" class="content-section">
+                    <div class="section-header">
+                        <h2 class="title-font text-3xl text-amber-50">3. 원소 시스템</h2>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="mechanic-box">
+                            <div class="flex items-center mb-3">
+                                <div class="element-icon bg-red-500/20 text-red-400 mr-3">
+                                    <i class="fas fa-fire"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-amber-50">불 (Fire)</h3>
+                            </div>
+                            <p class="text-amber-200 mb-3">공격력과 직접 피해에 특화된 원소</p>
+                            <ul class="text-amber-200 text-sm space-y-1">
+                                <li>• 높은 공격력 딜링</li>
+                                <li>• 화상 상태이상 부여</li>
+                                <li>• 연쇄 폭발 효과</li>
+                                <li>• 적의 방어력 무시</li>
+                            </ul>
+                        </div>
+
+                        <div class="mechanic-box">
+                            <div class="flex items-center mb-3">
+                                <div class="element-icon bg-blue-500/20 text-blue-400 mr-3">
+                                    <i class="fas fa-tint"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-amber-50">물 (Water)</h3>
+                            </div>
+                            <p class="text-amber-200 mb-3">방어와 회복에 특화된 원소</p>
+                            <ul class="text-amber-200 text-sm space-y-1">
+                                <li>• 체력 회복 및 실드 생성</li>
+                                <li>• 적의 공격력 감소</li>
+                                <li>• 빙결 상태이상 부여</li>
+                                <li>• 지속 효과 제거</li>
+                            </ul>
+                        </div>
+
+                        <div class="mechanic-box">
+                            <div class="flex items-center mb-3">
+                                <div class="element-icon bg-green-500/20 text-green-400 mr-3">
+                                    <i class="fas fa-leaf"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-amber-50">땅 (Earth)</h3>
+                            </div>
+                            <p class="text-amber-200 mb-3">방어와 지속 효과에 특화된 원소</p>
+                            <ul class="text-amber-200 text-sm space-y-1">
+                                <li>• 강력한 방어막 생성</li>
+                                <li>• 독성 지형 생성</li>
+                                <li>• 적의 이동 제한</li>
+                                <li>• 자원 생성 효과</li>
+                            </ul>
+                        </div>
+
+                        <div class="mechanic-box">
+                            <div class="flex items-center mb-3">
+                                <div class="element-icon bg-yellow-500/20 text-yellow-400 mr-3">
+                                    <i class="fas fa-wind"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-amber-50">바람 (Air)</h3>
+                            </div>
+                            <p class="text-amber-200 mb-3">속도와 유틸리티에 특화된 원소</p>
+                            <ul class="text-amber-200 text-sm space-y-1">
+                                <li>• 추가 액션 획득</li>
+                                <li>• 카드 드로우 증가</li>
+                                <li>• 적의 행동 지연</li>
+                                <li>• 블록 재배치 효과</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="mechanic-box mt-6">
+                        <h3 class="text-xl font-bold text-amber-50 mb-4">원소 상성 시스템</h3>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="font-bold text-amber-50 mb-2">강화 조합</h4>
+                                <ul class="text-amber-200 text-sm space-y-1">
+                                    <li>• 불 + 바람 = 화염 폭풍 (범위 피해 증가)</li>
+                                    <li>• 물 + 땅 = 진흙 늪 (적 이동 봉쇄)</li>
+                                    <li>• 땅 + 불 = 용암 폭발 (지속 피해)</li>
+                                    <li>• 바람 + 물 = 얼음 폭풍 (광역 빙결)</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-amber-50 mb-2">상쇄 효과</h4>
+                                <ul class="text-amber-200 text-sm space-y-1">
+                                    <li>• 불 vs 물 = 효과 약화</li>
+                                    <li>• 땅 vs 바람 = 효과 상쇄</li>
+                                    <li>• 균형 잡힌 사용으로 안정성 확보</li>
+                                    <li>• 특정 상황에서 역이용 가능</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. Progression System -->
+                <section id="progression" class="content-section">
+                    <div class="section-header">
+                        <h2 class="title-font text-3xl text-amber-50">4. 진행 시스템</h2>
+                    </div>
+
+                    <div class="mechanic-box">
+                        <h3 class="text-xl font-bold text-amber-50 mb-4">월드 맵 시스템</h3>
+                        <div class="grid md:grid-cols-4 gap-4">
+                            <div class="card p-4">
+                                <i class="fas fa-crosshairs text-red-400 mb-2 text-lg"></i>
+                                <h4 class="font-bold text-white mb-1">전투 노드</h4>
+                                <p class="text-amber-200 text-sm">적과의 전투를 통해 카드와 유물 획득</p>
+                            </div>
+                            <div class="card p-4">
+                                <i class="fas fa-university text-amber-400 mb-2 text-lg"></i>
+                                <h4 class="font-bold text-white mb-1">유적 노드</h4>
+                                <p class="text-amber-200 text-sm">골드로 카드, 유물, 포션 구매</p>
+                            </div>
+                            <div class="card p-4">
+                                <i class="fas fa-question text-yellow-400 mb-2 text-lg"></i>
+                                <h4 class="font-bold text-white mb-1">이벤트 노드</h4>
+                                <p class="text-amber-200 text-sm">선택지를 통한 위험과 보상</p>
+                            </div>
+                            <div class="card p-4">
+                                <i class="fas fa-skull text-red-400 mb-2 text-lg"></i>
+                                <h4 class="font-bold text-white mb-1">보스 노드</h4>
+                                <p class="text-amber-200 text-sm">강력한 보스와의 결전</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="mechanic-box">
+                            <h3 class="text-xl font-bold text-amber-50 mb-3">유물 시스템</h3>
+                            <p class="text-amber-200 mb-3">게임플레이를 극적으로 변화시키는 강력한 아이템</p>
+                            <ul class="text-amber-200 text-sm space-y-1">
+                                <li>• 원소별 특화 유물 (불의 반지, 물의 목걸이 등)</li>
+                                <li>• 퍼즐 보조 유물 (자동 회전, 시간 정지 등)</li>
+                                <li>• 전투 강화 유물 (추가 데미지, 방어력 등)</li>
+                                <li>• 희귀 전설 유물 (게임 룰 변경)</li>
+                            </ul>
+                        </div>
+
+                        <div class="mechanic-box">
+                            <h3 class="text-xl font-bold text-amber-50 mb-3">난이도 상승</h3>
+                            <p class="text-amber-200 mb-3">진행할수록 더욱 도전적인 상황 제공</p>
+                            <ul class="text-amber-200 text-sm space-y-1">
+                                <li>• 적의 체력과 공격력 증가</li>
+                                <li>• 복잡한 패턴의 적 등장</li>
+                                <li>• 시간 제한 및 특수 조건 추가</li>
+                                <li>• 엘리트 몬스터의 특수 능력</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 5. Combat System -->
+                <section id="combat" class="content-section">
+                    <div class="section-header">
+                        <h2 class="title-font text-3xl text-amber-50">5. 전투 시스템</h2>
+                    </div>
+
+                    <div class="mechanic-box">
+                        <h3 class="text-xl font-bold text-amber-50 mb-4">적 AI 패턴</h3>
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <div>
+                                <h4 class="font-bold text-amber-50 mb-2">기본형 몬스터</h4>
+                                <ul class="text-amber-200 text-sm space-y-1">
+                                    <li>• 단순한 공격 패턴</li>
+                                    <li>• 예측 가능한 행동</li>
+                                    <li>• 초보자 학습용</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-amber-50 mb-2">엘리트 몬스터</h4>
+                                <ul class="text-amber-200 text-sm space-y-1">
+                                    <li>• 복잡한 패턴 조합</li>
+                                    <li>• 특수 능력 보유</li>
+                                    <li>• 높은 보상 제공</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-amber-50 mb-2">보스 몬스터</h4>
+                                <ul class="text-amber-200 text-sm space-y-1">
+                                    <li>• 다단계 전투</li>
+                                    <li>• 환경 변화 유발</li>
+                                    <li>• 고유 메커니즘</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 6. UI/UX Design -->
+                <section id="ui-ux" class="content-section">
+                    <div class="section-header">
+                        <h2 class="title-font text-3xl text-amber-50">6. UI/UX 디자인</h2>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="mechanic-box">
+                            <h3 class="text-xl font-bold text-amber-50 mb-3">게임 화면 구성</h3>
+                            <ul class="text-amber-200 text-sm space-y-2">
+                                <li><i class="fas fa-square text-yellow-400 mr-2"></i>12x5 퍼즐 격자 (화면 중앙)</li>
+                                <li><i class="fas fa-hand-paper text-yellow-400 mr-2"></i>카드 핸드 (하단)</li>
+                                <li><i class="fas fa-heart text-yellow-400 mr-2"></i>플레이어 상태 (좌상단)</li>
+                                <li><i class="fas fa-monster text-yellow-400 mr-2"></i>적 정보 (상단)</li>
+                                <li><i class="fas fa-gem text-yellow-400 mr-2"></i>유물 및 버프 (좌하단)</li>
+                            </ul>
+                        </div>
+
+                        <div class="mechanic-box">
+                            <h3 class="text-xl font-bold text-amber-50 mb-3">사용성 원칙</h3>
+                            <ul class="text-amber-200 text-sm space-y-2">
+                                <li><i class="fas fa-eye text-yellow-400 mr-2"></i>직관적인 비주얼 피드백</li>
+                                <li><i class="fas fa-mouse-pointer text-yellow-400 mr-2"></i>원클릭 카드 사용</li>
+                                <li><i class="fas fa-undo text-yellow-400 mr-2"></i>실행 취소 기능</li>
+                                <li><i class="fas fa-info-circle text-yellow-400 mr-2"></i>상세한 툴팁 제공</li>
+                                <li><i class="fas fa-keyboard text-yellow-400 mr-2"></i>키보드 단축키 지원</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 7. Art Style -->
+                <section id="art" class="content-section">
+                    <div class="section-header">
+                        <h2 class="title-font text-3xl text-amber-50">7. 아트 스타일</h2>
+                    </div>
+
+                    <div class="mechanic-box">
+                        <h3 class="text-xl font-bold text-amber-50 mb-4">비주얼 방향성</h3>
+                        <p class="text-amber-200 mb-4">
+                            따뜻하고 신비로운 판타지 세계관을 표현하는 2D 아트 스타일을 채택했습니다. 
+                            각 원소는 고유한 색상과 효과로 구분되며, 플레이어가 쉽게 인식할 수 있도록 디자인되었습니다.
+                        </p>
+                        
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="font-bold text-amber-50 mb-2">컬러 팔레트</h4>
+                                <div class="grid grid-cols-4 gap-2 mb-3">
+                                    <div class="h-8 bg-red-500 rounded flex items-center justify-center text-white text-xs">불</div>
+                                    <div class="h-8 bg-blue-500 rounded flex items-center justify-center text-white text-xs">물</div>
+                                    <div class="h-8 bg-yellow-500 rounded flex items-center justify-center text-white text-xs">땅</div>
+                                    <div class="h-8 bg-blue-300 rounded flex items-center justify-center text-white text-xs">바람</div>
+                                </div>
+                                <p class="text-amber-200 text-sm">원소별 구분이 명확한 색상 체계</p>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-amber-50 mb-2">아트 에셋</h4>
+                                <ul class="text-amber-200 text-sm space-y-1">
+                                    <li>• 2D 아트 캐릭터</li>
+                                    <li>• 애니메이션 효과 (64프레임)</li>
+                                    <li>• 환경별 배경 테마</li>
+                                    <li>• UI 아이콘 및 버튼</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 8. Audio Design -->
+                <section id="audio" class="content-section">
+                    <div class="section-header">
+                        <h2 class="title-font text-3xl text-amber-50">8. 오디오 디자인</h2>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="mechanic-box">
+                            <h3 class="text-xl font-bold text-amber-50 mb-3">음악 구성</h3>
+                            <ul class="text-amber-200 text-sm space-y-2">
+                                <li><i class="fas fa-music text-yellow-400 mr-2"></i>메인 테마: 웅장하고 신비로운 분위기</li>
+                                <li><i class="fas fa-volume-up text-yellow-400 mr-2"></i>전투 음악: 긴장감 넘치는 오케스트라</li>
+                                <li><i class="fas fa-leaf text-yellow-400 mr-2"></i>평화 구간: 잔잔한 앰비언트</li>
+                                <li><i class="fas fa-crown text-yellow-400 mr-2"></i>보스 테마: 각 보스별 고유 BGM</li>
+                            </ul>
+                        </div>
+
+                        <div class="mechanic-box">
+                            <h3 class="text-xl font-bold text-amber-50 mb-3">효과음 시스템</h3>
+                            <ul class="text-amber-200 text-sm space-y-2">
+                                <li><i class="fas fa-fire text-yellow-400 mr-2"></i>원소별 고유 사운드</li>
+                                <li><i class="fas fa-cards-blank text-yellow-400 mr-2"></i>카드 사용 효과음</li>
+                                <li><i class="fas fa-cube text-yellow-400 mr-2"></i>블록 배치 및 매칭 사운드</li>
+                                <li><i class="fas fa-explosion text-yellow-400 mr-2"></i>콤보 및 특수 효과 사운드</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 9. Technical Requirements -->
+                <section id="technical" class="content-section">
+                    <div class="section-header">
+                        <h2 class="title-font text-3xl text-amber-50">9. 기술적 요구사항</h2>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="mechanic-box">
+                            <h3 class="text-xl font-bold text-amber-50 mb-3">개발 환경</h3>
+                            <ul class="text-amber-200 text-sm space-y-2">
+                                <li><i class="fab fa-unity text-yellow-400 mr-2"></i>Unity 2022.3.44f1 LTS</li>
+                                <li><i class="fas fa-code text-yellow-400 mr-2"></i>C# 프로그래밍</li>
+                                <li><i class="fas fa-magic text-yellow-400 mr-2"></i>Feel 라이브러리 (시각 효과)</li>
+                                <li><i class="fas fa-font text-yellow-400 mr-2"></i>TextMesh Pro (UI 텍스트)</li>
+                                <li><i class="fas fa-save text-yellow-400 mr-2"></i>Easy Save 3 (세이브 시스템)</li>
+                            </ul>
+                        </div>
+
+                        <div class="mechanic-box">
+                            <h3 class="text-xl font-bold text-amber-50 mb-3">시스템 요구사항</h3>
+                            <ul class="text-amber-200 text-sm space-y-2">
+                                <li><i class="fab fa-windows text-yellow-400 mr-2"></i>Windows 10/11 64-bit</li>
+                                <li><i class="fas fa-microchip text-yellow-400 mr-2"></i>Intel i5 또는 AMD 동급 이상</li>
+                                <li><i class="fas fa-memory text-yellow-400 mr-2"></i>RAM 8GB 이상</li>
+                                <li><i class="fas fa-hdd text-yellow-400 mr-2"></i>저장공간 2GB</li>
+                                <li><i class="fas fa-desktop text-yellow-400 mr-2"></i>DirectX 11 지원 GPU</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 10. Balancing -->
+                <section id="balancing" class="content-section">
+                    <div class="section-header">
+                        <h2 class="title-font text-3xl text-amber-50">10. 밸런싱</h2>
+                    </div>
+
+                    <div class="mechanic-box">
+                        <h3 class="text-xl font-bold text-amber-50 mb-4">게임 밸런스 철학</h3>
+                        <p class="text-amber-200 mb-4">
+                            플레이어의 선택이 의미 있고, 모든 전략이 유효하도록 설계했습니다. 
+                            어떤 원소나 카드도 절대적으로 강하지 않으며, 상황에 따른 적절한 선택이 승리의 열쇠입니다.
+                        </p>
+                        
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <div class="card p-4">
+                                <h4 class="font-bold text-amber-50 mb-2">카드 밸런스</h4>
+                                <ul class="text-amber-200 text-sm space-y-1">
+                                    <li>• 비용 대비 효율성 균형</li>
+                                    <li>• 희귀도별 파워 레벨</li>
+                                    <li>• 시너지 카드 조합</li>
+                                </ul>
+                            </div>
+                            <div class="card p-4">
+                                <h4 class="font-bold text-amber-50 mb-2">원소 균형</h4>
+                                <ul class="text-amber-200 text-sm space-y-1">
+                                    <li>• 각 원소별 고유 역할</li>
+                                    <li>• 상성 관계 밸런스</li>
+                                    <li>• 단독/조합 사용 균형</li>
+                                </ul>
+                            </div>
+                            <div class="card p-4">
+                                <h4 class="font-bold text-amber-50 mb-2">난이도 곡선</h4>
+                                <ul class="text-amber-200 text-sm space-y-1">
+                                    <li>• 점진적 난이도 증가</li>
+                                    <li>• 학습 구간 제공</li>
+                                    <li>• 최종 보스 도전</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 11. Platform & Release -->
+                <section id="platform" class="content-section">
+                    <div class="section-header">
+                        <h2 class="title-font text-3xl text-amber-50">11. 플랫폼 & 출시</h2>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="mechanic-box">
+                            <h3 class="text-xl font-bold text-amber-50 mb-3">출시 플랫폼</h3>
+                            <div class="space-y-3">
+                                <div class="flex items-center">
+                                    <i class="fab fa-steam text-blue-400 text-2xl mr-3"></i>
+                                    <div>
+                                        <h4 class="font-bold text-amber-50">Steam (Primary)</h4>
+                                        <p class="text-amber-200 text-sm">PC 플레이어 대상 메인 플랫폼</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fab fa-windows text-blue-400 text-2xl mr-3"></i>
+                                    <div>
+                                        <h4 class="font-bold text-amber-50">Microsoft Store</h4>
+                                        <p class="text-amber-200 text-sm">Windows 10/11 사용자 대상</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mechanic-box">
+                            <h3 class="text-xl font-bold text-amber-50 mb-3">출시 일정</h3>
+                            <div class="space-y-3">
+                                <div class="flex items-start">
+                                    <div class="w-8 h-8 rounded-full flex items-center justify-center mr-3 mt-1" style="background: #d4af37">
+                                        <i class="fas fa-check text-white text-sm"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-amber-50">프리 알파 (완료)</h4>
+                                        <p class="text-amber-200 text-sm">핵심 메커니즘 구현 및 테스트</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="w-8 h-8 rounded-full flex items-center justify-center mr-3 mt-1" style="background: #d4af37">
+                                        <i class="fas fa-check text-white text-sm"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-amber-50">베타 테스트 (완료)</h4>
+                                        <p class="text-amber-200 text-sm">밸런싱 및 버그 수정</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="w-8 h-8 rounded-full flex items-center justify-center mr-3 mt-1" style="background: #d4af37">
+                                        <i class="fas fa-rocket text-white text-sm"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-amber-50">정식 출시 (2025)</h4>
+                                        <p class="text-amber-200 text-sm">Steam 및 Microsoft Store 동시 출시</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mechanic-box">
+                        <h3 class="text-xl font-bold text-amber-50 mb-4">마케팅 전략</h3>
+                        <div class="grid md:grid-cols-4 gap-4">
+                            <div class="text-center">
+                                <i class="fab fa-youtube text-red-400 text-3xl mb-2"></i>
+                                <h4 class="font-bold text-amber-50 mb-1">유튜브</h4>
+                                <p class="text-amber-200 text-sm">게임플레이 영상</p>
+                            </div>
+                            <div class="text-center">
+                                <i class="fab fa-twitch text-purple-400 text-3xl mb-2"></i>
+                                <h4 class="font-bold text-amber-50 mb-1">트위치</h4>
+                                <p class="text-amber-200 text-sm">스트리머 협업</p>
+                            </div>
+                            <div class="text-center">
+                                <i class="fab fa-discord text-blue-400 text-3xl mb-2"></i>
+                                <h4 class="font-bold text-amber-50 mb-1">디스코드</h4>
+                                <p class="text-amber-200 text-sm">커뮤니티 구축</p>
+                            </div>
+                            <div class="text-center">
+                                <i class="fas fa-gamepad text-green-400 text-3xl mb-2"></i>
+                                <h4 class="font-bold text-amber-50 mb-1">게임쇼</h4>
+                                <p class="text-amber-200 text-sm">인디 게임 페스티벌</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-10 px-4 border-t" style="background: #3d3426; border-color: rgba(212, 175, 55, 0.3)">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <a href="index.html" class="title-font text-yellow-300 text-xl flex items-center">
+                        <i class="fas fa-fire mr-2 text-orange-300"></i>ELEMENTALISM
+                    </a>
+                    <p class="text-amber-400 text-sm mt-2">© 2025 Trojan Horse Team. All rights reserved.</p>
+                </div>
+                
+                <div class="flex items-center space-x-6">
+                    <a href="index.html" class="text-amber-300 hover:text-yellow-200 transition duration-300">홈페이지</a>
+                    <a href="#overview" class="text-amber-300 hover:text-yellow-200 transition duration-300">게임 개요</a>
+                    <a href="#technical" class="text-amber-300 hover:text-yellow-200 transition duration-300">기술 사양</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Navigation highlighting
+        const sections = document.querySelectorAll('.content-section');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

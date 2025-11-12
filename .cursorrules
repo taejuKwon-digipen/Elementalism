@@ -1,0 +1,128 @@
+# Elementalism 프로젝트 - Cursor Rules
+
+## 프로젝트 개요
+- **게임 장르**: 덱 빌딩 로그라이크 퍼즐 게임
+- **핵심 메커니즘**: 12x5 격자 + 원소 블록 배치 + 카드 능력
+- **개발 환경**: Unity 2022.3.44f1 + C# + Feel 라이브러리
+
+## 개발 워크플로 & 패턴
+
+### Settings 시스템 구현 완료 ✅
+- **SettingsManager**: 싱글톤 패턴으로 모든 설정 관리
+- **GameSettings**: 직렬화 가능한 설정 데이터 구조
+- **MMSoundManager 통합**: Feel 라이브러리와 완전 연동
+- **이벤트 시스템**: OnSettingsChanged로 UI 자동 업데이트
+- **자동 저장**: PlayerPrefs + JSON으로 안전한 데이터 보존
+
+### 검증된 아키텍처 패턴
+1. **Singleton + Events**: 전역 관리자와 반응형 UI 조합
+2. **PlayerPrefs + JSON**: 구조화된 설정 데이터 저장 방식
+3. **외부 라이브러리 래핑**: Feel MMSoundManager 통합 패턴
+4. **시스템 설정 감지**: 첫 실행 시 현재 환경 자동 인식
+
+### Unity 개발 규칙
+- **DontDestroyOnLoad**: 중요한 매니저는 씬 간 영속성 확보
+- **Inspector 연결**: UI 컴포넌트는 Inspector에서 드래그앤드롭 연결
+- **이벤트 네이밍**: On + Action + Past tense (OnSettingsChanged)
+- **null 체크**: 외부 라이브러리 사용 시 항상 null 체크 후 접근
+
+## 현재 작업 컨텍스트
+
+### 진행 중인 작업 🔄
+- **Settings UI 구현**: Unity 프리팹 생성 및 SettingsManager 연결
+- **Main.unity 통합**: 게임 씬에 설정 UI 추가
+- **TextMesh Pro 최적화**: 다국어 지원을 위한 폰트 설정
+
+### 다음 우선순위
+1. Settings UI 프리팹 완성 (슬라이더, 드롭다운, 토글)
+2. ESC 키 단축키 및 게임 일시정지 기능
+3. 모든 설정 옵션 동작 테스트
+
+## 코드 품질 가이드라인
+
+### C# 규칙
+```csharp
+// 이벤트 정의 및 사용
+public static event Action<GameSettings> OnSettingsChanged;
+OnSettingsChanged?.Invoke(currentSettings);
+
+// 외부 라이브러리 안전 접근
+if (MMSoundManager.Instance != null && MMSoundManager.Instance.settingsSo != null)
+{
+    MMSoundManager.Instance.settingsSo.SetTrackVolume(track, volume);
+}
+
+// 설정 데이터 구조화
+[System.Serializable]
+public class GameSettings { /* 설정 필드들 */ }
+```
+
+### Unity Inspector 설정
+- **Settings Manager**: 모든 씬에서 DontDestroyOnLoad 확인
+- **UI 연결**: Unity Inspector에서 수동 연결 (코드에서 Find 사용 지양)
+- **프리팹 활용**: 재사용 가능한 UI는 반드시 프리팹으로 제작
+
+## 문제 해결 패턴
+
+### Feel 라이브러리 통합
+- MMSoundManager.Instance 및 settingsSo null 체크 필수
+- Volume Track 사용: Master, Music, SFX, UI 채널 분리
+- SetTrackVolume 메서드로 실시간 볼륨 조절
+
+### Settings 데이터 관리
+- PlayerPrefs.SetString(key, JsonUtility.ToJson(settings))로 저장
+- 첫 실행 시 DetectCurrentSettings()로 시스템 설정 감지
+- OnApplicationPause/Focus에서 자동 저장 구현
+
+### UI 이벤트 처리
+- UI 업데이트는 이벤트 기반으로 자동화
+- SettingsManager.OnSettingsChanged 이벤트 구독으로 UI 반영
+- UnityEvent보다 C# Action 이벤트 선호
+
+## 게임 특화 가이드라인
+
+### 원소 시스템 관련
+- ElementType enum 활용 (기존 코드에 정의됨)
+- 12x5 격자 시스템은 블록 배치의 핵심
+- 카드 능력과 퍼즐 메커니즘 연동 고려
+
+### Asset Store 에셋 관리
+- Fantasy Game Cards, Sprite Effects Bundle 등 다수 에셋 보유
+- 성능 최적화를 위한 에셋 사용량 관리 필요
+- UI 스타일은 기존 에셋과 일관성 유지
+
+### 다국어 지원
+- SystemLanguage 활용: Korean, English, Japanese, Chinese
+- GetLanguageDisplayName으로 현지화 표시명 제공
+- 폰트는 모든 언어 지원 가능한 것 선택
+
+## 메모리 관리 & 성능
+
+### 권장사항
+- Settings 변경 시에만 실제 적용 (caching 활용)
+- 이벤트 구독 해제 잊지 말기 (OnDestroy에서 -= 처리)
+- UI 애니메이션은 DOTween 라이브러리 활용 (프로젝트에 존재)
+
+### 지양사항
+- Update()에서 반복적인 UI 업데이트
+- GameObject.Find 등 비효율적인 오브젝트 검색
+- 매번 PlayerPrefs 읽기/쓰기 (메모리에 캐시 후 일괄 저장)
+
+## 테스트 전략
+- Settings: 각 옵션별 개별 테스트 (볼륨, 해상도, 언어)
+- UI: 메인메뉴와 게임 내 둘 다에서 작동 확인
+- 시스템: 다양한 해상도 및 언어 환경에서 테스트
+
+## 협업 & 문서화
+- 모든 주요 변경사항은 memory-bank/ 폴더에 문서화
+- Git 커밋 전 항상 .unity 파일 변경사항 확인
+- 새로운 패턴 발견 시 systemPatterns.md 업데이트
+
+## 문제 해결 체크리스트
+1. MMSoundManager null 체크 했는가?
+2. 이벤트 구독 해제 구현했는가?
+3. PlayerPrefs 키 충돌 없는가?
+4. DontDestroyOnLoad 중복 생성 방지했는가?
+5. UI 요소 Inspector 연결 확인했는가?
+
+이 규칙들은 Elementalism 프로젝트에서 실제 검증된 패턴들을 바탕으로 작성되었습니다. 새로운 패턴이나 문제 해결 방법을 발견할 때마다 이 파일을 업데이트하여 프로젝트 지식을 축적해나가겠습니다. 
